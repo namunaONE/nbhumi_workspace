@@ -1,0 +1,37 @@
+name: user_app
+description: nBhumi — Nepal Property Marketplace (User App)
+publish_to: none
+resolution: workspace
+version: 0.1.0
+
+environment:
+  sdk: ^3.13.0
+
+dependencies:
+  flutter:
+    sdk: flutter
+  flutter_localizations:
+    sdk: flutter
+  go_router: ^14.2.0
+  flutter_riverpod: ^2.5.1
+  supabase_flutter: ^2.6.0
+  core:
+    path: ../../packages/core
+  data:
+    path: ../../packages/data
+  auth:
+    path: ../../features/auth
+  search:
+    path: ../../features/search
+  listing_detail:
+    path: ../../features/listing_detail
+  post_listing:
+    path: ../../features/post_listing
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  very_good_analysis: ^6.0.0
+
+flutter:
+  uses-material-design: true

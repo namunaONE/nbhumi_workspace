@@ -1,0 +1,24 @@
+name: post_listing
+description: Post listing wizard feature for nBhumi
+publish_to: none
+resolution: workspace
+version: 0.1.0
+
+environment:
+  sdk: ^3.13.0
+
+dependencies:
+  flutter:
+    sdk: flutter
+  flutter_riverpod: ^2.5.1
+  models:
+    path: ../../packages/models
+  core:
+    path: ../../packages/core
+  data:
+    path: ../../packages/data
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  very_good_analysis: ^6.0.0

@@ -1,0 +1,16 @@
+import 'package:flutter_test/flutter_test.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:user_app/main.dart';
+
+void main() {
+  testWidgets('UserApp renders home screen', (WidgetTester tester) async {
+    await tester.pumpWidget(
+      const ProviderScope(
+        child: UserApp(),
+      ),
+    );
+
+    expect(find.text('nBhumi'), findsOneWidget);
+    expect(find.text('nBhumi — Nepal Property Marketplace'), findsOneWidget);
+  });
+}

@@ -1,0 +1,28 @@
+include: package:very_good_analysis/analysis_options.yaml
+
+analyzer:
+  exclude:
+    - "**/*.g.dart"
+    - "**/*.freezed.dart"
+    - "**/generated/**"
+  errors:
+    invalid_annotation_target: ignore
+    todo: ignore
+
+linter:
+  rules:
+    # Project-specific rules
+    prefer_single_quotes: true
+    prefer_const_constructors: true
+    prefer_const_literals_to_create_immutables: true
+    prefer_final_locals: true
+    prefer_final_in_for_each: true
+    prefer_relative_imports: false
+    always_declare_return_types: true
+    always_specify_types: false
+    avoid_dynamic_calls: true
+    avoid_print: true
+    avoid_unnecessary_containers: true
+    avoid_web_libraries_in_flutter: true
+    use_key_in_widget_constructors: true
+    use_string_in_part_of_directives: true
