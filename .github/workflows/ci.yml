@@ -1,0 +1,97 @@
+name: CI
+
+on:
+  push:
+    branches: [main, develop]
+  pull_request:
+    branches: [main]
+
+jobs:
+  analyze:
+    name: Analyze
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: subosito/flutter-action@v2
+        with:
+          flutter-version: 3.47.0
+          channel: stable
+          cache: true
+
+      - name: Install dependencies
+        run: dart pub get
+
+      - name: Verify codegen is up to date
+        run: |
+          cd packages/models && dart run build_runner build && cd ../..
+          cd packages/data && dart run build_runner build && cd ../..
+          cd features/auth && dart run build_runner build && cd ../..
+          git diff --exit-code || (echo "::error::Generated files are out of date. Run build_runner locally and commit the results." && exit 1)
+
+      - name: Analyze (zero warnings)
+        run: dart analyze --fatal-infos
+
+  test:
+    name: Test
+    runs-on: ubuntu-latest
+    needs: analyze
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: subosito/flutter-action@v2
+        with:
+          flutter-version: 3.47.0
+          channel: stable
+          cache: true
+
+      - name: Install dependencies
+        run: dart pub get
+
+      - name: Run tests with coverage
+        run: |
+          set -e
+          for pkg in packages/models packages/core packages/data features/auth features/search features/listing_detail features/post_listing features/admin_queue apps/user_app apps/admin_panel; do
+            if [ -d "$pkg/test" ]; then
+              echo "::group::Testing $pkg"
+              (cd "$pkg" && flutter test --coverage)
+              echo "::endgroup::"
+            fi
+          done
+
+      - name: Upload coverage
+        uses: codecov/codecov-action@v4
+        with:
+          files: ./packages/models/coverage/lcov.info,./packages/core/coverage/lcov.info,./apps/user_app/coverage/lcov.info
+          fail_ci_if_error: false
+
+  build-web:
+    name: Build Admin Panel (web)
+    runs-on: ubuntu-latest
+    needs: test
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: subosito/flutter-action@v2
+        with:
+          flutter-version: 3.47.0
+          channel: stable
+          cache: true
+
+      - name: Install dependencies
+        run: dart pub get
+
+      - name: Build web
+        working-directory: apps/admin_panel
+        run: |
+          flutter build web --release \
+            --dart-define=SUPABASE_URL=${{ secrets.SUPABASE_URL }} \
+            --dart-define=SUPABASE_ANON_KEY=${{ secrets.SUPABASE_ANON_KEY }} \
+            --dart-define=ENVIRONMENT=prod
+
+      - name: Upload web artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: admin-panel-web
+          path: apps/admin_panel/build/web
+          retention-days: 7

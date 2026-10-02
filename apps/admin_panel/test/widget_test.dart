@@ -3,14 +3,18 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:admin_panel/main.dart';
 
 void main() {
-  testWidgets('AdminPanel renders home screen', (WidgetTester tester) async {
+  testWidgets('AdminPanel redirects unauthenticated users to login', (
+    WidgetTester tester,
+  ) async {
     await tester.pumpWidget(
       const ProviderScope(
         child: AdminPanel(),
       ),
     );
+    await tester.pumpAndSettle();
 
-    expect(find.text('nBhumi Admin'), findsOneWidget);
-    expect(find.text('nBhumi Admin Panel'), findsOneWidget);
+    // No session → router redirects /queue → /login.
+    expect(find.text('Login'), findsOneWidget);
+    expect(find.text('Magic link login...'), findsOneWidget);
   });
 }

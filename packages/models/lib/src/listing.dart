@@ -22,15 +22,24 @@ enum ListingPurpose {
 
 /// Listing status state machine.
 enum ListingStatus {
+  /// Seller editing, not visible publicly.
   draft,
+
+  /// Submitted, waiting for admin review.
+  @JsonValue('pending_review')
   pendingReview,
+
+  /// Approved, visible publicly.
   live,
+
+  /// Rejected by admin.
   rejected,
 }
 
 /// A property listing in the nBhumi marketplace.
 @freezed
-class Listing with _$Listing {
+sealed class Listing with _$Listing {
+  @JsonSerializable(fieldRename: FieldRename.snake)
   const factory Listing({
     required String id,
     required String sellerId,

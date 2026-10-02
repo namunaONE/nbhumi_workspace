@@ -1,8 +1,17 @@
+import 'package:core/core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:core/core.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
+import 'package:user_app/router/app_router.dart';
 
-void main() {
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+
+  await Supabase.initialize(
+    url: EnvConfig.supabaseUrl,
+    anonKey: EnvConfig.supabaseAnonKey,
+  );
+
   runApp(
     const ProviderScope(
       child: UserApp(),
@@ -11,33 +20,18 @@ void main() {
 }
 
 /// nBhumi User App — Flutter mobile for buyers & sellers.
-class UserApp extends StatelessWidget {
+class UserApp extends ConsumerWidget {
   const UserApp({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
+  Widget build(BuildContext context, WidgetRef ref) {
+    final router = ref.watch(appRouterProvider);
+
+    return MaterialApp.router(
       title: 'nBhumi',
       theme: AppTheme.light,
       darkTheme: AppTheme.dark,
-      home: const HomeScreen(),
-    );
-  }
-}
-
-/// Home screen.
-class HomeScreen extends StatelessWidget {
-  const HomeScreen({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('nBhumi'),
-      ),
-      body: const Center(
-        child: Text('nBhumi — Nepal Property Marketplace'),
-      ),
+      routerConfig: router,
     );
   }
 }

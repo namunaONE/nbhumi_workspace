@@ -50,40 +50,44 @@ class ListingRepository {
 
   /// Create a new listing.
   Future<Listing> createListing(Listing listing) async {
+    // Use generated serialization as the single source of truth for
+    // snake_case keys and enum JSON values.
+    final json = listing.toJson();
     final response = await _client.rpc('v1_create_listing', params: {
-      'p_property_type': listing.propertyType.name,
-      'p_listing_purpose': listing.listingPurpose.name,
-      'p_title': listing.title,
-      'p_description': listing.description,
-      'p_price_npr': listing.priceNpr,
-      'p_area_sqm': listing.areaSqm,
-      'p_district': listing.district,
-      'p_city': listing.city,
-      'p_ward': listing.ward,
-      'p_road_access_ft': listing.roadAccessFt,
-      'p_status': listing.status.name,
+      'p_property_type': json['property_type'],
+      'p_listing_purpose': json['listing_purpose'],
+      'p_title': json['title'],
+      'p_description': json['description'],
+      'p_price_npr': json['price_npr'],
+      'p_area_sqm': json['area_sqm'],
+      'p_district': json['district'],
+      'p_city': json['city'],
+      'p_ward': json['ward'],
+      'p_road_access_ft': json['road_access_ft'],
+      'p_status': json['status'],
     });
     return listing.copyWith(
       id: response['id'] as String,
-      status: ListingStatus.values.byName(response['status'] as String),
+      status: Listing.fromJson({'status': response['status'], ...json}).status,
     );
   }
 
   /// Update an existing listing.
   Future<Listing> updateListing(Listing listing) async {
+    final json = listing.toJson();
     final response = await _client.rpc('v1_update_listing', params: {
       'p_listing_id': listing.id,
-      'p_title': listing.title,
-      'p_description': listing.description,
-      'p_price_npr': listing.priceNpr,
-      'p_district': listing.district,
-      'p_city': listing.city,
-      'p_ward': listing.ward,
-      'p_road_access_ft': listing.roadAccessFt,
-      'p_status': listing.status.name,
+      'p_title': json['title'],
+      'p_description': json['description'],
+      'p_price_npr': json['price_npr'],
+      'p_district': json['district'],
+      'p_city': json['city'],
+      'p_ward': json['ward'],
+      'p_road_access_ft': json['road_access_ft'],
+      'p_status': json['status'],
     });
     return listing.copyWith(
-      status: ListingStatus.values.byName(response['status'] as String),
+      status: Listing.fromJson({'status': response['status'], ...json}).status,
     );
   }
 }

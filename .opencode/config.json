@@ -1,0 +1,24 @@
+{
+  "$schema": "https://opencode.ai/config.json",
+  "project": "nBhumi — Nepal Property Marketplace",
+  "instructions": ["AGENTS.md"],
+  "linear": {
+    "workspace": "hyamuji",
+    "team": "HyaMuji",
+    "teamId": "0d6a7c79-bc83-4c7b-9636-9487e9012a16",
+    "projectId": "f633c0da-ed02-48c2-99ff-6a721c543cf6",
+    "commitFormat": "HYA-{id}: {description}"
+  },
+  "supabase": {
+    "projectId": "rerjioibpqvcomdingte",
+    "url": "https://rerjioibpqvcomdingte.supabase.co",
+    "region": "ap-southeast-1"
+  },
+  "monorepo": {
+    "type": "dart-workspaces",
+    "roots": ["apps/*", "packages/*", "features/*"],
+    "codegen": "dart run build_runner build",
+    "analyze": "dart analyze",
+    "test": "flutter test"
+  }
+}

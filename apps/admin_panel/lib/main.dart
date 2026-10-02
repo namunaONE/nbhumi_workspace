@@ -1,8 +1,17 @@
+import 'package:admin_panel/router/admin_router.dart';
+import 'package:core/core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:core/core.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
-void main() {
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+
+  await Supabase.initialize(
+    url: EnvConfig.supabaseUrl,
+    anonKey: EnvConfig.supabaseAnonKey,
+  );
+
   runApp(
     const ProviderScope(
       child: AdminPanel(),
@@ -11,33 +20,18 @@ void main() {
 }
 
 /// nBhumi Admin Panel — Flutter web for verification/moderation.
-class AdminPanel extends StatelessWidget {
+class AdminPanel extends ConsumerWidget {
   const AdminPanel({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
+  Widget build(BuildContext context, WidgetRef ref) {
+    final router = ref.watch(adminRouterProvider);
+
+    return MaterialApp.router(
       title: 'nBhumi Admin',
       theme: AppTheme.light,
       darkTheme: AppTheme.dark,
-      home: const AdminHomeScreen(),
-    );
-  }
-}
-
-/// Admin home screen.
-class AdminHomeScreen extends StatelessWidget {
-  const AdminHomeScreen({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('nBhumi Admin'),
-      ),
-      body: const Center(
-        child: Text('nBhumi Admin Panel'),
-      ),
+      routerConfig: router,
     );
   }
 }

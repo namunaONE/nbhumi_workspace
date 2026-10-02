@@ -3,14 +3,14 @@ import 'package:models/models.dart';
 
 void main() {
   group('Listing', () {
-    test('fromJson creates valid Listing', () {
+    test('fromJson creates valid Listing from snake_case DB row', () {
       final json = {
         'id': 'test-id',
-        'sellerId': 'seller-id',
-        'propertyType': 'apartment',
-        'listingPurpose': 'sale',
+        'seller_id': 'seller-id',
+        'property_type': 'apartment',
+        'listing_purpose': 'sale',
         'title': 'Test Listing',
-        'priceNpr': 1000000,
+        'price_npr': 1000000,
         'district': 'Kathmandu',
         'city': 'Lalitpur',
         'status': 'draft',
@@ -24,6 +24,53 @@ void main() {
       expect(listing.propertyType, PropertyType.apartment);
       expect(listing.listingPurpose, ListingPurpose.sale);
       expect(listing.status, ListingStatus.draft);
+    });
+
+    test('status serializes to snake_case DB value', () {
+      const listing = Listing(
+        id: 'test-id',
+        sellerId: 'seller-id',
+        propertyType: PropertyType.apartment,
+        listingPurpose: ListingPurpose.sale,
+        title: 'Test Listing',
+        priceNpr: 1000000,
+        district: 'Kathmandu',
+        city: 'Lalitpur',
+        status: ListingStatus.pendingReview,
+      );
+
+      final json = listing.toJson();
+
+      expect(json['status'], 'pending_review');
+      expect(json['seller_id'], 'seller-id');
+      expect(json['price_npr'], 1000000);
+      expect(json.containsKey('sellerId'), isFalse);
+    });
+
+    test('round-trip preserves all fields', () {
+      const listing = Listing(
+        id: 'test-id',
+        sellerId: 'seller-id',
+        propertyType: PropertyType.land,
+        listingPurpose: ListingPurpose.lease,
+        title: 'Land in Pokhara',
+        description: 'Lake side',
+        priceNpr: 5000000,
+        areaSqm: 508.74,
+        areaRopani: 1,
+        areaAana: 2,
+        areaPaisa: 3,
+        areaDam: 1,
+        district: 'Kaski',
+        city: 'Pokhara',
+        ward: '6',
+        roadAccessFt: 20,
+        status: ListingStatus.live,
+      );
+
+      final restored = Listing.fromJson(listing.toJson());
+
+      expect(restored, listing);
     });
 
     test('copyWith updates fields', () {
@@ -46,13 +93,14 @@ void main() {
   });
 
   group('Profile', () {
-    test('fromJson creates valid Profile', () {
+    test('fromJson creates valid Profile from snake_case DB row', () {
       final json = {
         'id': 'user-id',
         'email': 'test@example.com',
-        'fullName': 'Test User',
+        'full_name': 'Test User',
         'role': 'buyer',
-        'kycTier': 'none',
+        'kyc_tier': 'none',
+        'is_verified': false,
       };
 
       final profile = Profile.fromJson(json);
@@ -62,6 +110,84 @@ void main() {
       expect(profile.fullName, 'Test User');
       expect(profile.role, UserRole.buyer);
       expect(profile.kycTier, KycTier.none);
+    });
+
+    test('round-trip preserves all fields', () {
+      const profile = Profile(
+        id: 'user-id',
+        email: 'agent@example.com',
+        fullName: 'Agent User',
+        phone: '9841234567',
+        role: UserRole.agent,
+        isVerified: true,
+        kycTier: KycTier.identity,
+        agencyName: 'ABC Realty',
+        agencyRegNo: 'REG-123',
+      );
+
+      final restored = Profile.fromJson(profile.toJson());
+
+      expect(restored, profile);
+      expect(profile.toJson()['agency_reg_no'], 'REG-123');
+      expect(profile.toJson()['full_name'], 'Agent User');
+    });
+  });
+
+  group('KycDocument', () {
+    test('doc_type serializes to snake_case DB value', () {
+      const doc = KycDocument(
+        id: 'doc-id',
+        profileId: 'user-id',
+        docType: KycDocType.agencyReg,
+        storagePath: 'kyc/user-id/reg.pdf',
+      );
+
+      final json = doc.toJson();
+
+      expect(json['doc_type'], 'agency_reg');
+      expect(json['profile_id'], 'user-id');
+      expect(json['storage_path'], 'kyc/user-id/reg.pdf');
+    });
+
+    test('round-trip preserves all fields', () {
+      const doc = KycDocument(
+        id: 'doc-id',
+        profileId: 'user-id',
+        docType: KycDocType.lalpurja,
+        storagePath: 'kyc/user-id/lalpurja.pdf',
+        status: KycDocStatus.verified,
+      );
+
+      expect(KycDocument.fromJson(doc.toJson()), doc);
+    });
+  });
+
+  group('AppNotification', () {
+    test('type serializes to snake_case DB value', () {
+      const notification = AppNotification(
+        id: 'notif-id',
+        userId: 'user-id',
+        type: NotificationType.listingApproved,
+        message: 'Your listing is live!',
+      );
+
+      final json = notification.toJson();
+
+      expect(json['type'], 'listing_approved');
+      expect(json['user_id'], 'user-id');
+      expect(json['is_read'], false);
+    });
+
+    test('round-trip preserves all fields', () {
+      const notification = AppNotification(
+        id: 'notif-id',
+        userId: 'user-id',
+        type: NotificationType.newMessage,
+        message: 'Hello',
+        isRead: true,
+      );
+
+      expect(AppNotification.fromJson(notification.toJson()), notification);
     });
   });
 }

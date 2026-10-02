@@ -1,0 +1,93 @@
+-- Seed data: 77 districts of Nepal (HYA-196)
+-- Region drives area-unit display (Rule 25):
+--   hill  → ropani-aana-paisa-dam
+--   terai → bigha-kattha-dhur
+-- Deterministic: truncates then re-inserts, safe for `supabase db reset`.
+
+truncate public.districts restart identity;
+
+insert into public.districts (name, province, region) values
+  -- Province 1 (Koshi)
+  ('Bhojpur', 1, 'hill'),
+  ('Dhankuta', 1, 'hill'),
+  ('Ilam', 1, 'hill'),
+  ('Jhapa', 1, 'terai'),
+  ('Khotang', 1, 'hill'),
+  ('Morang', 1, 'terai'),
+  ('Okhaldhunga', 1, 'hill'),
+  ('Panchthar', 1, 'hill'),
+  ('Sankhuwasabha', 1, 'hill'),
+  ('Solukhumbu', 1, 'hill'),
+  ('Sunsari', 1, 'terai'),
+  ('Taplejung', 1, 'hill'),
+  ('Terhathum', 1, 'hill'),
+  ('Udayapur', 1, 'hill'),
+  -- Madhesh (Province 2)
+  ('Bara', 2, 'terai'),
+  ('Dhanusha', 2, 'terai'),
+  ('Mahottari', 2, 'terai'),
+  ('Parsa', 2, 'terai'),
+  ('Rautahat', 2, 'terai'),
+  ('Saptari', 2, 'terai'),
+  ('Sarlahi', 2, 'terai'),
+  ('Siraha', 2, 'terai'),
+  -- Bagmati (Province 3)
+  ('Bhaktapur', 3, 'hill'),
+  ('Chitwan', 3, 'terai'),
+  ('Dhading', 3, 'hill'),
+  ('Dolakha', 3, 'hill'),
+  ('Kathmandu', 3, 'hill'),
+  ('Kavrepalanchok', 3, 'hill'),
+  ('Lalitpur', 3, 'hill'),
+  ('Makwanpur', 3, 'hill'),
+  ('Nuwakot', 3, 'hill'),
+  ('Ramechhap', 3, 'hill'),
+  ('Rasuwa', 3, 'hill'),
+  ('Sindhuli', 3, 'hill'),
+  ('Sindhupalchok', 3, 'hill'),
+  -- Gandaki (Province 4)
+  ('Baglung', 4, 'hill'),
+  ('Gorkha', 4, 'hill'),
+  ('Kaski', 4, 'hill'),
+  ('Lamjung', 4, 'hill'),
+  ('Manang', 4, 'hill'),
+  ('Mustang', 4, 'hill'),
+  ('Myagdi', 4, 'hill'),
+  ('Nawalparasi East', 4, 'hill'),
+  ('Parbat', 4, 'hill'),
+  ('Syangja', 4, 'hill'),
+  ('Tanahun', 4, 'hill'),
+  -- Lumbini (Province 5)
+  ('Arghakhanchi', 5, 'hill'),
+  ('Banke', 5, 'terai'),
+  ('Bardiya', 5, 'terai'),
+  ('Dang', 5, 'terai'),
+  ('Gulmi', 5, 'hill'),
+  ('Kapilvastu', 5, 'terai'),
+  ('Nawalparasi West', 5, 'hill'),
+  ('Palpa', 5, 'hill'),
+  ('Pyuthan', 5, 'hill'),
+  ('Rolpa', 5, 'hill'),
+  ('Rukum East', 5, 'hill'),
+  ('Rupandehi', 5, 'terai'),
+  -- Karnali (Province 6)
+  ('Dailekh', 6, 'hill'),
+  ('Dolpa', 6, 'hill'),
+  ('Humla', 6, 'hill'),
+  ('Jajarkot', 6, 'hill'),
+  ('Jumla', 6, 'hill'),
+  ('Kalikot', 6, 'hill'),
+  ('Mugu', 6, 'hill'),
+  ('Rukum West', 6, 'hill'),
+  ('Salyan', 6, 'hill'),
+  ('Surkhet', 6, 'hill'),
+  -- Sudurpashchim (Province 7)
+  ('Achham', 7, 'hill'),
+  ('Baitadi', 7, 'hill'),
+  ('Bajhang', 7, 'hill'),
+  ('Bajura', 7, 'hill'),
+  ('Dadeldhura', 7, 'hill'),
+  ('Darchula', 7, 'hill'),
+  ('Doti', 7, 'hill'),
+  ('Kailali', 7, 'terai'),
+  ('Kanchanpur', 7, 'terai');

@@ -20,7 +20,8 @@ enum KycTier {
 
 /// A user profile linked to Supabase Auth.
 @freezed
-class Profile with _$Profile {
+sealed class Profile with _$Profile {
+  @JsonSerializable(fieldRename: FieldRename.snake)
   const factory Profile({
     required String id,
     required String email,
