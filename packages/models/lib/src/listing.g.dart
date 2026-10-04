@@ -26,6 +26,8 @@ _Listing _$ListingFromJson(Map<String, dynamic> json) => _Listing(
   areaDhur: (json['area_dhur'] as num?)?.toInt(),
   ward: json['ward'] as String?,
   roadAccessFt: (json['road_access_ft'] as num?)?.toInt(),
+  bedrooms: (json['bedrooms'] as num?)?.toInt(),
+  bathrooms: (json['bathrooms'] as num?)?.toInt(),
   status:
       $enumDecodeNullable(_$ListingStatusEnumMap, json['status']) ??
       ListingStatus.draft,
@@ -62,6 +64,8 @@ Map<String, dynamic> _$ListingToJson(_Listing instance) => <String, dynamic>{
   'area_dhur': instance.areaDhur,
   'ward': instance.ward,
   'road_access_ft': instance.roadAccessFt,
+  'bedrooms': instance.bedrooms,
+  'bathrooms': instance.bathrooms,
   'status': _$ListingStatusEnumMap[instance.status]!,
   'rejection_reason': instance.rejectionReason,
   'created_at': instance.createdAt?.toIso8601String(),

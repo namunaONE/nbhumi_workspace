@@ -1,0 +1,296 @@
+import 'package:data/data.dart';
+import 'package:flutter_test/flutter_test.dart';
+import 'package:models/models.dart';
+
+Listing _listing({
+  int? bedrooms = 3,
+  int? bathrooms = 2,
+  int? areaAana = 5,
+  int? areaPaisa = 4,
+  int? areaBigha,
+}) =>
+    Listing(
+      id: 'l1',
+      sellerId: 's1',
+      propertyType: PropertyType.house,
+      listingPurpose: ListingPurpose.sale,
+      title: 'Shanti Villa',
+      priceNpr: 25000000,
+      district: 'Kathmandu',
+      city: 'Kathmandu',
+      areaAana: areaAana,
+      areaPaisa: areaPaisa,
+      areaBigha: areaBigha,
+      bedrooms: bedrooms,
+      bathrooms: bathrooms,
+    );
+
+void main() {
+  group('buildCreateParams', () {
+    test('sends bedrooms and bathrooms', () {
+      final params = ListingRepository.buildCreateParams(
+        _listing(),
+        ListingStatus.draft,
+      );
+
+      expect(params['p_bedrooms'], 3);
+      expect(params['p_bathrooms'], 2);
+    });
+
+    test('sends null for absent bedroom counts', () {
+      // Land has none. The column is nullable by design and CHECKs > 0, so null
+      // is the only correct encoding for "not applicable".
+      final params = ListingRepository.buildCreateParams(
+        _listing(bedrooms: null, bathrooms: null),
+        ListingStatus.draft,
+      );
+
+      expect(params['p_bedrooms'], isNull);
+      expect(params['p_bathrooms'], isNull);
+    });
+
+    test('sends all seven local area units', () {
+      // G-13. These are the parameters the RPC was missing.
+      final listing = _listing(areaBigha: 2);
+      final params = ListingRepository.buildCreateParams(
+        listing,
+        ListingStatus.pendingReview,
+      );
+
+      expect(params['p_area_ropani'], isNull);
+      expect(params['p_area_aana'], 5);
+      expect(params['p_area_paisa'], 4);
+      expect(params['p_area_dam'], isNull);
+      expect(params['p_area_bigha'], 2);
+      expect(params['p_area_kattha'], isNull);
+      expect(params['p_area_dhur'], isNull);
+    });
+
+    test('sends the requested status', () {
+      expect(
+        ListingRepository.buildCreateParams(_listing(), ListingStatus.draft)[
+            'p_status'],
+        'draft',
+      );
+      expect(
+        ListingRepository.buildCreateParams(
+          _listing(),
+          ListingStatus.pendingReview,
+        )['p_status'],
+        'pending_review',
+      );
+    });
+
+    test('covers every writable column on the table', () {
+      // The regression guard. G-12 and G-13 both survived for months because a
+      // column existed with no matching parameter, and nothing failed loudly:
+      // PostgREST ignores extra params and the RPC silently defaulted.
+      final params = ListingRepository.buildCreateParams(
+        _listing(),
+        ListingStatus.draft,
+      );
+
+      expect(
+        params.keys.toSet(),
+        <String>{
+          'p_property_type',
+          'p_listing_purpose',
+          'p_title',
+          'p_description',
+          'p_price_npr',
+          'p_area_sqm',
+          'p_area_ropani',
+          'p_area_aana',
+          'p_area_paisa',
+          'p_area_dam',
+          'p_area_bigha',
+          'p_area_kattha',
+          'p_area_dhur',
+          'p_district',
+          'p_city',
+          'p_ward',
+          'p_road_access_ft',
+          'p_bedrooms',
+          'p_bathrooms',
+          'p_status',
+        },
+      );
+    });
+  });
+
+  group('buildUpdateParams', () {
+    test('sends bedrooms and bathrooms', () {
+      final params = ListingRepository.buildUpdateParams(
+        'l1',
+        _listing(),
+        null,
+      );
+
+      expect(params['p_bedrooms'], 3);
+      expect(params['p_bathrooms'], 2);
+    });
+
+    test('sends the seven local area units', () {
+      // The whole point of G-13 being fixed: these were unreachable before.
+      final params = ListingRepository.buildUpdateParams(
+        'l1',
+        _listing(areaBigha: 3),
+        null,
+      );
+
+      expect(params['p_area_aana'], 5);
+      expect(params['p_area_paisa'], 4);
+      expect(params['p_area_bigha'], 3);
+    });
+
+    test('a null listing sends nulls so the server leaves fields alone', () {
+      // Every parameter follows coalesce(p_x, x) server-side, so null means
+      // "do not change". A status-only transition must not blank the title.
+      final params = ListingRepository.buildUpdateParams(
+        'l1',
+        null,
+        ListingStatus.pendingReview,
+      );
+
+      expect(params['p_listing_id'], 'l1');
+      expect(params['p_title'], isNull);
+      expect(params['p_bedrooms'], isNull);
+      expect(params['p_area_aana'], isNull);
+      expect(params['p_status'], 'pending_review');
+    });
+
+    test('a null status means the status is untouched', () {
+      // Deliberate: a title-only edit must not move a live listing. The server
+      // treats an unchanged status as a no-op, and null guarantees unchanged.
+      final params = ListingRepository.buildUpdateParams(
+        'l1',
+        _listing(),
+        null,
+      );
+
+      expect(params['p_status'], isNull);
+    });
+
+    test('sends exactly the fields the update RPC can change, plus the id', () {
+      // Not the same as create: v1_update_listing has no p_property_type or
+      // p_listing_purpose, because a listing's type and purpose are fixed once
+      // created. Asserting the real set rather than a superset relationship, so
+      // a parameter invented here is caught too.
+      final update = ListingRepository.buildUpdateParams(
+        'l1',
+        _listing(),
+        null,
+      ).keys.toSet();
+
+      expect(
+        update,
+        <String>{
+          'p_listing_id',
+          'p_title',
+          'p_description',
+          'p_price_npr',
+          'p_area_sqm',
+          'p_area_ropani',
+          'p_area_aana',
+          'p_area_paisa',
+          'p_area_dam',
+          'p_area_bigha',
+          'p_area_kattha',
+          'p_area_dhur',
+          'p_district',
+          'p_city',
+          'p_ward',
+          'p_road_access_ft',
+          'p_bedrooms',
+          'p_bathrooms',
+          'p_status',
+        },
+      );
+    });
+
+    test('omits the immutable type and purpose', () {
+      // Changing a house into land after the fact would invalidate the
+      // listing's whole context; the RPC does not allow it and neither do we.
+      final update = ListingRepository.buildUpdateParams(
+        'l1',
+        _listing(),
+        null,
+      );
+
+      expect(update.containsKey('p_property_type'), isFalse);
+      expect(update.containsKey('p_listing_purpose'), isFalse);
+    });
+  });
+
+  group('Listing model', () {
+  test('wire names match the Postgres listing_status enum', () {
+    // The values below are copied from the live database, not from the Dart
+    // names. If the enum ever changes, this fails rather than sending a value
+    // the RPC will reject.
+    expect(ListingStatus.draft.wireName, 'draft');
+    expect(ListingStatus.pendingReview.wireName, 'pending_review');
+    expect(ListingStatus.live.wireName, 'live');
+    expect(ListingStatus.rejected.wireName, 'rejected');
+  });
+
+  test('wire name is never the camelCase Dart name', () {
+    // The bug this guards: `status.name` was sent straight to the RPC, so
+    // submitting a listing for review failed with
+    // 'VALIDATION_ERROR: status must be draft or pending_review'.
+    for (final status in ListingStatus.values) {
+      if (status == ListingStatus.pendingReview) {
+        expect(status.name, isNot(status.wireName));
+      } else {
+        expect(status.name, status.wireName);
+      }
+    }
+  });
+
+  test('fromWire parses what the database actually returns', () {
+    // The mirror bug: values.byName('pending_review') throws, because byName
+    // matches the Dart name 'pendingReview'.
+    expect(ListingStatus.fromWire('pending_review'),
+        ListingStatus.pendingReview);
+    expect(ListingStatus.fromWire('draft'), ListingStatus.draft);
+    expect(ListingStatus.fromWire('live'), ListingStatus.live);
+    expect(ListingStatus.fromWire('rejected'), ListingStatus.rejected);
+  });
+
+  test('fromWire throws on an unknown value rather than defaulting', () {
+    // Defaulting to draft would silently misreport a listing's state.
+    expect(
+      () => ListingStatus.fromWire('archived'),
+      throwsA(isA<ArgumentError>()),
+    );
+  });
+
+  test('every value round-trips through fromWire(wireName)', () {
+    for (final status in ListingStatus.values) {
+      expect(ListingStatus.fromWire(status.wireName), status);
+    }
+  });
+
+  test('JSON encoding still uses the wire name', () {
+    // @JsonValue and wireName must not drift apart.
+    final json = _listing().toJson()..['status'] = 'pending_review';
+    expect(Listing.fromJson(json).status, ListingStatus.pendingReview);
+  });
+
+  test('serialises bedrooms and bathrooms', () {
+      final json = _listing().toJson();
+      expect(json['bedrooms'], 3);
+      expect(json['bathrooms'], 2);
+    });
+
+    test('parses bedrooms and bathrooms back', () {
+      final listing = Listing.fromJson(_listing().toJson());
+      expect(listing.bedrooms, 3);
+      expect(listing.bathrooms, 2);
+    });
+
+    test('round-trips', () {
+      final listing = _listing();
+      expect(Listing.fromJson(listing.toJson()), listing);
+    });
+  });
+}

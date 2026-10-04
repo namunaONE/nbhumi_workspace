@@ -51,6 +51,8 @@ _ListingDetail _$ListingDetailFromJson(
   areaDhur: (json['area_dhur'] as num?)?.toInt(),
   ward: json['ward'] as String?,
   roadAccessFt: (json['road_access_ft'] as num?)?.toInt(),
+  bedrooms: (json['bedrooms'] as num?)?.toInt(),
+  bathrooms: (json['bathrooms'] as num?)?.toInt(),
   rejectionReason: json['rejection_reason'] as String?,
   photos:
       (json['photos'] as List<dynamic>?)?.map((e) => e as String).toList() ??
@@ -90,6 +92,8 @@ Map<String, dynamic> _$ListingDetailToJson(_ListingDetail instance) =>
       'area_dhur': instance.areaDhur,
       'ward': instance.ward,
       'road_access_ft': instance.roadAccessFt,
+      'bedrooms': instance.bedrooms,
+      'bathrooms': instance.bathrooms,
       'rejection_reason': instance.rejectionReason,
       'photos': instance.photos,
       'seller': instance.seller?.toJson(),

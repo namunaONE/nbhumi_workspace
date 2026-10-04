@@ -58,6 +58,15 @@ sealed class ListingDetail with _$ListingDetail {
     int? areaDhur,
     String? ward,
     int? roadAccessFt,
+
+    /// Bedroom and bathroom counts.
+    ///
+    /// Null for land and commercial premises. Absent from browse responses on
+    /// purpose: the card never renders them, so `v1_get_listings` does not send
+    /// them.
+    int? bedrooms,
+    int? bathrooms,
+
     String? rejectionReason,
 
     /// Ordered by `sort_order` server-side.

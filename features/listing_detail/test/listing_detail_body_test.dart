@@ -23,6 +23,8 @@ ListingDetail _detail({
   String? ward = '16',
   String district = 'Kathmandu',
   int? roadAccessFt = 15,
+  int? bedrooms = 3,
+  int? bathrooms = 2,
 }) =>
     ListingDetail(
       id: 'listing-1',
@@ -40,6 +42,8 @@ ListingDetail _detail({
       seller: seller,
       ward: ward,
       roadAccessFt: roadAccessFt,
+      bedrooms: bedrooms,
+      bathrooms: bathrooms,
     );
 
 /// Pumps the body inside a tall viewport.
@@ -159,6 +163,40 @@ void main() {
       expect(find.text('House'), findsOneWidget);
       expect(find.text('Sale'), findsOneWidget);
       expect(find.text('house'), findsNothing);
+    });
+
+    testWidgets('shows bedrooms and bathrooms', (tester) async {
+      // WIREFRAMES.md Screen 2: "Bedrooms: 3", "Bathrooms: 2".
+      await tester.pumpWidget(_harness(_detail()));
+      expect(find.text('3 bedrooms'), findsOneWidget);
+      expect(find.text('2 bathrooms'), findsOneWidget);
+    });
+
+    testWidgets('uses the singular for one', (tester) async {
+      await tester.pumpWidget(
+        _harness(_detail(bedrooms: 1, bathrooms: 1)),
+      );
+      expect(find.text('1 bedroom'), findsOneWidget);
+      expect(find.text('1 bathroom'), findsOneWidget);
+      expect(find.text('1 bedrooms'), findsNothing);
+    });
+
+    testWidgets('omits the section entirely for land', (tester) async {
+      // Land has no bedrooms. "Bedrooms: 0" would be wrong, not terse.
+      await tester.pumpWidget(
+        _harness(_detail(bedrooms: null, bathrooms: null)),
+      );
+      expect(find.text('Details'), findsNothing);
+      expect(find.text('0 bedrooms'), findsNothing);
+    });
+
+    testWidgets('shows only the half that is present', (tester) async {
+      await tester.pumpWidget(
+        _harness(_detail(bedrooms: 4, bathrooms: null)),
+      );
+      expect(find.text('4 bedrooms'), findsOneWidget);
+      expect(find.text('Details'), findsOneWidget);
+      expect(find.textContaining('bathroom'), findsNothing);
     });
   });
 
@@ -304,6 +342,8 @@ void main() {
         'property_type': 'house',
         'listing_purpose': 'sale',
         'status': 'live',
+        'bedrooms': 3,
+        'bathrooms': 2,
         'photos': <String>['https://example.test/1.jpg'],
         'seller': <String, dynamic>{
           'id': '11111111-1111-1111-1111-111111111111',
@@ -327,6 +367,8 @@ void main() {
       expect(detail.seller?.fullName, 'Ram Bahadur');
       expect(detail.seller?.isVerified, isTrue);
       expect(detail.areaDisplay, '5 aana 4 paisa');
+      expect(detail.bedrooms, 3);
+      expect(detail.bathrooms, 2);
       expect(detail.status, ListingStatus.live);
       expect(detail.propertyType, PropertyType.house);
       expect(detail.listingPurpose, ListingPurpose.sale);

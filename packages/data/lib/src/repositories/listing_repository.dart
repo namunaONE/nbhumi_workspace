@@ -1,4 +1,5 @@
 import 'package:core/core.dart';
+import 'package:flutter/foundation.dart' show visibleForTesting;
 import 'package:models/models.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
@@ -92,30 +93,10 @@ class ListingRepository {
     required Listing listing,
     ListingStatus status = ListingStatus.draft,
   }) async {
-    final json = listing.toJson();
     final response = await _guard(
       () => _client.rpc<Map<String, dynamic>>(
         'v1_create_listing',
-        params: <String, Object?>{
-          'p_property_type': json['property_type'],
-          'p_listing_purpose': json['listing_purpose'],
-          'p_title': json['title'],
-          'p_description': json['description'],
-          'p_price_npr': json['price_npr'],
-          'p_area_sqm': json['area_sqm'],
-          'p_area_ropani': json['area_ropani'],
-          'p_area_aana': json['area_aana'],
-          'p_area_paisa': json['area_paisa'],
-          'p_area_dam': json['area_dam'],
-          'p_area_bigha': json['area_bigha'],
-          'p_area_kattha': json['area_kattha'],
-          'p_area_dhur': json['area_dhur'],
-          'p_district': json['district'],
-          'p_city': json['city'],
-          'p_ward': json['ward'],
-          'p_road_access_ft': json['road_access_ft'],
-          'p_status': status.name,
-        },
+        params: buildCreateParams(listing, status),
       ),
       action: 'createListing',
     );
@@ -123,34 +104,94 @@ class ListingRepository {
   }
 
   /// Update an existing listing. Owner-scoped server-side.
-  ///
-  /// Note the RPC currently does not accept the local area-unit fields, so a
-  /// title-only edit preserves them server-side. HYA-251 extends it.
   Future<ListingStatus> updateListing({
     required String listingId,
     Listing? listing,
     ListingStatus? status,
   }) async {
-    final json = listing?.toJson();
     final response = await _guard(
       () => _client.rpc<Map<String, dynamic>>(
         'v1_update_listing',
-        params: <String, Object?>{
-          'p_listing_id': listingId,
-          'p_title': json?['title'],
-          'p_description': json?['description'],
-          'p_price_npr': json?['price_npr'],
-          'p_area_sqm': json?['area_sqm'],
-          'p_district': json?['district'],
-          'p_city': json?['city'],
-          'p_ward': json?['ward'],
-          'p_road_access_ft': json?['road_access_ft'],
-          'p_status': status?.name,
-        },
+        params: buildUpdateParams(listingId, listing, status),
       ),
       action: 'updateListing',
     );
-    return ListingStatus.values.byName(response['status'] as String);
+    return ListingStatus.fromWire(response['status'] as String);
+  }
+
+  /// RPC parameters for `v1_create_listing`.
+  ///
+  /// Extracted so the mapping can be asserted without a Supabase client. G-12
+  /// and G-13 both existed because this map silently omitted columns the table
+  /// had: nobody could see a missing key, and the RPC had no parameter to
+  /// receive it even if they had. A test that enumerates the keys is the only
+  /// thing that reliably catches the next omission.
+  @visibleForTesting
+  static Map<String, Object?> buildCreateParams(
+    Listing listing,
+    ListingStatus status,
+  ) {
+    final json = listing.toJson();
+    return <String, Object?>{
+      'p_property_type': json['property_type'],
+      'p_listing_purpose': json['listing_purpose'],
+      'p_title': json['title'],
+      'p_description': json['description'],
+      'p_price_npr': json['price_npr'],
+      'p_area_sqm': json['area_sqm'],
+      'p_area_ropani': json['area_ropani'],
+      'p_area_aana': json['area_aana'],
+      'p_area_paisa': json['area_paisa'],
+      'p_area_dam': json['area_dam'],
+      'p_area_bigha': json['area_bigha'],
+      'p_area_kattha': json['area_kattha'],
+      'p_area_dhur': json['area_dhur'],
+      'p_district': json['district'],
+      'p_city': json['city'],
+      'p_ward': json['ward'],
+      'p_road_access_ft': json['road_access_ft'],
+      'p_bedrooms': json['bedrooms'],
+      'p_bathrooms': json['bathrooms'],
+      'p_status': status.wireName,
+    };
+  }
+
+  /// RPC parameters for `v1_update_listing`.
+  ///
+  /// Every parameter other than `p_listing_id` follows the server's
+  /// coalesce(p_x, x) convention, so a null means "leave this alone". That is
+  /// also why passing the whole [Listing] is safe: fields the caller did not
+  /// touch arrive null and are preserved server-side rather than blanked.
+  @visibleForTesting
+  static Map<String, Object?> buildUpdateParams(
+    String listingId,
+    Listing? listing,
+    ListingStatus? status,
+  ) {
+    final json = listing?.toJson();
+    return <String, Object?>{
+      'p_listing_id': listingId,
+      'p_title': json?['title'],
+      'p_description': json?['description'],
+      'p_price_npr': json?['price_npr'],
+      'p_area_sqm': json?['area_sqm'],
+      // G-13: the seven local area units had no parameters at all, so a seller
+      // who entered 5 aana 4 paisa could never change them.
+      'p_area_ropani': json?['area_ropani'],
+      'p_area_aana': json?['area_aana'],
+      'p_area_paisa': json?['area_paisa'],
+      'p_area_dam': json?['area_dam'],
+      'p_area_bigha': json?['area_bigha'],
+      'p_area_kattha': json?['area_kattha'],
+      'p_area_dhur': json?['area_dhur'],
+      'p_district': json?['district'],
+      'p_city': json?['city'],
+      'p_ward': json?['ward'],
+      'p_road_access_ft': json?['road_access_ft'],
+      'p_bedrooms': json?['bedrooms'],
+      'p_bathrooms': json?['bathrooms'],
+      'p_status': status?.wireName,
+    };
   }
 
   /// Reveals the seller contact for [listingId].

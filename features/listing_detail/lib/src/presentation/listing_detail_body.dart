@@ -89,6 +89,28 @@ class ListingDetailBody extends StatelessWidget {
                 ),
             ],
           ),
+          // Bedrooms and bathrooms are only meaningful for things that have
+          // rooms. Land and commercial premises leave both null, and rendering
+          // "Bedrooms: 0" for a plot of land would be wrong rather than terse.
+          if (listing.bedrooms != null ||
+              listing.bathrooms != null) ...<Widget>[
+            const Divider(height: 32),
+            _Section(
+              title: 'Details',
+              children: <Widget>[
+                if (listing.bedrooms case final beds?)
+                  _Spec(
+                    icon: Icons.bed_outlined,
+                    label: beds == 1 ? '1 bedroom' : '$beds bedrooms',
+                  ),
+                if (listing.bathrooms case final baths?)
+                  _Spec(
+                    icon: Icons.bathtub_outlined,
+                    label: baths == 1 ? '1 bathroom' : '$baths bathrooms',
+                  ),
+              ],
+            ),
+          ],
           if ((listing.description ?? '').trim().isNotEmpty) ...<Widget>[
             const Divider(height: 32),
             _Section(

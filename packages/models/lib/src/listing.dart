@@ -37,19 +37,50 @@ enum ListingPurpose {
 }
 
 /// Listing status state machine.
+///
+/// Carries an explicit [wireName] because the Dart name and the Postgres enum
+/// differ. `pendingReview` is `pending_review` in the database, and confusing
+/// the two is not a theoretical problem: the client once sent `status.name`
+/// straight to `v1_create_listing`, so every attempt to submit a listing for
+/// review failed with
+/// `VALIDATION_ERROR: status must be draft or pending_review`. The mirror image
+/// broke too, since `values.byName('pending_review')` throws on a value the
+/// database genuinely returns.
+///
+/// Use [wireName] outbound and [fromWire] inbound. Never `.name` or `.byName`
+/// for anything crossing the wire.
 enum ListingStatus {
   /// Seller editing, not visible publicly.
-  draft,
+  draft('draft'),
 
   /// Submitted, waiting for admin review.
   @JsonValue('pending_review')
-  pendingReview,
+  pendingReview('pending_review'),
 
   /// Approved, visible publicly.
-  live,
+  live('live'),
 
   /// Rejected by admin.
-  rejected,
+  rejected('rejected');
+
+  ListingStatus(this.wireName);
+
+  /// The value the `listing_status` enum uses in Postgres.
+  final String wireName;
+
+  /// The status whose [wireName] is [value].
+  ///
+  /// Throws [ArgumentError] for an unknown value rather than defaulting, so a
+  /// newly added database state surfaces as a clear failure instead of silently
+  /// becoming `draft`.
+  static ListingStatus fromWire(String value) => values.firstWhere(
+        (status) => status.wireName == value,
+        orElse: () => throw ArgumentError.value(
+          value,
+          'value',
+          'not a listing_status value',
+        ),
+      );
 }
 
 /// A property listing in the nBhumi marketplace.
@@ -76,6 +107,17 @@ sealed class Listing with _$Listing {
     int? areaDhur,
     String? ward,
     int? roadAccessFt,
+
+    /// Bedroom count.
+    ///
+    /// Null rather than 0 for land and commercial premises, which have none.
+    /// The column carries `CHECK (bedrooms > 0)`, so a stored 0 is impossible
+    /// and absence is the only way to say "not applicable".
+    int? bedrooms,
+
+    /// Bathroom count. Null when not applicable, as with [bedrooms].
+    int? bathrooms,
+
     @Default(ListingStatus.draft) ListingStatus status,
     String? rejectionReason,
     DateTime? createdAt,
