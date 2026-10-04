@@ -1,5 +1,5 @@
 name: core
-description: Core utilities, theme, and shared components for nBhumi
+description: Core theme, utilities, errors and shared components for nBhumi
 publish_to: none
 resolution: workspace
 version: 0.1.0
@@ -14,6 +14,10 @@ dependencies:
     sdk: flutter
   google_fonts: ^6.2.1
   intl: ^0.20.3
+  # Shared components render domain models (ListingCard takes a ListingSummary).
+  # No cycle: models depends on nothing in this workspace.
+  models:
+    path: ../models
 
 dev_dependencies:
   flutter_test:

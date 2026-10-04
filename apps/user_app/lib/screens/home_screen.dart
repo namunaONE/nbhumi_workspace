@@ -1,11 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:search/search.dart';
 
-/// Landing screen.
+/// Landing screen: the browse feed.
 ///
-/// HYA-203 replaces the placeholder body with the paginated browse feed. The
-/// chrome built here — the search entry point and the seller action — is final
-/// for M1, so those should not need revisiting.
+/// ### One feed, shared with Search
+///
+/// Home and Search both render `browseProvider`, so there is a single browse
+/// session for the app and filters set on Search are still in force when the
+/// user returns to Home. That is deliberate — a filter that silently resets on
+/// a tab switch, or a second feed refetching the same pages, would both be
+/// more surprising than a filter that persists. The active-filter badge on the
+/// Search tab makes the shared state visible.
 class HomeScreen extends StatelessWidget {
   /// Creates the landing screen.
   const HomeScreen({super.key});
@@ -28,36 +34,11 @@ class HomeScreen extends StatelessWidget {
           ),
         ],
       ),
-      body: Center(
-        child: Padding(
-          padding: const EdgeInsets.all(24),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: <Widget>[
-              Icon(
-                Icons.home_work_outlined,
-                size: 56,
-                color: Theme.of(context).colorScheme.primary,
-              ),
-              const SizedBox(height: 16),
-              Text(
-                'nBhumi',
-                style: Theme.of(context).textTheme.headlineSmall,
-              ),
-              const SizedBox(height: 8),
-              const Text(
-                'Nepal Property Marketplace',
-                textAlign: TextAlign.center,
-              ),
-              const SizedBox(height: 24),
-              Text(
-                'Property listings across Nepal appear here.',
-                style: Theme.of(context).textTheme.bodySmall,
-                textAlign: TextAlign.center,
-              ),
-            ],
-          ),
-        ),
+      body: BrowseFeed(
+        onListingTap: (id) => context.push('/listing/$id'),
+        emptyTitle: 'No properties listed yet',
+        emptyBody: 'Be the first to post one. Listings appear here as soon as '
+            'they go live.',
       ),
     );
   }

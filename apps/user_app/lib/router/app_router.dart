@@ -132,14 +132,6 @@ final appRouterProvider = Provider<GoRouter>((ref) {
               GoRoute(
                 path: '/',
                 builder: (context, state) => const HomeScreen(),
-                routes: <RouteBase>[
-                  GoRoute(
-                    path: 'listing/:id',
-                    builder: (context, state) => ListingDetailScreen(
-                      listingId: state.pathParameters['id']!,
-                    ),
-                  ),
-                ],
               ),
             ],
           ),
@@ -171,6 +163,18 @@ final appRouterProvider = Provider<GoRouter>((ref) {
             ],
           ),
         ],
+      ),
+
+      // Listing detail. Top level rather than nested under the Home branch, so
+      // that any tab can open a listing: Search and Saved both link into it,
+      // and a route nested in one branch is invisible to the others. The detail
+      // page owns its own chrome, so covering the tab bar is correct anyway.
+      GoRoute(
+        path: '/listing/:id',
+        parentNavigatorKey: rootKey,
+        builder: (context, state) => ListingDetailScreen(
+          listingId: state.pathParameters['id']!,
+        ),
       ),
 
       // Seller flow. Outside the shell because the wizard owns its own chrome

@@ -7,6 +7,7 @@ library;
 
 export 'src/errors/postgrest_error_mapper.dart';
 export 'src/providers/app_provider_observer.dart';
+export 'src/providers/repositories.dart';
 export 'src/providers/session_logging.dart';
 export 'src/repositories/auth_repository.dart';
 export 'src/repositories/listing_repository.dart';
