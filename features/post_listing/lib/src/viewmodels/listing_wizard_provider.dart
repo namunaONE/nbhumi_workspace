@@ -2,6 +2,7 @@ import 'dart:typed_data';
 
 import 'package:core/core.dart';
 import 'package:data/data.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:models/models.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
@@ -38,21 +39,42 @@ class PickedPhoto {
 }
 
 /// Picks images with the platform photo picker.
+///
+/// The only implementation that touches a plugin. Everything else in the wizard
+/// works against [PhotoPicker], so the upload, validation and submit logic are
+/// all testable without a device or a file dialog.
 class DevicePhotoPicker implements PhotoPicker {
   /// Creates a picker.
   const DevicePhotoPicker();
 
   @override
-  Future<List<PickedPhoto>> pickImages() => throw UnimplementedError(
-        'DevicePhotoPicker requires image_picker; the app overrides '
-        'photoPickerProvider with a concrete implementation.',
+  Future<List<PickedPhoto>> pickImages() async {
+    final picker = ImagePicker();
+    final files = await picker.pickMultiImage(
+      // Sellers photograph on phones, so anything larger is wasted upload on a
+      // mobile connection. The card and hero both decode well below this.
+      maxWidth: 2048,
+      maxHeight: 2048,
+      imageQuality: 85,
+    );
+
+    final picked = <PickedPhoto>[];
+    for (final file in files) {
+      picked.add(
+        PickedPhoto(
+          bytes: await file.readAsBytes(),
+          filename: file.name,
+        ),
       );
+    }
+    return picked;
+  }
 }
 
 /// Photo picker for the wizard.
 ///
-/// Overridden in `main.dart` with a real `image_picker` implementation, and in
-/// tests with a scripted one.
+/// Overridden in tests with a scripted implementation. The default is real,
+/// so a build that forgets to override still works.
 @riverpod
 PhotoPicker photoPicker(Ref ref) => const DevicePhotoPicker();
 
