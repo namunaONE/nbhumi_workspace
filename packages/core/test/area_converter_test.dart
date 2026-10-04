@@ -1,5 +1,5 @@
-import 'package:flutter_test/flutter_test.dart';
 import 'package:core/core.dart';
+import 'package:flutter_test/flutter_test.dart';
 
 void main() {
   group('AreaConverter', () {
@@ -18,7 +18,7 @@ void main() {
     });
 
     test('formatHill returns correct format', () {
-      final result = AreaConverter.formatHill(5476.0);
+      final result = AreaConverter.formatHill(5476);
       expect(result, contains('ropani'));
     });
 

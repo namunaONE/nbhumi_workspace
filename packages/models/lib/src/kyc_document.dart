@@ -18,8 +18,14 @@ enum KycDocType {
 
 /// KYC document verification status.
 enum KycDocStatus {
+  /// Uploaded, awaiting an admin decision.
   pending,
+
+  /// Checked and accepted. Doc-check only, never legal verification.
   verified,
+
+  /// Checked and refused. Document is purged from Storage after 30 days
+  /// (DATA.md retention policy).
   rejected,
 }
 

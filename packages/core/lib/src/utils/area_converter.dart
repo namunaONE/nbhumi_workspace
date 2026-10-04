@@ -6,10 +6,10 @@ class AreaConverter {
   AreaConverter._();
 
   // Hill region conversions (to sqm)
-  static const double _ropaniToSqm = 5476.0;
+  static const double _ropaniToSqm = 5476;
   static const double _aanaToSqm = 342.25;
   static const double _paisaToSqm = 85.56;
-  static const double _damToSqm = 21.39;
+  static const double _damToSqm = 21.4;
 
   // Terai region conversions (to sqm)
   static const double _bighaToSqm = 6772.63;

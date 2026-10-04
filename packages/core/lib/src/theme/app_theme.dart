@@ -1,5 +1,5 @@
-import 'package:flutter/material.dart';
 import 'package:core/src/theme/marketplace_colors.dart';
+import 'package:flutter/material.dart';
 
 /// nBhumi theme — Material 3 with seed color #002C6D.
 class AppTheme {
@@ -13,7 +13,6 @@ class AppTheme {
         useMaterial3: true,
         colorScheme: ColorScheme.fromSeed(
           seedColor: seedColor,
-          brightness: Brightness.light,
         ),
         extensions: const <ThemeExtension<dynamic>>[
           MarketplaceColors.light,

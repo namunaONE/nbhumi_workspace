@@ -4,6 +4,7 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 ///
 /// Magic link only (NO OTP).
 class AuthService {
+  /// Wraps a GoTrue client.
   AuthService(this._client);
 
   final GoTrueClient _client;

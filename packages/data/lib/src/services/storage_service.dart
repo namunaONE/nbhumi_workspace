@@ -5,6 +5,7 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 ///
 /// Handles image uploads, signed URLs, and KYC document storage.
 class StorageService {
+  /// Wraps a Supabase Storage client.
   StorageService(this._client);
 
   final SupabaseStorageClient _client;

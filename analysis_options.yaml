@@ -7,10 +7,38 @@ analyzer:
     - "**/generated/**"
   errors:
     invalid_annotation_target: ignore
+    # Re-enable when the four outstanding TODO bodies are resolved. They live in
+    # features/auth (Auth ViewModel, AuthGuard) and are rewritten by HYA-202.
+    # Keeping this ignored means CI stays green while that work is pending.
     todo: ignore
 
 linter:
   rules:
+    # ------------------------------------------------------------------------
+    # Disabled: incompatible with Freezed 4
+    # ------------------------------------------------------------------------
+    # Dart 3.13 introduced primary constructors and, with them,
+    # `unnecessary_type_name_in_constructor` — which flags the class name in
+    # `const factory ListingCursor({...}) = _ListingCursor;`.
+    #
+    # Freezed 4.0.2 has no primary-constructor support; redirecting a factory
+    # to a concrete class is the only way it can synthesise `copyWith`, `==`
+    # and `toJson`. Rule 17 (Freezed 4 for all models) is more specific than
+    # Rule 20 (very_good_analysis baseline), so Rule 17 wins.
+    #
+    # Leaving this enabled made `dart analyze --fatal-infos` fail on every
+    # model in the workspace, including the four committed during M0.
+    unnecessary_type_name_in_constructor: false
+
+    # ------------------------------------------------------------------------
+    # Disabled: contradicts Rule 22
+    # ------------------------------------------------------------------------
+    # Rule 22 requires relative imports *within* a package and `package:` imports
+    # *across* packages. `always_use_package_imports` forces `package:models/...`
+    # for same-package files, which is the opposite of what Rule 22 asks for.
+    # Rule 22 is project-specific and therefore wins.
+    always_use_package_imports: false
+
     # Project-specific rules
     prefer_single_quotes: true
     prefer_const_constructors: true

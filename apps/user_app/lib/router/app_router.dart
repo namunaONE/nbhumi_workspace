@@ -66,6 +66,7 @@ final appRouterProvider = Provider<GoRouter>((ref) {
 
 /// Home screen — landing page with featured listings.
 class HomeScreen extends ConsumerWidget {
+  /// Creates the landing screen.
   const HomeScreen({super.key});
 
   @override

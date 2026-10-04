@@ -5,8 +5,11 @@
 /// ```sh
 /// flutter run \
 ///   --dart-define=SUPABASE_URL=https://rerjioibpqvcomdingte.supabase.co \
-///   --dart-define=SUPABASE_ANON_KEY=sb_publishable_...
+///   --dart-define=SUPABASE_PUBLISHABLE_KEY=sb_publishable_...
 /// ```
+///
+/// No `service_role` key may ever appear here. That key bypasses RLS and must
+/// stay on the server (Rule 2).
 library;
 
 /// Compile-time environment configuration.
@@ -17,9 +20,14 @@ abstract final class EnvConfig {
     defaultValue: 'https://rerjioibpqvcomdingte.supabase.co',
   );
 
-  /// Supabase publishable (anon) API key. Safe for client apps.
-  static const String supabaseAnonKey = String.fromEnvironment(
-    'SUPABASE_ANON_KEY',
+  /// Supabase publishable API key. Safe to ship in a client binary — it is
+  /// subject to RLS, unlike `service_role`.
+  ///
+  /// Named `publishable` rather than `anon` to match the current Supabase
+  /// terminology. `Supabase.initialize` deprecated its `anonKey` parameter in
+  /// favour of `publishableKey`.
+  static const String supabasePublishableKey = String.fromEnvironment(
+    'SUPABASE_PUBLISHABLE_KEY',
     defaultValue: 'sb_publishable_DaQ2qWXImnMaQ_TV8Zedvg_xcGvy_v3',
   );
 
@@ -30,10 +38,7 @@ abstract final class EnvConfig {
   );
 
   /// Sentry DSN for crash reporting (prod only).
-  static const String sentryDsn = String.fromEnvironment(
-    'SENTRY_DSN',
-    defaultValue: '',
-  );
+  static const String sentryDsn = String.fromEnvironment('SENTRY_DSN');
 
   /// Whether this is the production environment.
   static bool get isProd => environment == 'prod';

@@ -5,18 +5,34 @@ part 'listing.g.dart';
 
 /// Property types available in Nepal.
 enum PropertyType {
+  /// Bare land. Displayed with hill units in hill districts, terai in terai.
   land,
+
+  /// Detached house.
   house,
+
+  /// Flat in a multi-storey building.
   apartment,
+
+  /// Detached house with a compound.
   villa,
+
+  /// Shop, office or warehouse.
   commercial,
+
+  /// Business premises sold with the operating trade.
   business,
 }
 
 /// Listing purpose — what the seller wants to do.
 enum ListingPurpose {
+  /// Transfer of ownership.
   sale,
+
+  /// Periodic rent.
   rent,
+
+  /// Long lease contract.
   lease,
 }
 
@@ -46,8 +62,10 @@ sealed class Listing with _$Listing {
     required PropertyType propertyType,
     required ListingPurpose listingPurpose,
     required String title,
-    String? description,
     required int priceNpr,
+    required String district,
+    required String city,
+    String? description,
     double? areaSqm,
     int? areaRopani,
     int? areaAana,
@@ -56,8 +74,6 @@ sealed class Listing with _$Listing {
     int? areaBigha,
     int? areaKattha,
     int? areaDhur,
-    required String district,
-    required String city,
     String? ward,
     int? roadAccessFt,
     @Default(ListingStatus.draft) ListingStatus status,

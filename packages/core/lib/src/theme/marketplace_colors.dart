@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
 
 /// Custom color tokens for nBhumi marketplace.
+///
+/// Reached via `Theme.of(context).extension<MarketplaceColors>()!`. Widgets
+/// must never hard-code these hex values (project rule: semantic roles only).
 @immutable
 class MarketplaceColors extends ThemeExtension<MarketplaceColors> {
+  /// Creates a token set. Prefer [light] or [dark] over calling this directly.
   const MarketplaceColors({
     required this.verifiedGreen,
     required this.onVerifiedGreen,
@@ -11,12 +15,22 @@ class MarketplaceColors extends ThemeExtension<MarketplaceColors> {
     required this.leaseTeal,
   });
 
+  /// KYC-verified badge fill. Green reads as "checked" without needing an icon.
   final Color verifiedGreen;
+
+  /// Foreground that meets contrast on [verifiedGreen].
   final Color onVerifiedGreen;
+
+  /// Accent for `ListingPurpose.sale` chips.
   final Color saleOrange;
+
+  /// Accent for `ListingPurpose.rent` chips.
   final Color rentBlue;
+
+  /// Accent for `ListingPurpose.lease` chips.
   final Color leaseTeal;
 
+  /// Light-mode tokens. Verified as `#2E7D32` against white at 4.5:1.
   static const MarketplaceColors light = MarketplaceColors(
     verifiedGreen: Color(0xFF2E7D32),
     onVerifiedGreen: Color(0xFFFFFFFF),
@@ -25,6 +39,8 @@ class MarketplaceColors extends ThemeExtension<MarketplaceColors> {
     leaseTeal: Color(0xFF00695C),
   );
 
+  /// Dark-mode tokens. Purpose accents are lightened so they stay legible
+  /// against a dark surface without shouting.
   static const MarketplaceColors dark = MarketplaceColors(
     verifiedGreen: Color(0xFF66BB6A),
     onVerifiedGreen: Color(0xFF003300),

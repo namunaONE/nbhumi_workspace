@@ -1,8 +1,9 @@
-import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:models/models.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 /// Repository for authentication data.
 class AuthRepository {
+  /// Wraps a Supabase client.
   AuthRepository(this._client);
 
   final SupabaseClient _client;
@@ -19,7 +20,7 @@ class AuthRepository {
         .maybeSingle();
 
     if (response == null) return null;
-    return Profile.fromJson(response as Map<String, dynamic>);
+    return Profile.fromJson(response);
   }
 
   /// Create or update profile.
@@ -29,7 +30,7 @@ class AuthRepository {
         .upsert(profile.toJson())
         .select()
         .single();
-    return Profile.fromJson(response as Map<String, dynamic>);
+    return Profile.fromJson(response);
   }
 
   /// Stream of auth state changes.

@@ -1,8 +1,9 @@
-import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:models/models.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 /// Repository for user data.
 class UserRepository {
+  /// Wraps a Supabase client.
   UserRepository(this._client);
 
   final SupabaseClient _client;
@@ -16,7 +17,7 @@ class UserRepository {
         .maybeSingle();
 
     if (response == null) return null;
-    return Profile.fromJson(response as Map<String, dynamic>);
+    return Profile.fromJson(response);
   }
 
   /// Update user profile.
@@ -27,7 +28,7 @@ class UserRepository {
         .eq('id', profile.id)
         .select()
         .single();
-    return Profile.fromJson(response as Map<String, dynamic>);
+    return Profile.fromJson(response);
   }
 
   /// Upload KYC document.
@@ -36,10 +37,13 @@ class UserRepository {
     required KycDocType docType,
     required String storagePath,
   }) async {
-    final response = await _client.rpc('v1_upload_kyc_doc', params: {
-      'p_doc_type': docType.name,
-      'p_storage_path': storagePath,
-    });
+    final response = await _client.rpc<Map<String, dynamic>>(
+      'v1_upload_kyc_doc',
+      params: <String, Object?>{
+        'p_doc_type': docType.name,
+        'p_storage_path': storagePath,
+      },
+    );
     return KycDocument(
       id: response['id'] as String,
       profileId: profileId,

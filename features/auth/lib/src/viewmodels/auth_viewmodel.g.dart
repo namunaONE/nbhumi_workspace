@@ -8,14 +8,29 @@ part of 'auth_viewmodel.dart';
 
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // ignore_for_file: type=lint, type=warning
-/// Auth state notifier.
+/// Session state for the magic-link flow.
+///
+/// Every method is a stub. HYA-202 fills them in once the deep-link plumbing
+/// exists, because sending a magic link before the app can receive the
+/// redirect would leave users stranded on a "check your inbox" screen with no
+/// way back in.
 
 @ProviderFor(Auth)
 final authProvider = AuthProvider._();
 
-/// Auth state notifier.
+/// Session state for the magic-link flow.
+///
+/// Every method is a stub. HYA-202 fills them in once the deep-link plumbing
+/// exists, because sending a magic link before the app can receive the
+/// redirect would leave users stranded on a "check your inbox" screen with no
+/// way back in.
 final class AuthProvider extends $NotifierProvider<Auth, bool> {
-  /// Auth state notifier.
+  /// Session state for the magic-link flow.
+  ///
+  /// Every method is a stub. HYA-202 fills them in once the deep-link plumbing
+  /// exists, because sending a magic link before the app can receive the
+  /// redirect would leave users stranded on a "check your inbox" screen with no
+  /// way back in.
   AuthProvider._()
     : super(
         from: null,
@@ -45,7 +60,12 @@ final class AuthProvider extends $NotifierProvider<Auth, bool> {
 
 String _$authHash() => r'919b44a6bce59437c185db46f15b00b47b9dd81d';
 
-/// Auth state notifier.
+/// Session state for the magic-link flow.
+///
+/// Every method is a stub. HYA-202 fills them in once the deep-link plumbing
+/// exists, because sending a magic link before the app can receive the
+/// redirect would leave users stranded on a "check your inbox" screen with no
+/// way back in.
 
 abstract class _$Auth extends $Notifier<bool> {
   bool build();

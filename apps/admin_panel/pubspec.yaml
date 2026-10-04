@@ -1,5 +1,5 @@
 name: admin_panel
-description: nBhumi — Nepal Property Marketplace (Admin Panel)
+description: nBhumi admin verification panel (Flutter web)
 publish_to: none
 resolution: workspace
 version: 0.1.0
@@ -8,25 +8,28 @@ environment:
   sdk: ^3.13.0
 
 dependencies:
-  flutter:
-    sdk: flutter
-  flutter_localizations:
-    sdk: flutter
-  go_router: ^14.2.0
-  flutter_riverpod: ^3.0.0
-  supabase_flutter: ^2.6.0
+  admin_queue:
+    path: ../../features/admin_queue
+  auth:
+    path: ../../features/auth
   core:
     path: ../../packages/core
   data:
     path: ../../packages/data
-  auth:
-    path: ../../features/auth
-  admin_queue:
-    path: ../../features/admin_queue
+  flutter:
+    sdk: flutter
+  flutter_localizations:
+    sdk: flutter
+  flutter_riverpod: ^3.0.0
+  go_router: ^14.2.0
+  models:
+    path: ../../packages/models
+  supabase_flutter: ^2.6.0
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
+  shared_preferences: ^2.3.3
   very_good_analysis: ^11.0.0
 
 flutter:
