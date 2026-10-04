@@ -51,6 +51,23 @@ sealed class AppException implements Exception {
   String message({bool preferNepali = true}) =>
       preferNepali ? messageNe : messageEn;
 
+  /// Wraps [error] when it is not already an [AppException].
+  ///
+  /// Repositories map every failure before throwing, so anything else reaching
+  /// a widget is a bug escaping that mapping rather than a known condition.
+  /// Reporting it as an unmapped error keeps the diagnosis honest instead of
+  /// dressing it up as a server fault, and the original is kept as [cause] for
+  /// the log (Rule 37).
+  static AppException unmapped(Object error) {
+    if (error is AppException) return error;
+    return ValidationException(
+      code: 'provider.unmappedError',
+      messageEn: 'Something went wrong. Please try again.',
+      messageNe: 'केही गडबड भयो। कृपया पुनः प्रयास गर्नुहोस्।',
+      cause: error,
+    );
+  }
+
   @override
   String toString() {
     // Deliberately not runtimeType: minification would mangle it in release
