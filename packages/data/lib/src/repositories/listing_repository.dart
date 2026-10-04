@@ -1,3 +1,5 @@
+import 'dart:typed_data';
+
 import 'package:core/core.dart';
 import 'package:flutter/foundation.dart' show visibleForTesting;
 import 'package:models/models.dart';
@@ -5,6 +7,32 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 
 import '../errors/postgrest_error_mapper.dart';
 import '../providers/session_logging.dart';
+
+/// Storage bucket holding listing photos.
+///
+/// Public, unlike the `kyc-documents` bucket, and deliberately so: guest browse
+/// has to render cover photos without a session, and a signed URL per photo per
+/// row would mean a round trip the browse RPC cannot make. Photos are marketing
+/// material for a public listing; seller contact details are the sensitive
+/// thing, and those never appear in this bucket.
+const String _photoBucket = 'listing-photos';
+
+/// Content type for uploads.
+///
+/// Declared explicitly rather than inferred from the key, because the key
+/// carries a client-supplied extension and the seller chooses it.
+const String _photoContentType = 'image/jpeg';
+
+/// The file extension of [filename], lower-cased and dot-prefixed.
+///
+/// Defaults to `.jpg` when there is no usable extension, so the object is still
+/// served as an image rather than as an opaque download.
+String _extensionOf(String filename) {
+  final dot = filename.lastIndexOf('.');
+  if (dot < 0 || dot == filename.length - 1) return '.jpg';
+  final extension = filename.substring(dot).toLowerCase();
+  return RegExp(r'^\.[a-z0-9]{1,5}$').hasMatch(extension) ? extension : '.jpg';
+}
 
 /// Repository for listing data.
 ///
@@ -192,6 +220,67 @@ class ListingRepository {
       'p_bathrooms': json?['bathrooms'],
       'p_status': status?.wireName,
     };
+  }
+
+  /// Uploads one photo for a listing and returns its public URL.
+  ///
+  /// The Storage path is `<userId>/<random>.<ext>`: the leading folder must be
+  /// the seller's own id, because `listing_photos_storage_insert` only permits
+  /// writes whose first folder segment equals `auth.uid()`. Uploading before
+  /// the listing exists is therefore deliberate: the path needs no listing id,
+  /// and a seller who abandons the wizard leaves an orphaned file rather than a
+  /// half-created listing.
+  ///
+  /// The extension is taken from [filename] because the bucket serves images by
+  /// content type, and a key with no extension is served as octet-stream.
+  Future<String> uploadListingPhoto({
+    required String userId,
+    required Uint8List bytes,
+    required String filename,
+  }) async {
+    try {
+      final extension = _extensionOf(filename);
+      final path = '$userId/${DateTime.now().microsecondsSinceEpoch}$extension';
+
+      await _client.storage.from(_photoBucket).uploadBinary(
+            path,
+            bytes,
+            fileOptions: const FileOptions(contentType: _photoContentType),
+          );
+
+      return _client.storage.from(_photoBucket).getPublicUrl(path);
+    } on StorageException catch (e) {
+      final mapped = PostgrestErrorMapper.mapStorage(e, action: 'uploadPhoto');
+      _logFailure(mapped, action: 'uploadPhoto', cause: e);
+      throw mapped;
+    }
+  }
+
+  /// Attaches already-uploaded photos to [listingId], in the order given.
+  ///
+  /// Done after the listing row exists because `listing_photos.listing_id` is a
+  /// foreign key. `listing_photos_insert_own` checks that the caller owns the
+  /// listing, so a seller cannot attach a photo to somebody else's.
+  ///
+  /// Inserted one row per call rather than as a batch so a failure part-way
+  /// through leaves the earlier photos attached and retryable, instead of the
+  /// whole set rolling back.
+  Future<void> attachListingPhotos(
+    String listingId,
+    List<String> urls,
+  ) async {
+    if (urls.isEmpty) return;
+
+    for (var i = 0; i < urls.length; i++) {
+      await _guard(
+        () => _client.from('listing_photos').insert(<String, Object?>{
+          'listing_id': listingId,
+          'url': urls[i],
+          'sort_order': i,
+        }),
+        action: 'attachListingPhotos',
+      );
+    }
   }
 
   /// Reveals the seller contact for [listingId].

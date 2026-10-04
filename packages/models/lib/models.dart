@@ -10,8 +10,11 @@
 /// * `ListingFilter`    - browse query state, not a wire model.
 /// * `SellerContact`    - the only model carrying a seller's phone or email.
 ///                       Released by `v1_contact_seller` under a daily cap.
+/// * `District`         - reference data. `region` decides hill vs terai area
+///                       units throughout the app (Rule 25).
 library;
 
+export 'src/district.dart';
 export 'src/kyc_document.dart';
 export 'src/listing.dart';
 export 'src/listing_detail.dart';

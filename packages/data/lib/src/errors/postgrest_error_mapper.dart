@@ -1,6 +1,19 @@
 import 'package:core/core.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
+/// Supabase Storage error codes worth branching on.
+///
+/// Spelled out here rather than imported because the SDK exposes `error` as a
+/// bare `String?` with no constants class. Only the two transient codes matter:
+/// they are the cases where offering a retry button is honest.
+abstract final class StorageErrorCode {
+  /// The request failed in a way that may succeed on a second attempt.
+  static const String retryable = 'RetryableError';
+
+  /// The request timed out.
+  static const String timedOut = 'Timeout';
+}
+
 /// Maps Supabase/Postgres failures onto the [AppException] hierarchy (Rule 38).
 ///
 /// Postgres signals through SQLSTATE codes. Mapping them centrally means the
@@ -141,6 +154,38 @@ abstract final class PostgrestErrorMapper {
         message.contains('timeout') ||
         message.contains('network');
   }
+
+  /// Translates a Supabase Storage failure.
+  ///
+  /// Separate from [map] because Storage raises [StorageException] rather than
+  /// [PostgrestException] and carries no SQLSTATE, so there is nothing to
+  /// switch on. The error code is still worth reading: Storage tells transient
+  /// failures apart from permanent ones, and that is the difference between
+  /// offering a retry button and not.
+  static AppException mapStorage(
+    StorageException e, {
+    required String action,
+  }) {
+    final retryable = e.error == StorageErrorCode.retryable ||
+        e.error == StorageErrorCode.timedOut;
+
+    return retryable
+        ? NetworkException(
+            code: 'network.storageUnreachable',
+            messageEn: 'Photo upload failed. Check your connection and retry.',
+            messageNe:
+                'तस्बिर अपलोड भयो। इन्टरनेट जाँच गरी पुनः प्रयास गर्नुहोस्।',
+            context: action,
+            cause: e,
+          )
+        : ServerException(
+            code: 'server.storage',
+            messageEn: 'That photo could not be uploaded.',
+            messageNe: 'त्यो तस्बिर अपलोड गर्न सकिएन।',
+            context: action,
+            cause: e,
+          );
+  }
 }
 
 /// Maps gotrue authentication failures onto the [AppException] hierarchy.
@@ -148,6 +193,22 @@ abstract final class AuthExceptionMapper {
   /// Translates a gotrue [AuthException] into a safe bilingual [AppException].
   static AppException map(AuthException e, {required String action}) {
     return switch (e.message.toLowerCase()) {
+      // Admin panel (HYA-259). Its own branch because a bad-credentials
+      // rejection is the most likely thing an admin will see, and the
+      // generic message below reads as "the server is broken" rather
+      // than "check your password".
+      final m when m.contains('invalid login credentials') =>
+        const AuthFailureException(
+          code: 'auth.invalidCredentials',
+          messageEn: 'Incorrect email or password.',
+          messageNe: 'इमेल वा पासवर्ड मिलेन।',
+        ),
+      final m when m.contains('email not confirmed') =>
+        const AuthFailureException(
+          code: 'auth.emailNotConfirmed',
+          messageEn: 'This account has not been confirmed yet.',
+          messageNe: 'यो खाता अझै पुष्टि गरिएको छैन।',
+        ),
       final m when m.contains('expired') => const AuthFailureException(
           code: 'auth.linkExpired',
           messageEn: 'That sign-in link has expired. Request a new one.',
