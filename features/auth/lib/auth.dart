@@ -5,4 +5,5 @@ library;
 
 export 'src/presentation/auth_guard.dart';
 export 'src/presentation/login_screen.dart';
+export 'src/providers/session_providers.dart';
 export 'src/viewmodels/auth_viewmodel.dart';

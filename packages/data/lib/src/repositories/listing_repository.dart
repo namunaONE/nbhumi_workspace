@@ -3,12 +3,13 @@ import 'package:models/models.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 import '../errors/postgrest_error_mapper.dart';
+import '../providers/session_logging.dart';
 
 /// Repository for listing data.
 ///
 /// Single source of truth for listing operations (Rule 18). Every method maps
-/// failures through [PostgrestErrorMapper], so no Supabase or Postgres type
-/// ever reaches a widget.
+/// failures through [PostgrestErrorMapper] and logs them with full context
+/// (Rules 37, 38), so no Supabase or Postgres type ever reaches a widget.
 class ListingRepository {
   /// Wraps a Supabase client.
   ListingRepository(this._client);
@@ -72,8 +73,14 @@ class ListingRepository {
       );
       return ListingDetail.fromJson(response);
     } on PostgrestException catch (e) {
-      if (e.code == 'P0002' || e.code == 'PGRST116') return null;
-      throw PostgrestErrorMapper.map(e, action: 'getListingById');
+      if (e.code == 'P0002' || e.code == 'PGRST116') {
+        // Expected whenever a listing is unpublished, deleted, or belongs to
+        // someone else. Not an incident, so deliberately not logged.
+        return null;
+      }
+      final mapped = PostgrestErrorMapper.map(e, action: 'getListingById');
+      _logFailure(mapped, action: 'getListingById', cause: e);
+      throw mapped;
     }
   }
 
@@ -147,7 +154,13 @@ class ListingRepository {
   }
 
   /// Runs [call], converting transport failures into the [AppException]
-  /// hierarchy so callers only ever match on types they can render (Rule 38).
+  /// hierarchy so callers only ever match on types they can render (Rule 38),
+  /// and logging the failure with full context (Rule 37).
+  ///
+  /// User and screen come from `sessionContext`, maintained by the auth layer
+  /// and the router. Threading a `screen` argument through every call instead
+  /// would put a UI concern into the data layer, and would be wrong anyway: a
+  /// ViewModel cannot know which screen is reading it.
   Future<T> _guard<T>(
     Future<T> Function() call, {
     required String action,
@@ -155,9 +168,44 @@ class ListingRepository {
     try {
       return await call();
     } on PostgrestException catch (e) {
-      throw PostgrestErrorMapper.map(e, action: action);
+      final mapped = PostgrestErrorMapper.map(e, action: action);
+      _logFailure(mapped, action: action, cause: e);
+      throw mapped;
     } on AuthException catch (e) {
-      throw AuthExceptionMapper.map(e, action: action);
+      final mapped = AuthExceptionMapper.map(e, action: action);
+      _logFailure(mapped, action: action, cause: e);
+      throw mapped;
     }
+  }
+
+  /// Records a failed call.
+  ///
+  /// Network failures log at warning, not error: a dead connection on a poor
+  /// mobile network is expected rather than an incident, and promoting every
+  /// blip to an error would bury the real ones. Everything else is an error.
+  void _logFailure(
+    AppException mapped, {
+    required String action,
+    required Object cause,
+  }) {
+    final context = logContext(
+      action: action,
+      detail: <String, Object?>{'code': mapped.code},
+    );
+
+    if (mapped is NetworkException) {
+      AppLogger.warning(
+        'Network failure in $action',
+        context: context,
+        error: cause,
+      );
+      return;
+    }
+
+    AppLogger.error(
+      'Failed in $action',
+      context: context,
+      error: cause,
+    );
   }
 }
