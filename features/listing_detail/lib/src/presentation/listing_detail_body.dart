@@ -2,6 +2,8 @@ import 'package:core/core.dart';
 import 'package:flutter/material.dart';
 import 'package:models/models.dart';
 
+import 'contact_seller_button.dart';
+
 /// The loaded contents of a listing detail page.
 ///
 /// Split from `ListingDetailScreen` so it is a plain widget over a finished
@@ -107,7 +109,7 @@ class ListingDetailBody extends StatelessWidget {
           const SizedBox(height: 96),
         ],
       ),
-      bottomNavigationBar: const _ContactBar(),
+      bottomNavigationBar: ContactSellerButton(listing: listing),
     );
   }
 
@@ -346,39 +348,6 @@ class _SellerCard extends StatelessWidget {
           ),
         ),
       ],
-    );
-  }
-}
-
-/// Sticky bottom bar holding the contact action.
-///
-/// The action is inert in M1: `v1_contact_seller` does not exist yet (HYA-252),
-/// so there is nothing honest to call. Rather than ship a button that silently
-/// does nothing, or a fake phone number, it states what is missing.
-class _ContactBar extends StatelessWidget {
-  const _ContactBar();
-
-  @override
-  Widget build(BuildContext context) {
-    final isNepali = Localizations.maybeLocaleOf(context)?.languageCode != 'en';
-
-    return SafeArea(
-      child: Padding(
-        padding: const EdgeInsets.all(16),
-        child: FilledButton.icon(
-          // Explicitly disabled with an explanation, not a no-op tap handler.
-          onPressed: null,
-          icon: const Icon(Icons.phone_outlined),
-          label: Text(
-            isNepali
-                ? 'विक्रेता सम्पर्क (छिट्टै आउँदैछ)'
-                : 'Contact seller (coming soon)',
-          ),
-          style: FilledButton.styleFrom(
-            minimumSize: const Size.fromHeight(48),
-          ),
-        ),
-      ),
     );
   }
 }

@@ -92,6 +92,23 @@ abstract final class PostgrestErrorMapper {
 
       // Unrecognised: treat as a server fault rather than leaking the message.
       // `_isConnectivity` reclassifies transport failures as retryable.
+      // PN001 - v1_contact_seller's own code, raised once a buyer has used up
+      // the ten first-time reveals allowed per rolling 24 hours. Not retryable:
+      // waiting is the only remedy, so a retry button would just fail again.
+      'PN001' => ValidationException(
+          code: 'contact.rateLimited',
+          messageEn:
+              'You have viewed contact details for 10 properties today. '
+              'Please try again tomorrow.',
+          messageNe:
+              'आज तपाईंले १० घरजग्गाको सम्पर्क विवरण हेरिसक्नुभयो। '
+              'कृपया भोलि प्रयास गर्नुहोस्।',
+          context: action,
+          cause: e,
+        ),
+
+      // Unrecognised: treat as a server fault rather than leaking the message.
+      // `_isConnectivity` reclassifies transport failures as retryable.
       _ => switch (_isConnectivity(e)) {
           true => NetworkException(
               code: 'network.unreachable',

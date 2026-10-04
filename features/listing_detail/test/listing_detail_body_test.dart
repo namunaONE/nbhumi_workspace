@@ -1,5 +1,7 @@
+import 'package:data/data.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:listing_detail/listing_detail.dart';
 import 'package:models/models.dart';
@@ -61,14 +63,30 @@ Widget _harness(
       ..resetDevicePixelRatio();
   });
 
-  return MaterialApp(
-    locale: locale,
-    // Required, or Localizations silently resolves 'ne' back to 'en' and every
-    // bilingual branch takes the English path. main.dart supplies these too.
-    localizationsDelegates: GlobalMaterialLocalizations.delegates,
-    supportedLocales: const <Locale>[Locale('en'), Locale('ne')],
-    home: Scaffold(body: ListingDetailBody(listing: listing)),
+  return ProviderScope(
+    // The body embeds ContactSellerButton, which is a ConsumerWidget, so the
+    // whole subtree needs a container even though these tests never press it.
+    // Overriding the repository keeps it off the network (Rule 33).
+    overrides: [
+      listingRepositoryProvider.overrideWithValue(_FakeRepository()),
+      sessionProvider.overrideWithValue(null),
+    ],
+    child: MaterialApp(
+      locale: locale,
+      // Required, or Localizations silently resolves 'ne' back to 'en' and
+      // every bilingual branch takes the English path. main.dart supplies
+      // these too.
+      localizationsDelegates: GlobalMaterialLocalizations.delegates,
+      supportedLocales: const <Locale>[Locale('en'), Locale('ne')],
+      home: Scaffold(body: ListingDetailBody(listing: listing)),
+    ),
   );
+}
+
+/// Repository stub; the contact button is never pressed in these tests.
+class _FakeRepository implements ListingRepository {
+  @override
+  dynamic noSuchMethod(Invocation invocation) => super.noSuchMethod(invocation);
 }
 
 void main() {
@@ -219,23 +237,25 @@ void main() {
   });
 
   group('contact bar', () {
-    testWidgets('is disabled, with the reason in the label', (tester) async {
-      // v1_contact_seller does not exist yet. A live-looking button that does
-      // nothing would be worse than an obviously unavailable one.
+    testWidgets('offers contact and reveals nothing before it is pressed',
+        (tester) async {
+      // The button is live as of HYA-252. The assertion that matters is the
+      // absence of contact data: nothing here should show a phone number.
       await tester.pumpWidget(_harness(_detail()));
 
-      final button = tester.widget<FilledButton>(
-        find.widgetWithText(FilledButton, 'Contact seller (coming soon)'),
+      expect(
+        find.widgetWithText(FilledButton, 'Sign in to contact'),
+        findsOneWidget,
       );
-      expect(button.onPressed, isNull);
+      expect(find.text('+9779841234567'), findsNothing);
     });
 
-    testWidgets('says so in Nepali too', (tester) async {
+    testWidgets('is labelled in Nepali too', (tester) async {
       await tester.pumpWidget(
         _harness(_detail(), locale: const Locale('ne')),
       );
       expect(
-        find.widgetWithText(FilledButton, 'विक्रेता सम्पर्क (छिट्टै आउँदैछ)'),
+        find.widgetWithText(FilledButton, 'सम्पर्क गर्न साइन इन गर्नुहोस्'),
         findsOneWidget,
       );
     });

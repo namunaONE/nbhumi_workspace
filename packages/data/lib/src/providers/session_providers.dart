@@ -1,12 +1,20 @@
-import 'package:data/data.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
+
+import '../services/supabase_service.dart';
+import 'session_logging.dart';
 
 /// Emits on every Supabase auth change.
 ///
 /// The single source of auth truth for the whole app. Both routers previously
 /// declared their own private copy, which is how they ended up rebuilding the
 /// entire `GoRouter` on every emission.
+///
+/// Lives in `data` rather than in `features/auth` because these are session
+/// plumbing over the Supabase client, not auth UI. Any feature needs to know
+/// whether a session exists — the detail page must send a guest to sign in
+/// before revealing a seller contact — and Rule 10 forbids one feature
+/// importing another to ask.
 final authSessionProvider = StreamProvider<AuthState>((ref) {
   return ref.watch(supabaseAuthProvider).onAuthStateChange;
 });

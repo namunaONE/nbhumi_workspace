@@ -153,6 +153,31 @@ class ListingRepository {
     return ListingStatus.values.byName(response['status'] as String);
   }
 
+  /// Reveals the seller contact for [listingId].
+  ///
+  /// The one path by which a seller phone number or email reaches the client.
+  /// Server-side this requires a session, a live listing, a buyer who is not
+  /// the seller, and is capped at ten first-time reveals per rolling 24 hours;
+  /// see migration `20261004070057_add_contact_logs_and_contact_seller.sql`.
+  ///
+  /// Throws rather than returning a sentinel, because every failure here is
+  /// meaningful and differently worded to the user:
+  ///
+  /// * `AuthFailureException`   - not signed in, or this is your own listing
+  /// * `ValidationException`    - `contact.rateLimited`, the daily cap is spent
+  /// * `ServerException`        - the listing is no longer available
+  /// * `NetworkException`       - transport failure, retryable
+  Future<SellerContact> contactSeller(String listingId) async {
+    final response = await _guard(
+      () => _client.rpc<Map<String, dynamic>>(
+        'v1_contact_seller',
+        params: <String, Object?>{'p_listing_id': listingId},
+      ),
+      action: 'contactSeller',
+    );
+    return SellerContact.fromJson(response);
+  }
+
   /// Runs [call], converting transport failures into the [AppException]
   /// hierarchy so callers only ever match on types they can render (Rule 38),
   /// and logging the failure with full context (Rule 37).

@@ -8,6 +8,8 @@
 /// * `ListingDetail`    - what the detail page returns. See
 ///                       `v1_get_listing_detail`.
 /// * `ListingFilter`    - browse query state, not a wire model.
+/// * `SellerContact`    - the only model carrying a seller's phone or email.
+///                       Released by `v1_contact_seller` under a daily cap.
 library;
 
 export 'src/kyc_document.dart';
@@ -17,3 +19,4 @@ export 'src/listing_query.dart';
 export 'src/listing_summary.dart';
 export 'src/notification.dart';
 export 'src/profile.dart';
+export 'src/seller_contact.dart';

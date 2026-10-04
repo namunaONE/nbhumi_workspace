@@ -158,6 +158,35 @@ void main() {
         expect(mapped.isRetryable, isTrue);
       }
     });
+
+    test('PN001 maps to a non-retryable contact rate limit', () {
+      // v1_contact_seller raises this once ten first-time reveals are spent.
+      final mapped = PostgrestErrorMapper.map(
+        postgrestError('PN001', message: 'RATE_LIMITED: contact reveal limit'),
+        action: 'contactSeller',
+      );
+
+      expect(mapped.code, 'contact.rateLimited');
+      // Waiting is the only remedy, so offering a retry button would produce a
+      // second guaranteed failure.
+      expect(mapped.isRetryable, isFalse);
+      // Must not leak the raw Postgres text.
+      expect(mapped.messageEn, isNot(contains('RATE_LIMITED')));
+      expect(mapped.messageNe, isNot(contains('RATE_LIMITED')));
+    });
+
+    test('42501 from v1_contact_seller reads as a sign-in prompt', () {
+      // Reached when a guest or the listing's own seller calls it. The generic
+      // 'permission' wording is accurate for the seller case and vague for the
+      // guest case, which is the safer of the two.
+      final mapped = PostgrestErrorMapper.map(
+        postgrestError('42501', message: 'permission denied'),
+        action: 'contactSeller',
+      );
+
+      expect(mapped, isA<AuthFailureException>());
+      expect(mapped.isRetryable, isFalse);
+    });
   });
 
   group('AppException contract', () {

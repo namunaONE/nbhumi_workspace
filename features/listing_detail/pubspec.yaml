@@ -19,6 +19,7 @@ dependencies:
   models:
     path: ../../packages/models
   riverpod_annotation: ^4.0.7
+  supabase_flutter: ^2.10.0
 
 dev_dependencies:
   build_runner: ^2.16.0
