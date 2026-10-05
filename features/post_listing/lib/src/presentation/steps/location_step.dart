@@ -92,8 +92,8 @@ class LocationStep extends StatelessWidget {
         ),
         const WizardNote(
           icon: Icons.map_outlined,
-          text: 'Ward numbers run from 1 to 32. Kathmandu Metropolitan City '
-              'has the most wards of any local body in Nepal, at 32.',
+          text: 'Ward numbers run from 1 to 33. Pokhara Metropolitan City '
+              'has the most wards of any local body in Nepal, at 33.',
         ),
       ],
     );

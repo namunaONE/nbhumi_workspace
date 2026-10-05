@@ -28,21 +28,23 @@ class Validators {
 
   /// Highest ward number this app accepts.
   ///
-  /// 32 is the national maximum, not an arbitrary round number. Kathmandu
-  /// Metropolitan City is the largest local body in Nepal at 32 wards; the
-  /// Local Government Act 2017 caps ordinary municipalities and rural
-  /// municipalities at 19. So 32 accepts every ward that exists anywhere in the
-  /// country, and nothing higher is a real address.
+  /// 33 is the national maximum, not an arbitrary round number. Pokhara
+  /// Metropolitan City is the largest local body in Nepal at 33 wards
+  /// (Kathmandu is second at 32); the Local Government Act 2017 caps ordinary
+  /// municipalities and rural municipalities at 19. So 33 accepts every ward
+  /// that exists anywhere in the country, and nothing higher is a real
+  /// address.
   ///
-  /// An earlier version of this comment claimed KMC had 53 wards and that this
-  /// ceiling therefore rejected valid addresses. That was wrong: KMC has 32.
-  /// The number was right and the reasoning was not, which is the worst kind
-  /// of wrong, because it would have justified widening a correct constraint.
-  static const int maxWard = 32;
+  /// This ceiling has been wrong twice. It was 36 with no basis, then 32 on the
+  /// claim that KMC's 32 was the maximum — which the Pokhara seed row
+  /// (ward_count 33) disproved. Both corrections are recorded rather than
+  /// silently made, because a range boundary with a wrong reason attached will
+  /// be "fixed" again by the next reader.
+  static const int maxWard = 33;
 
   /// Mirrors the `ward_valid` CHECK constraint on `listings.ward`:
   ///
-  ///   check (ward is null or ward ~ '^([1-9]|[12][0-9]|3[0-2])$')
+  ///   check (ward is null or ward ~ '^([1-9]|[12][0-9]|3[0-3])$')
   ///
   /// Validating the string against that pattern rather than parsing an integer
   /// is the whole point. Two separate client/server disagreements came from
@@ -56,7 +58,7 @@ class Validators {
   /// Client and server have to agree on the accepted set, or the user fills the
   /// form in correctly by the app's own lights and still gets a server error.
   /// Keeping the two expressions textually aligned makes that reviewable.
-  static final RegExp _wardPattern = RegExp(r'^(?:[1-9]|[12][0-9]|3[0-2])$');
+  static final RegExp _wardPattern = RegExp(r'^(?:[1-9]|[12][0-9]|3[0-3])$');
 
   /// Validate a ward number: 1 to [maxWard], with no leading zero.
   ///

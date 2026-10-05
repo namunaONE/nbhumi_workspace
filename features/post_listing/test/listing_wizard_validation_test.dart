@@ -76,7 +76,7 @@ void main() {
     });
 
     test('accepts a ward inside the agreed range', () {
-      for (final ward in <String>['1', '16', '32']) {
+      for (final ward in <String>['1', '16', '33']) {
         expect(
           _complete().copyWith(ward: ward).validate(WizardStep.location)
               .isValid,
@@ -89,7 +89,7 @@ void main() {
     test('rejects a ward the database would reject', () {
       // The client and the ward_valid CHECK have to agree, or the seller fills
       // the form in correctly and gets a 23514 on submit.
-      for (final ward in <String>['33', '36', '0', '-1', '01', 'abc', '']) {
+      for (final ward in <String>['34', '36', '0', '-1', '01', 'abc', '']) {
         if (ward.isEmpty) continue;
         expect(
           _complete().copyWith(ward: ward).validate(WizardStep.location)

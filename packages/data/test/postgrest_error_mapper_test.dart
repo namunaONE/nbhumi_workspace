@@ -98,7 +98,7 @@ void main() {
     });
 
     test('constraint violations become ValidationException', () {
-      // 23505 duplicate, 23503 bad FK, 23514 check (ward 1-32, status trigger).
+      // 23505 duplicate, 23503 bad FK, 23514 check (ward 1-33, status trigger).
       for (final code in ['23505', '23503', '23514']) {
         expect(
           PostgrestErrorMapper.map(postgrestError(code), action: 'x'),
@@ -310,6 +310,46 @@ void main() {
       expect(mapped.code, 'auth.failed');
       expect(mapped.messageEn, isNot(contains('a@b.com')));
       expect(mapped.messageNe, isNot(contains('smtp')));
+    });
+
+    // The admin panel signs in with a password (HYA-259), so these two became
+    // reachable once signInWithPassword existed.
+
+    test('wrong credentials name the fix, not the server', () {
+      final mapped = AuthExceptionMapper.map(
+        const AuthException('Invalid login credentials'),
+        action: 'signInWithPassword',
+      );
+
+      expect(mapped.code, 'auth.invalidCredentials');
+      expect(mapped.messageNe, isNotEmpty);
+      // Deliberately does not say which of the two was wrong: gotrue's message
+      // is non-enumerating and passing that property through is the point.
+      expect(mapped.messageEn.toLowerCase(), isNot(contains('no user')));
+      expect(mapped.messageEn.toLowerCase(), isNot(contains('not found')));
+    });
+
+    test('an unconfirmed account is reported as such', () {
+      final mapped = AuthExceptionMapper.map(
+        const AuthException('Email not confirmed'),
+        action: 'signInWithPassword',
+      );
+
+      expect(mapped.code, 'auth.emailNotConfirmed');
+      expect(mapped.messageNe, isNotEmpty);
+    });
+
+    test('wrong credentials win over the generic branch on ordering', () {
+      // gotrue phrases vary by version. "Invalid login credentials" must map
+      // to the specific code regardless, or the admin panel degrades to a
+      // misleading "we could not sign you in".
+      final mapped = AuthExceptionMapper.map(
+        const AuthException('Invalid login credentials'),
+        action: 'signInWithPassword',
+      );
+
+      expect(mapped, isA<AuthFailureException>());
+      expect(mapped.code, isNot('auth.failed'));
     });
   });
 

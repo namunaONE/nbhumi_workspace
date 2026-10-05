@@ -71,7 +71,7 @@ abstract final class PostgrestErrorMapper {
           cause: e,
         ),
 
-      // 23514 check_violation - the status-transition trigger, the ward 1-32
+      // 23514 check_violation - the status-transition trigger, the ward 1-33
       // check, or a positive-area constraint.
       '23514' => ValidationException(
           code: 'validation.constraint',

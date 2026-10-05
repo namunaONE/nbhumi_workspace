@@ -192,14 +192,14 @@ void main() {
         ),
       );
 
-      expect(find.textContaining('1-32'), findsOneWidget);
+      expect(find.textContaining('1-33'), findsOneWidget);
     });
 
-    testWidgets('states the ward range and that 32 is the national maximum',
+    testWidgets('states the ward range and that 33 is the national maximum',
         (tester) async {
-      // KMC is the largest local body in Nepal at 32 wards, so the ceiling is
-      // the real maximum rather than an arbitrary cap. An earlier version of
-      // this note claimed KMC had 53 wards, which is false.
+      // Pokhara is the largest local body in Nepal at 33 wards, so the ceiling
+      // is the real maximum rather than an arbitrary cap. This note previously
+      // claimed KMC had the most at 32, which the Pokhara seed row disproved.
       await tester.pumpWidget(
         _app(
           LocationStep(
@@ -214,10 +214,10 @@ void main() {
       );
 
       expect(
-        find.textContaining('Kathmandu Metropolitan City'),
+        find.textContaining('Pokhara Metropolitan City'),
         findsOneWidget,
       );
-      expect(find.textContaining('32'), findsWidgets);
+      expect(find.textContaining('33'), findsWidgets);
       expect(find.textContaining('more wards'), findsNothing);
     });
 
@@ -225,7 +225,7 @@ void main() {
       await tester.pumpWidget(
         _app(
           LocationStep(
-            state: _state().copyWith(ward: '33'),
+            state: _state().copyWith(ward: '34'),
             districts: const <District>[kathmandu],
             onDistrictChanged: (_) {},
             onCityChanged: (_) {},
@@ -338,14 +338,14 @@ void main() {
           WizardField(
             label: 'Ward',
             value: '33',
-            error: 'Ward must be a number from 1 to 32',
+            error: 'Ward must be a number from 1 to 33',
             onChanged: (_) {},
           ),
         ),
       );
 
       expect(
-        find.text('Ward must be a number from 1 to 32'),
+        find.text('Ward must be a number from 1 to 33'),
         findsOneWidget,
       );
     });

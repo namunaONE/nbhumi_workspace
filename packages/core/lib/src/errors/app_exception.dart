@@ -84,7 +84,7 @@ sealed class AppException implements Exception {
 
 /// Input failed validation, either client-side or in an RPC (Rule 6).
 ///
-/// Examples: blank title, non-positive price, ward outside 1-32, illegal status
+/// Examples: blank title, non-positive price, ward outside 1-33, illegal status
 /// transition. Retrying without changing the input will fail identically.
 final class ValidationException extends AppException {
   /// Creates a validation failure.
