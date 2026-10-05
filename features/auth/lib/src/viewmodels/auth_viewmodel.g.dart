@@ -10,27 +10,27 @@ part of 'auth_viewmodel.dart';
 // ignore_for_file: type=lint, type=warning
 /// Session state for the magic-link flow.
 ///
-/// Every method is a stub. HYA-202 fills them in once the deep-link plumbing
-/// exists, because sending a magic link before the app can receive the
-/// redirect would leave users stranded on a "check your inbox" screen with no
-/// way back in.
+/// Mirrors `isSignedInProvider` rather than owning its own session copy so the
+/// router's [AuthRefreshNotifier], the profile screen and this notifier can
+/// never disagree. The notifier's real job is the side-effects (send link,
+/// sign out) plus the validation gate (Rule 6) that belongs above the service.
 
 @ProviderFor(Auth)
 final authProvider = AuthProvider._();
 
 /// Session state for the magic-link flow.
 ///
-/// Every method is a stub. HYA-202 fills them in once the deep-link plumbing
-/// exists, because sending a magic link before the app can receive the
-/// redirect would leave users stranded on a "check your inbox" screen with no
-/// way back in.
+/// Mirrors `isSignedInProvider` rather than owning its own session copy so the
+/// router's [AuthRefreshNotifier], the profile screen and this notifier can
+/// never disagree. The notifier's real job is the side-effects (send link,
+/// sign out) plus the validation gate (Rule 6) that belongs above the service.
 final class AuthProvider extends $NotifierProvider<Auth, bool> {
   /// Session state for the magic-link flow.
   ///
-  /// Every method is a stub. HYA-202 fills them in once the deep-link plumbing
-  /// exists, because sending a magic link before the app can receive the
-  /// redirect would leave users stranded on a "check your inbox" screen with no
-  /// way back in.
+  /// Mirrors `isSignedInProvider` rather than owning its own session copy so the
+  /// router's [AuthRefreshNotifier], the profile screen and this notifier can
+  /// never disagree. The notifier's real job is the side-effects (send link,
+  /// sign out) plus the validation gate (Rule 6) that belongs above the service.
   AuthProvider._()
     : super(
         from: null,
@@ -58,14 +58,14 @@ final class AuthProvider extends $NotifierProvider<Auth, bool> {
   }
 }
 
-String _$authHash() => r'919b44a6bce59437c185db46f15b00b47b9dd81d';
+String _$authHash() => r'ca1c892f6c1258d6f94a48cff3ca39869b096f6a';
 
 /// Session state for the magic-link flow.
 ///
-/// Every method is a stub. HYA-202 fills them in once the deep-link plumbing
-/// exists, because sending a magic link before the app can receive the
-/// redirect would leave users stranded on a "check your inbox" screen with no
-/// way back in.
+/// Mirrors `isSignedInProvider` rather than owning its own session copy so the
+/// router's [AuthRefreshNotifier], the profile screen and this notifier can
+/// never disagree. The notifier's real job is the side-effects (send link,
+/// sign out) plus the validation gate (Rule 6) that belongs above the service.
 
 abstract class _$Auth extends $Notifier<bool> {
   bool build();

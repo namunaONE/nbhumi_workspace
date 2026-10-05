@@ -42,11 +42,30 @@ class AuthService {
   /// User app only. The redirect is the user app's deployed host, so this
   /// must not be reused by the admin panel, which authenticates with
   /// [signInWithPassword] and never touches the redirect allowlist.
+  ///
+  /// The Supabase project must allowlist `https://nbhumi.com/auth/callback`
+  /// (plus the mobile deep-link URIs from HYA-257) before this works end to
+  /// end.
   Future<void> sendMagicLink(String email) async {
-    await _client.signInWithOtp(
-      email: email,
-      emailRedirectTo: 'https://nbhumi.com/auth/callback',
-    );
+    try {
+      await _client.signInWithOtp(
+        email: email,
+        emailRedirectTo: 'https://nbhumi.com/auth/callback',
+      );
+    } on AuthException catch (e) {
+      // Same mapping as every other auth call (Rule 38): rate limits and a
+      // raw GoTrue message must never reach the UI unmapped.
+      final mapped = AuthExceptionMapper.map(e, action: 'sendMagicLink');
+      AppLogger.error(
+        'Failed in sendMagicLink',
+        context: logContext(
+          action: 'sendMagicLink',
+          detail: <String, Object?>{'code': mapped.code},
+        ),
+        error: e,
+      );
+      throw mapped;
+    }
   }
 
   /// Signs in with an email and password.
@@ -84,7 +103,20 @@ class AuthService {
 
   /// Sign out current user.
   Future<void> signOut() async {
-    await _client.signOut();
+    try {
+      await _client.signOut();
+    } on AuthException catch (e) {
+      final mapped = AuthExceptionMapper.map(e, action: 'signOut');
+      AppLogger.error(
+        'Failed in signOut',
+        context: logContext(
+          action: 'signOut',
+          detail: <String, Object?>{'code': mapped.code},
+        ),
+        error: e,
+      );
+      throw mapped;
+    }
   }
 
   /// Get current session.
