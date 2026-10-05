@@ -1,6 +1,8 @@
 ﻿/// Authentication feature for nBhumi.
 ///
-/// Magic link only — no OTP, no passwords (DATA.md).
+/// Magic link first, email + password as the alternative: the login screen
+/// offers both and neither is forced (DATA.md's password ban was lifted by
+/// owner decision — see `AuthService`).
 library;
 
 export 'src/deep_links/auth_link_handler.dart';

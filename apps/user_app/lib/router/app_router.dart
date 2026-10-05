@@ -173,12 +173,16 @@ final appRouterProvider = Provider<GoRouter>((ref) {
         builder: (context, state) => const LoginScreen(),
       ),
 
-      // Magic-link landing route (HYA-257). Narrates the exchange the
-      // DeepLinkListener already started; see AuthCallbackScreen.
+      // Magic-link (and recovery-link) landing route (HYA-257). Narrates the
+      // exchange the DeepLinkListener already started; see AuthCallbackScreen.
+      // The `type=recovery` query survives the OS handoff, so the screen can
+      // tell a password reset apart from a sign-in.
       GoRoute(
         path: '/auth/callback',
         parentNavigatorKey: rootKey,
-        builder: (context, state) => const AuthCallbackScreen(),
+        builder: (context, state) => AuthCallbackScreen(
+          isRecovery: state.uri.queryParameters['type'] == 'recovery',
+        ),
       ),
     ],
   );

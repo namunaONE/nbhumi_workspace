@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="ne">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Reset your nBhumi password</title>
+</head>
+<body style="font-family: sans-serif; max-width: 560px; margin: 0 auto; padding: 24px; color: #1a1a1a;">
+  <!-- HYA-202: paste into Supabase Dashboard → Authentication → Email Templates → Reset password.
+       Keep {{ .ConfirmationURL }} verbatim — it carries ?type=recovery so the
+       app shows the set-new-password form instead of the signed-in hop. -->
+  <h2 style="color: #002C6D;">पासवर्ड रिसेट गर्नुहोस्</h2>
+  <p>नमस्ते,</p>
+  <p>नयाँ पासवर्ड छान्न तलको बटन थिच्नुहोस्। यो लिङ्क <strong>१ घण्टा</strong> सम्म मात्र मान्य हुन्छ।</p>
+  <p style="margin: 24px 0;">
+    <a href="{{ .ConfirmationURL }}"
+       style="display: inline-block; background: #002C6D; color: #ffffff; text-decoration: none; padding: 12px 28px; border-radius: 8px;">
+      नयाँ पासवर्ड राख्नुहोस्
+    </a>
+  </p>
+  <hr style="border: none; border-top: 1px solid #ddd; margin: 24px 0;" />
+  <h2 style="color: #002C6D;">Reset your password</h2>
+  <p>Hello,</p>
+  <p>Tap the button below to choose a new password. This link is valid for <strong>1 hour</strong>.</p>
+  <p style="margin: 24px 0;">
+    <a href="{{ .ConfirmationURL }}"
+       style="display: inline-block; background: #002C6D; color: #ffffff; text-decoration: none; padding: 12px 28px; border-radius: 8px;">
+      Choose a new password
+    </a>
+  </p>
+  <p style="color: #555; font-size: 13px;">
+    If you did not request this, you can safely ignore this email — your password stays unchanged.
+  </p>
+</body>
+</html>

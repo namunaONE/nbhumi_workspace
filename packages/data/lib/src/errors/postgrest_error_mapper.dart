@@ -227,6 +227,20 @@ abstract final class AuthExceptionMapper {
           messageNe:
               'धेरै प्रयास भयो। कृपया केही समय पर्खनुहोस्।',
         ),
+      // Sign-up with an existing address. Naming the fix ("sign in instead")
+      // confirms the address is registered — accepted here because the
+      // sign-up form cannot work without it, and the marketplace threat model
+      // does not include targeted account enumeration.
+      final m when m.contains('already registered') ||
+              m.contains('already exists') ||
+              m.contains('already been registered') =>
+        const AuthFailureException(
+          code: 'auth.accountExists',
+          messageEn:
+              'An account with this email already exists. Sign in instead.',
+          messageNe:
+              'यो इमेलबाट खाता पहिले नै बनेको छ। साइन इन गर्नुहोस्।',
+        ),
       _ => const AuthFailureException(
           code: 'auth.failed',
           messageEn: 'We could not sign you in. Please try again.',

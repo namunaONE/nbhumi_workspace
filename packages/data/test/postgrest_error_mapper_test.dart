@@ -339,6 +339,17 @@ void main() {
       expect(mapped.messageNe, isNotEmpty);
     });
 
+    test('signing up with a taken address points at sign-in', () {
+      final mapped = AuthExceptionMapper.map(
+        const AuthException('User already registered'),
+        action: 'signUpWithPassword',
+      );
+
+      expect(mapped.code, 'auth.accountExists');
+      expect(mapped.messageEn, contains('Sign in instead'));
+      expect(mapped.messageNe, isNotEmpty);
+    });
+
     test('wrong credentials win over the generic branch on ordering', () {
       // gotrue phrases vary by version. "Invalid login credentials" must map
       // to the specific code regardless, or the admin panel degrades to a

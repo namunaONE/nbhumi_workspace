@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="ne">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Confirm your nBhumi account</title>
+</head>
+<body style="font-family: sans-serif; max-width: 560px; margin: 0 auto; padding: 24px; color: #1a1a1a;">
+  <!-- HYA-202: paste into Supabase Dashboard → Authentication → Email Templates → Confirm signup.
+       Keep {{ .ConfirmationURL }} verbatim — the app exchanges it for a session. -->
+  <h2 style="color: #002C6D;">खाता पुष्टि गर्नुहोस्</h2>
+  <p>नमस्ते,</p>
+  <p>nBhumi मा खाता खोल्नुभएकोमा धन्यवाद! साइन इन पूरा गर्न तलको बटन थिच्नुहोस्।</p>
+  <p style="margin: 24px 0;">
+    <a href="{{ .ConfirmationURL }}"
+       style="display: inline-block; background: #002C6D; color: #ffffff; text-decoration: none; padding: 12px 28px; border-radius: 8px;">
+      खाता पुष्टि गर्नुहोस्
+    </a>
+  </p>
+  <hr style="border: none; border-top: 1px solid #ddd; margin: 24px 0;" />
+  <h2 style="color: #002C6D;">Confirm your account</h2>
+  <p>Hello,</p>
+  <p>Thanks for joining nBhumi! Tap the button below to confirm your account and finish signing in.</p>
+  <p style="margin: 24px 0;">
+    <a href="{{ .ConfirmationURL }}"
+       style="display: inline-block; background: #002C6D; color: #ffffff; text-decoration: none; padding: 12px 28px; border-radius: 8px;">
+      Confirm account
+    </a>
+  </p>
+  <p style="color: #555; font-size: 13px;">
+    If you did not create this account, you can safely ignore this email.
+  </p>
+</body>
+</html>

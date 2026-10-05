@@ -38,6 +38,22 @@ class Validators {
     return regex.hasMatch(email);
   }
 
+  /// Minimum password length.
+  ///
+  /// Supabase accepts 6+, but 8 is the floor worth teaching: short passwords
+  /// fall to stuffing lists first, and HaveIBeenPwned screening (a dashboard
+  /// toggle) only helps if the password has some entropy to begin with.
+  static const int minPasswordLength = 8;
+
+  /// Validate a password candidate.
+  ///
+  /// Length only — composition rules (`P@ssw0rd!` mandates) push users toward
+  /// predictable substitutions without adding real entropy. At least
+  /// [minPasswordLength] characters; empty and blank strings fail.
+  static bool isValidPassword(String password) {
+    return password.length >= minPasswordLength;
+  }
+
   /// Validate price (must be positive).
   static bool isValidPrice(int price) {
     return price > 0;

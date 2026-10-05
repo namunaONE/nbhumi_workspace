@@ -58,6 +58,13 @@ void main() {
       expect(Validators.isValidEmail('invalid-email'), isFalse);
     });
 
+    test('isValidPassword enforces the minimum length', () {
+      expect(Validators.isValidPassword('correct horse'), isTrue);
+      expect(Validators.isValidPassword('12345678'), isTrue);
+      expect(Validators.isValidPassword('1234567'), isFalse);
+      expect(Validators.isValidPassword(''), isFalse);
+    });
+
     test('isValidPrice validates correctly', () {
       expect(Validators.isValidPrice(1000), isTrue);
       expect(Validators.isValidPrice(0), isFalse);

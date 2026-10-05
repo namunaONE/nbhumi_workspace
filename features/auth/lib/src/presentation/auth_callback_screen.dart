@@ -1,28 +1,38 @@
+import 'package:core/core.dart';
 import 'package:data/data.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
-import '../deep_links/auth_link_handler.dart';
+import '../viewmodels/auth_viewmodel.dart';
 
-/// Landing route for magic-link taps (`/auth/callback`, HYA-257).
+/// Landing route for magic-link (and recovery-link) taps.
 ///
-/// The link itself is consumed by [AuthLinkHandler] before this screen
+/// The link itself is consumed by the deep-link handler before this screen
 /// appears; this screen only narrates the outcome, because the exchange is
 /// asynchronous and a blank route would read as a broken app:
 ///
-/// * Session present → signed in, bounce home. The router's `redirect`
-///   handles every other signed-in case; this explicit hop covers the moment
-///   the session arrives while this route is already on screen.
+/// * Recovery link (`?type=recovery`) + session → the set-new-password form.
+///   The exchange already established a recovery session; saving a new
+///   password completes it and the router takes the user home.
+/// * Session present → signed in, bounce home.
 /// * No session yet → "Signing you in…" with a way back to login for an
 ///   expired or already-used link.
 class AuthCallbackScreen extends ConsumerWidget {
   /// Creates the callback screen.
-  const AuthCallbackScreen({super.key});
+  ///
+  /// [isRecovery] comes from the `type=recovery` query parameter the
+  /// password-reset email carries.
+  const AuthCallbackScreen({this.isRecovery = false, super.key});
+
+  /// Whether this callback carries a password-recovery session.
+  final bool isRecovery;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final signedIn = ref.watch(isSignedInProvider);
+
+    if (signedIn && isRecovery) return const _SetPasswordForm();
 
     if (signedIn) {
       WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -61,6 +71,116 @@ class AuthCallbackScreen extends ConsumerWidget {
                 child: const Text('Back to login'),
               ),
             ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+/// Sets the new password after a recovery exchange.
+class _SetPasswordForm extends ConsumerStatefulWidget {
+  const _SetPasswordForm();
+
+  @override
+  ConsumerState<_SetPasswordForm> createState() => _SetPasswordFormState();
+}
+
+class _SetPasswordFormState extends ConsumerState<_SetPasswordForm> {
+  final TextEditingController _password = TextEditingController();
+  final TextEditingController _confirm = TextEditingController();
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+
+  bool _busy = false;
+  bool _obscure = true;
+
+  @override
+  void dispose() {
+    _password.dispose();
+    _confirm.dispose();
+    super.dispose();
+  }
+
+  Future<void> _save() async {
+    if (_busy) return;
+    if (!(_formKey.currentState?.validate() ?? false)) return;
+
+    setState(() => _busy = true);
+    try {
+      await ref.read(authProvider.notifier).updatePassword(_password.text);
+      if (!mounted) return;
+      context.go('/');
+    } on AppException catch (e) {
+      if (!mounted) return;
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(e.localizedForContext(context))),
+      );
+    } finally {
+      if (mounted) setState(() => _busy = false);
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: const Text('Choose a new password')),
+      body: SafeArea(
+        child: Padding(
+          padding: const EdgeInsets.all(24),
+          child: Form(
+            key: _formKey,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                const Text(
+                  'Enter a new password for your account. At least '
+                  '8 characters.',
+                ),
+                const SizedBox(height: 24),
+                TextFormField(
+                  controller: _password,
+                  obscureText: _obscure,
+                  enabled: !_busy,
+                  decoration: InputDecoration(
+                    labelText: 'New password',
+                    border: const OutlineInputBorder(),
+                    suffixIcon: IconButton(
+                      icon: Icon(
+                        _obscure
+                            ? Icons.visibility_outlined
+                            : Icons.visibility_off_outlined,
+                      ),
+                      onPressed: () => setState(() => _obscure = !_obscure),
+                    ),
+                  ),
+                  validator: (value) =>
+                      Validators.isValidPassword(value ?? '')
+                          ? null
+                          : 'At least '
+                              '${Validators.minPasswordLength} characters.',
+                  onFieldSubmitted: (_) => _save(),
+                ),
+                const SizedBox(height: 16),
+                TextFormField(
+                  controller: _confirm,
+                  obscureText: _obscure,
+                  enabled: !_busy,
+                  decoration: const InputDecoration(
+                    labelText: 'Confirm new password',
+                    border: OutlineInputBorder(),
+                  ),
+                  validator: (value) => value == _password.text
+                      ? null
+                      : 'Passwords do not match.',
+                  onFieldSubmitted: (_) => _save(),
+                ),
+                const SizedBox(height: 16),
+                FilledButton(
+                  onPressed: _busy ? null : _save,
+                  child: Text(_busy ? 'Saving…' : 'Save new password'),
+                ),
+              ],
+            ),
           ),
         ),
       ),
