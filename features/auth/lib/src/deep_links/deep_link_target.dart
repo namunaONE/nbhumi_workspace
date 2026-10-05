@@ -55,8 +55,10 @@ final class ExternalLink extends DeepLinkTarget {
 
 /// Classifies [uri] into a [DeepLinkTarget].
 ///
-/// Pure function of the URI plus the [EnvConfig] host/scheme, so it is unit
-/// tested without any platform plugin:
+/// Pure function of the URI plus the deep-link host/scheme, so it is unit
+/// tested without any platform plugin. [host] and [scheme] default to the
+/// [EnvConfig] values; tests pass explicit values so they do not depend on
+/// `--dart-define` flags.
 ///
 /// * `https://<host>/auth/callback?...` → auth callback (universal link).
 /// * `<scheme>://auth/callback?...` → auth callback (custom-scheme fallback,
@@ -68,25 +70,25 @@ final class ExternalLink extends DeepLinkTarget {
 /// Matching is case-insensitive on host and scheme, because the OS hands over
 /// whatever the email client produced. The path comparison is exact: a prefix
 /// match here would route links the router has no route for.
-DeepLinkTarget classifyDeepLink(Uri uri) {
-  final host = uri.host.toLowerCase();
-  final scheme = uri.scheme.toLowerCase();
-  final deepHost = EnvConfig.deepLinkHost.toLowerCase();
-  final deepScheme = EnvConfig.deepLinkScheme.toLowerCase();
+DeepLinkTarget classifyDeepLink(Uri uri, {String? host, String? scheme}) {
+  final linkHost = uri.host.toLowerCase();
+  final linkScheme = uri.scheme.toLowerCase();
+  final deepHost = (host ?? EnvConfig.deepLinkHost).toLowerCase();
+  final deepScheme = (scheme ?? EnvConfig.deepLinkScheme).toLowerCase();
 
   final isCallbackPath = uri.path == EnvConfig.authCallbackPath;
   // Custom schemes put the first segment in `host` (`nbhumi://auth/callback`
   // parses as host=`auth`, path=`/callback`), so rejoin before comparing.
   final customPath = '/${uri.host}${uri.path}'.replaceAll('//', '/');
-  if (isCallbackPath && scheme == 'https' && host == deepHost) {
+  if (isCallbackPath && linkScheme == 'https' && linkHost == deepHost) {
     return DeepLinkTarget.authCallback(uri);
   }
-  if (scheme == deepScheme && customPath == EnvConfig.authCallbackPath) {
+  if (linkScheme == deepScheme && customPath == EnvConfig.authCallbackPath) {
     return DeepLinkTarget.authCallback(uri);
   }
 
-  if (scheme == 'https' &&
-      host == deepHost &&
+  if (linkScheme == 'https' &&
+      linkHost == deepHost &&
       uri.pathSegments.length == 2 &&
       uri.pathSegments.first == 'listing' &&
       uri.pathSegments[1].isNotEmpty) {

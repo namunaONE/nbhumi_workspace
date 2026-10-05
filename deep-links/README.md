@@ -1,9 +1,10 @@
 # Deep links (HYA-257) — setup checklist
 
-App-side wiring is done and committed. What remains is all server-side /
-store-side configuration, which needs the real production domain and the
-release signing credentials. Nothing here blocks building or testing: the
-custom `nbhumi://` scheme works today.
+App-side wiring is done and committed. Magic-link sign-in works with **no
+domain at all** via the `nbhumi://` custom scheme (the default until
+`DEEP_LINK_HOST` is set) — the only requirement is one Supabase allowlist
+entry (step 4). Universal links and `.well-known` hosting wait for the real
+domain.
 
 ## What the app already handles
 
@@ -18,9 +19,11 @@ custom `nbhumi://` scheme works today.
   entitlement bound in all three Runner configs.
 
 All hosts/schemes derive from `EnvConfig.deepLinkHost` /
-`EnvConfig.deepLinkScheme` (`--dart-define=DEEP_LINK_HOST=...`). If the real
-domain is not `nbhumi.com`, replace it in: `EnvConfig` default,
-`AndroidManifest.xml`, `Runner.entitlements`, and the two files below.
+`EnvConfig.deepLinkScheme` (`--dart-define=DEEP_LINK_HOST=...`). The host
+defaults to empty (custom-scheme mode, no domain needed). When the real
+domain arrives: set `DEEP_LINK_HOST`, and replace the `nbhumi.com`
+placeholder in `AndroidManifest.xml`, `Runner.entitlements`, and the two
+files below.
 
 ## Go-live steps (domain owner)
 
@@ -39,11 +42,11 @@ domain is not `nbhumi.com`, replace it in: `EnvConfig` default,
    the file on install.
 4. **Supabase Dashboard → Authentication → URL Configuration**, add to
    Redirect URLs:
-   - `https://<domain>/auth/callback`
-   - `nbhumi://auth/callback` (custom-scheme fallback; also usable *now* for
-     pre-domain testing — run with
-     `--dart-define=DEEP_LINK_CUSTOM_SCHEME=true` so links redirect to the
-     scheme, tap a link on-device, confirm a session)
+   - `nbhumi://auth/callback` ← **the only entry needed today** (custom
+     scheme; no domain required). If Supabase rejects a sign-in with a
+     redirect error, add the wildcard form `nbhumi://auth/callback/*` too.
+   - `https://<domain>/auth/callback` (later, once the domain is live —
+     the app switches to it automatically when `DEEP_LINK_HOST` is set)
 5. **Email template**: set the magic-link template's redirect to
    `https://<domain>/auth/callback` (Supabase substitutes the PKCE `?code=`).
 6. **Test**: kill the app, tap a real magic link (cold start), then tap one

@@ -48,22 +48,21 @@ abstract final class EnvConfig {
 
   /// Public web host that doubles as the deep-link host (HYA-257).
   ///
-  /// Universal links (`https://<host>/auth/callback`, `https://<host>/listing/*`)
-  /// and the Supabase `emailRedirectTo` are all derived from this, so changing
-  /// the production domain is one `--dart-define` plus the native manifests and
-  /// the `.well-known` files (see `deep-links/README.md`). Defaults to the
-  /// intended production host; nothing is live there until DNS and the
-  /// Supabase redirect allowlist are configured.
+  /// Empty until the production domain exists. While empty, [authRedirectUri]
+  /// uses the custom scheme (see [useCustomSchemeRedirect]) so magic-link
+  /// sign-in works with no domain at all — only a Supabase allowlist entry.
+  /// When the domain is ready, pass `--dart-define=DEEP_LINK_HOST=...` and
+  /// replace the host in the native manifests and `deep-links/.well-known/`
+  /// (see `deep-links/README.md`).
   static const String deepLinkHost = String.fromEnvironment(
     'DEEP_LINK_HOST',
-    defaultValue: 'nbhumi.com',
   );
 
-  /// Custom-scheme fallback for auth callbacks (`nbhumi://auth/callback`).
+  /// Custom scheme for auth callbacks (`nbhumi://auth/callback`).
   ///
-  /// Works without DNS, assetlinks, or associated domains, so magic-link
-  /// sign-in is testable before the production domain exists. The scheme must
-  /// additionally be allowlisted in Supabase Auth → URL Configuration.
+  /// The default redirect path while no [deepLinkHost] is configured: needs
+  /// no DNS, assetlinks, or associated domains, only the matching Supabase
+  /// allowlist entry. Also usable later via `DEEP_LINK_CUSTOM_SCHEME=true`.
   static const String deepLinkScheme = String.fromEnvironment(
     'DEEP_LINK_SCHEME',
     defaultValue: 'nbhumi',
@@ -78,13 +77,14 @@ abstract final class EnvConfig {
 
   /// Whether magic links redirect to the custom scheme instead of https.
   ///
-  /// Pre-domain testing switch: `flutter run
-  /// --dart-define=DEEP_LINK_CUSTOM_SCHEME=true` makes [authRedirectUri]
-  /// `nbhumi://auth/callback`, which needs no DNS, assetlinks, or associated
-  /// domains — only the matching Supabase allowlist entry. Defaults to false
-  /// so release builds always use the universal link.
-  static const bool useCustomSchemeRedirect =
-      bool.fromEnvironment('DEEP_LINK_CUSTOM_SCHEME');
+  /// True when no [deepLinkHost] is configured (the normal pre-domain state)
+  /// or when explicitly forced for testing. The custom scheme needs no DNS,
+  /// assetlinks, or associated domains — only the matching Supabase
+  /// allowlist entry. Setting `DEEP_LINK_HOST` flips release builds back to
+  /// universal links automatically.
+  static bool get useCustomSchemeRedirect =>
+      deepLinkHost.isEmpty ||
+      const bool.fromEnvironment('DEEP_LINK_CUSTOM_SCHEME');
 
   /// The `emailRedirectTo` passed to `signInWithOtp`.
   static Uri get authRedirectUri => useCustomSchemeRedirect

@@ -65,12 +65,21 @@ class AuthLinkHandler {
     required this._linkStream,
     required this._onAuthCallback,
     required this._onAppRoute,
+    this.host,
+    this.scheme,
   });
 
   final Future<Uri?> Function() _getInitialLink;
   final Stream<Uri> _linkStream;
   final Future<void> Function(Uri uri) _onAuthCallback;
   final void Function(String location) _onAppRoute;
+
+  /// Host override for link classification. Defaults to the [EnvConfig]
+  /// value; tests pass the production-shaped host explicitly.
+  final String? host;
+
+  /// Scheme override for link classification. Same defaulting as [host].
+  final String? scheme;
 
   StreamSubscription<Uri>? _subscription;
 
@@ -110,7 +119,7 @@ class AuthLinkHandler {
 
   /// Classifies one link and acts on it. Never throws (see [AuthFailed]).
   Future<DeepLinkOutcome> handleLink(Uri uri) {
-    final target = classifyDeepLink(uri);
+    final target = classifyDeepLink(uri, host: host, scheme: scheme);
     return switch (target) {
       AuthCallbackLink(uri: final callbackUri) => _exchange(callbackUri),
       AppRouteLink(:final location) => Future.value(_route(location)),

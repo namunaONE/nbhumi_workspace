@@ -20,6 +20,8 @@ AuthLinkHandler _handler({
   return AuthLinkHandler(
     getInitialLink: () async => initial,
     linkStream: stream,
+    host: 'nbhumi.com',
+    scheme: 'nbhumi',
     onAuthCallback: (uri) async {
       exchanged?.add(uri);
       if (exchangeFailure != null) throw exchangeFailure;
