@@ -10,6 +10,28 @@ class Validators {
     return regex.hasMatch(phone);
   }
 
+  /// Canonicalize a phone number to the stored form.
+  ///
+  /// Stored values are bare 10-digit numbers, but existing rows and pasted
+  /// input arrive E.164-styled (`+9779841234567`, 13 digits). Rejecting those
+  /// would make the edit form unsavable for data the database already holds,
+  /// so the prefix is stripped instead:
+  ///
+  /// * a leading `+` is always dropped;
+  /// * a leading `977` is dropped only when exactly 10 digits remain, so a
+  ///   hypothetical local number starting in 977 is never mangled.
+  ///
+  /// The result still has to pass [isValidNepaliPhone]; this only normalizes,
+  /// it never validates.
+  static String canonicalNepaliPhone(String raw) {
+    var digits = raw.trim();
+    if (digits.startsWith('+')) digits = digits.substring(1);
+    if (digits.length == 13 && digits.startsWith('977')) {
+      digits = digits.substring(3);
+    }
+    return digits;
+  }
+
   /// Validate email address.
   static bool isValidEmail(String email) {
     final regex = RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$');

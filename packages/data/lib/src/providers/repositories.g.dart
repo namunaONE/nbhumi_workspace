@@ -118,6 +118,65 @@ final class AuthRepositoryProvider
 
 String _$authRepositoryHash() => r'ad0d2dbdcd16330667642d40541f556a89f93328';
 
+/// Admin repository, for the verification queue.
+///
+/// Separate from [listingRepository] because moderation actions are not edits
+/// to a listing the caller owns. Keeping them apart means the seller write path
+/// cannot grow an admin capability by accident.
+
+@ProviderFor(adminRepository)
+final adminRepositoryProvider = AdminRepositoryProvider._();
+
+/// Admin repository, for the verification queue.
+///
+/// Separate from [listingRepository] because moderation actions are not edits
+/// to a listing the caller owns. Keeping them apart means the seller write path
+/// cannot grow an admin capability by accident.
+
+final class AdminRepositoryProvider
+    extends
+        $FunctionalProvider<AdminRepository, AdminRepository, AdminRepository>
+    with $Provider<AdminRepository> {
+  /// Admin repository, for the verification queue.
+  ///
+  /// Separate from [listingRepository] because moderation actions are not edits
+  /// to a listing the caller owns. Keeping them apart means the seller write path
+  /// cannot grow an admin capability by accident.
+  AdminRepositoryProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'adminRepositoryProvider',
+        isAutoDispose: true,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$adminRepositoryHash();
+
+  @$internal
+  @override
+  $ProviderElement<AdminRepository> $createElement($ProviderPointer pointer) =>
+      $ProviderElement(pointer);
+
+  @override
+  AdminRepository create(Ref ref) {
+    return adminRepository(ref);
+  }
+
+  /// {@macro riverpod.override_with_value}
+  Override overrideWithValue(AdminRepository value) {
+    return $ProviderOverride(
+      origin: this,
+      providerOverride: $SyncValueProvider<AdminRepository>(value),
+    );
+  }
+}
+
+String _$adminRepositoryHash() => r'c9f5225539e3b4de62557a4c70ad98e063e521c5';
+
 /// Auth service, for the admin panel's password sign-in.
 ///
 /// Takes the auth client rather than the whole `SupabaseClient` because that is
@@ -224,6 +283,110 @@ final class UserRepositoryProvider
 }
 
 String _$userRepositoryHash() => r'a6928f0216eec406ea121d36fba16beec4fc6f57';
+
+/// One user's profile, by id.
+///
+/// A family so the profile screen and any future seller preview read different
+/// users without one clobbering the other. Null when no profile row exists
+/// yet, which is a real state for a fresh magic-link session whose trigger has
+/// not run.
+
+@ProviderFor(userProfile)
+final userProfileProvider = UserProfileFamily._();
+
+/// One user's profile, by id.
+///
+/// A family so the profile screen and any future seller preview read different
+/// users without one clobbering the other. Null when no profile row exists
+/// yet, which is a real state for a fresh magic-link session whose trigger has
+/// not run.
+
+final class UserProfileProvider
+    extends
+        $FunctionalProvider<AsyncValue<Profile?>, Profile?, FutureOr<Profile?>>
+    with $FutureModifier<Profile?>, $FutureProvider<Profile?> {
+  /// One user's profile, by id.
+  ///
+  /// A family so the profile screen and any future seller preview read different
+  /// users without one clobbering the other. Null when no profile row exists
+  /// yet, which is a real state for a fresh magic-link session whose trigger has
+  /// not run.
+  UserProfileProvider._({
+    required UserProfileFamily super.from,
+    required String super.argument,
+  }) : super(
+         retry: null,
+         name: r'userProfileProvider',
+         isAutoDispose: true,
+         dependencies: null,
+         $allTransitiveDependencies: null,
+       );
+
+  @override
+  String debugGetCreateSourceHash() => _$userProfileHash();
+
+  @override
+  String toString() {
+    return r'userProfileProvider'
+        ''
+        '($argument)';
+  }
+
+  @$internal
+  @override
+  $FutureProviderElement<Profile?> $createElement($ProviderPointer pointer) =>
+      $FutureProviderElement(pointer);
+
+  @override
+  FutureOr<Profile?> create(Ref ref) {
+    final argument = this.argument as String;
+    return userProfile(ref, userId: argument);
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return other is UserProfileProvider && other.argument == argument;
+  }
+
+  @override
+  int get hashCode {
+    return argument.hashCode;
+  }
+}
+
+String _$userProfileHash() => r'2943899f5f80e54d3302f680220d69c632631708';
+
+/// One user's profile, by id.
+///
+/// A family so the profile screen and any future seller preview read different
+/// users without one clobbering the other. Null when no profile row exists
+/// yet, which is a real state for a fresh magic-link session whose trigger has
+/// not run.
+
+final class UserProfileFamily extends $Family
+    with $FunctionalFamilyOverride<FutureOr<Profile?>, String> {
+  UserProfileFamily._()
+    : super(
+        retry: null,
+        name: r'userProfileProvider',
+        dependencies: null,
+        $allTransitiveDependencies: null,
+        isAutoDispose: true,
+      );
+
+  /// One user's profile, by id.
+  ///
+  /// A family so the profile screen and any future seller preview read different
+  /// users without one clobbering the other. Null when no profile row exists
+  /// yet, which is a real state for a fresh magic-link session whose trigger has
+  /// not run.
+
+  UserProfileProvider call({required String userId}) =>
+      UserProfileProvider._(argument: userId, from: this);
+
+  @override
+  String toString() => r'userProfileProvider';
+}
 
 /// Reference data: districts, municipalities and wards.
 

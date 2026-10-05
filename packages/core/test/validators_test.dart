@@ -10,6 +10,49 @@ void main() {
       expect(Validators.isValidNepaliPhone('984123456'), isFalse);
     });
 
+    test('canonicalNepaliPhone strips E.164 prefixes', () {
+      // Existing rows and pasted numbers carry '+977'; stored values do not.
+      expect(
+        Validators.canonicalNepaliPhone('+9779841234567'),
+        '9841234567',
+      );
+      expect(
+        Validators.canonicalNepaliPhone('  +9779841234567  '),
+        '9841234567',
+      );
+      // Already canonical: untouched.
+      expect(
+        Validators.canonicalNepaliPhone('9841234567'),
+        '9841234567',
+      );
+    });
+
+    test('canonicalNepaliPhone never mangles a local number', () {
+      // '977' is stripped only when exactly 10 digits remain. A 10-digit
+      // local number that happens to start in 977 keeps every digit.
+      expect(
+        Validators.canonicalNepaliPhone('9771234567'),
+        '9771234567',
+      );
+      // And garbage passes through unchanged for the validator to reject.
+      expect(Validators.canonicalNepaliPhone('abc'), 'abc');
+      expect(Validators.canonicalNepaliPhone(''), '');
+    });
+
+    test('canonical output always validates when input is salvageable', () {
+      for (final raw in <String>[
+        '+9779841234567',
+        '9841234567',
+        '  9741234567 ',
+      ]) {
+        expect(
+          Validators.isValidNepaliPhone(Validators.canonicalNepaliPhone(raw)),
+          isTrue,
+          reason: raw,
+        );
+      }
+    });
+
     test('isValidEmail validates correctly', () {
       expect(Validators.isValidEmail('test@example.com'), isTrue);
       expect(Validators.isValidEmail('invalid-email'), isFalse);

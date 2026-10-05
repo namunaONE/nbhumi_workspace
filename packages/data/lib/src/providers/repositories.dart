@@ -1,6 +1,7 @@
 import 'package:models/models.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
+import '../repositories/admin_repository.dart';
 import '../repositories/auth_repository.dart';
 import '../repositories/listing_repository.dart';
 import '../repositories/reference_repository.dart';
@@ -26,6 +27,16 @@ AuthRepository authRepository(Ref ref) {
   return AuthRepository(ref.watch(supabaseClientProvider));
 }
 
+/// Admin repository, for the verification queue.
+///
+/// Separate from [listingRepository] because moderation actions are not edits
+/// to a listing the caller owns. Keeping them apart means the seller write path
+/// cannot grow an admin capability by accident.
+@riverpod
+AdminRepository adminRepository(Ref ref) {
+  return SupabaseAdminRepository(ref.watch(supabaseClientProvider));
+}
+
 /// Auth service, for the admin panel's password sign-in.
 ///
 /// Takes the auth client rather than the whole `SupabaseClient` because that is
@@ -41,6 +52,17 @@ AuthService authService(Ref ref) {
 @riverpod
 UserRepository userRepository(Ref ref) {
   return UserRepository(ref.watch(supabaseClientProvider));
+}
+
+/// One user's profile, by id.
+///
+/// A family so the profile screen and any future seller preview read different
+/// users without one clobbering the other. Null when no profile row exists
+/// yet, which is a real state for a fresh magic-link session whose trigger has
+/// not run.
+@riverpod
+Future<Profile?> userProfile(Ref ref, {required String userId}) {
+  return ref.watch(userRepositoryProvider).getUserById(userId);
 }
 
 /// Reference data: districts, municipalities and wards.
