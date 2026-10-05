@@ -1,0 +1,11 @@
+{
+  "applinks": {
+    "apps": [],
+    "details": [
+      {
+        "appID": "__TEAM_ID__.com.nbhumi.userApp",
+        "paths": ["/auth/callback*", "/listing/*"]
+      }
+    ]
+  }
+}

@@ -103,6 +103,13 @@ void main() {
       expect(isPublicRoute('/profile'), isTrue);
     });
 
+    test('the auth callback is public so the link exchange can run', () {
+      // The callback arrives while signed out by definition: the session it
+      // carries does not exist yet. Gating it would bounce to /login before
+      // AuthLinkHandler exchanges the PKCE code.
+      expect(isPublicRoute('/auth/callback'), isTrue);
+    });
+
     test('a path merely starting with /listing is not enough', () {
       // Guards against a prefix check that would wave through a route the app
       // does not actually have.

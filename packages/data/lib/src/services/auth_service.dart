@@ -39,18 +39,18 @@ class AuthService {
 
   /// Send magic link to email.
   ///
-  /// User app only. The redirect is the user app's deployed host, so this
-  /// must not be reused by the admin panel, which authenticates with
-  /// [signInWithPassword] and never touches the redirect allowlist.
+  /// User app only. The redirect is derived from [EnvConfig] (`https://host`
+  /// + `/auth/callback`), so this must not be reused by the admin panel, which
+  /// authenticates with [signInWithPassword] and never touches the redirect
+  /// allowlist.
   ///
-  /// The Supabase project must allowlist `https://nbhumi.com/auth/callback`
-  /// (plus the mobile deep-link URIs from HYA-257) before this works end to
-  /// end.
+  /// The Supabase project must allowlist the redirect (plus the mobile
+  /// deep-link URIs from HYA-257) before this works end to end.
   Future<void> sendMagicLink(String email) async {
     try {
       await _client.signInWithOtp(
         email: email,
-        emailRedirectTo: 'https://nbhumi.com/auth/callback',
+        emailRedirectTo: EnvConfig.authRedirectUri.toString(),
       );
     } on AuthException catch (e) {
       // Same mapping as every other auth call (Rule 38): rate limits and a
@@ -93,6 +93,34 @@ class AuthService {
         // device, and an admin address is not something to put in one.
         context: logContext(
           action: 'signInWithPassword',
+          detail: <String, Object?>{'code': mapped.code},
+        ),
+        error: e,
+      );
+      throw mapped;
+    }
+  }
+
+  /// Exchanges a magic-link callback URL for a session (HYA-257).
+  ///
+  /// Called by the deep-link handler when an incoming link classifies as an
+  /// auth callback. PKCE code exchange happens here; the resulting session is
+  /// persisted by GoTrue and surfaces through `onAuthStateChange` like any
+  /// other sign-in, which is what flips the router and the `Auth` notifier.
+  ///
+  /// Throws a mapped [AppException], never a raw [AuthException] (Rule 38).
+  Future<void> exchangeSessionFromUrl(Uri url) async {
+    try {
+      await _client.getSessionFromUrl(url);
+    } on AuthException catch (e) {
+      final mapped = AuthExceptionMapper.map(
+        e,
+        action: 'exchangeSessionFromUrl',
+      );
+      AppLogger.error(
+        'Failed in exchangeSessionFromUrl',
+        context: logContext(
+          action: 'exchangeSessionFromUrl',
           detail: <String, Object?>{'code': mapped.code},
         ),
         error: e,

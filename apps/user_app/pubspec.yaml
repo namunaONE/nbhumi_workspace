@@ -8,6 +8,7 @@ environment:
   sdk: ^3.13.0
 
 dependencies:
+  app_links: ^7.0.0
   auth:
     path: ../../features/auth
   core:

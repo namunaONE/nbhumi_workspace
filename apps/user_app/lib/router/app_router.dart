@@ -29,6 +29,10 @@ const Set<String> kPublicRoutes = <String>{
   '/saved',
   '/profile',
   '/login',
+  // The auth callback arrives while signed out by definition: the session it
+  // carries does not exist yet. Gating it would bounce the user to /login
+  // before the exchange runs.
+  '/auth/callback',
 };
 
 /// Whether [location] may be visited without a session.
@@ -158,6 +162,14 @@ final appRouterProvider = Provider<GoRouter>((ref) {
         path: '/login',
         parentNavigatorKey: rootKey,
         builder: (context, state) => const LoginScreen(),
+      ),
+
+      // Magic-link landing route (HYA-257). Narrates the exchange the
+      // DeepLinkListener already started; see AuthCallbackScreen.
+      GoRoute(
+        path: '/auth/callback',
+        parentNavigatorKey: rootKey,
+        builder: (context, state) => const AuthCallbackScreen(),
       ),
     ],
   );

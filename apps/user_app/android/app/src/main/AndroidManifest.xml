@@ -24,6 +24,25 @@
                 <action android:name="android.intent.action.MAIN"/>
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
+            <!-- HYA-257 deep links. The host is EnvConfig.deepLinkHost
+                 (default nbhumi.com): if the production domain ends up
+                 different, replace it here, in EnvConfig, in the iOS
+                 entitlements, and in deep-links/.well-known/. Until
+                 assetlinks.json is hosted, links open in the browser and the
+                 custom `nbhumi://` scheme below still works for testing. -->
+            <intent-filter android:autoVerify="true">
+                <action android:name="android.intent.action.VIEW"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+                <category android:name="android.intent.category.BROWSABLE"/>
+                <data android:scheme="https" android:host="nbhumi.com" android:pathPrefix="/auth/callback"/>
+                <data android:scheme="https" android:host="nbhumi.com" android:pathPrefix="/listing/"/>
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+                <category android:name="android.intent.category.BROWSABLE"/>
+                <data android:scheme="nbhumi"/>
+            </intent-filter>
         </activity>
         <!-- Don't delete the meta-data below.
              This is used by the Flutter tool to generate GeneratedPluginRegistrant.java -->

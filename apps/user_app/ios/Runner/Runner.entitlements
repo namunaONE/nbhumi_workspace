@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<!-- HYA-257: universal links for nbhumi.com (EnvConfig.deepLinkHost). If
+	     the production domain ends up different, replace it here, in
+	     EnvConfig, in AndroidManifest.xml, and in deep-links/.well-known/.
+	     NOTE: this file takes effect only once it is bound in Xcode
+	     (Runner target → Signing & Capabilities → + Associated Domains, or
+	     set CODE_SIGN_ENTITLEMENTS to Runner/Runner.entitlements) — that
+	     click needs the paid Apple Developer team, so it waits with the rest
+	     of the domain setup. See deep-links/README.md. -->
+	<key>com.apple.developer.associated-domains</key>
+	<array>
+		<string>applinks:nbhumi.com</string>
+	</array>
+</dict>
+</plist>

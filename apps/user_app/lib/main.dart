@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
+import 'package:user_app/deep_links/deep_link_listener.dart';
 import 'package:user_app/router/app_router.dart';
 
 Future<void> main() async {
@@ -41,19 +42,21 @@ class UserApp extends ConsumerWidget {
     ref.watch(sessionLoggingBridgeProvider);
     final router = ref.watch(appRouterProvider);
 
-    return MaterialApp.router(
-      title: 'nBhumi',
-      theme: AppTheme.light,
-      darkTheme: AppTheme.dark,
-      routerConfig: router,
-      // Wired now so M3's Nepali localisation only has to add .arb files
-      // rather than also reworking every app entry point.
-      localizationsDelegates: const <LocalizationsDelegate<Object>>[
-        GlobalMaterialLocalizations.delegate,
-        GlobalWidgetsLocalizations.delegate,
-        GlobalCupertinoLocalizations.delegate,
-      ],
-      supportedLocales: const <Locale>[Locale('en'), Locale('ne')],
+    return DeepLinkListener(
+      child: MaterialApp.router(
+        title: 'nBhumi',
+        theme: AppTheme.light,
+        darkTheme: AppTheme.dark,
+        routerConfig: router,
+        // Wired now so M3's Nepali localisation only has to add .arb files
+        // rather than also reworking every app entry point.
+        localizationsDelegates: const <LocalizationsDelegate<Object>>[
+          GlobalMaterialLocalizations.delegate,
+          GlobalWidgetsLocalizations.delegate,
+          GlobalCupertinoLocalizations.delegate,
+        ],
+        supportedLocales: const <Locale>[Locale('en'), Locale('ne')],
+      ),
     );
   }
 }
