@@ -5,6 +5,7 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:user_app/deep_links/deep_link_listener.dart';
+import 'package:user_app/onboarding/onboarding_gate.dart';
 import 'package:user_app/router/app_router.dart';
 
 Future<void> main() async {
@@ -14,9 +15,17 @@ Future<void> main() async {
     url: EnvConfig.supabaseUrl,
     publishableKey: EnvConfig.supabasePublishableKey,
   );
+  final seen = await OnboardingGate.loadSeen();
 
   runApp(
     ProviderScope(
+      overrides: [
+        onboardingGateProvider.overrideWith((ref) {
+          final gate = OnboardingGate(seen: seen);
+          ref.onDispose(gate.dispose);
+          return gate;
+        }),
+      ],
       // AppProviderObserver records provider failures into AppLogger.
       // Session attribution is a provider rather than a second observer,
       // because it needs a Ref to watch the session and ProviderObserver

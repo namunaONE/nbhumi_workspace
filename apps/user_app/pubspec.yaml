@@ -29,12 +29,12 @@ dependencies:
     path: ../../features/post_listing
   search:
     path: ../../features/search
+  shared_preferences: ^2.3.3
   supabase_flutter: ^2.6.0
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
-  shared_preferences: ^2.3.3
   very_good_analysis: ^11.0.0
 
 flutter:

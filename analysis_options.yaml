@@ -7,10 +7,6 @@ analyzer:
     - "**/generated/**"
   errors:
     invalid_annotation_target: ignore
-    # Re-enable when the four outstanding TODO bodies are resolved. They live in
-    # features/auth (Auth ViewModel, AuthGuard) and are rewritten by HYA-202.
-    # Keeping this ignored means CI stays green while that work is pending.
-    todo: ignore
 
 linter:
   rules:

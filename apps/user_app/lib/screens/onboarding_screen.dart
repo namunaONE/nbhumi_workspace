@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:user_app/onboarding/onboarding_gate.dart';
 
 /// First-run explanation of what nBhumi is and is not.
 ///
@@ -8,14 +10,15 @@ import 'package:go_router/go_router.dart';
 /// transfer happens at Malpot — to be shown everywhere, and first run is the
 /// one place a user is guaranteed to read it.
 ///
-/// Shown once per install. The "seen" flag lives in `shared_preferences`;
-/// HYA-202 owns the wiring, since it needs storage for the session anyway.
-class OnboardingScreen extends StatelessWidget {
+/// Shown once per install. The "seen" flag lives in `shared_preferences`
+/// behind [OnboardingGate]; the router sends first-run users here and the
+/// button below marks it complete.
+class OnboardingScreen extends ConsumerWidget {
   /// Creates the onboarding screen.
   const OnboardingScreen({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final theme = Theme.of(context);
 
     return Scaffold(
@@ -105,7 +108,10 @@ class OnboardingScreen extends StatelessWidget {
               child: SizedBox(
                 width: double.infinity,
                 child: FilledButton(
-                  onPressed: () => context.go('/'),
+                  onPressed: () async {
+                    await ref.read(onboardingGateProvider).markSeen();
+                    if (context.mounted) context.go('/');
+                  },
                   child: const Text('Browse listings'),
                 ),
               ),

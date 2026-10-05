@@ -6,6 +6,7 @@ import 'package:go_router/go_router.dart';
 import 'package:listing_detail/listing_detail.dart';
 import 'package:post_listing/post_listing.dart';
 import 'package:search/search.dart';
+import 'package:user_app/onboarding/onboarding_gate.dart';
 import 'package:user_app/screens/home_screen.dart';
 import 'package:user_app/screens/onboarding_screen.dart';
 import 'package:user_app/screens/profile_screen.dart';
@@ -53,6 +54,7 @@ bool isPublicRoute(String location) {
 final appRouterProvider = Provider<GoRouter>((ref) {
   final authRefresh = AuthRefreshNotifier(ref);
   ref.onDispose(authRefresh.dispose);
+  final gate = ref.watch(onboardingGateProvider);
 
   final rootKey = GlobalKey<NavigatorState>(debugLabel: 'root');
   final homeKey = GlobalKey<NavigatorState>(debugLabel: 'home');
@@ -63,10 +65,17 @@ final appRouterProvider = Provider<GoRouter>((ref) {
   return GoRouter(
     navigatorKey: rootKey,
     initialLocation: '/',
-    refreshListenable: authRefresh,
+    // Both notifiers only *tell* the router to re-run `redirect`: neither
+    // rebuilds the router itself (see AuthRefreshNotifier).
+    refreshListenable: Listenable.merge([authRefresh, gate]),
     redirect: (context, state) {
       final location = state.matchedLocation;
       final isLoggedIn = authRefresh.isSignedIn;
+
+      // First run goes through onboarding before anything else. No conflict
+      // with the auth rules below: a fresh install is never signed in, and a
+      // returning user already has seen=true.
+      if (!gate.seen && location != '/onboarding') return '/onboarding';
 
       // Rule 37: log entries must carry the screen the user was on. Without
       // this every user-side failure logged `screen=unknown`.

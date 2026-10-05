@@ -88,8 +88,13 @@ class _FakeUserRepository implements UserRepository {
 class _FakeAuthService implements AuthService {
   int signOutCalls = 0;
 
+  /// Thrown instead of signing out.
+  AppException? failure;
+
   @override
   Future<void> signOut() async {
+    final error = failure;
+    if (error != null) throw error;
     signOutCalls++;
   }
 
@@ -165,11 +170,12 @@ void main() {
   });
 
   group('signed-in profile', () {
-    testWidgets('shows the three self-service tiles', (tester) async {
+    testWidgets('shows the four self-service tiles', (tester) async {
       await _pump(tester, session: _session());
 
       expect(find.text('Edit profile'), findsOneWidget);
       expect(find.text('Download my data'), findsOneWidget);
+      expect(find.text('Sign out'), findsOneWidget);
       expect(find.text('Delete my account'), findsOneWidget);
     });
 
@@ -293,6 +299,58 @@ void main() {
       await tester.pumpAndSettle();
 
       expect(find.text('No connection'), findsOneWidget);
+    });
+  });
+
+  group('sign out', () {
+    testWidgets('signs out and shows the sign-in prompt', (tester) async {
+      final repository = _FakeUserRepository();
+      final authService = _FakeAuthService();
+      final container = await _pump(
+        tester,
+        session: _session(),
+        repository: repository,
+        authService: authService,
+      );
+
+      await tester.tap(find.text('Sign out'));
+      await tester.pumpAndSettle();
+
+      expect(authService.signOutCalls, 1);
+
+      // The fake cannot emit onAuthStateChange, so flip the session the way a
+      // real sign-out would and confirm the screen follows it. All overrides
+      // must be restated: updateOverrides replaces the whole set, not one.
+      container.updateOverrides([
+        sessionProvider.overrideWithValue(null),
+        userRepositoryProvider.overrideWithValue(repository),
+        authServiceProvider.overrideWithValue(authService),
+      ]);
+      await tester.pumpAndSettle();
+
+      expect(find.text('Sign in'), findsOneWidget);
+      expect(find.text('Sign out'), findsNothing);
+    });
+
+    testWidgets('a failed sign-out reports the reason', (tester) async {
+      final authService = _FakeAuthService()
+        ..failure = const NetworkException(
+          code: 'network.offline',
+          messageEn: 'No connection',
+          messageNe: 'इन्टरनेट छैन',
+        );
+      await _pump(
+        tester,
+        session: _session(),
+        authService: authService,
+      );
+
+      await tester.tap(find.text('Sign out'));
+      await tester.pumpAndSettle();
+
+      expect(find.text('No connection'), findsOneWidget);
+      expect(find.text('Retry'), findsOneWidget);
+      expect(find.text('Sign out'), findsOneWidget);
     });
   });
 

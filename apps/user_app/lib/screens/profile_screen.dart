@@ -12,14 +12,8 @@ import 'package:models/models.dart';
 /// Account and seller actions.
 ///
 /// Shows the seller entry point when signed in and a sign-in prompt when not.
-/// Deliberately does not offer sign-out yet: that is HYA-202, which owns the
-/// magic-link session lifecycle, and a half-wired sign-out would strand users
-/// in an inconsistent auth state.
-///
-/// The one exception is account deletion below, which calls
-/// `AuthService.signOut` after the server has removed the identity. That is
-/// post-deletion local cleanup through the seam HYA-202 will wire — dropping
-/// a dead session — not session lifecycle, which stays HYA-202's.
+/// Sign-out goes through `AuthService`, the same seam account deletion uses —
+/// one session lifecycle owner (HYA-202), no parallel sign-out paths.
 class ProfileScreen extends ConsumerWidget {
   /// Creates the profile screen.
   const ProfileScreen({super.key});
@@ -137,6 +131,13 @@ class _SelfServiceTiles extends ConsumerWidget {
           onTap: () => _export(context, ref),
         ),
         ListTile(
+          leading: const Icon(Icons.logout_outlined),
+          title: const Text('Sign out'),
+          subtitle:
+              const Text('You can sign back in with a magic link any time'),
+          onTap: () => _signOut(context, ref),
+        ),
+        ListTile(
           leading: Icon(
             Icons.delete_forever_outlined,
             color: Theme.of(context).colorScheme.error,
@@ -181,6 +182,31 @@ class _SelfServiceTiles extends ConsumerWidget {
         ..showSnackBar(
           SnackBar(content: Text(e.localizedForContext(context))),
         );
+    }
+  }
+
+  /// Signs out locally and returns to the signed-out profile state.
+  ///
+  /// No navigation: `/profile` is public, so the screen simply re-renders the
+  /// sign-in prompt once the session is gone. Failures surface bilingually
+  /// with a retry where retryable (Rule 36).
+  Future<void> _signOut(BuildContext context, WidgetRef ref) async {
+    final messenger = ScaffoldMessenger.of(context);
+    try {
+      await ref.read(authServiceProvider).signOut();
+    } on AppException catch (e) {
+      if (!context.mounted) return;
+      messenger.showSnackBar(
+        SnackBar(
+          content: Text(e.localizedForContext(context)),
+          action: e.isRetryable
+              ? SnackBarAction(
+                  label: 'Retry',
+                  onPressed: () => _signOut(context, ref),
+                )
+              : null,
+        ),
+      );
     }
   }
 

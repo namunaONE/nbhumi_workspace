@@ -5,6 +5,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:user_app/main.dart';
+import 'package:user_app/onboarding/onboarding_gate.dart';
 import 'package:user_app/router/app_router.dart';
 import 'package:user_app/screens/onboarding_screen.dart';
 import 'package:user_app/shell/app_shell.dart';
@@ -47,12 +48,21 @@ void main() {
   Future<void> pumpApp(
     WidgetTester tester, {
     Size size = const Size(400, 800),
+    OnboardingGate? gateOverride,
   }) async {
     tester.view.physicalSize = size;
     tester.view.devicePixelRatio = 1.0;
     addTearDown(tester.view.reset);
 
-    await tester.pumpWidget(const ProviderScope(child: UserApp()));
+    await tester.pumpWidget(
+      ProviderScope(
+        overrides: [
+          if (gateOverride != null)
+            onboardingGateProvider.overrideWithValue(gateOverride),
+        ],
+        child: const UserApp(),
+      ),
+    );
     await tester.pump();
     await tester.pumpAndSettle();
   }
@@ -114,6 +124,46 @@ void main() {
       // Guards against a prefix check that would wave through a route the app
       // does not actually have.
       expect(isPublicRoute('/listing'), isFalse);
+    });
+  });
+
+  group('Onboarding gate', () {
+    testWidgets('first run lands on onboarding, not home', (tester) async {
+      final gate = OnboardingGate(seen: false);
+      addTearDown(gate.dispose);
+
+      await pumpApp(tester, gateOverride: gate);
+
+      expect(find.text('Browse listings'), findsOneWidget);
+      expect(find.byType(NavigationBar), findsNothing);
+    });
+
+    testWidgets('completing onboarding persists and goes home',
+        (tester) async {
+      final gate = OnboardingGate(seen: false);
+      addTearDown(gate.dispose);
+
+      await pumpApp(tester, gateOverride: gate);
+      await tester.tap(find.text('Browse listings'));
+      await tester.pumpAndSettle();
+
+      expect(gate.seen, isTrue);
+      final prefs = await SharedPreferences.getInstance();
+      expect(prefs.getBool(OnboardingGate.seenKey), isTrue);
+      expect(find.byType(NavigationBar), findsOneWidget);
+    });
+
+    test('markSeen notifies and writes exactly once', () async {
+      final gate = OnboardingGate(seen: false);
+      addTearDown(gate.dispose);
+      var notified = 0;
+      gate.addListener(() => notified++);
+
+      await gate.markSeen();
+      await gate.markSeen();
+
+      expect(notified, 1);
+      expect(gate.seen, isTrue);
     });
   });
 
