@@ -21,6 +21,10 @@ _KycDocument _$KycDocumentFromJson(Map<String, dynamic> json) => _KycDocument(
   createdAt: json['created_at'] == null
       ? null
       : DateTime.parse(json['created_at'] as String),
+  listingId: json['listing_id'] as String?,
+  updatedAt: json['updated_at'] == null
+      ? null
+      : DateTime.parse(json['updated_at'] as String),
 );
 
 Map<String, dynamic> _$KycDocumentToJson(_KycDocument instance) =>
@@ -33,6 +37,8 @@ Map<String, dynamic> _$KycDocumentToJson(_KycDocument instance) =>
       'reviewed_by': instance.reviewedBy,
       'reviewed_at': instance.reviewedAt?.toIso8601String(),
       'created_at': instance.createdAt?.toIso8601String(),
+      'listing_id': instance.listingId,
+      'updated_at': instance.updatedAt?.toIso8601String(),
     };
 
 const _$KycDocTypeEnumMap = {

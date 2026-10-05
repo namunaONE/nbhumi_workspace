@@ -1,7 +1,9 @@
 import 'package:models/models.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
+import '../repositories/admin_repository.dart';
 import '../repositories/auth_repository.dart';
+import '../repositories/kyc_repository.dart';
 import '../repositories/listing_repository.dart';
 import '../repositories/reference_repository.dart';
 import '../repositories/user_repository.dart';
@@ -26,6 +28,22 @@ AuthRepository authRepository(Ref ref) {
   return AuthRepository(ref.watch(supabaseClientProvider));
 }
 
+/// Admin repository, for the verification queue.
+///
+/// Separate from [listingRepository] because moderation actions are not edits
+/// to a listing the caller owns. Keeping them apart means the seller write path
+/// cannot grow an admin capability by accident.
+///
+/// Re-added with the repository file in the same change. A previous commit
+/// removed this provider on the grounds that `admin_repository.dart` had never
+/// been committed, which left `packages/data` unbuildable on a clean checkout.
+/// The two belong together: neither file alone is useful, and the missing half
+/// is exactly what made the pair look broken.
+@riverpod
+AdminRepository adminRepository(Ref ref) {
+  return SupabaseAdminRepository(ref.watch(supabaseClientProvider));
+}
+
 /// Auth service, for the admin panel's password sign-in.
 ///
 /// Takes the auth client rather than the whole `SupabaseClient` because that is
@@ -41,6 +59,16 @@ AuthService authService(Ref ref) {
 @riverpod
 UserRepository userRepository(Ref ref) {
   return UserRepository(ref.watch(supabaseClientProvider));
+}
+
+/// Seller KYC repository (HYA-264 Tier 2, HYA-265 Tier 3).
+///
+/// Separate from [userRepository] because KYC is file upload + RPC submit,
+/// not profile editing — and separate from [adminRepository] because verdicts
+/// are moderation, not seller writes.
+@riverpod
+KycRepository kycRepository(Ref ref) {
+  return KycRepository(ref.watch(supabaseClientProvider));
 }
 
 /// One user's profile, by id.

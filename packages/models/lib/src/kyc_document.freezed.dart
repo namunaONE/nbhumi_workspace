@@ -16,7 +16,8 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$KycDocument {
 
- String get id; String get profileId; KycDocType get docType; String get storagePath; KycDocStatus get status; String? get reviewedBy; DateTime? get reviewedAt; DateTime? get createdAt;
+ String get id; String get profileId; KycDocType get docType; String get storagePath; KycDocStatus get status; String? get reviewedBy; DateTime? get reviewedAt; DateTime? get createdAt;/// Null for Tier 2 identity checks; set for Tier 3 per-listing checks.
+ String? get listingId; DateTime? get updatedAt;
 /// Create a copy of KycDocument
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -30,20 +31,20 @@ $KycDocumentCopyWith<KycDocument> get copyWith => _$KycDocumentCopyWithImpl<KycD
 @override
 bool operator ==(Object other) {
   final _this = this as KycDocument;
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is KycDocument&&(identical(other.id, _this.id) || other.id == _this.id)&&(identical(other.profileId, _this.profileId) || other.profileId == _this.profileId)&&(identical(other.docType, _this.docType) || other.docType == _this.docType)&&(identical(other.storagePath, _this.storagePath) || other.storagePath == _this.storagePath)&&(identical(other.status, _this.status) || other.status == _this.status)&&(identical(other.reviewedBy, _this.reviewedBy) || other.reviewedBy == _this.reviewedBy)&&(identical(other.reviewedAt, _this.reviewedAt) || other.reviewedAt == _this.reviewedAt)&&(identical(other.createdAt, _this.createdAt) || other.createdAt == _this.createdAt));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is KycDocument&&(identical(other.id, _this.id) || other.id == _this.id)&&(identical(other.profileId, _this.profileId) || other.profileId == _this.profileId)&&(identical(other.docType, _this.docType) || other.docType == _this.docType)&&(identical(other.storagePath, _this.storagePath) || other.storagePath == _this.storagePath)&&(identical(other.status, _this.status) || other.status == _this.status)&&(identical(other.reviewedBy, _this.reviewedBy) || other.reviewedBy == _this.reviewedBy)&&(identical(other.reviewedAt, _this.reviewedAt) || other.reviewedAt == _this.reviewedAt)&&(identical(other.createdAt, _this.createdAt) || other.createdAt == _this.createdAt)&&(identical(other.listingId, _this.listingId) || other.listingId == _this.listingId)&&(identical(other.updatedAt, _this.updatedAt) || other.updatedAt == _this.updatedAt));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
 int get hashCode {
   final _this = this as KycDocument;
-  return Object.hash(runtimeType,_this.id,_this.profileId,_this.docType,_this.storagePath,_this.status,_this.reviewedBy,_this.reviewedAt,_this.createdAt);
+  return Object.hash(runtimeType,_this.id,_this.profileId,_this.docType,_this.storagePath,_this.status,_this.reviewedBy,_this.reviewedAt,_this.createdAt,_this.listingId,_this.updatedAt);
 }
 
 @override
 String toString() {
   final _this = this as KycDocument;
-  return 'KycDocument(id: ${_this.id}, profileId: ${_this.profileId}, docType: ${_this.docType}, storagePath: ${_this.storagePath}, status: ${_this.status}, reviewedBy: ${_this.reviewedBy}, reviewedAt: ${_this.reviewedAt}, createdAt: ${_this.createdAt})';
+  return 'KycDocument(id: ${_this.id}, profileId: ${_this.profileId}, docType: ${_this.docType}, storagePath: ${_this.storagePath}, status: ${_this.status}, reviewedBy: ${_this.reviewedBy}, reviewedAt: ${_this.reviewedAt}, createdAt: ${_this.createdAt}, listingId: ${_this.listingId}, updatedAt: ${_this.updatedAt})';
 }
 
 
@@ -54,7 +55,7 @@ abstract mixin class $KycDocumentCopyWith<$Res>  {
   factory $KycDocumentCopyWith(KycDocument value, $Res Function(KycDocument) _then) = _$KycDocumentCopyWithImpl;
 @useResult
 $Res call({
- String id, String profileId, KycDocType docType, String storagePath, KycDocStatus status, String? reviewedBy, DateTime? reviewedAt, DateTime? createdAt
+ String id, String profileId, KycDocType docType, String storagePath, KycDocStatus status, String? reviewedBy, DateTime? reviewedAt, DateTime? createdAt, String? listingId, DateTime? updatedAt
 });
 
 
@@ -71,7 +72,7 @@ class _$KycDocumentCopyWithImpl<$Res>
 
 /// Create a copy of KycDocument
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? profileId = null,Object? docType = null,Object? storagePath = null,Object? status = null,Object? reviewedBy = freezed,Object? reviewedAt = freezed,Object? createdAt = freezed,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? profileId = null,Object? docType = null,Object? storagePath = null,Object? status = null,Object? reviewedBy = freezed,Object? reviewedAt = freezed,Object? createdAt = freezed,Object? listingId = freezed,Object? updatedAt = freezed,}) {
   return _then(KycDocument(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as String,profileId: null == profileId ? _self.profileId : profileId // ignore: cast_nullable_to_non_nullable
@@ -81,6 +82,8 @@ as String,status: null == status ? _self.status : status // ignore: cast_nullabl
 as KycDocStatus,reviewedBy: freezed == reviewedBy ? _self.reviewedBy : reviewedBy // ignore: cast_nullable_to_non_nullable
 as String?,reviewedAt: freezed == reviewedAt ? _self.reviewedAt : reviewedAt // ignore: cast_nullable_to_non_nullable
 as DateTime?,createdAt: freezed == createdAt ? _self.createdAt : createdAt // ignore: cast_nullable_to_non_nullable
+as DateTime?,listingId: freezed == listingId ? _self.listingId : listingId // ignore: cast_nullable_to_non_nullable
+as String?,updatedAt: freezed == updatedAt ? _self.updatedAt : updatedAt // ignore: cast_nullable_to_non_nullable
 as DateTime?,
   ));
 }
@@ -163,10 +166,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String id,  String profileId,  KycDocType docType,  String storagePath,  KycDocStatus status,  String? reviewedBy,  DateTime? reviewedAt,  DateTime? createdAt)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String id,  String profileId,  KycDocType docType,  String storagePath,  KycDocStatus status,  String? reviewedBy,  DateTime? reviewedAt,  DateTime? createdAt,  String? listingId,  DateTime? updatedAt)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _KycDocument() when $default != null:
-return $default(_that.id,_that.profileId,_that.docType,_that.storagePath,_that.status,_that.reviewedBy,_that.reviewedAt,_that.createdAt);case _:
+return $default(_that.id,_that.profileId,_that.docType,_that.storagePath,_that.status,_that.reviewedBy,_that.reviewedAt,_that.createdAt,_that.listingId,_that.updatedAt);case _:
   return orElse();
 
 }
@@ -184,10 +187,10 @@ return $default(_that.id,_that.profileId,_that.docType,_that.storagePath,_that.s
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String id,  String profileId,  KycDocType docType,  String storagePath,  KycDocStatus status,  String? reviewedBy,  DateTime? reviewedAt,  DateTime? createdAt)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String id,  String profileId,  KycDocType docType,  String storagePath,  KycDocStatus status,  String? reviewedBy,  DateTime? reviewedAt,  DateTime? createdAt,  String? listingId,  DateTime? updatedAt)  $default,) {final _that = this;
 switch (_that) {
 case _KycDocument():
-return $default(_that.id,_that.profileId,_that.docType,_that.storagePath,_that.status,_that.reviewedBy,_that.reviewedAt,_that.createdAt);}
+return $default(_that.id,_that.profileId,_that.docType,_that.storagePath,_that.status,_that.reviewedBy,_that.reviewedAt,_that.createdAt,_that.listingId,_that.updatedAt);}
 }
 /// A variant of `when` that fallback to returning `null`
 ///
@@ -201,10 +204,10 @@ return $default(_that.id,_that.profileId,_that.docType,_that.storagePath,_that.s
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String id,  String profileId,  KycDocType docType,  String storagePath,  KycDocStatus status,  String? reviewedBy,  DateTime? reviewedAt,  DateTime? createdAt)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String id,  String profileId,  KycDocType docType,  String storagePath,  KycDocStatus status,  String? reviewedBy,  DateTime? reviewedAt,  DateTime? createdAt,  String? listingId,  DateTime? updatedAt)?  $default,) {final _that = this;
 switch (_that) {
 case _KycDocument() when $default != null:
-return $default(_that.id,_that.profileId,_that.docType,_that.storagePath,_that.status,_that.reviewedBy,_that.reviewedAt,_that.createdAt);case _:
+return $default(_that.id,_that.profileId,_that.docType,_that.storagePath,_that.status,_that.reviewedBy,_that.reviewedAt,_that.createdAt,_that.listingId,_that.updatedAt);case _:
   return null;
 
 }
@@ -216,7 +219,7 @@ return $default(_that.id,_that.profileId,_that.docType,_that.storagePath,_that.s
 
 @JsonSerializable(fieldRename: FieldRename.snake)
 class _KycDocument implements KycDocument {
-  const _KycDocument({required this.id, required this.profileId, required this.docType, required this.storagePath, this.status = KycDocStatus.pending, this.reviewedBy, this.reviewedAt, this.createdAt});
+  const _KycDocument({required this.id, required this.profileId, required this.docType, required this.storagePath, this.status = KycDocStatus.pending, this.reviewedBy, this.reviewedAt, this.createdAt, this.listingId, this.updatedAt});
   factory _KycDocument.fromJson(Map<String, dynamic> json) => _$KycDocumentFromJson(json);
 
 @override final  String id;
@@ -227,6 +230,9 @@ class _KycDocument implements KycDocument {
 @override final  String? reviewedBy;
 @override final  DateTime? reviewedAt;
 @override final  DateTime? createdAt;
+/// Null for Tier 2 identity checks; set for Tier 3 per-listing checks.
+@override final  String? listingId;
+@override final  DateTime? updatedAt;
 
 /// Create a copy of KycDocument
 /// with the given fields replaced by the non-null parameter values.
@@ -241,18 +247,18 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-    return identical(this, other) || (other.runtimeType == runtimeType&&other is _KycDocument&&(identical(other.id, id) || other.id == id)&&(identical(other.profileId, profileId) || other.profileId == profileId)&&(identical(other.docType, docType) || other.docType == docType)&&(identical(other.storagePath, storagePath) || other.storagePath == storagePath)&&(identical(other.status, status) || other.status == status)&&(identical(other.reviewedBy, reviewedBy) || other.reviewedBy == reviewedBy)&&(identical(other.reviewedAt, reviewedAt) || other.reviewedAt == reviewedAt)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt));
+    return identical(this, other) || (other.runtimeType == runtimeType&&other is _KycDocument&&(identical(other.id, id) || other.id == id)&&(identical(other.profileId, profileId) || other.profileId == profileId)&&(identical(other.docType, docType) || other.docType == docType)&&(identical(other.storagePath, storagePath) || other.storagePath == storagePath)&&(identical(other.status, status) || other.status == status)&&(identical(other.reviewedBy, reviewedBy) || other.reviewedBy == reviewedBy)&&(identical(other.reviewedAt, reviewedAt) || other.reviewedAt == reviewedAt)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt)&&(identical(other.listingId, listingId) || other.listingId == listingId)&&(identical(other.updatedAt, updatedAt) || other.updatedAt == updatedAt));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
 int get hashCode {
-    return Object.hash(runtimeType,id,profileId,docType,storagePath,status,reviewedBy,reviewedAt,createdAt);
+    return Object.hash(runtimeType,id,profileId,docType,storagePath,status,reviewedBy,reviewedAt,createdAt,listingId,updatedAt);
 }
 
 @override
 String toString() {
-    return 'KycDocument(id: $id, profileId: $profileId, docType: $docType, storagePath: $storagePath, status: $status, reviewedBy: $reviewedBy, reviewedAt: $reviewedAt, createdAt: $createdAt)';
+    return 'KycDocument(id: $id, profileId: $profileId, docType: $docType, storagePath: $storagePath, status: $status, reviewedBy: $reviewedBy, reviewedAt: $reviewedAt, createdAt: $createdAt, listingId: $listingId, updatedAt: $updatedAt)';
 }
 
 
@@ -263,7 +269,7 @@ abstract mixin class _$KycDocumentCopyWith<$Res> implements $KycDocumentCopyWith
   factory _$KycDocumentCopyWith(_KycDocument value, $Res Function(_KycDocument) _then) = __$KycDocumentCopyWithImpl;
 @override @useResult
 $Res call({
- String id, String profileId, KycDocType docType, String storagePath, KycDocStatus status, String? reviewedBy, DateTime? reviewedAt, DateTime? createdAt
+ String id, String profileId, KycDocType docType, String storagePath, KycDocStatus status, String? reviewedBy, DateTime? reviewedAt, DateTime? createdAt, String? listingId, DateTime? updatedAt
 });
 
 
@@ -280,7 +286,7 @@ class __$KycDocumentCopyWithImpl<$Res>
 
 /// Create a copy of KycDocument
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? profileId = null,Object? docType = null,Object? storagePath = null,Object? status = null,Object? reviewedBy = freezed,Object? reviewedAt = freezed,Object? createdAt = freezed,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? profileId = null,Object? docType = null,Object? storagePath = null,Object? status = null,Object? reviewedBy = freezed,Object? reviewedAt = freezed,Object? createdAt = freezed,Object? listingId = freezed,Object? updatedAt = freezed,}) {
   return _then(_KycDocument(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as String,profileId: null == profileId ? _self.profileId : profileId // ignore: cast_nullable_to_non_nullable
@@ -290,6 +296,8 @@ as String,status: null == status ? _self.status : status // ignore: cast_nullabl
 as KycDocStatus,reviewedBy: freezed == reviewedBy ? _self.reviewedBy : reviewedBy // ignore: cast_nullable_to_non_nullable
 as String?,reviewedAt: freezed == reviewedAt ? _self.reviewedAt : reviewedAt // ignore: cast_nullable_to_non_nullable
 as DateTime?,createdAt: freezed == createdAt ? _self.createdAt : createdAt // ignore: cast_nullable_to_non_nullable
+as DateTime?,listingId: freezed == listingId ? _self.listingId : listingId // ignore: cast_nullable_to_non_nullable
+as String?,updatedAt: freezed == updatedAt ? _self.updatedAt : updatedAt // ignore: cast_nullable_to_non_nullable
 as DateTime?,
   ));
 }

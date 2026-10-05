@@ -118,6 +118,83 @@ final class AuthRepositoryProvider
 
 String _$authRepositoryHash() => r'ad0d2dbdcd16330667642d40541f556a89f93328';
 
+/// Admin repository, for the verification queue.
+///
+/// Separate from [listingRepository] because moderation actions are not edits
+/// to a listing the caller owns. Keeping them apart means the seller write path
+/// cannot grow an admin capability by accident.
+///
+/// Re-added with the repository file in the same change. A previous commit
+/// removed this provider on the grounds that `admin_repository.dart` had never
+/// been committed, which left `packages/data` unbuildable on a clean checkout.
+/// The two belong together: neither file alone is useful, and the missing half
+/// is exactly what made the pair look broken.
+
+@ProviderFor(adminRepository)
+final adminRepositoryProvider = AdminRepositoryProvider._();
+
+/// Admin repository, for the verification queue.
+///
+/// Separate from [listingRepository] because moderation actions are not edits
+/// to a listing the caller owns. Keeping them apart means the seller write path
+/// cannot grow an admin capability by accident.
+///
+/// Re-added with the repository file in the same change. A previous commit
+/// removed this provider on the grounds that `admin_repository.dart` had never
+/// been committed, which left `packages/data` unbuildable on a clean checkout.
+/// The two belong together: neither file alone is useful, and the missing half
+/// is exactly what made the pair look broken.
+
+final class AdminRepositoryProvider
+    extends
+        $FunctionalProvider<AdminRepository, AdminRepository, AdminRepository>
+    with $Provider<AdminRepository> {
+  /// Admin repository, for the verification queue.
+  ///
+  /// Separate from [listingRepository] because moderation actions are not edits
+  /// to a listing the caller owns. Keeping them apart means the seller write path
+  /// cannot grow an admin capability by accident.
+  ///
+  /// Re-added with the repository file in the same change. A previous commit
+  /// removed this provider on the grounds that `admin_repository.dart` had never
+  /// been committed, which left `packages/data` unbuildable on a clean checkout.
+  /// The two belong together: neither file alone is useful, and the missing half
+  /// is exactly what made the pair look broken.
+  AdminRepositoryProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'adminRepositoryProvider',
+        isAutoDispose: true,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$adminRepositoryHash();
+
+  @$internal
+  @override
+  $ProviderElement<AdminRepository> $createElement($ProviderPointer pointer) =>
+      $ProviderElement(pointer);
+
+  @override
+  AdminRepository create(Ref ref) {
+    return adminRepository(ref);
+  }
+
+  /// {@macro riverpod.override_with_value}
+  Override overrideWithValue(AdminRepository value) {
+    return $ProviderOverride(
+      origin: this,
+      providerOverride: $SyncValueProvider<AdminRepository>(value),
+    );
+  }
+}
+
+String _$adminRepositoryHash() => r'c9f5225539e3b4de62557a4c70ad98e063e521c5';
+
 /// Auth service, for the admin panel's password sign-in.
 ///
 /// Takes the auth client rather than the whole `SupabaseClient` because that is
@@ -224,6 +301,64 @@ final class UserRepositoryProvider
 }
 
 String _$userRepositoryHash() => r'a6928f0216eec406ea121d36fba16beec4fc6f57';
+
+/// Seller KYC repository (HYA-264 Tier 2, HYA-265 Tier 3).
+///
+/// Separate from [userRepository] because KYC is file upload + RPC submit,
+/// not profile editing — and separate from [adminRepository] because verdicts
+/// are moderation, not seller writes.
+
+@ProviderFor(kycRepository)
+final kycRepositoryProvider = KycRepositoryProvider._();
+
+/// Seller KYC repository (HYA-264 Tier 2, HYA-265 Tier 3).
+///
+/// Separate from [userRepository] because KYC is file upload + RPC submit,
+/// not profile editing — and separate from [adminRepository] because verdicts
+/// are moderation, not seller writes.
+
+final class KycRepositoryProvider
+    extends $FunctionalProvider<KycRepository, KycRepository, KycRepository>
+    with $Provider<KycRepository> {
+  /// Seller KYC repository (HYA-264 Tier 2, HYA-265 Tier 3).
+  ///
+  /// Separate from [userRepository] because KYC is file upload + RPC submit,
+  /// not profile editing — and separate from [adminRepository] because verdicts
+  /// are moderation, not seller writes.
+  KycRepositoryProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'kycRepositoryProvider',
+        isAutoDispose: true,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$kycRepositoryHash();
+
+  @$internal
+  @override
+  $ProviderElement<KycRepository> $createElement($ProviderPointer pointer) =>
+      $ProviderElement(pointer);
+
+  @override
+  KycRepository create(Ref ref) {
+    return kycRepository(ref);
+  }
+
+  /// {@macro riverpod.override_with_value}
+  Override overrideWithValue(KycRepository value) {
+    return $ProviderOverride(
+      origin: this,
+      providerOverride: $SyncValueProvider<KycRepository>(value),
+    );
+  }
+}
+
+String _$kycRepositoryHash() => r'5a9f7a90c80a81be37ba01a502b9e32999aca9ed';
 
 /// One user's profile, by id.
 ///
