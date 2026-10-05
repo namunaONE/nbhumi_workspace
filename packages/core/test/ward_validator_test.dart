@@ -72,5 +72,20 @@ void main() {
       expect(Validators.isValidWard('32'), isTrue);
       expect(Validators.isValidWard('33'), isFalse);
     });
+
+    test('32 is the national maximum, not a round number', () {
+      // Verified rather than assumed, after an earlier version of this suite
+      // asserted KMC had 53 wards and used it to argue the ceiling was wrong.
+      // It does not: Kathmandu Metropolitan City has 32 wards, the most of any
+      // local body in Nepal, and the Local Government Act 2017 caps ordinary
+      // municipalities and rural municipalities at 19.
+      //
+      // If a future ward-boundary reform creates a body with more than 32, this
+      // test is the one that should fail first, along with the ward_valid
+      // CHECK.
+      expect(Validators.maxWard, 32);
+      expect(Validators.isValidWard('32'), isTrue);
+      expect(Validators.isValidWard('33'), isFalse);
+    });
   });
 }

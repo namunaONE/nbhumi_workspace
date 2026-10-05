@@ -195,9 +195,11 @@ void main() {
       expect(find.textContaining('1-32'), findsOneWidget);
     });
 
-    testWidgets('warns that some bodies have more wards', (tester) async {
-      // Stated in the UI rather than left for the seller to discover by being
-      // rejected.
+    testWidgets('states the ward range and that 32 is the national maximum',
+        (tester) async {
+      // KMC is the largest local body in Nepal at 32 wards, so the ceiling is
+      // the real maximum rather than an arbitrary cap. An earlier version of
+      // this note claimed KMC had 53 wards, which is false.
       await tester.pumpWidget(
         _app(
           LocationStep(
@@ -215,6 +217,8 @@ void main() {
         find.textContaining('Kathmandu Metropolitan City'),
         findsOneWidget,
       );
+      expect(find.textContaining('32'), findsWidgets);
+      expect(find.textContaining('more wards'), findsNothing);
     });
 
     testWidgets('rejects a ward the database would reject', (tester) async {

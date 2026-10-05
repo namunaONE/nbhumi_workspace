@@ -92,9 +92,8 @@ class LocationStep extends StatelessWidget {
         ),
         const WizardNote(
           icon: Icons.map_outlined,
-          text: 'Ward numbers follow the published range for local bodies. '
-              'Some bodies, including Kathmandu Metropolitan City, have more '
-              'wards than the field currently allows.',
+          text: 'Ward numbers run from 1 to 32. Kathmandu Metropolitan City '
+              'has the most wards of any local body in Nepal, at 32.',
         ),
       ],
     );

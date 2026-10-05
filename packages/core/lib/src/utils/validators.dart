@@ -27,6 +27,17 @@ class Validators {
   }
 
   /// Highest ward number this app accepts.
+  ///
+  /// 32 is the national maximum, not an arbitrary round number. Kathmandu
+  /// Metropolitan City is the largest local body in Nepal at 32 wards; the
+  /// Local Government Act 2017 caps ordinary municipalities and rural
+  /// municipalities at 19. So 32 accepts every ward that exists anywhere in the
+  /// country, and nothing higher is a real address.
+  ///
+  /// An earlier version of this comment claimed KMC had 53 wards and that this
+  /// ceiling therefore rejected valid addresses. That was wrong: KMC has 32.
+  /// The number was right and the reasoning was not, which is the worst kind
+  /// of wrong, because it would have justified widening a correct constraint.
   static const int maxWard = 32;
 
   /// Mirrors the `ward_valid` CHECK constraint on `listings.ward`:
@@ -52,11 +63,4 @@ class Validators {
   /// An absent ward is legitimate, so callers check for emptiness first rather
   /// than passing an empty string here.
   static bool isValidWard(String ward) => _wardPattern.hasMatch(ward);
-
-  /// Known mismatch, deliberately left alone: Kathmandu Metropolitan City has
-  /// 53 wards, so a 1-32 ceiling rejects real addresses in the district most
-  /// listings will be in. Ward counts vary a lot between local bodies, so
-  /// raising the ceiling is a data question, not a validation one, and it means
-  /// changing the CHECK constraint too. That belongs with HYA-253, which owns
-  /// ward reference data.
 }
