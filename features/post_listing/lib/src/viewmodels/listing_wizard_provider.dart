@@ -129,16 +129,23 @@ class ListingWizard extends _$ListingWizard {
   void setDescription(String value) =>
       state = state.copyWith(description: value);
 
-  /// Records the district, and clears the area units of the other region.
+  /// Records the district, and clears everything below it.
   ///
-  /// Clearing matters: a seller who typed 2 bigha, then changed district to one
-  /// that uses hill units, would otherwise have both sets stored and an
-  /// `area_display` computed from the wrong one.
+  /// Clearing matters twice over. A municipality belongs to exactly one
+  /// district, so keeping Kathmandu's selection after switching to Lalitpur
+  /// would submit a (district, city) pair the composite city FK refuses. And a
+  /// seller who typed 2 bigha, then changed district to one that uses hill
+  /// units, would otherwise have both sets stored and an `area_display`
+  /// computed from the wrong one.
   void setDistrict(District district) {
+    if (district == state.district) return;
     final changedRegion = state.district != null &&
         state.district!.region != district.region;
     state = state.copyWith(
       district: district,
+      clearMunicipality: true,
+      city: '',
+      ward: '',
       areaRopani: changedRegion ? '' : null,
       areaAana: changedRegion ? '' : null,
       areaPaisa: changedRegion ? '' : null,
@@ -149,8 +156,22 @@ class ListingWizard extends _$ListingWizard {
     );
   }
 
-  /// Records the city or municipality name.
-  void setCity(String value) => state = state.copyWith(city: value);
+  /// Records the municipality, syncs the submitted city name, and clears the
+  /// ward.
+  ///
+  /// The ward is cleared because its bound just changed: ward 25 is valid in
+  /// Kathmandu Metropolitan City and out of range in a 9-ward body, so a stale
+  /// ward would fail validation with no visible cause. `city` is assigned
+  /// rather than typed anywhere because the composite city FK only accepts a
+  /// municipality name within the chosen district.
+  void setMunicipality(Municipality municipality) {
+    if (municipality == state.municipality) return;
+    state = state.copyWith(
+      municipality: municipality,
+      city: municipality.name,
+      ward: '',
+    );
+  }
 
   /// Records the ward. Optional, so blank is a legitimate value.
   void setWard(String value) => state = state.copyWith(ward: value);

@@ -1,6 +1,5 @@
 import 'package:models/models.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
-import 'package:supabase_flutter/supabase_flutter.dart' show GoTrueClient;
 
 import '../repositories/auth_repository.dart';
 import '../repositories/listing_repository.dart';
@@ -44,10 +43,28 @@ UserRepository userRepository(Ref ref) {
   return UserRepository(ref.watch(supabaseClientProvider));
 }
 
-/// Reference data: districts, and later municipalities and wards.
+/// Reference data: districts, municipalities and wards.
 @riverpod
 ReferenceRepository referenceRepository(Ref ref) {
   return ReferenceRepository(ref.watch(supabaseClientProvider));
+}
+
+/// Municipalities in one district, ordered by name.
+///
+/// A family keyed on the district name so each district's list is cached
+/// separately and switching districts does not refetch the previous one. An
+/// empty district returns an empty list rather than all 753 rows, so the
+/// wizard cannot accidentally render the whole country before a district is
+/// picked.
+@riverpod
+Future<List<Municipality>> municipalities(
+  Ref ref, {
+  String district = '',
+}) {
+  if (district.isEmpty) return Future.value(const <Municipality>[]);
+  return ref.watch(referenceRepositoryProvider).getMunicipalities(
+        district: district,
+      );
 }
 
 /// Every district, ordered by name.

@@ -18,9 +18,38 @@ const District chitwan = District(
   region: Region.terai,
 );
 
+const Municipality kathmanduMetro = Municipality(
+  id: 'm-ktm',
+  slug: 'kathmandu-kathmandu',
+  district: 'Kathmandu',
+  name: 'Kathmandu',
+  type: MunicipalityType.metropolitan,
+  wardCount: 32,
+);
+
+const Municipality kirtipur = Municipality(
+  id: 'm-kir',
+  slug: 'kathmandu-kirtipur',
+  district: 'Kathmandu',
+  name: 'Kirtipur',
+  type: MunicipalityType.municipality,
+  wardCount: 10,
+);
+
+const Municipality lalitpurMetro = Municipality(
+  id: 'm-lal',
+  slug: 'lalitpur-lalitpur',
+  district: 'Lalitpur',
+  name: 'Lalitpur',
+  type: MunicipalityType.metropolitan,
+  wardCount: 29,
+);
+
 /// A state that passes every step.
 ListingWizardState _complete({
   District district = kathmandu,
+  Municipality municipality = kathmanduMetro,
+  String city = 'Kathmandu',
   String areaAana = '5',
   String areaPaisa = '4',
   String areaBigha = '',
@@ -31,7 +60,8 @@ ListingWizardState _complete({
       listingPurpose: ListingPurpose.sale,
       title: 'Shanti Villa',
       district: district,
-      city: 'Kathmandu',
+      municipality: municipality,
+      city: city,
       areaAana: areaAana,
       areaPaisa: areaPaisa,
       areaBigha: areaBigha,
@@ -60,11 +90,71 @@ void main() {
   });
 
   group('step two: location', () {
-    test('requires a district and a city', () {
+    test('requires a district and a municipality', () {
       const state = ListingWizardState();
       final errors = state.validate(WizardStep.location).errors;
 
-      expect(errors.keys, containsAll(<String>['district', 'city']));
+      expect(
+        errors.keys,
+        containsAll(<String>['district', 'municipality']),
+      );
+      // No free-text city to require: the municipality is the city, chosen
+      // from the district's own bodies so the composite city FK holds.
+      expect(errors.keys, isNot(contains('city')));
+    });
+
+    test('rejects a municipality from another district', () {
+      // Defence in depth for a state assembled any other way. The UI cannot
+      // produce this (the dropdown is district-scoped), but the database
+      // refuses the pair with a bare 23503, so validation names it first.
+      final state = _complete().copyWith(municipality: lalitpurMetro);
+      final errors = state.validate(WizardStep.location).errors;
+
+      expect(errors['municipality'], contains('not in Kathmandu'));
+    });
+
+    test('accepts ward 33 in Pokhara, the one body that has it', () {
+      // 33 is rejected under KMC above and accepted here: the bound follows
+      // the municipality, not the global ceiling.
+      const pokhara = Municipality(
+        id: 'm-pok',
+        slug: 'kaski-pokhara',
+        district: 'Kaski',
+        name: 'Pokhara',
+        type: MunicipalityType.metropolitan,
+        wardCount: 33,
+      );
+      const pokharaDistrict = District(
+        id: 'd-kas',
+        name: 'Kaski',
+        province: 'Gandaki',
+        region: Region.hill,
+      );
+      final state = _complete(district: pokharaDistrict).copyWith(
+        municipality: pokhara,
+        city: 'Pokhara',
+        ward: '33',
+      );
+      expect(state.validate(WizardStep.location).isValid, isTrue);
+    });
+
+    test('accepts a ward at exactly the body\u2019s count', () {
+      expect(
+        _complete().copyWith(municipality: kirtipur, ward: '10').validate(
+              WizardStep.location,
+            ).isValid,
+        isTrue,
+      );
+    });
+
+    test('rejects a ward above the body\u2019s count', () {
+      // Globally valid (KMC has 32) but out of range for Kirtipur's 10.
+      final state =
+          _complete().copyWith(municipality: kirtipur, ward: '11');
+      expect(
+        state.validate(WizardStep.location)['ward'],
+        'Kirtipur has 10 wards',
+      );
     });
 
     test('ward is optional', () {
@@ -76,7 +166,7 @@ void main() {
     });
 
     test('accepts a ward inside the agreed range', () {
-      for (final ward in <String>['1', '16', '33']) {
+      for (final ward in <String>['1', '16', '32']) {
         expect(
           _complete().copyWith(ward: ward).validate(WizardStep.location)
               .isValid,

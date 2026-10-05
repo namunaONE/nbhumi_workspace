@@ -120,7 +120,7 @@ String _$authRepositoryHash() => r'ad0d2dbdcd16330667642d40541f556a89f93328';
 
 /// Auth service, for the admin panel's password sign-in.
 ///
-/// Takes the [GoTrueClient] rather than the [SupabaseClient] because that is
+/// Takes the auth client rather than the whole `SupabaseClient` because that is
 /// what it wraps, and because `signInWithPassword` has no business reaching for
 /// storage or realtime. See `AuthService` for why the user app's magic link and
 /// the admin panel's password are deliberately different methods.
@@ -130,7 +130,7 @@ final authServiceProvider = AuthServiceProvider._();
 
 /// Auth service, for the admin panel's password sign-in.
 ///
-/// Takes the [GoTrueClient] rather than the [SupabaseClient] because that is
+/// Takes the auth client rather than the whole `SupabaseClient` because that is
 /// what it wraps, and because `signInWithPassword` has no business reaching for
 /// storage or realtime. See `AuthService` for why the user app's magic link and
 /// the admin panel's password are deliberately different methods.
@@ -140,7 +140,7 @@ final class AuthServiceProvider
     with $Provider<AuthService> {
   /// Auth service, for the admin panel's password sign-in.
   ///
-  /// Takes the [GoTrueClient] rather than the [SupabaseClient] because that is
+  /// Takes the auth client rather than the whole `SupabaseClient` because that is
   /// what it wraps, and because `signInWithPassword` has no business reaching for
   /// storage or realtime. See `AuthService` for why the user app's magic link and
   /// the admin panel's password are deliberately different methods.
@@ -225,12 +225,12 @@ final class UserRepositoryProvider
 
 String _$userRepositoryHash() => r'a6928f0216eec406ea121d36fba16beec4fc6f57';
 
-/// Reference data: districts, and later municipalities and wards.
+/// Reference data: districts, municipalities and wards.
 
 @ProviderFor(referenceRepository)
 final referenceRepositoryProvider = ReferenceRepositoryProvider._();
 
-/// Reference data: districts, and later municipalities and wards.
+/// Reference data: districts, municipalities and wards.
 
 final class ReferenceRepositoryProvider
     extends
@@ -240,7 +240,7 @@ final class ReferenceRepositoryProvider
           ReferenceRepository
         >
     with $Provider<ReferenceRepository> {
-  /// Reference data: districts, and later municipalities and wards.
+  /// Reference data: districts, municipalities and wards.
   ReferenceRepositoryProvider._()
     : super(
         from: null,
@@ -277,6 +277,122 @@ final class ReferenceRepositoryProvider
 
 String _$referenceRepositoryHash() =>
     r'f03cdc700d529adbeed98180ef7f33ad281d5cf4';
+
+/// Municipalities in one district, ordered by name.
+///
+/// A family keyed on the district name so each district's list is cached
+/// separately and switching districts does not refetch the previous one. An
+/// empty district returns an empty list rather than all 753 rows, so the
+/// wizard cannot accidentally render the whole country before a district is
+/// picked.
+
+@ProviderFor(municipalities)
+final municipalitiesProvider = MunicipalitiesFamily._();
+
+/// Municipalities in one district, ordered by name.
+///
+/// A family keyed on the district name so each district's list is cached
+/// separately and switching districts does not refetch the previous one. An
+/// empty district returns an empty list rather than all 753 rows, so the
+/// wizard cannot accidentally render the whole country before a district is
+/// picked.
+
+final class MunicipalitiesProvider
+    extends
+        $FunctionalProvider<
+          AsyncValue<List<Municipality>>,
+          List<Municipality>,
+          FutureOr<List<Municipality>>
+        >
+    with
+        $FutureModifier<List<Municipality>>,
+        $FutureProvider<List<Municipality>> {
+  /// Municipalities in one district, ordered by name.
+  ///
+  /// A family keyed on the district name so each district's list is cached
+  /// separately and switching districts does not refetch the previous one. An
+  /// empty district returns an empty list rather than all 753 rows, so the
+  /// wizard cannot accidentally render the whole country before a district is
+  /// picked.
+  MunicipalitiesProvider._({
+    required MunicipalitiesFamily super.from,
+    required String super.argument,
+  }) : super(
+         retry: null,
+         name: r'municipalitiesProvider',
+         isAutoDispose: true,
+         dependencies: null,
+         $allTransitiveDependencies: null,
+       );
+
+  @override
+  String debugGetCreateSourceHash() => _$municipalitiesHash();
+
+  @override
+  String toString() {
+    return r'municipalitiesProvider'
+        ''
+        '($argument)';
+  }
+
+  @$internal
+  @override
+  $FutureProviderElement<List<Municipality>> $createElement(
+    $ProviderPointer pointer,
+  ) => $FutureProviderElement(pointer);
+
+  @override
+  FutureOr<List<Municipality>> create(Ref ref) {
+    final argument = this.argument as String;
+    return municipalities(ref, district: argument);
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return other is MunicipalitiesProvider && other.argument == argument;
+  }
+
+  @override
+  int get hashCode {
+    return argument.hashCode;
+  }
+}
+
+String _$municipalitiesHash() => r'b1fa717a17618b090139bae7fb412216277c38dd';
+
+/// Municipalities in one district, ordered by name.
+///
+/// A family keyed on the district name so each district's list is cached
+/// separately and switching districts does not refetch the previous one. An
+/// empty district returns an empty list rather than all 753 rows, so the
+/// wizard cannot accidentally render the whole country before a district is
+/// picked.
+
+final class MunicipalitiesFamily extends $Family
+    with $FunctionalFamilyOverride<FutureOr<List<Municipality>>, String> {
+  MunicipalitiesFamily._()
+    : super(
+        retry: null,
+        name: r'municipalitiesProvider',
+        dependencies: null,
+        $allTransitiveDependencies: null,
+        isAutoDispose: true,
+      );
+
+  /// Municipalities in one district, ordered by name.
+  ///
+  /// A family keyed on the district name so each district's list is cached
+  /// separately and switching districts does not refetch the previous one. An
+  /// empty district returns an empty list rather than all 753 rows, so the
+  /// wizard cannot accidentally render the whole country before a district is
+  /// picked.
+
+  MunicipalitiesProvider call({String district = ''}) =>
+      MunicipalitiesProvider._(argument: district, from: this);
+
+  @override
+  String toString() => r'municipalitiesProvider';
+}
 
 /// Every district, ordered by name.
 ///

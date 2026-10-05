@@ -5,8 +5,7 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 import '../errors/postgrest_error_mapper.dart';
 import '../providers/session_logging.dart';
 
-/// Read access to reference data: districts today, municipalities and wards
-/// once HYA-253 lands.
+/// Read access to reference data: districts, municipalities and wards.
 ///
 /// Separate from ListingRepository because the shape of the call differs.
 /// Reference data is small, cached for the life of the process and read by
@@ -41,6 +40,42 @@ class ReferenceRepository {
         context: logContext(
           action: 'getDistricts',
           detail: <String, Object?>{'code': mapped.code},
+        ),
+        error: e,
+      );
+      throw mapped;
+    }
+  }
+
+  /// Municipalities in one district, ordered by name.
+  ///
+  /// The `municipalities` table holds all 753 local bodies with an RLS policy
+  /// that admits anon, so this needs no session and no pagination, exactly like
+  /// [getDistricts]. Filtered server-side rather than in Dart: unlike the 77
+  /// districts, 753 rows is enough that fetching everything to filter locally
+  /// would waste a mobile connection on every wizard open.
+  ///
+  /// Throws an [AppException] subclass, never a raw [PostgrestException].
+  Future<List<Municipality>> getMunicipalities({String? district}) async {
+    try {
+      // Filters before transforms: once `.order` runs the builder becomes a
+      // transform builder with no `.eq`, so filtering has to come first.
+      final filtered = district != null && district.isNotEmpty
+          ? _client.from('municipalities').select(
+                'id, slug, district, name, name_ne, type, ward_count',
+              ).eq('district', district)
+          : _client.from('municipalities').select(
+                'id, slug, district, name, name_ne, type, ward_count',
+              );
+      final response = await filtered.order('name');
+      return response.map(Municipality.fromJson).toList(growable: false);
+    } on PostgrestException catch (e) {
+      final mapped = PostgrestErrorMapper.map(e, action: 'getMunicipalities');
+      AppLogger.error(
+        'Reference data failure in getMunicipalities',
+        context: logContext(
+          action: 'getMunicipalities',
+          detail: <String, Object?>{'code': mapped.code, 'district': district},
         ),
         error: e,
       );

@@ -12,6 +12,9 @@
 ///                       Released by `v1_contact_seller` under a daily cap.
 /// * `District`         - reference data. `region` decides hill vs terai area
 ///                       units throughout the app (Rule 25).
+/// * `Municipality`     - reference data. `slug` identifies a local body
+///                       (names recur across districts); `wardCount` sizes the
+///                       wizard's ward picker.
 /// * `AdminQueueEntry`  - one row of the verification queue. Admin-scoped.
 ///                       See `v1_admin_get_queue`.
 /// * `QueueSla`         - how a queued listing stands against the 48h SLA.
@@ -26,6 +29,7 @@ export 'src/listing.dart';
 export 'src/listing_detail.dart';
 export 'src/listing_query.dart';
 export 'src/listing_summary.dart';
+export 'src/municipality.dart';
 export 'src/notification.dart';
 export 'src/profile.dart';
 export 'src/queue_sla.dart';

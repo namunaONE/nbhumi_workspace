@@ -61,17 +61,38 @@ extension ListingWizardValidation on ListingWizardState {
       errors['district'] = _required('District');
     }
 
-    if (city.trim().isEmpty) {
-      errors['city'] = _required('City or municipality');
+    // The municipality is chosen from a dropdown scoped to the district, never
+    // typed, so by the time this runs the pair already agrees. The check below
+    // is defence in depth for a state assembled any other way (a test, a
+    // restored draft): a cross-district pair is exactly what the composite
+    // city FK refuses with a bare 23503.
+    // Copied to a local so it can be null-checked and then used; a field on
+    // `this` is not promotable in Dart.
+    final chosen = municipality;
+    if (chosen == null) {
+      errors['municipality'] = _required('Municipality');
+    } else if (chosen.district != district?.name) {
+      errors['municipality'] =
+          '${chosen.name} is not in ${district?.name ?? 'this district'}';
     }
 
-    // Ward is optional (Rule 28) but must be in range when present. The
-    // validator mirrors the ward_valid CHECK exactly, so a value this accepts
-    // will not be rejected by the database.
+    // Ward is optional (Rule 28) but must be in range when present. Two bounds
+    // apply and both are checked: the global validator mirrors the ward_valid
+    // CHECK exactly (so a leading zero like '01' is still rejected), and the
+    // municipality's own wardCount is the tighter bound (so ward 25 in a
+    // 9-ward body is rejected here rather than submitted).
     final wardValue = ward.trim();
-    if (wardValue.isNotEmpty && !Validators.isValidWard(wardValue)) {
-      errors['ward'] =
-          'Ward must be a number from 1 to ${Validators.maxWard}';
+    if (wardValue.isNotEmpty) {
+      if (!Validators.isValidWard(wardValue)) {
+        errors['ward'] =
+            'Ward must be a number from 1 to ${Validators.maxWard}';
+      } else if (chosen != null) {
+        final number = int.parse(wardValue);
+        if (number > chosen.wardCount) {
+          errors['ward'] =
+              '${chosen.name} has ${chosen.wardCount} wards';
+        }
+      }
     }
 
     errors.addAll(

@@ -32,7 +32,6 @@ enum Region {
 ///
 /// Reference data only: all 77 rows are readable by guests through the
 /// `districts_select_public` policy, so nothing here is sensitive.
-/// Municipalities and wards arrive with HYA-253.
 @freezed
 sealed class District with _$District {
   @JsonSerializable(fieldRename: FieldRename.snake)

@@ -90,7 +90,7 @@ class _StepBody extends StatelessWidget {
           state: state,
           districts: districts,
           onDistrictChanged: notifier.setDistrict,
-          onCityChanged: notifier.setCity,
+          onMunicipalityChanged: notifier.setMunicipality,
           onWardChanged: notifier.setWard,
           onRoadAccessChanged: notifier.setRoadAccessFt,
         ),

@@ -117,6 +117,7 @@ class ListingWizardState {
     this.title = '',
     this.description = '',
     this.district,
+    this.municipality,
     this.city = '',
     this.ward = '',
     this.roadAccessFt = '',
@@ -154,9 +155,19 @@ class ListingWizardState {
   /// Chosen district, which decides hill or terai area units (Rule 25).
   final District? district;
 
-  /// City or municipality name.
+  /// Chosen municipality, which decides the ward range.
   ///
-  /// Free text until HYA-253 adds the `municipalities` table to cascade from.
+  /// Always within [district]: `setDistrict` clears it, because a municipality
+  /// belongs to exactly one district and keeping Kathmandu's selection after
+  /// switching to Lalitpur would submit a pair the composite city FK refuses.
+  final Municipality? municipality;
+
+  /// City or municipality name, as submitted.
+  ///
+  /// Mirrors `municipality.name` rather than being typed: `listings` carries a
+  /// composite FK on (district, city), so a free-text value that names no
+  /// municipality in the district is refused server-side. The dropdown is the
+  /// only writer, which makes an FK violation unreachable from this form.
   final String city;
 
   /// Ward number as typed. Optional.
@@ -291,6 +302,7 @@ class ListingWizardState {
     String? title,
     String? description,
     District? district,
+    Municipality? municipality,
     String? city,
     String? ward,
     String? roadAccessFt,
@@ -310,6 +322,7 @@ class ListingWizardState {
     String? createdListingId,
     bool clearSubmitError = false,
     bool clearDistrict = false,
+    bool clearMunicipality = false,
   }) =>
       ListingWizardState(
         step: step ?? this.step,
@@ -318,6 +331,9 @@ class ListingWizardState {
         title: title ?? this.title,
         description: description ?? this.description,
         district: clearDistrict ? null : (district ?? this.district),
+        municipality: clearMunicipality
+            ? null
+            : (municipality ?? this.municipality),
         city: city ?? this.city,
         ward: ward ?? this.ward,
         roadAccessFt: roadAccessFt ?? this.roadAccessFt,
