@@ -12,50 +12,6 @@ import 'package:user_app/screens/profile_screen.dart';
 import 'package:user_app/screens/saved_screen.dart';
 import 'package:user_app/shell/app_shell.dart';
 
-/// Bridges auth state into GoRouter's `refreshListenable`.
-///
-/// ### Why this exists
-///
-/// The previous router watched the auth stream from inside the provider that
-/// builds the router. That rebuilds the whole router object on every auth
-/// emission, which throws away the navigation stack and can fire a redirect
-/// mid-interaction. GoRouter is meant to be constructed once and told about
-/// changes through `refreshListenable`; this notifier is that channel.
-///
-/// The signed-in flag is read synchronously by `redirect`, which is why it is a
-/// plain field rather than a `Future` or a widget-level watch.
-class AuthRefreshNotifier extends ChangeNotifier {
-  /// Subscribes to the auth session and mirrors it into [isSignedIn].
-  ///
-  /// fireImmediately seeds the initial value so the very first redirect sees a
-  /// correct answer rather than defaulting to signed-out and bouncing a
-  /// returning user to /login on cold start.
-  AuthRefreshNotifier(Ref ref) {
-    _subscription = ref.listen<bool>(
-      isSignedInProvider,
-      (_, next) {
-        if (next == _isSignedIn) return;
-        _isSignedIn = next;
-        notifyListeners();
-      },
-      fireImmediately: true,
-    );
-  }
-
-  late final ProviderSubscription<bool> _subscription;
-
-  bool _isSignedIn = false;
-
-  /// Whether a session exists, readable synchronously from `redirect`.
-  bool get isSignedIn => _isSignedIn;
-
-  @override
-  void dispose() {
-    _subscription.close();
-    super.dispose();
-  }
-}
-
 /// Routes reachable without a session.
 ///
 /// Guest browsing is the product's primary use case, so the browse surface is
@@ -85,7 +41,11 @@ bool isPublicRoute(String location) {
 
 /// go_router configuration for the user app.
 ///
-/// Built once per container. Auth changes arrive through [AuthRefreshNotifier].
+/// Built once per container. Auth changes arrive through `data`'s shared
+/// [AuthRefreshNotifier]. `apps/admin_panel` previously kept a private copy of
+/// the session stream, which rebuilt its entire router on every auth emission;
+/// two apps cannot import each other (Rule 10), so the bridge lives beside the
+/// session providers it reads.
 final appRouterProvider = Provider<GoRouter>((ref) {
   final authRefresh = AuthRefreshNotifier(ref);
   ref.onDispose(authRefresh.dispose);
@@ -103,6 +63,14 @@ final appRouterProvider = Provider<GoRouter>((ref) {
     redirect: (context, state) {
       final location = state.matchedLocation;
       final isLoggedIn = authRefresh.isSignedIn;
+
+      // Rule 37: log entries must carry the screen the user was on. Without
+      // this every user-side failure logged `screen=unknown`.
+      //
+      // Recorded in `redirect` because go_router 14.8.1 has no navigation hook,
+      // and `redirect` runs on every navigation attempt including the initial
+      // one and deep links.
+      recordCurrentScreen(state.uri.toString());
 
       // A gated route without a session sends the user to login.
       if (!isLoggedIn && !isPublicRoute(location)) return '/login';

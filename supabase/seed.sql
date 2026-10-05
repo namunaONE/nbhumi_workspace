@@ -1,7 +1,7 @@
 -- Seed data: 77 districts of Nepal (HYA-196)
 -- Region drives area-unit display (Rule 25):
---   hill  → ropani-aana-paisa-dam
---   terai → bigha-kattha-dhur
+--   hill  -> ropani-aana-paisa-dam
+--   terai -> bigha-kattha-dhur
 -- Deterministic: truncates then re-inserts, safe for `supabase db reset`.
 
 truncate public.districts restart identity;

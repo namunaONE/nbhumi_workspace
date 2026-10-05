@@ -8,6 +8,13 @@ environment:
   sdk: ^3.13.0
 
 dependencies:
+  # `listEquals`, for QueuePage equality. Dart's own `package:collection` rather
+  # than `package:flutter/foundation`: models is the base of the graph
+  # and has no Flutter dependency, deliberately — it is consumed by the data
+  # package, the features and both apps, and adding Flutter here would make it
+  # unusable from a plain Dart test or a future CLI. `collection` is a
+  # first-party Dart package with no transitive weight.
+  collection: ^1.19.0
   freezed_annotation: ^3.1.0
   json_annotation: ^4.12.0
 

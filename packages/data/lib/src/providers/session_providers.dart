@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
@@ -42,3 +43,51 @@ final sessionLoggingBridgeProvider = Provider<void>((ref) {
     recordSessionUser(next?.user.id);
   }, fireImmediately: true);
 });
+
+/// Bridges auth state into a [Listenable] for `GoRouter.refreshListenable`.
+///
+/// ### Why this lives here rather than in each app
+///
+/// It was originally written inside `apps/user_app/lib/router/app_router.dart`.
+/// `apps/admin_panel` then grew its own private `_authStateProvider` and
+/// rebuilt its entire `GoRouter` on every auth emission — the exact bug this
+/// class exists to prevent. Two routers are not allowed to import each other
+/// (Rule 10), so the shared bridge lives beside the session providers it reads.
+///
+/// ### Why a `ChangeNotifier` rather than a provider
+///
+/// `GoRouter` is meant to be constructed once and *told* about changes
+/// through `refreshListenable`. Watching the session inside the provider that
+/// builds the router instead throws away the navigation stack and can fire a
+/// redirect mid-interaction.
+class AuthRefreshNotifier extends ChangeNotifier {
+  /// Subscribes to [isSignedInProvider] and mirrors it into [isSignedIn].
+  ///
+  /// `fireImmediately` seeds the initial value so the very first redirect sees
+  /// a correct answer instead of defaulting to signed-out and bouncing a
+  /// returning user to `/login` on cold start.
+  AuthRefreshNotifier(Ref ref) {
+    _subscription = ref.listen<bool>(
+      isSignedInProvider,
+      (_, next) {
+        if (next == _isSignedIn) return;
+        _isSignedIn = next;
+        notifyListeners();
+      },
+      fireImmediately: true,
+    );
+  }
+
+  late final ProviderSubscription<bool> _subscription;
+
+  bool _isSignedIn = false;
+
+  /// Whether a session exists, readable synchronously from `redirect`.
+  bool get isSignedIn => _isSignedIn;
+
+  @override
+  void dispose() {
+    _subscription.close();
+    super.dispose();
+  }
+}

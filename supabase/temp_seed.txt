@@ -1,0 +1,2266 @@
+﻿-- municipalities seed (HYA-253)
+-- Generated 2026-10-05 04:17:33
+-- Hand-verified per G-08: totals 6/11/276/460 = 753; Bhaktapur = 10 wards; Gulmi deduped.
+
+truncate public.municipalities restart identity cascade;
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('kaski-pokhara', 'Kaski', 'Pokhara', 'à¤ªà¥‹à¤–à¤°à¤¾', 'metropolitan'::public.municipality_type, 33, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('chitwan-bharatpur', 'Chitwan', 'Bharatpur', 'à¤­à¤°à¤¤à¤ªà¥à¤°', 'metropolitan'::public.municipality_type, 29, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('parsa-birgunj', 'Parsa', 'Birgunj', 'à¤µà¥€à¤°à¤—à¤¨à¥à¤œ', 'metropolitan'::public.municipality_type, 32, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('morang-biratnagar', 'Morang', 'Biratnagar', 'à¤µà¤¿à¤°à¤¾à¤Ÿà¤¨à¤—à¤°', 'metropolitan'::public.municipality_type, 19, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('kathmandu-kathmandu', 'Kathmandu', 'Kathmandu', 'à¤•à¤¾à¤ à¤®à¤¾à¤¡à¥Œà¤‚ à¥¤', 'metropolitan'::public.municipality_type, 32, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('lalitpur-lalitpur', 'Lalitpur', 'Lalitpur', 'à¤²à¤²à¤¿à¤¤à¤ªà¥à¤°', 'metropolitan'::public.municipality_type, 29, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('dang-ghorahi', 'Dang', 'Ghorahi', 'à¤˜à¥‹à¤°à¤¾à¤¹à¥€', 'sub_metropolitan'::public.municipality_type, 19, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('dang-tulsipur', 'Dang', 'Tulsipur', 'à¤¤à¥à¤²à¤¸à¥€à¤ªà¥à¤°', 'sub_metropolitan'::public.municipality_type, 19, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('bara-jitpursimara', 'Bara', 'Jitpursimara', 'à¤œà¤¿à¤¤à¤ªà¥à¤°à¤¸à¤¿à¤®à¤¾à¤°à¤¾', 'sub_metropolitan'::public.municipality_type, 24, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('kailali-dhangadhi', 'Kailali', 'Dhangadhi', 'à¤§à¤¨à¤—à¤¢à¥€', 'sub_metropolitan'::public.municipality_type, 19, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('makwanpur-hetauda', 'Makwanpur', 'Hetauda', 'à¤¹à¥‡à¤Ÿà¥Œà¤‚à¤¡à¤¾', 'sub_metropolitan'::public.municipality_type, 9, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('sunsari-dharan', 'Sunsari', 'Dharan', 'à¤§à¤°à¤¾à¤¨', 'sub_metropolitan'::public.municipality_type, 20, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('bara-kalaiya', 'Bara', 'Kalaiya', 'à¤•à¤²à¥ˆà¤¯à¤¾', 'sub_metropolitan'::public.municipality_type, 27, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('rupandehi-butwal', 'Rupandehi', 'Butwal', 'à¤¬à¥à¤Ÿà¤µà¤²', 'sub_metropolitan'::public.municipality_type, 19, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('sunsari-itahari', 'Sunsari', 'Itahari', 'à¤‡à¤Ÿà¤¹à¤°à¥€', 'sub_metropolitan'::public.municipality_type, 20, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('dhanusha-janakpurdham', 'Dhanusha', 'Janakpurdham', 'à¤œà¤¨à¤•à¤ªà¥à¤°à¤§à¤¾à¤®', 'sub_metropolitan'::public.municipality_type, 25, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('banke-nepalgunj', 'Banke', 'Nepalgunj', 'à¤¨à¥‡à¤ªà¤¾à¤²à¤—à¤¨à¥à¤œ', 'sub_metropolitan'::public.municipality_type, 23, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('taplejung-phungling', 'Taplejung', 'Phungling', 'à¤«à¥à¤™à¥à¤²à¤¿à¤™', 'municipality'::public.municipality_type, 11, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('sankhuwasabha-dharmadevi', 'Sankhuwasabha', 'Dharmadevi', 'à¤§à¤°à¥à¤®à¤¦à¥‡à¤µà¥€', 'municipality'::public.municipality_type, 8, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('sankhuwasabha-madi', 'Sankhuwasabha', 'Madi', 'à¤®à¤¾à¤¡à¥€', 'municipality'::public.municipality_type, 11, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('sankhuwasabha-panchakhapan', 'Sankhuwasabha', 'Panchakhapan', 'à¤ªà¤žà¥à¤šà¤–à¤¾à¤ªà¤¨', 'municipality'::public.municipality_type, 9, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('sankhuwasabha-chainpur', 'Sankhuwasabha', 'Chainpur', 'à¤šà¥ˆà¤¨à¤ªà¥à¤°', 'municipality'::public.municipality_type, 10, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('sankhuwasabha-khandbari', 'Sankhuwasabha', 'Khandbari', 'à¤–à¤¾à¤à¤¦à¤¬à¤¾à¤°à¥€', 'municipality'::public.municipality_type, 11, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('solukhumbu-solududhakunda', 'Solukhumbu', 'Solududhakunda', 'à¤¸à¥‹à¤²à¥à¤¦à¥à¤§à¤¾à¤•à¥à¤£à¥à¤¡', 'municipality'::public.municipality_type, 9, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('okhaldhunga-siddhicharan', 'Okhaldhunga', 'Siddhicharan', 'à¤¸à¤¿à¤¦à¥à¤§à¤¿à¤šà¤°à¤£', 'municipality'::public.municipality_type, 12, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('khotang-halesituwachung', 'Khotang', 'Halesi Tuwachung', 'à¤¹à¤²à¥‡à¤¸à¥€ à¤¤à¥à¤µà¤¾à¤šà¥à¤™', 'municipality'::public.municipality_type, 11, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('khotang-diktelrupakotmajhuwagadhi', 'Khotang', 'Diktel Rupakot Majhuwagadhi', 'à¤¦à¤¿à¤•à¥à¤¤à¥‡à¤² à¤°à¥à¤ªà¤¾à¤•à¥‹à¤Ÿ à¤®à¤à¥à¤µà¤¾à¤—à¤¢à¥€', 'municipality'::public.municipality_type, 15, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('bhojpur-shadananda', 'Bhojpur', 'Shadananda', 'à¤·à¤¡à¤¾à¤¨à¤¨à¥à¤¦', 'municipality'::public.municipality_type, 14, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('bhojpur-bhojpur', 'Bhojpur', 'Bhojpur', 'à¤­à¥‹à¤œà¤ªà¥à¤°', 'municipality'::public.municipality_type, 12, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('dhankuta-pakhribas', 'Dhankuta', 'Pakhribas', 'à¤ªà¤¾à¤–à¤°à¤¿à¤¬à¤¾à¤¸', 'municipality'::public.municipality_type, 10, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('dhankuta-mahalaxmi', 'Dhankuta', 'Mahalaxmi', 'à¤®à¤¹à¤¾à¤²à¤•à¥à¤·à¥à¤®à¥€', 'municipality'::public.municipality_type, 9, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('dhankuta-dhankuta', 'Dhankuta', 'Dhankuta', 'à¤§à¤¨à¤•à¥à¤Ÿà¤¾', 'municipality'::public.municipality_type, 10, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('terhathum-laligurans', 'Terhathum', 'Laligurans', 'à¤²à¤¾à¤²à¥€à¤—à¥à¤°à¤¾à¤à¤¸', 'municipality'::public.municipality_type, 9, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('terhathum-myanglung', 'Terhathum', 'Myanglung', 'à¤®à¥à¤¯à¤¾à¤™à¤²à¥à¤™', 'municipality'::public.municipality_type, 10, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('panchthar-phidim', 'Panchthar', 'Phidim', 'à¤«à¤¿à¤¦à¤¿à¤®', 'municipality'::public.municipality_type, 14, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('ilam-illam', 'Ilam', 'Illam', 'à¤‡à¤²à¤¾à¤®', 'municipality'::public.municipality_type, 9, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('ilam-mai', 'Ilam', 'Mai', 'à¤®à¤¾à¤ˆ', 'municipality'::public.municipality_type, 10, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('ilam-deumai', 'Ilam', 'Deumai', 'à¤¦à¥‡à¤‰à¤®à¤¾à¤ˆ', 'municipality'::public.municipality_type, 9, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('ilam-suryodaya', 'Ilam', 'Suryodaya', 'à¤¸à¥‚à¤°à¥à¤¯à¥‹à¤¦à¤¯', 'municipality'::public.municipality_type, 14, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('jhapa-shivasataxi', 'Jhapa', 'Shivasataxi', 'à¤¶à¤¿à¤µà¤¸à¤¤à¤¾à¤•à¥à¤¸à¥€', 'municipality'::public.municipality_type, 9, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('jhapa-bhadrapur', 'Jhapa', 'Bhadrapur', 'à¤­à¤¦à¥à¤°à¤ªà¥à¤°', 'municipality'::public.municipality_type, 10, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('jhapa-kankai', 'Jhapa', 'Kankai', 'à¤•à¤¨à¤•à¤¾à¤ˆ', 'municipality'::public.municipality_type, 9, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('jhapa-birtamod', 'Jhapa', 'Birtamod', 'à¤¬à¤¿à¤°à¥à¤¤à¤¾à¤®à¥‹à¤¡', 'municipality'::public.municipality_type, 10, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('jhapa-mechinagar', 'Jhapa', 'Mechinagar', 'à¤®à¥‡à¤šà¥€à¤¨à¤—à¤°', 'municipality'::public.municipality_type, 15, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('jhapa-damak', 'Jhapa', 'Damak', 'à¤¦à¤®à¤•', 'municipality'::public.municipality_type, 10, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('jhapa-arjundhara', 'Jhapa', 'Arjundhara', 'à¤…à¤°à¥à¤œà¥à¤¨à¤§à¤¾à¤°à¤¾', 'municipality'::public.municipality_type, 11, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('jhapa-gauradhaha', 'Jhapa', 'Gauradhaha', 'à¤—à¥Œà¤°à¤¾à¤§à¤¾', 'municipality'::public.municipality_type, 9, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('morang-letang', 'Morang', 'Letang', 'à¤²à¥‡à¤Ÿà¤¾à¤™', 'municipality'::public.municipality_type, 9, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('morang-sunwarshi', 'Morang', 'Sunwarshi', 'à¤¸à¥à¤¨à¤µà¤°à¥à¤¶à¥€', 'municipality'::public.municipality_type, 9, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('morang-rangeli', 'Morang', 'Rangeli', 'à¤°à¤‚à¤—à¥‡à¤²à¥€', 'municipality'::public.municipality_type, 9, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('morang-patharishanishchare', 'Morang', 'Pathari Shanishchare', 'à¤ªà¤¥à¤°à¥€ à¤¶à¤¨à¤¿à¤¶à¥à¤šà¤°à¥‡', 'municipality'::public.municipality_type, 9, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('morang-uralabari', 'Morang', 'Uralabari', 'à¤‰à¤°à¤¾à¤²à¤¾à¤¬à¤¾à¤°à¥€', 'municipality'::public.municipality_type, 9, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('morang-belbari', 'Morang', 'Belbari', 'à¤¬à¥‡à¤²à¤¬à¤¾à¤°à¥€', 'municipality'::public.municipality_type, 11, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('morang-sundarharaicha', 'Morang', 'Sundarharaicha', 'à¤¸à¥à¤¨à¥à¤¦à¤°à¤¹à¤°à¥ˆà¤šà¤¾', 'municipality'::public.municipality_type, 12, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('morang-ratuwamai', 'Morang', 'Ratuwamai', 'à¤°à¤¤à¥à¤µà¤¾à¤®à¤¾à¤ˆ', 'municipality'::public.municipality_type, 9, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('sunsari-ramdhuni', 'Sunsari', 'Ramdhuni', 'à¤°à¤¾à¤®à¤§à¥à¤¨à¥€', 'municipality'::public.municipality_type, 9, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('sunsari-barahchhetra', 'Sunsari', 'Barahchhetra', 'à¤¬à¤°à¤¾à¤¹à¤•à¥à¤·à¥‡à¤¤à¥à¤°', 'municipality'::public.municipality_type, 9, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('sunsari-duhabi', 'Sunsari', 'Duhabi', 'à¤¦à¥à¤¹à¤¬à¥€', 'municipality'::public.municipality_type, 12, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('sunsari-inaruwa', 'Sunsari', 'Inaruwa', 'à¤‡à¤¨à¤°à¥à¤µà¤¾', 'municipality'::public.municipality_type, 10, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('udayapur-triyuga', 'Udayapur', 'Triyuga', 'à¤¤à¥à¤°à¤¿à¤¯à¥à¤—', 'municipality'::public.municipality_type, 16, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('udayapur-katari', 'Udayapur', 'Katari', 'à¤•à¤Ÿà¤¾à¤°à¥€', 'municipality'::public.municipality_type, 14, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('udayapur-chaudandigadhi', 'Udayapur', 'Chaudandigadhi', 'à¤šà¥Œà¤¦à¤£à¥à¤¡à¥€à¤—à¤¢à¥€', 'municipality'::public.municipality_type, 9, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('udayapur-belaka', 'Udayapur', 'Belaka', 'à¤¬à¥‡à¤²à¤•à¤¾', 'municipality'::public.municipality_type, 9, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('saptari-hanumannagarkankalini', 'Saptari', 'Hanumannagar Kankalini', 'à¤¹à¤¨à¥à¤®à¤¾à¤¨à¤¨à¤—à¤° à¤•à¤‚à¤•à¤¾à¤²à¤¿à¤¨à¥€', 'municipality'::public.municipality_type, 14, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('saptari-kanchanrup', 'Saptari', 'Kanchanrup', 'à¤•à¤žà¥à¤šà¤¨à¤°à¥à¤ª', 'municipality'::public.municipality_type, 12, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('saptari-rajbiraj', 'Saptari', 'Rajbiraj', 'à¤°à¤¾à¤œà¤µà¤¿à¤°à¤¾à¤œ', 'municipality'::public.municipality_type, 16, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('saptari-khadak', 'Saptari', 'Khadak', 'à¤–à¤¡à¤•', 'municipality'::public.municipality_type, 9, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('saptari-dakneshwori', 'Saptari', 'Dakneshwori', 'à¤¡à¤¾à¤•à¥à¤¨à¥‡à¤¶à¥à¤µà¤°à¥€', 'municipality'::public.municipality_type, 9, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('saptari-saptakoshi', 'Saptari', 'Saptakoshi', 'à¤¸à¤ªà¥à¤¤à¤•à¥‹à¤¶à¥€', 'municipality'::public.municipality_type, 11, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('saptari-surunga', 'Saptari', 'Surunga', 'à¤¸à¥à¤°à¥à¤™à¥à¤—à¤¾', 'municipality'::public.municipality_type, 9, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('saptari-shambhunath', 'Saptari', 'Shambhunath', 'à¤¶à¤®à¥à¤­à¥à¤¨à¤¾à¤¥', 'municipality'::public.municipality_type, 12, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('saptari-bodebarsain', 'Saptari', 'Bode Barsain', 'à¤¬à¥‹à¤¡à¥‡ à¤¬à¤¾à¤°à¥à¤¸à¥ˆà¤¨', 'municipality'::public.municipality_type, 10, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('siraha-mirchaiya', 'Siraha', 'Mirchaiya', 'à¤®à¤¿à¤°à¥à¤šà¥ˆà¤¯à¤¾', 'municipality'::public.municipality_type, 12, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('siraha-lahan', 'Siraha', 'Lahan', 'à¤²à¤¹à¤¾à¤¨', 'municipality'::public.municipality_type, 24, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('siraha-siraha', 'Siraha', 'Siraha', 'à¤¸à¤¿à¤°à¤¹à¤¾', 'municipality'::public.municipality_type, 20, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('siraha-dhangadhimai', 'Siraha', 'Dhangadhimai', 'à¤§à¤¨à¤—à¤¢à¥€à¤®à¤¾à¤ˆ', 'municipality'::public.municipality_type, 14, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('siraha-kalyanpur', 'Siraha', 'Kalyanpur', 'à¤•à¤²à¥à¤¯à¤¾à¤£à¤ªà¥à¤°', 'municipality'::public.municipality_type, 12, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('siraha-karjanha', 'Siraha', 'Karjanha', 'à¤•à¤°à¥à¤œà¤¨à¥à¤¹à¤¾', 'municipality'::public.municipality_type, 11, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('siraha-golbazar', 'Siraha', 'Golbazar', 'à¤—à¥‹à¤²à¤¬à¤œà¤¾à¤°', 'municipality'::public.municipality_type, 13, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('siraha-sukhipur', 'Siraha', 'Sukhipur', 'à¤¸à¥à¤–à¥€à¤ªà¥à¤°', 'municipality'::public.municipality_type, 10, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('dhanusha-mithilabihari', 'Dhanusha', 'Mithila Bihari', 'à¤®à¤¿à¤¥à¤¿à¤²à¤¾ à¤¬à¤¿à¤¹à¤¾à¤°à¥€', 'municipality'::public.municipality_type, 10, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('dhanusha-nagarain', 'Dhanusha', 'Nagarain', 'à¤¨à¤—à¤°à¤¾à¤ˆ', 'municipality'::public.municipality_type, 9, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('dhanusha-ganeshmancharnath', 'Dhanusha', 'Ganeshman Charnath', 'à¤—à¤£à¥‡à¤¶à¤®à¤¾à¤¨ à¤šà¤¾à¤°à¤¨à¤¾à¤¥', 'municipality'::public.municipality_type, 11, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('dhanusha-mithila', 'Dhanusha', 'Mithila', 'à¤®à¤¿à¤¥à¤¿à¤²à¤¾', 'municipality'::public.municipality_type, 11, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('dhanusha-dhanusadham', 'Dhanusha', 'Dhanusadham', 'à¤§à¤¨à¥à¤·à¤¾à¤§à¤¾à¤®', 'municipality'::public.municipality_type, 9, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('dhanusha-bideha', 'Dhanusha', 'Bideha', 'à¤¬à¤¿à¤¦à¥‡à¤¹à¤¾', 'municipality'::public.municipality_type, 9, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('dhanusha-sabaila', 'Dhanusha', 'Sabaila', 'à¤¸à¤¬à¤¾à¤‡à¤²à¤¾', 'municipality'::public.municipality_type, 13, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('dhanusha-kamala', 'Dhanusha', 'Kamala', 'à¤•à¤®à¤²à¤¾', 'municipality'::public.municipality_type, 9, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('dhanusha-hansapur', 'Dhanusha', 'Hansapur', 'à¤¹à¤‚à¤¸à¤ªà¥à¤°', 'municipality'::public.municipality_type, 9, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('dhanusha-sahidnagar', 'Dhanusha', 'Sahidnagar', 'à¤¸à¤¹à¤¿à¤¦à¤¨à¤—à¤°', 'municipality'::public.municipality_type, 9, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('dhanusha-chhireshwarnath', 'Dhanusha', 'Chhireshwarnath', 'à¤•à¥à¤·à¤¿à¤°à¥‡à¤¶à¥à¤µà¤°à¤¨à¤¾à¤¥', 'municipality'::public.municipality_type, 9, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('mahottari-gaushala', 'Mahottari', 'Gaushala', 'à¤—à¥Œà¤¶à¤¾à¤²à¤¾', 'municipality'::public.municipality_type, 5, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('mahottari-ramgopalpur', 'Mahottari', 'Ramgopalpur', 'à¤°à¤¾à¤®à¤—à¥‹à¤ªà¤¾à¤²à¤ªà¥à¤°', 'municipality'::public.municipality_type, 9, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('mahottari-aurahi', 'Mahottari', 'Aurahi', 'à¤”à¤°à¤¹à¥€', 'municipality'::public.municipality_type, 9, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('mahottari-bardibas', 'Mahottari', 'Bardibas', 'à¤¬à¤°à¥à¤¦à¤¿à¤µà¤¾à¤¸', 'municipality'::public.municipality_type, 14, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('mahottari-bhangaha', 'Mahottari', 'Bhangaha', 'à¤­à¤™à¥à¤—à¤¾à¤¹à¤¾', 'municipality'::public.municipality_type, 9, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('mahottari-jaleswor', 'Mahottari', 'Jaleswor', 'à¤œà¤²à¥‡à¤¶à¥à¤µà¤°', 'municipality'::public.municipality_type, 9, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('mahottari-balwa', 'Mahottari', 'Balwa', 'à¤¬à¤²à¤µà¤¾', 'municipality'::public.municipality_type, 9, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('mahottari-manrasiswa', 'Mahottari', 'Manra Siswa', 'à¤®à¤¨à¤°à¤¾ à¤¸à¤¿à¤¸à¤µà¤¾', 'municipality'::public.municipality_type, 9, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('mahottari-matihani', 'Mahottari', 'Matihani', 'à¤®à¤Ÿà¤¿à¤¹à¤¾à¤¨à¥€', 'municipality'::public.municipality_type, 8, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('mahottari-loharpatti', 'Mahottari', 'Loharpatti', 'à¤²à¥‹à¤¹à¤¾à¤°à¤ªà¤Ÿà¥à¤Ÿà¥€', 'municipality'::public.municipality_type, 8, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('sarlahi-barahathawa', 'Sarlahi', 'Barahathawa', 'à¤¬à¤°à¤¾à¤¹à¤¥à¤µà¤¾', 'municipality'::public.municipality_type, 9, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('sarlahi-haripur', 'Sarlahi', 'Haripur', 'à¤¹à¤°à¤¿à¤ªà¥à¤°', 'municipality'::public.municipality_type, 9, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('sarlahi-ishworpur', 'Sarlahi', 'Ishworpur', 'à¤ˆà¤¶à¥à¤µà¤°à¤ªà¥à¤°', 'municipality'::public.municipality_type, 9, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('sarlahi-lalbandi', 'Sarlahi', 'Lalbandi', 'à¤²à¤¾à¤²à¤¬à¤¨à¥à¤¦à¥€', 'municipality'::public.municipality_type, 14, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('sarlahi-malangawa', 'Sarlahi', 'Malangawa', 'à¤®à¤²à¤™à¥à¤—à¤µà¤¾', 'municipality'::public.municipality_type, 9, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('sarlahi-kabilasi', 'Sarlahi', 'Kabilasi', 'à¤•à¤¬à¤¿à¤²à¤¾à¤¸à¥€', 'municipality'::public.municipality_type, 8, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('sarlahi-bagmati', 'Sarlahi', 'Bagmati', 'à¤¬à¤¾à¤—à¤®à¤¤à¥€', 'municipality'::public.municipality_type, 9, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('sarlahi-hariwan', 'Sarlahi', 'Hariwan', 'à¤¹à¤°à¤¿à¤µà¤¾à¤¨', 'municipality'::public.municipality_type, 11, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('sarlahi-balara', 'Sarlahi', 'Balara', 'à¤¬à¤²à¤°à¤¾', 'municipality'::public.municipality_type, 11, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('sarlahi-haripurwa', 'Sarlahi', 'Haripurwa', 'à¤¹à¤°à¤¿à¤ªà¥à¤°à¤µà¤¾', 'municipality'::public.municipality_type, 9, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('sarlahi-godaita', 'Sarlahi', 'Godaita', 'à¤—à¥‹à¤¦à¥ˆà¤¤à¤¾', 'municipality'::public.municipality_type, 12, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('rautahat-katahariya', 'Rautahat', 'Katahariya', 'à¤•à¤Ÿà¤¹à¤°à¤¿à¤¯à¤¾', 'municipality'::public.municipality_type, 9, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('rautahat-maulapur', 'Rautahat', 'Maulapur', 'à¤®à¥Œà¤²à¤¾à¤ªà¥à¤°', 'municipality'::public.municipality_type, 9, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('rautahat-madhavnarayan', 'Rautahat', 'Madhav Narayan', 'à¤®à¤¾à¤§à¤µ à¤¨à¤¾à¤°à¤¾à¤¯à¤£', 'municipality'::public.municipality_type, 11, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('rautahat-gaur', 'Rautahat', 'Gaur', 'à¤—à¥Œà¤°', 'municipality'::public.municipality_type, 9, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('rautahat-gujara', 'Rautahat', 'Gujara', 'à¤—à¥à¤œà¤°à¤¾', 'municipality'::public.municipality_type, 9, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('rautahat-garuda', 'Rautahat', 'Garuda', 'à¤—à¤°à¥à¤¡', 'municipality'::public.municipality_type, 9, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('rautahat-ishanath', 'Rautahat', 'Ishanath', 'à¤ˆà¤¶à¤¾à¤¨à¤¾à¤¥', 'municipality'::public.municipality_type, 9, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('rautahat-chandrapur', 'Rautahat', 'Chandrapur', 'à¤šà¤¨à¥à¤¦à¥à¤°à¤ªà¥à¤°', 'municipality'::public.municipality_type, 10, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('rautahat-dewahigonahi', 'Rautahat', 'Dewahi Gonahi', 'à¤¦à¥‡à¤µà¤¾à¤¹à¥€ à¤—à¥‹à¤¨à¤¾à¤¹à¥€', 'municipality'::public.municipality_type, 9, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('rautahat-brindaban', 'Rautahat', 'Brindaban', 'à¤µà¥ƒà¤¨à¥à¤¦à¤¬à¤¨', 'municipality'::public.municipality_type, 9, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('rautahat-rajpur', 'Rautahat', 'Rajpur', 'à¤°à¤¾à¤œà¤ªà¥à¤°', 'municipality'::public.municipality_type, 9, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('rautahat-rajdevi', 'Rautahat', 'Rajdevi', 'à¤°à¤¾à¤œà¤¦à¥‡à¤µà¥€', 'municipality'::public.municipality_type, 9, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('rautahat-gadhimai', 'Rautahat', 'Gadhimai', 'à¤—à¤¢à¥€à¤®à¤¾à¤ˆ', 'municipality'::public.municipality_type, 9, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('rautahat-phatuwabijayapur', 'Rautahat', 'Phatuwa Bijayapur', 'à¤µà¤¿à¤œà¤¯à¤ªà¥à¤° à¤«à¤Ÿà¥à¤µà¤¾', 'municipality'::public.municipality_type, 9, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('rautahat-baudhimai', 'Rautahat', 'Baudhimai', 'à¤¬à¥Œà¤§à¤¿à¤®à¤¾à¤ˆ', 'municipality'::public.municipality_type, 9, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('rautahat-paroha', 'Rautahat', 'Paroha', 'à¤ªà¤¾à¤°à¥‹à¤¹à¤¾', 'municipality'::public.municipality_type, 9, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('bara-pacharauta', 'Bara', 'Pacharauta', 'à¤ªà¤šà¤°à¥Œà¤¤à¤¾', 'municipality'::public.municipality_type, 8, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('bara-nijgadh', 'Bara', 'Nijgadh', 'à¤¨à¤¿à¤œà¤—à¤¢', 'municipality'::public.municipality_type, 13, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('bara-simraungadh', 'Bara', 'Simraungadh', 'à¤¸à¤¿à¤®à¥à¤°à¥Œà¤¨à¤—à¤¢', 'municipality'::public.municipality_type, 11, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('bara-mahagadhimai', 'Bara', 'Mahagadhimai', 'à¤®à¤¹à¤¾à¤—à¤¢à¥€à¤®à¤¾à¤ˆ', 'municipality'::public.municipality_type, 12, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('bara-kolhabi', 'Bara', 'Kolhabi', 'à¤•à¥‹à¤²à¥à¤¹à¤¾à¤¬à¥€', 'municipality'::public.municipality_type, 11, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('parsa-bahudaramai', 'Parsa', 'Bahudaramai', 'à¤¬à¤¹à¥à¤¦à¤°à¤®à¤¾à¤ˆ', 'municipality'::public.municipality_type, 9, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('parsa-pokhariya', 'Parsa', 'Pokhariya', 'à¤ªà¥‹à¤–à¤°à¤¿à¤¯à¤¾', 'municipality'::public.municipality_type, 10, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('parsa-parsagadhi', 'Parsa', 'Parsagadhi', 'à¤ªà¤°à¥à¤¸à¤¾à¤—à¤¢à¥€', 'municipality'::public.municipality_type, 7, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('dolakha-jiri', 'Dolakha', 'Jiri', 'à¤œà¤¿à¤°à¥€', 'municipality'::public.municipality_type, 9, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('dolakha-bhimeshwor', 'Dolakha', 'Bhimeshwor', 'à¤­à¥€à¤®à¥‡à¤¶à¥à¤µà¤°', 'municipality'::public.municipality_type, 9, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('sindhupalchok-chautarasangachokgadhi', 'Sindhupalchok', 'Chautara SangachokGadhi', 'à¤šà¥Œà¤¤à¤¾à¤°à¤¾ à¤¸à¤¾à¤à¤—à¤¾à¤šà¥‹à¤•à¤—à¤¢à¥€', 'municipality'::public.municipality_type, 14, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('sindhupalchok-barhabise', 'Sindhupalchok', 'Barhabise', 'à¤¬à¤¾à¤¹à¥à¤°à¤¬à¤¿à¤¸à¥‡', 'municipality'::public.municipality_type, 9, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('sindhupalchok-melamchi', 'Sindhupalchok', 'Melamchi', 'à¤®à¥‡à¤²à¤®à¥à¤šà¥€', 'municipality'::public.municipality_type, 13, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('dhading-nilakantha', 'Dhading', 'Nilakantha', 'à¤¨à¥€à¤²à¤•à¤£à¥à¤ ', 'municipality'::public.municipality_type, 9, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('dhading-dhunibesi', 'Dhading', 'Dhunibesi', 'à¤§à¥à¤¨à¤¿à¤¬à¥‡à¤¸à¥€', 'municipality'::public.municipality_type, 9, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('nuwakot-belkotgadhi', 'Nuwakot', 'Belkotgadhi', 'à¤¬à¥‡à¤²à¤•à¥‹à¤Ÿà¤—à¤¢à¥€', 'municipality'::public.municipality_type, 13, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('nuwakot-bidur', 'Nuwakot', 'Bidur', 'à¤¬à¤¿à¤¦à¥à¤°', 'municipality'::public.municipality_type, 13, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('kathmandu-kirtipur', 'Kathmandu', 'Kirtipur', 'à¤•à¥€à¤°à¥à¤¤à¤¿à¤ªà¥à¤°', 'municipality'::public.municipality_type, 10, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('kathmandu-shankharapur', 'Kathmandu', 'Shankharapur', 'à¤¶à¤‚à¤–à¤°à¤¾à¤ªà¥à¤°', 'municipality'::public.municipality_type, 9, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('kathmandu-nagarjun', 'Kathmandu', 'Nagarjun', 'à¤¨à¤¾à¤—à¤¾à¤°à¥à¤œà¥à¤¨', 'municipality'::public.municipality_type, 10, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('kathmandu-kageshworimanahora', 'Kathmandu', 'Kageshwori Manahora', 'à¤•à¤¾à¤—à¥‡à¤¶à¥à¤µà¤°à¥€ à¤®à¤¨à¤¹à¥‹à¤°à¤¾', 'municipality'::public.municipality_type, 9, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('kathmandu-dakshinkali', 'Kathmandu', 'Dakshinkali', 'à¤¦à¤•à¥à¤·à¤¿à¤£à¤•à¤¾à¤²à¥€', 'municipality'::public.municipality_type, 9, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('kathmandu-budhanilakantha', 'Kathmandu', 'Budhanilakantha', 'à¤¬à¥à¤¢à¤¾à¤¨à¤¿à¤²à¤•à¤£à¥à¤ ', 'municipality'::public.municipality_type, 9, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('kathmandu-tarakeshwor', 'Kathmandu', 'Tarakeshwor', 'à¤¤à¤¾à¤°à¤•à¥‡à¤¶à¥à¤µà¤°', 'municipality'::public.municipality_type, 11, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('kathmandu-tokha', 'Kathmandu', 'Tokha', 'à¤Ÿà¥‹à¤–à¤¾', 'municipality'::public.municipality_type, 11, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('kathmandu-chandragiri', 'Kathmandu', 'Chandragiri', 'à¤šà¤¨à¥à¤¦à¥à¤°à¤¾à¤—à¤¿à¤°à¤¿', 'municipality'::public.municipality_type, 15, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('kathmandu-gokarneshwor', 'Kathmandu', 'Gokarneshwor', 'à¤—à¥‹à¤•à¤°à¥à¤£à¥‡à¤¶à¥à¤µà¤°', 'municipality'::public.municipality_type, 9, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('bhaktapur-changunarayan', 'Bhaktapur', 'Changunarayan', 'à¤šà¤¾à¤à¤—à¥à¤¨à¤¾à¤°à¤¾à¤¯à¤£', 'municipality'::public.municipality_type, 9, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('bhaktapur-suryabinayak', 'Bhaktapur', 'Suryabinayak', 'à¤¸à¥‚à¤°à¥à¤¯à¤µà¤¿à¤¨à¤¾à¤¯à¤•', 'municipality'::public.municipality_type, 10, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('bhaktapur-bhaktapur', 'Bhaktapur', 'Bhaktapur', 'à¤­à¤•à¥à¤¤à¤ªà¥à¤°', 'municipality'::public.municipality_type, 10, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('bhaktapur-madhyapurthimi', 'Bhaktapur', 'Madhyapur Thimi', 'à¤®à¤§à¥à¤¯à¤ªà¥à¤°à¤¥à¤¿à¤®à¤¿', 'municipality'::public.municipality_type, 9, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('lalitpur-mahalaxmi', 'Lalitpur', 'Mahalaxmi', 'à¤®à¤¹à¤¾à¤²à¤•à¥à¤·à¥à¤®à¥€', 'municipality'::public.municipality_type, 10, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('lalitpur-godawari', 'Lalitpur', 'Godawari', 'à¤—à¥‹à¤¦à¤¾à¤µà¤°à¥€', 'municipality'::public.municipality_type, 14, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('kavrepalanchok-banepa', 'Kavrepalanchok', 'Banepa', 'à¤¬à¤¨à¥‡à¤ªà¤¾', 'municipality'::public.municipality_type, 14, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('kavrepalanchok-mandandeupur', 'Kavrepalanchok', 'Mandandeupur', 'à¤®à¤£à¥à¤¡à¤¨à¤¦à¥‡à¤‰à¤ªà¥à¤°', 'municipality'::public.municipality_type, 12, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('kavrepalanchok-dhulikhel', 'Kavrepalanchok', 'Dhulikhel', 'à¤§à¥à¤²à¤¿à¤–à¥‡à¤²', 'municipality'::public.municipality_type, 12, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('kavrepalanchok-panauti', 'Kavrepalanchok', 'Panauti', 'à¤ªà¤¨à¥Œà¤¤à¥€', 'municipality'::public.municipality_type, 12, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('kavrepalanchok-namobuddha', 'Kavrepalanchok', 'Namobuddha', 'à¤¨à¤®à¥‹à¤¬à¥à¤¦à¥à¤§', 'municipality'::public.municipality_type, 11, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('kavrepalanchok-panchkhal', 'Kavrepalanchok', 'Panchkhal', 'à¤ªà¤¾à¤à¤šà¤–à¤¾à¤²', 'municipality'::public.municipality_type, 9, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('ramechhap-manthali', 'Ramechhap', 'Manthali', 'à¤®à¤¨à¥à¤¥à¤²à¥€', 'municipality'::public.municipality_type, 14, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('ramechhap-ramechhap', 'Ramechhap', 'Ramechhap', 'à¤°à¤¾à¤®à¥‡à¤›à¤¾à¤ª', 'municipality'::public.municipality_type, 9, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('sindhuli-dudhouli', 'Sindhuli', 'Dudhouli', 'à¤¦à¥à¤§à¥Œà¤²à¥€', 'municipality'::public.municipality_type, 9, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('sindhuli-kamalamai', 'Sindhuli', 'Kamalamai', 'à¤•à¤®à¤²à¤¾à¤®à¤¾à¤ˆ', 'municipality'::public.municipality_type, 14, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('makwanpur-thaha', 'Makwanpur', 'Thaha', 'à¤¥à¤¾à¤¹à¤¾', 'municipality'::public.municipality_type, 9, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('chitwan-kalika', 'Chitwan', 'Kalika', 'à¤•à¤¾à¤²à¤¿à¤•à¤¾', 'municipality'::public.municipality_type, 11, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('chitwan-khairahani', 'Chitwan', 'Khairahani', 'à¤–à¥ˆà¤°à¤¹à¤¨à¥€', 'municipality'::public.municipality_type, 13, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('chitwan-madi', 'Chitwan', 'Madi', 'à¤®à¤¾à¤¡à¥€', 'municipality'::public.municipality_type, 9, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('chitwan-rapti', 'Chitwan', 'Rapti', 'à¤°à¤¾à¤ªà¥à¤¤à¥€', 'municipality'::public.municipality_type, 13, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('chitwan-ratnanagar', 'Chitwan', 'Ratnanagar', 'à¤°à¤¤à¥à¤¨à¤¨à¤—à¤°', 'municipality'::public.municipality_type, 16, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('gorkha-palungtar', 'Gorkha', 'Palungtar', 'à¤ªà¤¾à¤²à¥à¤™à¤Ÿà¤¾à¤°', 'municipality'::public.municipality_type, 11, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('gorkha-gorkha', 'Gorkha', 'Gorkha', 'à¤—à¥‹à¤°à¤–à¤¾', 'municipality'::public.municipality_type, 14, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('myagdi-beni', 'Myagdi', 'Beni', 'à¤¬à¥‡à¤¨à¥€', 'municipality'::public.municipality_type, 10, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('lamjung-sundarbazar', 'Lamjung', 'Sundarbazar', 'à¤¸à¥à¤¨à¥à¤¦à¤°à¤¬à¤œà¤¾à¤°', 'municipality'::public.municipality_type, 11, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('lamjung-besishahar', 'Lamjung', 'Besishahar', 'à¤¬à¥‡à¤¶à¤¿à¤¶à¤¹à¤°', 'municipality'::public.municipality_type, 9, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('lamjung-rainas', 'Lamjung', 'Rainas', 'à¤°à¥ˆà¤¨à¤¾à¤¸', 'municipality'::public.municipality_type, 9, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('lamjung-madhyanepal', 'Lamjung', 'MadhyaNepal', 'à¤®à¤§à¥à¤¯à¤¨à¥‡à¤ªà¤¾à¤²', 'municipality'::public.municipality_type, 10, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('tanahu-byas', 'Tanahu', 'Byas', 'à¤¬à¥à¤¯à¤¾à¤¸', 'municipality'::public.municipality_type, 14, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('tanahu-shuklagandaki', 'Tanahu', 'Shuklagandaki', 'à¤¶à¥à¤•à¥à¤²à¤¾à¤—à¤£à¥à¤¡à¤•à¥€', 'municipality'::public.municipality_type, 12, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('tanahu-bhimad', 'Tanahu', 'Bhimad', 'à¤­à¥€à¤®à¤¦', 'municipality'::public.municipality_type, 9, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('tanahu-bhanu', 'Tanahu', 'Bhanu', 'à¤­à¤¾à¤¨à¥', 'municipality'::public.municipality_type, 13, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('nawalpararieast-madhyabindu', 'Nawalparari East', 'Madhyabindu', 'à¤®à¤§à¥à¤¯à¤µà¤¿à¤¨à¥à¤¦à¥', 'municipality'::public.municipality_type, 9, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('nawalpararieast-devchuli', 'Nawalparari East', 'Devchuli', 'à¤¦à¥‡à¤µà¤šà¥à¤²à¥€', 'municipality'::public.municipality_type, 9, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('nawalpararieast-gaidakot', 'Nawalparari East', 'Gaidakot', 'à¤—à¥ˆà¤¡à¤¾à¤•à¥‹à¤Ÿ', 'municipality'::public.municipality_type, 9, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('nawalpararieast-kawasoti', 'Nawalparari East', 'Kawasoti', 'à¤•à¤¾à¤µà¤¾à¤¸à¥‹à¤¤à¥€', 'municipality'::public.municipality_type, 9, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('syangja-putalibazar', 'Syangja', 'Putalibazar', 'à¤ªà¥à¤¤à¤²à¥€à¤¬à¤œà¤¾à¤°', 'municipality'::public.municipality_type, 14, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('syangja-bhirkot', 'Syangja', 'Bhirkot', 'à¤­à¤¿à¤°à¤•à¥‹à¤Ÿ', 'municipality'::public.municipality_type, 9, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('syangja-galyang', 'Syangja', 'Galyang', 'à¤—à¤²à¥à¤¯à¤¾à¤™', 'municipality'::public.municipality_type, 11, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('syangja-chapakot', 'Syangja', 'Chapakot', 'à¤šà¤¾à¤ªà¤¾à¤•à¥‹à¤Ÿ', 'municipality'::public.municipality_type, 10, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('syangja-waling', 'Syangja', 'Waling', 'à¤µà¤¾à¤²à¤¿à¤™', 'municipality'::public.municipality_type, 14, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('parbat-kushma', 'Parbat', 'Kushma', 'à¤•à¥à¤¶à¥à¤®à¤¾', 'municipality'::public.municipality_type, 14, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('parbat-phalebas', 'Parbat', 'Phalebas', 'à¤«à¤²à¥‡à¤¬à¤¾à¤¸', 'municipality'::public.municipality_type, 9, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('baglung-jaimuni', 'Baglung', 'Jaimuni', 'à¤œà¥ˆà¤®à¥à¤¨à¥€', 'municipality'::public.municipality_type, 9, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('baglung-baglung', 'Baglung', 'Baglung', 'à¤¬à¤¾à¤—à¥à¤²à¥à¤™', 'municipality'::public.municipality_type, 14, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('baglung-galkot', 'Baglung', 'Galkot', 'à¤—à¤²à¤•à¥‹à¤Ÿ', 'municipality'::public.municipality_type, 11, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('baglung-dhorpatan', 'Baglung', 'Dhorpatan', 'à¤¢à¥‹à¤°à¤ªà¤¾à¤Ÿà¤¨', 'municipality'::public.municipality_type, 9, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('rolpa-rolpa', 'Rolpa', 'Rolpa', 'à¤°à¥‹à¤²à¥à¤ªà¤¾', 'municipality'::public.municipality_type, 8, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('pyuthan-pyuthan', 'Pyuthan', 'Pyuthan', 'à¤ªà¥à¤¯à¥à¤ à¤¾à¤¨', 'municipality'::public.municipality_type, 10, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('pyuthan-sworgadwary', 'Pyuthan', 'Sworgadwary', 'à¤¸à¥à¤µà¤°à¥à¤—à¤¦à¥à¤µà¤¾à¤°à¥€', 'municipality'::public.municipality_type, 9, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('gulmi-resunga', 'Gulmi', 'Resunga', 'à¤°à¥‡à¤¸à¥à¤‚à¤—à¤¾', 'municipality'::public.municipality_type, 14, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('gulmi-musikot', 'Gulmi', 'Musikot', 'à¤®à¥à¤¸à¤¿à¤•à¥‹à¤Ÿ', 'municipality'::public.municipality_type, 9, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('arghakhanchi-bhumekasthan', 'Arghakhanchi', 'Bhumekasthan', 'à¤­à¥à¤®à¥‡à¤•à¤¸à¥à¤¥à¤¾à¤¨', 'municipality'::public.municipality_type, 9, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('arghakhanchi-sitganga', 'Arghakhanchi', 'Sitganga', 'à¤¸à¤¿à¤¤à¤—à¤‚à¤—à¤¾', 'municipality'::public.municipality_type, 9, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('arghakhanchi-sandhikharka', 'Arghakhanchi', 'Sandhikharka', 'à¤¸à¤¨à¥à¤§à¤¿à¤–à¤°à¥à¤•', 'municipality'::public.municipality_type, 12, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('palpa-tansen', 'Palpa', 'Tansen', 'à¤¤à¤¾à¤¨à¤¸à¥‡à¤¨', 'municipality'::public.municipality_type, 14, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('palpa-rampur', 'Palpa', 'Rampur', 'à¤°à¤¾à¤®à¤ªà¥à¤°', 'municipality'::public.municipality_type, 10, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('nawalparasiwest-bardaghat', 'Nawalparasi West', 'Bardaghat', 'à¤¬à¤°à¥à¤¦à¤˜à¤¾à¤Ÿ', 'municipality'::public.municipality_type, 9, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('nawalparasiwest-sunwal', 'Nawalparasi West', 'Sunwal', 'à¤¸à¥à¤¨à¤µà¤²', 'municipality'::public.municipality_type, 9, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('nawalparasiwest-ramgram', 'Nawalparasi West', 'Ramgram', 'à¤°à¤¾à¤®à¤—à¥à¤°à¤¾à¤®', 'municipality'::public.municipality_type, 9, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('rupandehi-lumbinisanskritik', 'Rupandehi', 'Lumbini Sanskritik', 'à¤²à¥à¤®à¥à¤¬à¤¿à¤¨à¥€ à¤¸à¤‚à¤¸à¥à¤•à¥ƒà¤¤', 'municipality'::public.municipality_type, 11, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('rupandehi-devdaha', 'Rupandehi', 'Devdaha', 'à¤¦à¥‡à¤µà¤¦à¤¹', 'municipality'::public.municipality_type, 12, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('rupandehi-sainamaina', 'Rupandehi', 'Sainamaina', 'à¤¸à¥ˆà¤¨à¤¾à¤®à¥ˆà¤¨à¤¾', 'municipality'::public.municipality_type, 11, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('rupandehi-siddharthanagar', 'Rupandehi', 'Siddharthanagar', 'à¤¸à¤¿à¤¦à¥à¤§à¤¾à¤°à¥à¤¥à¤¨à¤—à¤°', 'municipality'::public.municipality_type, 13, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('rupandehi-tillotama', 'Rupandehi', 'Tillotama', 'à¤¤à¤¿à¤²à¥‹à¤¤à¤®à¤¾', 'municipality'::public.municipality_type, 9, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('kapilvastu-shivaraj', 'Kapilvastu', 'Shivaraj', 'à¤¶à¤¿à¤µà¤°à¤¾à¤œ', 'municipality'::public.municipality_type, 11, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('kapilvastu-kapilbastu', 'Kapilvastu', 'Kapilbastu', 'à¤•à¤ªà¤¿à¤²à¤µà¤¸à¥à¤¤à¥', 'municipality'::public.municipality_type, 9, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('kapilvastu-buddhabhumi', 'Kapilvastu', 'Buddhabhumi', 'à¤¬à¥à¤¦à¥à¤§à¤­à¥‚à¤®à¤¿', 'municipality'::public.municipality_type, 9, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('kapilvastu-maharajgunj', 'Kapilvastu', 'Maharajgunj', 'à¤®à¤¹à¤¾à¤°à¤¾à¤œà¤—à¤¨à¥à¤œ', 'municipality'::public.municipality_type, 11, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('kapilvastu-banganga', 'Kapilvastu', 'Banganga', 'à¤¬à¤¾à¤£à¤—à¤‚à¤—à¤¾', 'municipality'::public.municipality_type, 11, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('kapilvastu-krishnanagar', 'Kapilvastu', 'Krishnanagar', 'à¤•à¥ƒà¤·à¥à¤£à¤¨à¤—à¤°', 'municipality'::public.municipality_type, 12, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('dang-lamahi', 'Dang', 'Lamahi', 'à¤²à¤®à¤¹à¥€', 'municipality'::public.municipality_type, 9, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('banke-kohalpur', 'Banke', 'Kohalpur', 'à¤•à¥‹à¤¹à¤²à¤ªà¥à¤°', 'municipality'::public.municipality_type, 15, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('bardiya-thakurbaba', 'Bardiya', 'Thakurbaba', 'à¤ à¤¾à¤•à¥à¤°à¤¬à¤¾à¤¬à¤¾', 'municipality'::public.municipality_type, 9, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('bardiya-bansagadhi', 'Bardiya', 'Bansagadhi', 'à¤¬à¤¾à¤à¤¸à¤—à¤¢à¥€', 'municipality'::public.municipality_type, 9, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('bardiya-barbardiya', 'Bardiya', 'Barbardiya', 'à¤¬à¤¾à¤°à¤¬à¤°à¥à¤¦à¤¿à¤¯à¤¾', 'municipality'::public.municipality_type, 11, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('bardiya-rajapur', 'Bardiya', 'Rajapur', 'à¤°à¤¾à¤œà¤¾à¤ªà¥à¤°', 'municipality'::public.municipality_type, 10, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('bardiya-madhuwan', 'Bardiya', 'Madhuwan', 'à¤®à¤§à¥à¤µà¤¨', 'municipality'::public.municipality_type, 9, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('bardiya-gulariya', 'Bardiya', 'Gulariya', 'à¤—à¥à¤²à¤°à¤¿à¤¯à¤¾', 'municipality'::public.municipality_type, 13, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('dolpa-tripurasundari', 'Dolpa', 'Tripurasundari', 'à¤¤à¥à¤°à¤¿à¤ªà¥à¤°à¤¾à¤¸à¥à¤¨à¥à¤¦à¤°à¥€', 'municipality'::public.municipality_type, 11, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('dolpa-thulibheri', 'Dolpa', 'Thuli Bheri', 'à¤ à¥à¤²à¥€ à¤­à¥‡à¤°à¥€', 'municipality'::public.municipality_type, 11, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('mugu-chhayanathrara', 'Mugu', 'Chhayanath Rara', 'à¤›à¤¾à¤¯à¤¾à¤¨à¤¾à¤¥ à¤°à¤¾à¤°à¤¾', 'municipality'::public.municipality_type, 14, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('jumla-chandannath', 'Jumla', 'Chandannath', 'à¤šà¤¨à¥à¤¦à¤¨à¤¨à¤¾à¤¥', 'municipality'::public.municipality_type, 10, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('kalikot-khandachakra', 'Kalikot', 'Khandachakra', 'à¤–à¤‚à¤¡à¤šà¤•à¥à¤°', 'municipality'::public.municipality_type, 11, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('kalikot-raskot', 'Kalikot', 'Raskot', 'à¤°à¤¾à¤¸à¥à¤•à¥‹à¤Ÿ', 'municipality'::public.municipality_type, 9, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('kalikot-tilagufa', 'Kalikot', 'Tilagufa', 'à¤¤à¤¿à¤²à¤¾à¤—à¥à¤«à¤¾', 'municipality'::public.municipality_type, 11, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('dailekh-aathabis', 'Dailekh', 'Aathabis', 'à¤†à¤ à¤¬à¤¿à¤¸', 'municipality'::public.municipality_type, 9, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('dailekh-dullu', 'Dailekh', 'Dullu', 'à¤¦à¥à¤²à¥à¤²à¥', 'municipality'::public.municipality_type, 13, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('dailekh-chamundabindrasaini', 'Dailekh', 'Chamunda Bindrasaini', 'à¤šà¤¾à¤®à¥à¤£à¥à¤¡à¤¾ à¤¬à¤¿à¤¨à¥à¤¦à¥à¤°à¤¸à¥ˆà¤¨à¥€', 'municipality'::public.municipality_type, 9, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('dailekh-narayan', 'Dailekh', 'Narayan', 'à¤¨à¤¾à¤°à¤¾à¤¯à¤£', 'municipality'::public.municipality_type, 9, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('jajarkot-nalagad', 'Jajarkot', 'Nalagad', 'à¤¨à¤¾à¤²à¤¾à¤—à¤¡', 'municipality'::public.municipality_type, 9, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('jajarkot-bheri', 'Jajarkot', 'Bheri', 'à¤­à¥‡à¤°à¥€', 'municipality'::public.municipality_type, 13, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('jajarkot-chhedagad', 'Jajarkot', 'Chhedagad', 'à¤›à¥‡à¤¡à¤¾à¤—à¤¢', 'municipality'::public.municipality_type, 13, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('rukumwest-aathbiskot', 'Rukum West', 'Aathbiskot', 'à¤†à¤ à¤¬à¤¿à¤¸à¥à¤•à¥‹à¤Ÿ', 'municipality'::public.municipality_type, 9, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('rukumwest-chaurjahari', 'Rukum West', 'Chaurjahari', 'à¤šà¥Œà¤°à¤œà¤¹à¤¾à¤°à¥€', 'municipality'::public.municipality_type, 9, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('rukumwest-musikot', 'Rukum West', 'Musikot', 'à¤®à¥à¤¸à¤¿à¤•à¥‹à¤Ÿ', 'municipality'::public.municipality_type, 9, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('salyan-sharada', 'Salyan', 'Sharada', 'à¤¶à¤¾à¤°à¤¦à¤¾', 'municipality'::public.municipality_type, 15, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('salyan-bangad', 'Salyan', 'Bangad', 'à¤¬à¤¾à¤‚à¤—à¤¡', 'municipality'::public.municipality_type, 9, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('salyan-bagchaur', 'Salyan', 'Bagchaur', 'à¤¬à¤¾à¤—à¤šà¥Œà¤°', 'municipality'::public.municipality_type, 12, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('surkhet-gurbhakot', 'Surkhet', 'Gurbhakot', 'à¤—à¥à¤°à¥à¤­à¤¾à¤•à¥‹à¤Ÿ', 'municipality'::public.municipality_type, 14, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('surkhet-panchpuri', 'Surkhet', 'Panchpuri', 'à¤ªà¤žà¥à¤šà¤ªà¥à¤°à¥€', 'municipality'::public.municipality_type, 9, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('surkhet-bheriganga', 'Surkhet', 'Bheriganga', 'à¤­à¥‡à¤°à¥€à¤—à¤‚à¤—à¤¾', 'municipality'::public.municipality_type, 13, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('surkhet-lekbeshi', 'Surkhet', 'Lekbeshi', 'à¤²à¥‡à¤•à¤¬à¥‡à¤¶à¥€', 'municipality'::public.municipality_type, 9, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('surkhet-birendranagar', 'Surkhet', 'Birendranagar', 'à¤µà¥€à¤°à¥‡à¤¨à¥à¤¦à¥à¤°à¤¨à¤—à¤°', 'municipality'::public.municipality_type, 16, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('bajura-badimalika', 'Bajura', 'Badimalika', 'à¤¬à¤¡à¤¿à¤®à¤¾à¤²à¤¿à¤•à¤¾', 'municipality'::public.municipality_type, 9, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('bajura-tribeni', 'Bajura', 'Tribeni', 'à¤¤à¥à¤°à¤¿à¤µà¥‡à¤£à¥€', 'municipality'::public.municipality_type, 9, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('bajura-budhiganga', 'Bajura', 'Budhiganga', 'à¤¬à¥à¤¢à¥€à¤—à¤‚à¤—à¤¾', 'municipality'::public.municipality_type, 10, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('bajura-budhinanda', 'Bajura', 'Budhinanda', 'à¤¬à¥à¤¢à¥€à¤¨à¤¨à¥à¤¦', 'municipality'::public.municipality_type, 10, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('bajhang-jayaprithivi', 'Bajhang', 'JayaPrithivi', 'à¤œà¤¯ à¤ªà¥ƒà¤¥à¥à¤µà¥€', 'municipality'::public.municipality_type, 9, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('bajhang-bungal', 'Bajhang', 'Bungal', 'à¤¬à¥à¤‚à¤—à¤²', 'municipality'::public.municipality_type, 11, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('darchula-mahakali', 'Darchula', 'Mahakali', 'à¤®à¤¹à¤¾à¤•à¤¾à¤²à¥€', 'municipality'::public.municipality_type, 9, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('darchula-shailyashikhar', 'Darchula', 'Shailyashikhar', 'à¤¶à¥ˆà¤²à¥à¤¯à¤¶à¤¿à¤–à¤°', 'municipality'::public.municipality_type, 9, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('baitadi-melauli', 'Baitadi', 'Melauli', 'à¤®à¥‡à¤²à¥Œà¤²à¥€', 'municipality'::public.municipality_type, 9, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('baitadi-dasharathchanda', 'Baitadi', 'Dasharathchanda', 'à¤¦à¤¶à¤°à¤¥à¤šà¤¨à¥à¤¦', 'municipality'::public.municipality_type, 9, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('baitadi-purchaudi', 'Baitadi', 'Purchaudi', 'à¤ªà¥à¤°à¥à¤šà¥Œà¤¡à¥€', 'municipality'::public.municipality_type, 9, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('baitadi-patan', 'Baitadi', 'Patan', 'à¤ªà¤¾à¤Ÿà¤¨', 'municipality'::public.municipality_type, 10, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('dadeldhura-amargadhi', 'Dadeldhura', 'Amargadhi', 'à¤…à¤®à¤°à¤—à¤¢à¥€', 'municipality'::public.municipality_type, 11, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('dadeldhura-parashuram', 'Dadeldhura', 'Parashuram', 'à¤ªà¤°à¤¶à¥à¤°à¤¾à¤®', 'municipality'::public.municipality_type, 12, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('doti-dipayalsilgadi', 'Doti', 'Dipayal Silgadi', 'à¤¦à¤¿à¤ªà¤¾à¤¯à¤² à¤¸à¤¿à¤²à¤—à¤¢à¥€', 'municipality'::public.municipality_type, 9, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('doti-shikhar', 'Doti', 'Shikhar', 'à¤¶à¤¿à¤–à¤°', 'municipality'::public.municipality_type, 11, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('achham-sanphebagar', 'Achham', 'Sanphebagar', 'à¤¸à¤¾à¤à¤«à¥‡à¤¬à¤—à¤°', 'municipality'::public.municipality_type, 9, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('achham-mangalsen', 'Achham', 'Mangalsen', 'à¤®à¤‚à¤—à¤²à¤¸à¥‡à¤¨', 'municipality'::public.municipality_type, 14, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('achham-kamalbazar', 'Achham', 'Kamalbazar', 'à¤•à¤®à¤²à¤¬à¤œà¤¾à¤°', 'municipality'::public.municipality_type, 10, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('achham-panchadewalbinayak', 'Achham', 'Panchadewal Binayak', 'à¤ªà¤žà¥à¤šà¤¦à¥‡à¤µà¤² à¤µà¤¿à¤¨à¤¾à¤¯à¤•', 'municipality'::public.municipality_type, 11, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('kailali-tikapur', 'Kailali', 'Tikapur', 'à¤Ÿà¥€à¤•à¤¾à¤ªà¥à¤°', 'municipality'::public.municipality_type, 9, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('kailali-ghodaghodi', 'Kailali', 'Ghodaghodi', 'à¤˜à¥‹à¤¡à¤¾à¤˜à¥‹à¤¡à¥€', 'municipality'::public.municipality_type, 12, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('kailali-bhajani', 'Kailali', 'Bhajani', 'à¤­à¤œà¤¨à¥€', 'municipality'::public.municipality_type, 9, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('kailali-gauriganga', 'Kailali', 'Gauriganga', 'à¤—à¥Œà¤°à¥€à¤—à¤‚à¤—à¤¾', 'municipality'::public.municipality_type, 11, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('kailali-godawari', 'Kailali', 'Godawari', 'à¤—à¥‹à¤¦à¤¾à¤µà¤°à¥€', 'municipality'::public.municipality_type, 12, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('kailali-lamkichuha', 'Kailali', 'Lamkichuha', 'à¤²à¤®à¥à¤•à¥€à¤šà¥à¤¹à¤¾', 'municipality'::public.municipality_type, 10, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('kanchanpur-punarbas', 'Kanchanpur', 'Punarbas', 'à¤ªà¥à¤¨à¤°à¥à¤µà¤¾à¤¸', 'municipality'::public.municipality_type, 9, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('kanchanpur-krishnapur', 'Kanchanpur', 'Krishnapur', 'à¤•à¥ƒà¤·à¥à¤£à¤ªà¥à¤°', 'municipality'::public.municipality_type, 9, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('kanchanpur-mahakali', 'Kanchanpur', 'Mahakali', 'à¤®à¤¹à¤¾à¤•à¤¾à¤²à¥€', 'municipality'::public.municipality_type, 9, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('kanchanpur-bedkot', 'Kanchanpur', 'Bedkot', 'à¤¬à¥‡à¤¦à¤•à¥‹à¤Ÿ', 'municipality'::public.municipality_type, 10, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('kanchanpur-belauri', 'Kanchanpur', 'Belauri', 'à¤¬à¥‡à¤²à¥Œà¤°à¥€', 'municipality'::public.municipality_type, 10, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('kanchanpur-bhimdatta', 'Kanchanpur', 'Bhimdatta', 'à¤­à¥€à¤®à¤¦à¤¤à¥à¤¤', 'municipality'::public.municipality_type, 19, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('kanchanpur-shuklaphanta', 'Kanchanpur', 'Shuklaphanta', 'à¤¶à¥à¤•à¥à¤²à¤¾à¤«à¤¾à¤à¤Ÿà¤¾', 'municipality'::public.municipality_type, 12, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('taplejung-sidingba', 'Taplejung', 'Sidingba', 'à¤¸à¤¿à¤¡à¤¿à¤™à¤¬à¤¾', 'rural_municipality'::public.municipality_type, 9, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('taplejung-meringden', 'Taplejung', 'Meringden', 'Meringden', 'rural_municipality'::public.municipality_type, 6, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('taplejung-maiwakhola', 'Taplejung', 'Maiwakhola', 'à¤®à¤¾à¤‡à¤µà¤¾à¤–à¥‹à¤²à¤¾', 'rural_municipality'::public.municipality_type, 5, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('taplejung-phaktanglung', 'Taplejung', 'Phaktanglung', 'à¤«à¤¾à¤•à¥à¤¤à¤¾à¤™à¤²à¥à¤™', 'rural_municipality'::public.municipality_type, 7, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('taplejung-sirijangha', 'Taplejung', 'Sirijangha', 'à¤¸à¤¿à¤°à¤¿à¤œà¤¾à¤™à¥à¤˜à¤¾', 'rural_municipality'::public.municipality_type, 9, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('taplejung-mikwakhola', 'Taplejung', 'Mikwakhola', 'à¤®à¤¿à¤•à¥à¤µà¤¾à¤–à¥‹à¤²à¤¾', 'rural_municipality'::public.municipality_type, 9, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('taplejung-aathraitribeni', 'Taplejung', 'Aathrai Tribeni', 'à¤†à¤ à¤°à¤¾à¤ˆ à¤¤à¥à¤°à¤¿à¤µà¥‡à¤£à¥€', 'rural_municipality'::public.municipality_type, 5, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('taplejung-pathivarayangwarak', 'Taplejung', 'Pathivara Yangwarak', 'à¤ªà¤¾à¤¥à¤¿à¤µà¤°à¤¾ à¤¯à¤¾à¤‚à¤—à¤µà¤¾à¤°à¤•', 'rural_municipality'::public.municipality_type, 9, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('sankhuwasabha-makalu', 'Sankhuwasabha', 'Makalu', 'à¤®à¤•à¤¾à¤²à¥', 'rural_municipality'::public.municipality_type, 6, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('sankhuwasabha-chichila', 'Sankhuwasabha', 'Chichila', 'à¤šà¤¿à¤šà¤¿à¤²à¤¾', 'rural_municipality'::public.municipality_type, 5, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('sankhuwasabha-silichong', 'Sankhuwasabha', 'Silichong', 'à¤¸à¤¿à¤²à¤¿à¤šà¤™', 'rural_municipality'::public.municipality_type, 9, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('sankhuwasabha-bhotkhola', 'Sankhuwasabha', 'Bhotkhola', 'à¤­à¥‹à¤Ÿà¤–à¥‹à¤²à¤¾', 'rural_municipality'::public.municipality_type, 5, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('sankhuwasabha-sabhapokhari', 'Sankhuwasabha', 'Sabhapokhari', 'à¤¸à¤­à¤¾à¤ªà¥‹à¤–à¤°à¥€', 'rural_municipality'::public.municipality_type, 9, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('solukhumbu-sotang', 'Solukhumbu', 'Sotang', 'à¤¸à¥‹à¤Ÿà¤¾à¤™', 'rural_municipality'::public.municipality_type, 5, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('solukhumbu-mahakulung', 'Solukhumbu', 'Mahakulung', 'à¤®à¤¹à¤¾à¤•à¥à¤²à¥à¤™', 'rural_municipality'::public.municipality_type, 5, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('solukhumbu-likhupike', 'Solukhumbu', 'Likhupike', 'à¤²à¤¿à¤–à¥à¤ªà¤¿à¤•à¥‡', 'rural_municipality'::public.municipality_type, 5, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('solukhumbu-nechasalyan', 'Solukhumbu', 'Nechasalyan', 'à¤¨à¥‡à¤šà¤¾à¤¸à¤²à¥à¤¯à¤¾à¤¨', 'rural_municipality'::public.municipality_type, 5, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('solukhumbu-thulungdudhkoshi', 'Solukhumbu', 'Thulung Dudhkoshi', 'à¤¥à¥à¤²à¥à¤™ à¤¦à¥à¤§à¤•à¥‹à¤¶à¥€', 'rural_municipality'::public.municipality_type, 9, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('solukhumbu-maapyadudhkoshi', 'Solukhumbu', 'Maapya Dudhkoshi', 'à¤®à¤¾à¤ªà¥à¤¯à¤¾ à¤¦à¥à¤§à¤•à¥‹à¤¶à¥€', 'rural_municipality'::public.municipality_type, 9, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('solukhumbu-khumbupasanglahmu', 'Solukhumbu', 'Khumbupasanglahmu', 'à¤–à¥à¤®à¥à¤¬à¥à¤ªà¤¸à¤™à¥à¤²à¤¾à¤¹à¤®à¥', 'rural_municipality'::public.municipality_type, 9, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('okhaldhunga-likhu', 'Okhaldhunga', 'Likhu', 'à¤²à¤¿à¤–à¥', 'rural_municipality'::public.municipality_type, 7, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('okhaldhunga-molung', 'Okhaldhunga', 'Molung', 'à¤®à¥‹à¤²à¥à¤™', 'rural_municipality'::public.municipality_type, 8, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('okhaldhunga-sunkoshi', 'Okhaldhunga', 'Sunkoshi', 'à¤¸à¥à¤¨à¤•à¥‹à¤¶à¥€', 'rural_municipality'::public.municipality_type, 10, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('okhaldhunga-champadevi', 'Okhaldhunga', 'Champadevi', 'à¤šà¤®à¥à¤ªà¤¾à¤¦à¥‡à¤µà¥€', 'rural_municipality'::public.municipality_type, 10, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('okhaldhunga-chisankhugadhi', 'Okhaldhunga', 'Chisankhugadhi', 'à¤šà¤¿à¤¸à¤‚à¤–à¥à¤—à¤¢à¥€', 'rural_municipality'::public.municipality_type, 9, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('okhaldhunga-khijidemba', 'Okhaldhunga', 'Khijidemba', 'à¤–à¤¿à¤œà¤¿à¤¦à¥‡à¤®à¥à¤¬à¤¾', 'rural_municipality'::public.municipality_type, 9, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('okhaldhunga-manebhanjyang', 'Okhaldhunga', 'Manebhanjyang', 'à¤®à¤¾à¤¨à¥‡à¤­à¤žà¥à¤œà¥à¤¯à¤¾à¤™', 'rural_municipality'::public.municipality_type, 10, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('khotang-sakela', 'Khotang', 'Sakela', 'à¤¸à¤¾à¤•à¥‡à¤²à¤¾', 'rural_municipality'::public.municipality_type, 9, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('khotang-khotehang', 'Khotang', 'Khotehang', 'à¤–à¥‹à¤Ÿà¥‡à¤¹à¤¾à¤™', 'rural_municipality'::public.municipality_type, 9, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('khotang-barahapokhari', 'Khotang', 'Barahapokhari', 'à¤¬à¤°à¤¾à¤¹à¤¾à¤ªà¥‹à¤–à¤°à¥€', 'rural_municipality'::public.municipality_type, 9, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('khotang-ainselukhark', 'Khotang', 'Ainselukhark', 'à¤à¤¸à¥‡à¤²à¥à¤–à¤°à¥à¤•', 'rural_municipality'::public.municipality_type, 9, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('khotang-rawabesi', 'Khotang', 'Rawa Besi', 'à¤°à¤µà¤¾ à¤¬à¥‡à¤¸à¥€', 'rural_municipality'::public.municipality_type, 9, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('khotang-kepilasagadhi', 'Khotang', 'Kepilasagadhi', 'à¤•à¥‡à¤ªà¤¿à¤²à¤¾à¤¸à¤—à¤¢à¥€', 'rural_municipality'::public.municipality_type, 9, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('khotang-jantedhunga', 'Khotang', 'Jantedhunga', 'à¤œà¤¾à¤¨à¤¤à¥‡à¤¢à¥à¤™à¥à¤—à¤¾', 'rural_municipality'::public.municipality_type, 9, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('khotang-diprung', 'Khotang', 'Diprung', 'à¤¡à¤¿à¤ªà¥à¤°à¥à¤™', 'rural_municipality'::public.municipality_type, 9, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('bhojpur-arun', 'Bhojpur', 'Arun', 'à¤…à¤°à¥à¤£', 'rural_municipality'::public.municipality_type, 7, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('bhojpur-aamchowk', 'Bhojpur', 'Aamchowk', 'à¤†à¤®à¤šà¥‹à¤•', 'rural_municipality'::public.municipality_type, 9, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('bhojpur-hatuwagadhi', 'Bhojpur', 'Hatuwagadhi', 'à¤¹à¤¤à¥à¤µà¤¾à¤—à¤¢à¥€', 'rural_municipality'::public.municipality_type, 9, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('bhojpur-pauwadungma', 'Bhojpur', 'Pauwadungma', 'à¤ªà¥Œà¤µà¤¾à¤¡à¥à¤™à¥à¤®à¤¾', 'rural_municipality'::public.municipality_type, 9, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('bhojpur-temkemaiyung', 'Bhojpur', 'Temkemaiyung', 'à¤Ÿà¥‡à¤®à¥à¤•à¥‡à¤®à¤¾à¤‡à¤¯à¥à¤™', 'rural_municipality'::public.municipality_type, 9, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('bhojpur-salpasilichho', 'Bhojpur', 'Salpasilichho', 'à¤¸à¤¾à¤²à¤ªà¤¸à¤¿à¤²à¤¿à¤›à¥‹', 'rural_municipality'::public.municipality_type, 6, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('bhojpur-ramprasad', 'Bhojpur', 'Ramprasad', 'à¤°à¤¾à¤®à¤ªà¥à¤°à¤¸à¤¾à¤¦', 'rural_municipality'::public.municipality_type, 9, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('dhankuta-chaubise', 'Dhankuta', 'Chaubise', 'à¤šà¥Œà¤¬à¤¿à¤¸à¥‡', 'rural_municipality'::public.municipality_type, 7, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('dhankuta-shahidbhumi', 'Dhankuta', 'Shahidbhumi', 'à¤¶à¤¹à¤¿à¤¦à¤­à¥‚à¤®à¤¿', 'rural_municipality'::public.municipality_type, 9, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('dhankuta-sangurigadhi', 'Dhankuta', 'Sangurigadhi', 'à¤¸à¤¾à¤à¤—à¥à¤°à¥€à¤—à¤¢à¥€', 'rural_municipality'::public.municipality_type, 10, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('dhankuta-chhatharjorpati', 'Dhankuta', 'Chhathar Jorpati', 'à¤›à¤¥à¤° à¤œà¥‹à¤°à¤ªà¤¾à¤Ÿà¥€', 'rural_municipality'::public.municipality_type, 6, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('terhathum-chhathar', 'Terhathum', 'Chhathar', 'à¤›à¤¥à¤°', 'rural_municipality'::public.municipality_type, 6, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('terhathum-phedap', 'Terhathum', 'Phedap', 'à¤«à¥‡à¤¡à¤¾à¤ª', 'rural_municipality'::public.municipality_type, 5, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('terhathum-aathrai', 'Terhathum', 'Aathrai', 'à¤†à¤ à¤°à¤¾à¤ˆ', 'rural_municipality'::public.municipality_type, 9, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('terhathum-menchayam', 'Terhathum', 'Menchayam', 'à¤®à¥‡à¤¨à¥à¤šà¤¾à¤¯à¤®', 'rural_municipality'::public.municipality_type, 9, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('panchthar-yangwarak', 'Panchthar', 'Yangwarak', 'à¤¯à¤¾à¤™à¥à¤—à¤µà¤¾à¤°à¤•', 'rural_municipality'::public.municipality_type, 6, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('panchthar-hilihang', 'Panchthar', 'Hilihang', 'à¤¹à¤¿à¤²à¤¿à¤¹à¤¾à¤™', 'rural_municipality'::public.municipality_type, 7, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('panchthar-falelung', 'Panchthar', 'Falelung', 'à¤«à¤¾à¤²à¥‡à¤²à¥à¤™', 'rural_municipality'::public.municipality_type, 9, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('panchthar-tumbewa', 'Panchthar', 'Tumbewa', 'à¤¤à¥à¤®à¥à¤¬à¥‡à¤µà¤¾', 'rural_municipality'::public.municipality_type, 5, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('panchthar-kummayak', 'Panchthar', 'Kummayak', 'à¤•à¥à¤®à¤¾à¤¯à¤•', 'rural_municipality'::public.municipality_type, 5, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('panchthar-miklajung', 'Panchthar', 'Miklajung', 'à¤®à¤¿à¤•à¥à¤²à¤¾à¤œà¥à¤™', 'rural_municipality'::public.municipality_type, 8, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('panchthar-falgunanda', 'Panchthar', 'Falgunanda', 'à¤«à¤¾à¤²à¥à¤—à¥à¤¨à¤¨à¥à¤¦', 'rural_municipality'::public.municipality_type, 9, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('ilam-rong', 'Ilam', 'Rong', 'à¤°à¥‹à¤™', 'rural_municipality'::public.municipality_type, 6, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('ilam-mangsebung', 'Ilam', 'Mangsebung', 'à¤®à¤™à¥à¤—à¥‡à¤¬à¥à¤™', 'rural_municipality'::public.municipality_type, 9, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('ilam-chulachuli', 'Ilam', 'Chulachuli', 'à¤šà¥à¤²à¤¾à¤šà¥à¤²à¥€', 'rural_municipality'::public.municipality_type, 6, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('ilam-sandakpur', 'Ilam', 'Sandakpur', 'à¤¸à¤¨à¥à¤¦à¤•à¤ªà¥à¤°', 'rural_municipality'::public.municipality_type, 5, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('ilam-fakphokthum', 'Ilam', 'Fakphokthum', 'à¤«à¤¾à¤•à¤«à¥‹à¤•à¥à¤¥à¥à¤®', 'rural_municipality'::public.municipality_type, 9, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('ilam-maijogmai', 'Ilam', 'Maijogmai', 'à¤®à¤¾à¤‡à¤œà¥‹à¤—à¤®à¤¾à¤ˆ', 'rural_municipality'::public.municipality_type, 6, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('jhapa-kamal', 'Jhapa', 'Kamal', 'à¤•à¤®à¤²', 'rural_municipality'::public.municipality_type, 7, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('jhapa-jhapa', 'Jhapa', 'Jhapa', 'à¤à¤¾à¤ªà¤¾', 'rural_municipality'::public.municipality_type, 9, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('jhapa-kachankawal', 'Jhapa', 'Kachankawal', 'à¤•à¤šà¤¨à¤•à¤µà¤²', 'rural_municipality'::public.municipality_type, 7, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('jhapa-gauriganj', 'Jhapa', 'Gauriganj', 'à¤—à¥Œà¤°à¥€à¤—à¤žà¥à¤œ', 'rural_municipality'::public.municipality_type, 6, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('jhapa-barhadashi', 'Jhapa', 'Barhadashi', 'à¤¬à¤¾à¤¹à¥à¤°à¤¦à¤¶à¥€', 'rural_municipality'::public.municipality_type, 7, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('jhapa-haldibari', 'Jhapa', 'Haldibari', 'à¤¹à¤²à¥à¤¦à¤¿à¤¬à¤¾à¤°à¥€', 'rural_municipality'::public.municipality_type, 5, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('jhapa-buddhashanti', 'Jhapa', 'Buddhashanti', 'à¤¬à¥à¤¦à¥à¤§à¤¶à¤¾à¤¨à¥à¤¤à¤¿', 'rural_municipality'::public.municipality_type, 9, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('morang-jahada', 'Morang', 'Jahada', 'à¤œà¤¹à¤¾à¤¦à¤¾', 'rural_municipality'::public.municipality_type, 7, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('morang-katahari', 'Morang', 'Katahari', 'à¤•à¤Ÿà¤¹à¤°à¥€', 'rural_municipality'::public.municipality_type, 9, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('morang-gramthan', 'Morang', 'Gramthan', 'à¤—à¥à¤°à¤¾à¤®à¤¥à¤¾à¤¨', 'rural_municipality'::public.municipality_type, 7, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('morang-dhanpalthan', 'Morang', 'Dhanpalthan', 'à¤§à¤¨à¤ªà¤¾à¤²à¤¥à¤¾à¤¨', 'rural_municipality'::public.municipality_type, 7, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('morang-kerabari', 'Morang', 'Kerabari', 'à¤•à¥‡à¤°à¤¾à¤¬à¤¾à¤°à¥€', 'rural_municipality'::public.municipality_type, 10, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('morang-budhiganga', 'Morang', 'Budhiganga', 'à¤¬à¥à¤¢à¥€à¤—à¤‚à¤—à¤¾', 'rural_municipality'::public.municipality_type, 7, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('morang-kanepokhari', 'Morang', 'Kanepokhari', 'à¤•à¤¾à¤¨à¥‡à¤ªà¥‹à¤–à¤°à¥€', 'rural_municipality'::public.municipality_type, 7, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('morang-miklajung', 'Morang', 'Miklajung', 'à¤®à¤¿à¤•à¥à¤²à¤¾à¤œà¥à¤™', 'rural_municipality'::public.municipality_type, 9, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('sunsari-gadhi', 'Sunsari', 'Gadhi', 'à¤—à¤¢à¥€', 'rural_municipality'::public.municipality_type, 6, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('sunsari-koshi', 'Sunsari', 'Koshi', 'à¤•à¥‹à¤¶à¥€', 'rural_municipality'::public.municipality_type, 8, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('sunsari-barju', 'Sunsari', 'Barju', 'à¤¬à¤°à¥à¤œà¥', 'rural_municipality'::public.municipality_type, 6, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('sunsari-harinagar', 'Sunsari', 'Harinagar', 'à¤¹à¤°à¤¿à¤¨à¤—à¤°', 'rural_municipality'::public.municipality_type, 7, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('sunsari-dewanganj', 'Sunsari', 'Dewanganj', 'à¤¦à¥‡à¤µà¤¾à¤¨à¤—à¤¨à¥à¤œ', 'rural_municipality'::public.municipality_type, 7, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('sunsari-bhokrahanarsing', 'Sunsari', 'Bhokraha Narsing', 'à¤­à¥‹à¤•à¥à¤°à¤¾à¤¹à¤¾ à¤¨à¤°à¤¸à¤¿à¤™à¥à¤—', 'rural_municipality'::public.municipality_type, 9, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('udayapur-tapli', 'Udayapur', 'Tapli', 'à¤¤à¤¾à¤ªà¤²à¥€', 'rural_municipality'::public.municipality_type, 9, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('udayapur-rautamai', 'Udayapur', 'Rautamai', 'à¤°à¥Œà¤¤à¤¾à¤®à¤¾à¤ˆ', 'rural_municipality'::public.municipality_type, 8, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('udayapur-udayapurgadhi', 'Udayapur', 'Udayapurgadhi', 'à¤‰à¤¦à¤¯à¤ªà¥à¤°à¤—à¤¢à¥€', 'rural_municipality'::public.municipality_type, 8, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('udayapur-limchungbung', 'Udayapur', 'Limchungbung', 'à¤²à¤¿à¤®à¥à¤šà¥à¤™à¤¬à¥à¤™', 'rural_municipality'::public.municipality_type, 9, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('saptari-rajgadh', 'Saptari', 'Rajgadh', 'à¤°à¤¾à¤œà¤—à¤¢', 'rural_municipality'::public.municipality_type, 9, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('saptari-rupani', 'Saptari', 'Rupani', 'à¤°à¥à¤ªà¤¾à¤¨à¥€', 'rural_municipality'::public.municipality_type, 9, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('saptari-tirahut', 'Saptari', 'Tirahut', 'à¤¤à¤¿à¤°à¤¾à¤¹à¥à¤¤', 'rural_municipality'::public.municipality_type, 9, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('saptari-mahadeva', 'Saptari', 'Mahadeva', 'à¤®à¤¹à¤¾à¤¦à¥‡à¤µ', 'rural_municipality'::public.municipality_type, 6, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('saptari-bishnupur', 'Saptari', 'Bishnupur', 'à¤µà¤¿à¤·à¥à¤£à¥à¤ªà¥à¤°', 'rural_municipality'::public.municipality_type, 5, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('saptari-chhinnamasta', 'Saptari', 'Chhinnamasta', 'à¤›à¤¿à¤¨à¥à¤¨à¤®à¤¸à¥à¤¤à¤¾', 'rural_municipality'::public.municipality_type, 7, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('saptari-balanbihul', 'Saptari', 'Balan Bihul', 'à¤¬à¤¾à¤²à¤¨ à¤¬à¤¿à¤¹à¥à¤²', 'rural_municipality'::public.municipality_type, 6, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('saptari-tilathikoiladi', 'Saptari', 'Tilathi Koiladi', 'à¤¤à¤¿à¤²à¤¾à¤ à¥€ à¤•à¥‹à¤‡à¤²à¤¾à¤¡à¥€', 'rural_municipality'::public.municipality_type, 8, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('saptari-agnisairkrishnasavaran', 'Saptari', 'Agnisair Krishna Savaran', 'à¤…à¤—à¥à¤¨à¤¿à¤¶à¥ˆà¤° à¤•à¥ƒà¤·à¥à¤£ à¤¸à¤¾à¤µà¤°à¤£', 'rural_municipality'::public.municipality_type, 9, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('siraha-aurahi', 'Siraha', 'Aurahi', 'à¤”à¤°à¤¹à¥€', 'rural_municipality'::public.municipality_type, 5, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('siraha-naraha', 'Siraha', 'Naraha', 'à¤¨à¤°à¤¹à¤¾', 'rural_municipality'::public.municipality_type, 5, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('siraha-arnama', 'Siraha', 'Arnama', 'à¤…à¤°à¥à¤¨à¤¾à¤®à¤¾', 'rural_municipality'::public.municipality_type, 9, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('siraha-bhagawanpur', 'Siraha', 'Bhagawanpur', 'à¤­à¤—à¤µà¤¾à¤¨à¤ªà¥à¤°', 'rural_municipality'::public.municipality_type, 9, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('siraha-nawarajpur', 'Siraha', 'Nawarajpur', 'à¤¨à¤µà¤°à¤¾à¤œà¤ªà¥à¤°', 'rural_municipality'::public.municipality_type, 9, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('siraha-bishnupur', 'Siraha', 'Bishnupur', 'à¤µà¤¿à¤·à¥à¤£à¥à¤ªà¥à¤°', 'rural_municipality'::public.municipality_type, 5, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('siraha-bariyarpatti', 'Siraha', 'Bariyarpatti', 'à¤¬à¤°à¤¿à¤¯à¤¾à¤°à¤ªà¤Ÿà¥à¤Ÿà¥€', 'rural_municipality'::public.municipality_type, 9, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('siraha-laxmipurpatari', 'Siraha', 'Laxmipur Patari', 'à¤²à¤•à¥à¤·à¥à¤®à¥€à¤ªà¥à¤° à¤ªà¤Ÿà¤¾à¤°à¥€', 'rural_municipality'::public.municipality_type, 6, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('siraha-sakhuwanankarkatti', 'Siraha', 'Sakhuwanankarkatti', 'à¤¸à¤–à¥à¤µà¤¾à¤¨à¤™à¥à¤•à¤°à¤•à¤Ÿà¥à¤Ÿà¥€', 'rural_municipality'::public.municipality_type, 5, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('dhanusha-aaurahi', 'Dhanusha', 'Aaurahi', 'à¤”à¤°à¤¾à¤¹à¥€', 'rural_municipality'::public.municipality_type, 9, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('dhanusha-dhanauji', 'Dhanusha', 'Dhanauji', 'à¤§à¤¨à¥Œà¤œà¥€', 'rural_municipality'::public.municipality_type, 9, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('dhanusha-bateshwor', 'Dhanusha', 'Bateshwor', 'à¤¬à¤Ÿà¥‡à¤¶à¥à¤µà¤°', 'rural_municipality'::public.municipality_type, 5, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('dhanusha-janaknandani', 'Dhanusha', 'Janaknandani', 'à¤œà¤¨à¤•à¤¨à¤¨à¥à¤¦à¤¨à¥€', 'rural_municipality'::public.municipality_type, 9, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('dhanusha-lakshminiya', 'Dhanusha', 'Lakshminiya', 'à¤²à¤•à¥à¤·à¥à¤®à¥€à¤¨à¤¿à¤¯à¤¾', 'rural_municipality'::public.municipality_type, 9, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('dhanusha-mukhiyapattimusarmiya', 'Dhanusha', 'Mukhiyapatti Musarmiya', 'à¤®à¥à¤–à¤¿à¤¯à¤¾à¤ªà¤Ÿà¥à¤Ÿà¥€ à¤®à¥à¤¸à¤°à¤®à¤¿à¤¯à¤¾', 'rural_municipality'::public.municipality_type, 9, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('mahottari-pipra', 'Mahottari', 'Pipra', 'à¤ªà¤¿à¤ªà¤°à¤¾', 'rural_municipality'::public.municipality_type, 7, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('mahottari-sonama', 'Mahottari', 'Sonama', 'à¤¸à¥‹à¤¨à¤¾à¤®à¤¾', 'rural_municipality'::public.municipality_type, 8, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('mahottari-samsi', 'Mahottari', 'Samsi', 'à¤¸à¤®à¥à¤¸à¥€', 'rural_municipality'::public.municipality_type, 7, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('mahottari-ekdanra', 'Mahottari', 'Ekdanra', 'à¤à¤•à¤¡à¤¾à¤¨à¤°à¤¾', 'rural_municipality'::public.municipality_type, 9, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('mahottari-mahottari', 'Mahottari', 'Mahottari', 'à¤®à¤¹à¥‹à¤¤à¥à¤¤à¤°à¥€', 'rural_municipality'::public.municipality_type, 7, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('sarlahi-dhankaul', 'Sarlahi', 'Dhankaul', 'à¤§à¤¨à¤•à¥Œà¤²', 'rural_municipality'::public.municipality_type, 7, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('sarlahi-parsa', 'Sarlahi', 'Parsa', 'à¤ªà¤°à¥à¤¸à¤¾', 'rural_municipality'::public.municipality_type, 6, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('sarlahi-bishnu', 'Sarlahi', 'Bishnu', 'à¤µà¤¿à¤·à¥à¤£à¥', 'rural_municipality'::public.municipality_type, 8, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('sarlahi-ramnagar', 'Sarlahi', 'Ramnagar', 'à¤°à¤¾à¤®à¤¨à¤—à¤°', 'rural_municipality'::public.municipality_type, 9, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('sarlahi-kaudena', 'Sarlahi', 'Kaudena', 'à¤•à¥Œà¤¡à¥‡à¤¨à¤¾', 'rural_municipality'::public.municipality_type, 9, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('sarlahi-basbariya', 'Sarlahi', 'Basbariya', 'à¤¬à¤¾à¤¸à¤¬à¤°à¤¿à¤¯à¤¾', 'rural_municipality'::public.municipality_type, 9, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('sarlahi-chandranagar', 'Sarlahi', 'Chandranagar', 'à¤šà¤¨à¥à¤¦à¥à¤°à¤¨à¤—à¤°', 'rural_municipality'::public.municipality_type, 7, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('sarlahi-chakraghatta', 'Sarlahi', 'Chakraghatta', 'à¤šà¤•à¥à¤°à¤˜à¤Ÿà¥à¤Ÿà¤¾', 'rural_municipality'::public.municipality_type, 7, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('sarlahi-bramhapuri', 'Sarlahi', 'Bramhapuri', 'à¤¬à¥à¤°à¤®à¥à¤¹à¤ªà¥à¤°à¥€', 'rural_municipality'::public.municipality_type, 9, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('rautahat-yemunamai', 'Rautahat', 'Yemunamai', 'à¤¯à¤®à¥à¤¨à¤¾à¤®à¤¾à¤ˆ', 'rural_municipality'::public.municipality_type, 9, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('rautahat-durgabhagwati', 'Rautahat', 'Durga Bhagwati', 'à¤¦à¥à¤°à¥à¤—à¤¾ à¤­à¤—à¤µà¤¤à¥€', 'rural_municipality'::public.municipality_type, 9, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('bara-pheta', 'Bara', 'Pheta', 'à¤«à¥‡à¤Ÿà¤¾', 'rural_municipality'::public.municipality_type, 9, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('bara-devtal', 'Bara', 'Devtal', 'à¤¦à¥‡à¤µà¤¤à¤¾à¤²', 'rural_municipality'::public.municipality_type, 7, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('bara-prasauni', 'Bara', 'Prasauni', 'à¤ªà¥à¤°à¤¸à¥Œà¤¨à¥€', 'rural_municipality'::public.municipality_type, 7, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('bara-suwarna', 'Bara', 'Suwarna', 'à¤¸à¥à¤µà¤°à¥à¤£', 'rural_municipality'::public.municipality_type, 8, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('bara-baragadhi', 'Bara', 'Baragadhi', 'à¤¬à¤¾à¤°à¤¾à¤—à¤¢à¥€', 'rural_municipality'::public.municipality_type, 7, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('bara-karaiyamai', 'Bara', 'Karaiyamai', 'à¤•à¤°à¥ˆà¤¯à¤¾à¤®à¤¾à¤ˆ', 'rural_municipality'::public.municipality_type, 8, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('bara-parwanipur', 'Bara', 'Parwanipur', 'à¤ªà¤°à¤µà¤¾à¤¨à¥€à¤ªà¥à¤°', 'rural_municipality'::public.municipality_type, 5, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('bara-bishrampur', 'Bara', 'Bishrampur', 'à¤¬à¤¿à¤¶à¥à¤°à¤¾à¤®à¤ªà¥à¤°', 'rural_municipality'::public.municipality_type, 9, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('bara-adarshkotwal', 'Bara', 'Adarsh kotwal', 'à¤†à¤¦à¤°à¥à¤¶ à¤•à¥‹à¤¤à¤µà¤¾à¤²', 'rural_municipality'::public.municipality_type, 8, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('parsa-thori', 'Parsa', 'Thori', 'à¤¥à¥‹à¤°à¥€', 'rural_municipality'::public.municipality_type, 5, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('parsa-dhobini', 'Parsa', 'Dhobini', 'à¤§à¥‹à¤¬à¤¿à¤¨à¥€', 'rural_municipality'::public.municipality_type, 5, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('parsa-chhipaharmai', 'Parsa', 'Chhipaharmai', 'à¤›à¤¿à¤ªà¤¹à¤°à¤®à¤¾à¤ˆ', 'rural_municipality'::public.municipality_type, 5, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('parsa-jirabhawani', 'Parsa', 'Jirabhawani', 'à¤œà¤¿à¤°à¤­à¤µà¤¾à¤¨à¥€', 'rural_municipality'::public.municipality_type, 8, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('parsa-jagarnathpur', 'Parsa', 'Jagarnathpur', 'à¤œà¤—à¤°à¤¨à¤¾à¤¥à¤ªà¥à¤°', 'rural_municipality'::public.municipality_type, 6, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('parsa-kalikamai', 'Parsa', 'Kalikamai', 'à¤•à¤¾à¤²à¤¿à¤•à¤¾à¤®à¤¾à¤ˆ', 'rural_municipality'::public.municipality_type, 5, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('parsa-bindabasini', 'Parsa', 'Bindabasini', 'à¤¬à¤¿à¤¨à¥à¤¦à¤µà¤¾à¤¸à¤¿à¤¨à¥€', 'rural_municipality'::public.municipality_type, 5, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('parsa-pakahamainpur', 'Parsa', 'Pakaha mainpur', 'à¤ªà¤•à¤¾à¤¹à¤¾ à¤®à¥‡à¤¨à¤ªà¥à¤°', 'rural_municipality'::public.municipality_type, 9, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('parsa-sakhuwaprasauni', 'Parsa', 'Sakhuwa Prasauni', 'à¤¸à¤–à¥à¤µà¤¾ à¤ªà¥à¤°à¤¸à¥Œà¤¨à¥€', 'rural_municipality'::public.municipality_type, 9, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('parsa-paterwasugauli', 'Parsa', 'Paterwa sugauli', 'à¤ªà¤Ÿà¥‡à¤°à¤µà¤¾ à¤¸à¥à¤—à¥Œà¤²à¥€', 'rural_municipality'::public.municipality_type, 5, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('dolakha-bigu', 'Dolakha', 'Bigu', 'à¤¬à¤¿à¤—à¥', 'rural_municipality'::public.municipality_type, 8, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('dolakha-sailung', 'Dolakha', 'Sailung', 'à¤¸à¥‡à¤²à¥à¤™', 'rural_municipality'::public.municipality_type, 8, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('dolakha-melung', 'Dolakha', 'Melung', 'à¤®à¥‡à¤²à¥à¤™', 'rural_municipality'::public.municipality_type, 7, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('dolakha-baiteshwor', 'Dolakha', 'Baiteshwor', 'à¤¬à¥ˆà¤¤à¥‡à¤¶à¥à¤µà¤°', 'rural_municipality'::public.municipality_type, 9, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('dolakha-tamakoshi', 'Dolakha', 'Tamakoshi', 'à¤¤à¤¾à¤®à¤¾à¤•à¥‹à¤¶à¥€', 'rural_municipality'::public.municipality_type, 7, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('dolakha-gaurishankar', 'Dolakha', 'Gaurishankar', 'à¤—à¥Œà¤°à¥€à¤¶à¤‚à¤•à¤°', 'rural_municipality'::public.municipality_type, 9, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('dolakha-kalinchok', 'Dolakha', 'Kalinchok', 'à¤•à¤¾à¤²à¤¿à¤žà¥à¤šà¥‹à¤•', 'rural_municipality'::public.municipality_type, 9, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('sindhupalchok-jugal', 'Sindhupalchok', 'Jugal', 'à¤œà¥à¤—à¤²', 'rural_municipality'::public.municipality_type, 7, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('sindhupalchok-balefi', 'Sindhupalchok', 'Balefi', 'à¤¬à¤²à¥‡à¤«à¥€', 'rural_municipality'::public.municipality_type, 8, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('sindhupalchok-sunkoshi', 'Sindhupalchok', 'Sunkoshi', 'à¤¸à¥à¤¨à¤•à¥‹à¤¶à¥€', 'rural_municipality'::public.municipality_type, 7, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('sindhupalchok-helambu', 'Sindhupalchok', 'Helambu', 'à¤¹à¥‡à¤²à¤®à¥à¤¬à¥', 'rural_municipality'::public.municipality_type, 7, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('sindhupalchok-bhotekoshi', 'Sindhupalchok', 'Bhotekoshi', 'à¤­à¥‹à¤Ÿà¥‡à¤•à¥‹à¤¶à¥€', 'rural_municipality'::public.municipality_type, 5, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('sindhupalchok-lisangkhu', 'Sindhupalchok', 'Lisangkhu', 'à¤²à¤¿à¤¸à¤¾à¤™à¥à¤–à¥', 'rural_municipality'::public.municipality_type, 9, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('sindhupalchok-indrawati', 'Sindhupalchok', 'Indrawati', 'à¤‡à¤¨à¥à¤¦à¥à¤°à¤¾à¤µà¤¤à¥€', 'rural_municipality'::public.municipality_type, 12, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('sindhupalchok-tripurasundari', 'Sindhupalchok', 'Tripurasundari', 'à¤¤à¥à¤°à¤¿à¤ªà¥à¤°à¤¾à¤¸à¥à¤¨à¥à¤¦à¤°à¥€', 'rural_municipality'::public.municipality_type, 6, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('sindhupalchok-panchpokharithangpal', 'Sindhupalchok', 'Panchpokhari Thangpal', 'à¤ªà¤¾à¤à¤šà¤ªà¥‹à¤–à¤°à¥€ à¤¥à¤¾à¤™à¥à¤ªà¤¾à¤²', 'rural_municipality'::public.municipality_type, 8, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('rasuwa-kalika', 'Rasuwa', 'Kalika', 'à¤•à¤¾à¤²à¤¿à¤•à¤¾', 'rural_municipality'::public.municipality_type, 5, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('rasuwa-naukunda', 'Rasuwa', 'Naukunda', 'à¤¨à¥Œà¤•à¥à¤£à¥à¤¡', 'rural_municipality'::public.municipality_type, 6, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('rasuwa-uttargaya', 'Rasuwa', 'Uttargaya', 'à¤‰à¤¤à¥à¤¤à¤°à¤—à¤¯à¤¾', 'rural_municipality'::public.municipality_type, 5, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('rasuwa-gosaikunda', 'Rasuwa', 'Gosaikunda', 'à¤—à¥‹à¤¸à¤¾à¤‡à¤•à¥à¤£à¥à¤¡', 'rural_municipality'::public.municipality_type, 6, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('rasuwa-amachodingmo', 'Rasuwa', 'Amachodingmo', 'à¤…à¤®à¤¾à¤•à¥‹à¤¡à¤¿à¤™à¤®à¥‹', 'rural_municipality'::public.municipality_type, 9, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('dhading-gajuri', 'Dhading', 'Gajuri', 'à¤—à¤œà¥à¤°à¥€', 'rural_municipality'::public.municipality_type, 8, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('dhading-galchi', 'Dhading', 'Galchi', 'à¤—à¤¾à¤²à¥à¤šà¥€', 'rural_municipality'::public.municipality_type, 9, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('dhading-thakre', 'Dhading', 'Thakre', 'à¤ à¤¾à¤•à¤°à¥‡', 'rural_municipality'::public.municipality_type, 11, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('dhading-siddhalek', 'Dhading', 'Siddhalek', 'à¤¸à¤¿à¤¦à¥à¤§à¤²à¥‡à¤•', 'rural_municipality'::public.municipality_type, 7, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('dhading-khaniyabash', 'Dhading', 'Khaniyabash', 'à¤–à¤¨à¤¿à¤¯à¤¾à¤¬à¤¾à¤¸', 'rural_municipality'::public.municipality_type, 9, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('dhading-jwalamukhi', 'Dhading', 'Jwalamukhi', 'à¤œà¥à¤µà¤¾à¤²à¤¾à¤®à¥à¤–à¥€', 'rural_municipality'::public.municipality_type, 9, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('dhading-gangajamuna', 'Dhading', 'Gangajamuna', 'à¤—à¤‚à¤—à¤¾à¤œà¤®à¥à¤¨à¤¾', 'rural_municipality'::public.municipality_type, 7, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('dhading-rubivalley', 'Dhading', 'Rubi Valley', 'à¤°à¥à¤¬à¥€ à¤‰à¤ªà¤¤à¥à¤¯à¤•à¤¾', 'rural_municipality'::public.municipality_type, 6, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('dhading-tripurasundari', 'Dhading', 'Tripura Sundari', 'à¤¤à¥à¤°à¤¿à¤ªà¥à¤°à¤¾ à¤¸à¥à¤¨à¥à¤¦à¤°à¥€', 'rural_municipality'::public.municipality_type, 9, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('dhading-netrawatidabjong', 'Dhading', 'Netrawati Dabjong', 'à¤¨à¥‡à¤¤à¥à¤°à¤¾à¤µà¤¤à¥€ à¤¡à¤¬à¥à¤œà¥‹à¤™', 'rural_municipality'::public.municipality_type, 9, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('dhading-benighatrorang', 'Dhading', 'Benighat Rorang', 'à¤¬à¥‡à¤¨à¤¿à¤˜à¤¾à¤Ÿ à¤°à¥‹à¤°à¤¾à¤™', 'rural_municipality'::public.municipality_type, 10, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('nuwakot-kakani', 'Nuwakot', 'Kakani', 'à¤•à¤•à¤¨à¥€', 'rural_municipality'::public.municipality_type, 8, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('nuwakot-tadi', 'Nuwakot', 'Tadi', 'à¤¤à¤¾à¤¡à¥€', 'rural_municipality'::public.municipality_type, 7, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('nuwakot-likhu', 'Nuwakot', 'Likhu', 'à¤²à¤¿à¤–à¥', 'rural_municipality'::public.municipality_type, 6, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('nuwakot-myagang', 'Nuwakot', 'Myagang', 'à¤®à¥à¤¯à¤¾à¤—à¤¾à¤™', 'rural_municipality'::public.municipality_type, 6, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('nuwakot-shivapuri', 'Nuwakot', 'Shivapuri', 'à¤¶à¤¿à¤µà¤ªà¥à¤°à¥€', 'rural_municipality'::public.municipality_type, 8, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('nuwakot-kispang', 'Nuwakot', 'Kispang', 'à¤•à¤¿à¤¸à¥à¤ªà¤¾à¤™', 'rural_municipality'::public.municipality_type, 5, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('nuwakot-suryagadhi', 'Nuwakot', 'Suryagadhi', 'à¤¸à¥à¤°à¥à¤¯à¤—à¤¢à¥€', 'rural_municipality'::public.municipality_type, 5, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('nuwakot-tarkeshwar', 'Nuwakot', 'Tarkeshwar', 'à¤¤à¤¾à¤°à¤•à¥‡à¤¶à¥à¤µà¤°', 'rural_municipality'::public.municipality_type, 9, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('nuwakot-panchakanya', 'Nuwakot', 'Panchakanya', 'à¤ªà¤žà¥à¤šà¤•à¤¨à¥à¤¯à¤¾', 'rural_municipality'::public.municipality_type, 5, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('nuwakot-dupcheshwar', 'Nuwakot', 'Dupcheshwar', 'à¤¦à¥à¤ªà¥à¤šà¥‡à¤¶à¥à¤µà¤°', 'rural_municipality'::public.municipality_type, 7, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('lalitpur-bagmati', 'Lalitpur', 'Bagmati', 'à¤¬à¤¾à¤—à¤®à¤¤à¥€', 'rural_municipality'::public.municipality_type, 7, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('lalitpur-mahankal', 'Lalitpur', 'Mahankal', 'à¤®à¤¹à¤¾à¤‚à¤•à¤¾à¤²', 'rural_municipality'::public.municipality_type, 9, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('lalitpur-konjyosom', 'Lalitpur', 'Konjyosom', 'à¤•à¥‹à¤¨à¥à¤œà¥à¤¯à¥‹à¤¸à¥‹à¤®', 'rural_municipality'::public.municipality_type, 5, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('kavrepalanchok-roshi', 'Kavrepalanchok', 'Roshi', 'à¤°à¥‹à¤¶à¥€', 'rural_municipality'::public.municipality_type, 12, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('kavrepalanchok-temal', 'Kavrepalanchok', 'Temal', 'à¤¤à¥‡à¤®à¤²', 'rural_municipality'::public.municipality_type, 9, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('kavrepalanchok-bhumlu', 'Kavrepalanchok', 'Bhumlu', 'à¤­à¥à¤®à¥à¤²à¥', 'rural_municipality'::public.municipality_type, 10, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('kavrepalanchok-mahabharat', 'Kavrepalanchok', 'Mahabharat', 'à¤®à¤¹à¤¾à¤­à¤¾à¤°à¤¤', 'rural_municipality'::public.municipality_type, 8, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('kavrepalanchok-bethanchowk', 'Kavrepalanchok', 'Bethanchowk', 'à¤¬à¥‡à¤¥à¤¾à¤¨à¤šà¥‹à¤•', 'rural_municipality'::public.municipality_type, 9, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('kavrepalanchok-khanikhola', 'Kavrepalanchok', 'Khanikhola', 'à¤–à¤¾à¤¨à¥€à¤–à¥‹à¤²à¤¾', 'rural_municipality'::public.municipality_type, 7, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('kavrepalanchok-chaurideurali', 'Kavrepalanchok', 'Chaurideurali', 'à¤šà¥Œà¤°à¥€à¤¦à¥‡à¤‰à¤°à¤¾à¤²à¥€', 'rural_municipality'::public.municipality_type, 9, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('ramechhap-sunapati', 'Ramechhap', 'Sunapati', 'à¤¸à¥à¤¨à¤¾à¤ªà¤¤à¤¿', 'rural_municipality'::public.municipality_type, 5, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('ramechhap-doramba', 'Ramechhap', 'Doramba', 'à¤¦à¥‹à¤°à¤®à¥à¤¬à¤¾', 'rural_municipality'::public.municipality_type, 7, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('ramechhap-umakunda', 'Ramechhap', 'Umakunda', 'à¤‰à¤®à¤¾à¤•à¥à¤£à¥à¤¡', 'rural_municipality'::public.municipality_type, 9, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('ramechhap-khadadevi', 'Ramechhap', 'Khadadevi', 'à¤–à¤¾à¤¡à¤¾à¤¦à¥‡à¤µà¥€', 'rural_municipality'::public.municipality_type, 9, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('ramechhap-gokulganga', 'Ramechhap', 'Gokulganga', 'à¤—à¥‹à¤•à¥à¤²à¤—à¤‚à¤—à¤¾', 'rural_municipality'::public.municipality_type, 7, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('ramechhap-likhutamakoshi', 'Ramechhap', 'Likhu Tamakoshi', 'à¤²à¤¿à¤–à¥ à¤¤à¤¾à¤®à¤¾à¤•à¥‹à¤¶à¥€', 'rural_municipality'::public.municipality_type, 7, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('sindhuli-marin', 'Sindhuli', 'Marin', 'à¤®à¤¾à¤°à¤¿à¤¨', 'rural_municipality'::public.municipality_type, 7, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('sindhuli-phikkal', 'Sindhuli', 'Phikkal', 'à¤«à¤¿à¤•à¥à¤•à¤²', 'rural_municipality'::public.municipality_type, 9, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('sindhuli-tinpatan', 'Sindhuli', 'Tinpatan', 'à¤¤à¤¿à¤¨à¤ªà¤¾à¤Ÿà¤¨', 'rural_municipality'::public.municipality_type, 11, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('sindhuli-sunkoshi', 'Sindhuli', 'Sunkoshi', 'à¤¸à¥à¤¨à¤•à¥‹à¤¶à¥€', 'rural_municipality'::public.municipality_type, 7, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('sindhuli-golanjor', 'Sindhuli', 'Golanjor', 'à¤—à¥‹à¤²à¤¨à¥à¤œà¥‹à¤°', 'rural_municipality'::public.municipality_type, 9, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('sindhuli-ghanglekh', 'Sindhuli', 'Ghanglekh', 'à¤˜à¤¾à¤™à¥à¤²à¥‡à¤–', 'rural_municipality'::public.municipality_type, 9, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('sindhuli-hariharpurgadhi', 'Sindhuli', 'Hariharpurgadhi', 'à¤¹à¤°à¤¿à¤¹à¤°à¤ªà¥à¤°à¤—à¤¢à¥€', 'rural_municipality'::public.municipality_type, 9, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('makwanpur-bakaiya', 'Makwanpur', 'Bakaiya', 'à¤¬à¤•à¥ˆà¤¯à¤¾', 'rural_municipality'::public.municipality_type, 9, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('makwanpur-kailash', 'Makwanpur', 'Kailash', 'à¤•à¥ˆà¤²à¤¾à¤¶', 'rural_municipality'::public.municipality_type, 9, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('makwanpur-manahari', 'Makwanpur', 'Manahari', 'à¤®à¤¨à¤¹à¤°à¥€', 'rural_municipality'::public.municipality_type, 9, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('makwanpur-bhimphedi', 'Makwanpur', 'Bhimphedi', 'à¤­à¥€à¤®à¤«à¥‡à¤¦à¥€', 'rural_municipality'::public.municipality_type, 9, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('makwanpur-bagmati', 'Makwanpur', 'Bagmati', 'à¤¬à¤¾à¤—à¤®à¤¤à¥€', 'rural_municipality'::public.municipality_type, 9, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('makwanpur-raksirang', 'Makwanpur', 'Raksirang', 'à¤°à¤•à¥à¤¸à¤¿à¤°à¤¾à¤™', 'rural_municipality'::public.municipality_type, 9, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('makwanpur-makawanpurgadhi', 'Makwanpur', 'Makawanpurgadhi', 'à¤®à¤•à¤µà¤¾à¤¨à¤ªà¥à¤°à¤—à¤¢à¥€', 'rural_municipality'::public.municipality_type, 9, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('makwanpur-indrasarowar', 'Makwanpur', 'Indrasarowar', 'à¤‡à¤¨à¥à¤¦à¥à¤°à¤¸à¤°à¥‹à¤µà¤°', 'rural_municipality'::public.municipality_type, 9, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('chitwan-ichchhyakamana', 'Chitwan', 'Ichchhyakamana', 'à¤‡à¤šà¥à¤›à¤¾à¤•à¤¾à¤®à¤¨à¤¾', 'rural_municipality'::public.municipality_type, 9, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('gorkha-gandaki', 'Gorkha', 'Gandaki', 'à¤—à¤£à¥à¤¡à¤•à¥€', 'rural_municipality'::public.municipality_type, 8, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('gorkha-dharche', 'Gorkha', 'Dharche', 'à¤§à¤¾à¤°à¥à¤šà¥‡', 'rural_municipality'::public.municipality_type, 7, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('gorkha-aarughat', 'Gorkha', 'Aarughat', 'à¤†à¤°à¥à¤˜à¤¾à¤Ÿ', 'rural_municipality'::public.municipality_type, 11, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('gorkha-ajirkot', 'Gorkha', 'Ajirkot', 'à¤…à¤œà¤¿à¤°à¤•à¥‹à¤Ÿ', 'rural_municipality'::public.municipality_type, 5, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('gorkha-sahidlakhan', 'Gorkha', 'Sahid Lakhan', 'à¤¸à¤¹à¤¿à¤¦ à¤²à¤–à¤¨', 'rural_municipality'::public.municipality_type, 9, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('gorkha-siranchok', 'Gorkha', 'Siranchok', 'à¤¸à¤¿à¤°à¤žà¥à¤šà¥‹à¤•', 'rural_municipality'::public.municipality_type, 9, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('gorkha-bhimsenthapa', 'Gorkha', 'Bhimsenthapa', 'à¤­à¥€à¤®à¤¸à¥‡à¤¨à¤¥à¤¾à¤ªà¤¾', 'rural_municipality'::public.municipality_type, 8, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('gorkha-chumnubri', 'Gorkha', 'Chum Nubri', 'à¤šà¥à¤® à¤¨à¥à¤¬à¥à¤°à¤¿', 'rural_municipality'::public.municipality_type, 9, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('gorkha-barpaksulikot', 'Gorkha', 'Barpak Sulikot', 'à¤¬à¤¾à¤°à¤ªà¤¾à¤• à¤¸à¥à¤²à¤¿à¤•à¥‹à¤Ÿ', 'rural_municipality'::public.municipality_type, 9, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('manang-chame', 'Manang', 'Chame', 'à¤šà¤¾à¤®à¥‡', 'rural_municipality'::public.municipality_type, 5, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('manang-narshon', 'Manang', 'Narshon', 'à¤¨à¤°à¤¶à¥‹à¤¨', 'rural_municipality'::public.municipality_type, 9, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('manang-narpabhumi', 'Manang', 'Narpa Bhumi', 'à¤¨à¤°à¤ªà¤¾ à¤­à¥‚à¤®à¤¿', 'rural_municipality'::public.municipality_type, 5, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('manang-manangingshyang', 'Manang', 'Manang Ingshyang', 'à¤®à¤¨à¤¾à¤™ à¤‡à¤™à¥à¤¸à¥à¤¯à¤¾à¤™', 'rural_municipality'::public.municipality_type, 9, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('mustang-thasang', 'Mustang', 'Thasang', 'à¤¥à¤¾à¤¸à¤¾à¤™', 'rural_municipality'::public.municipality_type, 5, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('mustang-gharapjhong', 'Mustang', 'Gharapjhong', 'à¤˜à¤°à¤¾à¤ªà¤à¥‹à¤™', 'rural_municipality'::public.municipality_type, 9, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('mustang-lomanthang', 'Mustang', 'Lomanthang', 'à¤²à¥‹à¤®à¤¾à¤¨à¥à¤¥à¤¾à¤™', 'rural_municipality'::public.municipality_type, 5, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('mustang-loghekardamodarkunda', 'Mustang', 'Lo-Ghekar Damodarkunda', 'à¤²à¥‹ à¤˜à¥‡à¤•à¤° à¤¦à¤¾à¤®à¥‹à¤¦à¤°à¤•à¥à¤£à¥à¤¡', 'rural_municipality'::public.municipality_type, 6, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('mustang-waragungmuktikhsetra', 'Mustang', 'Waragung Muktikhsetra', 'à¤µà¤¾à¤°à¤¾à¤—à¥à¤™ à¤®à¥à¤•à¥à¤¤à¤¿à¤•à¥à¤·à¥‡à¤¤à¥à¤°', 'rural_municipality'::public.municipality_type, 9, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('myagdi-mangala', 'Myagdi', 'Mangala', 'à¤®à¤‚à¤—à¤²à¤¾', 'rural_municipality'::public.municipality_type, 5, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('myagdi-malika', 'Myagdi', 'Malika', 'à¤®à¤²à¤¿à¤•à¤¾', 'rural_municipality'::public.municipality_type, 7, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('myagdi-raghuganga', 'Myagdi', 'Raghuganga', 'à¤°à¤˜à¥à¤—à¤‚à¤—à¤¾', 'rural_municipality'::public.municipality_type, 8, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('myagdi-dhaulagiri', 'Myagdi', 'Dhaulagiri', 'à¤§à¥Œà¤²à¤¾à¤—à¤¿à¤°à¥€', 'rural_municipality'::public.municipality_type, 7, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('myagdi-annapurna', 'Myagdi', 'Annapurna', 'à¤…à¤¨à¥à¤¨à¤ªà¥‚à¤°à¥à¤£', 'rural_municipality'::public.municipality_type, 8, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('kaski-rupa', 'Kaski', 'Rupa', 'à¤°à¥à¤ªà¤¾', 'rural_municipality'::public.municipality_type, 7, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('kaski-madi', 'Kaski', 'Madi', 'à¤®à¤¾à¤¡à¥€', 'rural_municipality'::public.municipality_type, 12, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('kaski-annapurna', 'Kaski', 'Annapurna', 'à¤…à¤¨à¥à¤¨à¤ªà¥‚à¤°à¥à¤£', 'rural_municipality'::public.municipality_type, 11, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('kaski-machhapuchchhre', 'Kaski', 'Machhapuchchhre', 'à¤®à¤¾à¤›à¤¾à¤ªà¥à¤šà¥à¤›à¥à¤°à¥‡', 'rural_municipality'::public.municipality_type, 9, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('lamjung-dordi', 'Lamjung', 'Dordi', 'à¤¦à¥‹à¤°à¥à¤¦à¥€', 'rural_municipality'::public.municipality_type, 9, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('lamjung-dudhpokhari', 'Lamjung', 'Dudhpokhari', 'à¤¦à¥‚à¤§à¤ªà¥‹à¤–à¤°à¥€', 'rural_municipality'::public.municipality_type, 6, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('lamjung-marsyangdi', 'Lamjung', 'Marsyangdi', 'à¤®à¤°à¥à¤¸à¥à¤¯à¤¾à¤™à¥à¤¦à¥€', 'rural_municipality'::public.municipality_type, 9, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('lamjung-kwholasothar', 'Lamjung', 'Kwholasothar', 'à¤•à¥à¤µà¤¾à¤²à¤¾à¤¸à¥‹à¤¥à¤°', 'rural_municipality'::public.municipality_type, 9, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('tanahu-ghiring', 'Tanahu', 'Ghiring', 'à¤˜à¤¿à¤°à¤¿à¤™', 'rural_municipality'::public.municipality_type, 5, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('tanahu-devghat', 'Tanahu', 'Devghat', 'à¤¦à¥‡à¤µà¤˜à¤¾à¤Ÿ', 'rural_municipality'::public.municipality_type, 5, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('tanahu-rhishing', 'Tanahu', 'Rhishing', 'à¤°à¤¿à¤¸à¤¿à¤™', 'rural_municipality'::public.municipality_type, 9, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('tanahu-myagde', 'Tanahu', 'Myagde', 'à¤®à¥à¤¯à¤¾à¤—à¥à¤¦à¥‡', 'rural_municipality'::public.municipality_type, 7, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('tanahu-bandipur', 'Tanahu', 'Bandipur', 'à¤¬à¤¨à¥à¤¦à¥€à¤ªà¥à¤°', 'rural_municipality'::public.municipality_type, 6, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('tanahu-anbukhaireni', 'Tanahu', 'Anbukhaireni', 'à¤…à¤¨à¥à¤¬à¥à¤–à¥ˆà¤°à¥‡à¤¨à¥€', 'rural_municipality'::public.municipality_type, 9, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('nawalpararieast-baudeekali', 'Nawalparari East', 'Baudeekali', 'à¤¬à¥Œà¤¦à¥‡à¤•à¤¾à¤²à¥€', 'rural_municipality'::public.municipality_type, 9, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('nawalpararieast-bulingtar', 'Nawalparari East', 'Bulingtar', 'à¤¬à¥à¤²à¤¿à¤™à¤Ÿà¤¾à¤°', 'rural_municipality'::public.municipality_type, 9, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('nawalpararieast-hupsekot', 'Nawalparari East', 'Hupsekot', 'à¤¹à¥à¤ªà¥à¤¸à¥‡à¤•à¥‹à¤Ÿ', 'rural_municipality'::public.municipality_type, 9, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('nawalpararieast-binayee', 'Nawalparari East', 'Binayee', 'à¤¬à¤¿à¤¨à¤¯à¥€', 'rural_municipality'::public.municipality_type, 9, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('syangja-harinas', 'Syangja', 'Harinas', 'à¤¹à¤°à¤¿à¤¨à¤¾à¤¸', 'rural_municipality'::public.municipality_type, 7, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('syangja-biruwa', 'Syangja', 'Biruwa', 'à¤¬à¤¿à¤°à¥à¤µà¤¾', 'rural_municipality'::public.municipality_type, 8, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('syangja-aandhikhola', 'Syangja', 'Aandhikhola', 'à¤†à¤à¤§à¥€à¤–à¥‹à¤²à¤¾', 'rural_municipality'::public.municipality_type, 6, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('syangja-phedikhola', 'Syangja', 'Phedikhola', 'à¤«à¥‡à¤¦à¥€à¤–à¥‹à¤²à¤¾', 'rural_municipality'::public.municipality_type, 5, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('syangja-kaligandagi', 'Syangja', 'Kaligandagi', 'à¤•à¤¾à¤²à¥€à¤—à¤£à¥à¤¡à¤—à¥€', 'rural_municipality'::public.municipality_type, 9, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('syangja-arjunchaupari', 'Syangja', 'Arjunchaupari', 'à¤…à¤°à¥à¤œà¥à¤¨à¤šà¥Œà¤ªà¤°à¥€', 'rural_municipality'::public.municipality_type, 6, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('parbat-modi', 'Parbat', 'Modi', 'à¤®à¥‹à¤¦à¥€', 'rural_municipality'::public.municipality_type, 8, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('parbat-painyu', 'Parbat', 'Painyu', 'à¤ªà¤¾à¤‡à¤¨à¥à¤¯à¥', 'rural_municipality'::public.municipality_type, 9, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('parbat-jaljala', 'Parbat', 'Jaljala', 'à¤œà¤²à¤œà¤²à¤¾', 'rural_municipality'::public.municipality_type, 9, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('parbat-bihadi', 'Parbat', 'Bihadi', 'à¤¬à¤¿à¤¹à¤¾à¤¦à¥€', 'rural_municipality'::public.municipality_type, 7, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('parbat-mahashila', 'Parbat', 'Mahashila', 'à¤®à¤¹à¤¾à¤¶à¤¿à¤²à¤¾', 'rural_municipality'::public.municipality_type, 6, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('baglung-bareng', 'Baglung', 'Bareng', 'à¤¬à¤°à¥‡à¤™', 'rural_municipality'::public.municipality_type, 9, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('baglung-badigad', 'Baglung', 'Badigad', 'à¤¬à¤¡à¤¿à¤—à¤¾à¤¡', 'rural_municipality'::public.municipality_type, 10, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('baglung-nisikhola', 'Baglung', 'Nisikhola', 'à¤¨à¤¿à¤¸à¤¿à¤–à¥‹à¤²à¤¾', 'rural_municipality'::public.municipality_type, 7, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('baglung-kanthekhola', 'Baglung', 'Kanthekhola', 'à¤•à¤¾à¤¨à¥à¤ à¥‡à¤–à¥‹à¤²à¤¾', 'rural_municipality'::public.municipality_type, 9, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('baglung-tarakhola', 'Baglung', 'Tara Khola', 'à¤¤à¤¾à¤°à¤¾ à¤–à¥‹à¤²à¤¾', 'rural_municipality'::public.municipality_type, 5, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('baglung-tamankhola', 'Baglung', 'Taman Khola', 'à¤¤à¤®à¤¨ à¤–à¥‹à¤²à¤¾', 'rural_municipality'::public.municipality_type, 9, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('rukumeast-bhume', 'Rukum East', 'Bhume', 'à¤­à¥à¤®à¥‡', 'rural_municipality'::public.municipality_type, 9, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('rukumeast-sisne', 'Rukum East', 'Sisne', 'à¤¸à¤¿à¤¸à¥à¤¨à¥‡', 'rural_municipality'::public.municipality_type, 9, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('rukumeast-puthauttarganga', 'Rukum East', 'Putha Uttarganga', 'à¤ªà¥à¤¥à¤¾ à¤‰à¤¤à¥à¤¤à¤°à¤—à¤‚à¤—à¤¾', 'rural_municipality'::public.municipality_type, 9, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('rolpa-madi', 'Rolpa', 'Madi', 'à¤®à¤¾à¤¡à¥€', 'rural_municipality'::public.municipality_type, 7, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('rolpa-thawang', 'Rolpa', 'Thawang', 'à¤¥à¤µà¤¾à¤™', 'rural_municipality'::public.municipality_type, 9, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('rolpa-sunchhahari', 'Rolpa', 'Sunchhahari', 'à¤¸à¥à¤¨à¤›à¤¹à¤°à¥€', 'rural_municipality'::public.municipality_type, 7, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('rolpa-lungri', 'Rolpa', 'Lungri', 'à¤²à¥à¤™à¥à¤—à¤°à¥€', 'rural_municipality'::public.municipality_type, 7, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('rolpa-gangadev', 'Rolpa', 'Gangadev', 'à¤—à¤‚à¤—à¤¾à¤¦à¥‡à¤µ', 'rural_municipality'::public.municipality_type, 7, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('rolpa-tribeni', 'Rolpa', 'Tribeni', 'à¤¤à¥à¤°à¤¿à¤µà¥‡à¤£à¥€', 'rural_municipality'::public.municipality_type, 9, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('rolpa-pariwartan', 'Rolpa', 'Pariwartan', 'à¤ªà¤°à¤¿à¤µà¤°à¥à¤¤à¤¨', 'rural_municipality'::public.municipality_type, 9, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('rolpa-runtigadi', 'Rolpa', 'Runtigadi', 'à¤°à¥à¤¨à¥à¤Ÿà¥€à¤—à¤¢à¥€', 'rural_municipality'::public.municipality_type, 9, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('rolpa-sunilsmriti', 'Rolpa', 'Sunil Smriti', 'à¤¸à¥à¤¨à¤¿à¤² à¤¸à¥à¤®à¥ƒà¤¤à¤¿', 'rural_municipality'::public.municipality_type, 9, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('pyuthan-ayirabat', 'Pyuthan', 'Ayirabat', 'à¤†à¤‡à¤°à¤¾à¤¬à¤¤', 'rural_municipality'::public.municipality_type, 9, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('pyuthan-gaumukhi', 'Pyuthan', 'Gaumukhi', 'à¤—à¥Œà¤®à¥à¤–à¥€', 'rural_municipality'::public.municipality_type, 7, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('pyuthan-jhimruk', 'Pyuthan', 'Jhimruk', 'à¤à¤¿à¤®à¤°à¥à¤•', 'rural_municipality'::public.municipality_type, 8, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('pyuthan-naubahini', 'Pyuthan', 'Naubahini', 'à¤¨à¥Œà¤¬à¤¹à¤¿à¤¨à¥€', 'rural_municipality'::public.municipality_type, 8, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('pyuthan-mandavi', 'Pyuthan', 'Mandavi', 'à¤®à¤¾à¤‚à¤¡à¤µà¥€', 'rural_municipality'::public.municipality_type, 5, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('pyuthan-mallarani', 'Pyuthan', 'Mallarani', 'à¤®à¤²à¥à¤²à¤°à¤¾à¤¨à¥€', 'rural_municipality'::public.municipality_type, 5, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('pyuthan-sarumarani', 'Pyuthan', 'Sarumarani', 'à¤¸à¤°à¥‚à¤®à¤°à¤¾à¤¨à¥€', 'rural_municipality'::public.municipality_type, 6, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('gulmi-rurukshetra', 'Gulmi', 'Rurukshetra', 'à¤°à¥à¤°à¥', 'rural_municipality'::public.municipality_type, 9, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('gulmi-ishma', 'Gulmi', 'Ishma', 'à¤‡à¤¸à¥à¤®à¤¾', 'rural_municipality'::public.municipality_type, 9, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('gulmi-madane', 'Gulmi', 'Madane', 'à¤®à¤¦à¤¨à¥‡', 'rural_municipality'::public.municipality_type, 9, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('gulmi-malika', 'Gulmi', 'Malika', 'à¤®à¤²à¤¿à¤•à¤¾', 'rural_municipality'::public.municipality_type, 8, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('gulmi-chhatrakot', 'Gulmi', 'Chhatrakot', 'à¤šà¤¤à¥à¤°à¤•à¥‹à¤Ÿ', 'rural_municipality'::public.municipality_type, 6, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('gulmi-dhurkot', 'Gulmi', 'Dhurkot', 'à¤šà¤¤à¥à¤°à¤•à¥‹à¤Ÿ', 'rural_municipality'::public.municipality_type, 7, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('gulmi-satyawati', 'Gulmi', 'Satyawati', 'à¤¸à¤¤à¥à¤¯à¤µà¤¤à¥€', 'rural_municipality'::public.municipality_type, 7, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('gulmi-chandrakot', 'Gulmi', 'Chandrakot', 'à¤šà¤¨à¥à¤¦à¥à¤°à¤•à¥‹à¤Ÿ', 'rural_municipality'::public.municipality_type, 8, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('gulmi-kaligandaki', 'Gulmi', 'Kaligandaki', 'à¤•à¤¾à¤²à¥€à¤—à¤£à¥à¤¡à¤•à¥€', 'rural_municipality'::public.municipality_type, 7, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('gulmi-gulmidarbar', 'Gulmi', 'Gulmidarbar', 'à¤—à¥à¤²à¥à¤®à¥€à¤¦à¤°à¤¬à¤¾à¤°', 'rural_municipality'::public.municipality_type, 9, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('arghakhanchi-panini', 'Arghakhanchi', 'Panini', 'à¤ªà¤¾à¤£à¤¿à¤¨à¥€', 'rural_municipality'::public.municipality_type, 8, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('arghakhanchi-chhatradev', 'Arghakhanchi', 'Chhatradev', 'à¤›à¤¤à¥à¤°à¤¦à¥‡à¤µ', 'rural_municipality'::public.municipality_type, 7, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('arghakhanchi-malarani', 'Arghakhanchi', 'Malarani', 'à¤®à¤²à¤¾à¤°à¤¾à¤¨à¥€', 'rural_municipality'::public.municipality_type, 9, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('palpa-rambha', 'Palpa', 'Rambha', 'à¤°à¤®à¥à¤­à¤¾', 'rural_municipality'::public.municipality_type, 5, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('palpa-tinau', 'Palpa', 'Tinau', 'à¤¤à¤¿à¤¨à¤¾à¤‰', 'rural_municipality'::public.municipality_type, 6, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('palpa-nisdi', 'Palpa', 'Nisdi', 'à¤¨à¤¿à¤¸à¥à¤¦à¥€', 'rural_municipality'::public.municipality_type, 7, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('palpa-mathagadhi', 'Palpa', 'Mathagadhi', 'à¤®à¤ à¤—à¤¢à¥€', 'rural_municipality'::public.municipality_type, 8, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('palpa-ribdikot', 'Palpa', 'Ribdikot', 'à¤°à¤¿à¤¬à¥à¤¦à¥€à¤•à¥‹à¤Ÿ', 'rural_municipality'::public.municipality_type, 8, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('palpa-purbakhola', 'Palpa', 'Purbakhola', 'à¤ªà¥‚à¤°à¥à¤µà¤–à¥‹à¤²à¤¾', 'rural_municipality'::public.municipality_type, 6, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('palpa-bagnaskali', 'Palpa', 'Bagnaskali', 'à¤¬à¤¾à¤—à¤¨à¤¾à¤¸à¥à¤•à¤²à¥€', 'rural_municipality'::public.municipality_type, 9, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('palpa-rainadevi', 'Palpa', 'Rainadevi', 'à¤°à¥ˆà¤¨à¤¾à¤¦à¥‡à¤µà¥€', 'rural_municipality'::public.municipality_type, 9, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('nawalparasiwest-sarawal', 'Nawalparasi West', 'Sarawal', 'à¤¸à¤°à¤µà¤²', 'rural_municipality'::public.municipality_type, 9, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('nawalparasiwest-susta', 'Nawalparasi West', 'Susta', 'à¤¸à¥à¤¸à¥à¤¤à¤¾', 'rural_municipality'::public.municipality_type, 9, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('nawalparasiwest-pratappur', 'Nawalparasi West', 'Pratappur', 'à¤ªà¥à¤°à¤¤à¤¾à¤ªà¤ªà¥à¤°', 'rural_municipality'::public.municipality_type, 9, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('nawalparasiwest-palhinandan', 'Nawalparasi West', 'Palhi Nandan', 'à¤ªà¤¾à¤²à¥à¤¹à¥€ à¤¨à¤¨à¥à¤¦à¤¨', 'rural_municipality'::public.municipality_type, 9, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('rupandehi-kanchan', 'Rupandehi', 'Kanchan', 'à¤•à¤žà¥à¤šà¤¨', 'rural_municipality'::public.municipality_type, 5, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('rupandehi-siyari', 'Rupandehi', 'Siyari', 'à¤¸à¤¿à¤¯à¤¾à¤°à¥€', 'rural_municipality'::public.municipality_type, 7, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('rupandehi-rohini', 'Rupandehi', 'Rohini', 'à¤°à¥‹à¤¹à¤¿à¤£à¥€', 'rural_municipality'::public.municipality_type, 7, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('rupandehi-gaidahawa', 'Rupandehi', 'Gaidahawa', 'à¤—à¥ˆà¤¡à¤¹à¤µà¤¾', 'rural_municipality'::public.municipality_type, 9, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('rupandehi-omsatiya', 'Rupandehi', 'Omsatiya', 'à¤“à¤®à¤¸à¤¤à¤¿à¤¯à¤¾', 'rural_municipality'::public.municipality_type, 6, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('rupandehi-sudhdhodhan', 'Rupandehi', 'Sudhdhodhan', 'à¤¶à¥à¤¦à¥à¤§à¥‹à¤§à¤¨', 'rural_municipality'::public.municipality_type, 9, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('rupandehi-mayadevi', 'Rupandehi', 'Mayadevi', 'à¤®à¤¾à¤¯à¤¾à¤¦à¥‡à¤µà¥€', 'rural_municipality'::public.municipality_type, 8, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('rupandehi-marchawari', 'Rupandehi', 'Marchawari', 'à¤®à¤¾à¤°à¥à¤šà¤µà¤¾à¤°à¥€', 'rural_municipality'::public.municipality_type, 7, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('rupandehi-kotahimai', 'Rupandehi', 'Kotahimai', 'à¤•à¥‹à¤Ÿà¤¾à¤¹à¤¿à¤®à¤¾à¤ˆ', 'rural_municipality'::public.municipality_type, 7, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('rupandehi-sammarimai', 'Rupandehi', 'Sammarimai', 'à¤¸à¤®à¤°à¥€à¤®à¤¾à¤ˆ', 'rural_municipality'::public.municipality_type, 9, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('kapilvastu-yashodhara', 'Kapilvastu', 'Yashodhara', 'à¤¯à¤¶à¥‹à¤§à¤°à¤¾', 'rural_municipality'::public.municipality_type, 8, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('kapilvastu-bijayanagar', 'Kapilvastu', 'Bijayanagar', 'à¤µà¤¿à¤œà¤¯à¤¨à¤—à¤°', 'rural_municipality'::public.municipality_type, 9, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('kapilvastu-mayadevi', 'Kapilvastu', 'Mayadevi', 'à¤®à¤¾à¤¯à¤¾à¤¦à¥‡à¤µà¥€', 'rural_municipality'::public.municipality_type, 8, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('kapilvastu-suddhodhan', 'Kapilvastu', 'Suddhodhan', 'à¤¶à¥à¤¦à¥à¤§à¥‹à¤§à¤¨', 'rural_municipality'::public.municipality_type, 9, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('dang-babai', 'Dang', 'Babai', 'à¤¬à¤¬à¤ˆ', 'rural_municipality'::public.municipality_type, 7, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('dang-gadhawa', 'Dang', 'Gadhawa', 'à¤—à¤¢à¤µà¤¾', 'rural_municipality'::public.municipality_type, 9, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('dang-rapti', 'Dang', 'Rapti', 'à¤°à¤¾à¤ªà¥à¤¤à¥€', 'rural_municipality'::public.municipality_type, 9, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('dang-rajpur', 'Dang', 'Rajpur', 'à¤°à¤¾à¤œà¤ªà¥à¤°', 'rural_municipality'::public.municipality_type, 7, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('dang-dangisharan', 'Dang', 'Dangisharan', 'à¤¦à¤‚à¤—à¤¿à¤¶à¤°à¤£', 'rural_municipality'::public.municipality_type, 7, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('dang-shantinagar', 'Dang', 'Shantinagar', 'à¤¶à¤¾à¤¨à¥à¤¤à¤¿à¤¨à¤—à¤°', 'rural_municipality'::public.municipality_type, 7, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('dang-banglachuli', 'Dang', 'Banglachuli', 'à¤¬à¤‚à¤—à¤²à¤¾à¤šà¥à¤²à¥€', 'rural_municipality'::public.municipality_type, 9, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('banke-khajura', 'Banke', 'Khajura', 'à¤–à¤œà¥à¤°à¤¾', 'rural_municipality'::public.municipality_type, 8, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('banke-janki', 'Banke', 'Janki', 'à¤œà¤¾à¤¨à¤•à¥€', 'rural_municipality'::public.municipality_type, 9, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('banke-baijanath', 'Banke', 'Baijanath', 'à¤¬à¥ˆà¤œà¤¨à¤¾à¤¥', 'rural_municipality'::public.municipality_type, 8, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('banke-duduwa', 'Banke', 'Duduwa', 'à¤¡à¥à¤¡à¥à¤µà¤¾', 'rural_municipality'::public.municipality_type, 6, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('banke-narainapur', 'Banke', 'Narainapur', 'à¤¨à¤°à¥ˆà¤¨à¤¾à¤ªà¥à¤°', 'rural_municipality'::public.municipality_type, 6, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('banke-raptisonari', 'Banke', 'Rapti Sonari', 'à¤°à¤¾à¤ªà¥à¤¤à¥€ à¤¸à¥‹à¤¨à¤¾à¤°à¥€', 'rural_municipality'::public.municipality_type, 9, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('bardiya-geruwa', 'Bardiya', 'Geruwa', 'à¤—à¥‡à¤°à¥à¤µà¤¾', 'rural_municipality'::public.municipality_type, 6, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('bardiya-badhaiyatal', 'Bardiya', 'Badhaiyatal', 'à¤¬à¤¢à¥ˆà¤¯à¤¾à¤¤à¤¾à¤²', 'rural_municipality'::public.municipality_type, 9, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('dolpa-kaike', 'Dolpa', 'Kaike', 'à¤•à¤¾à¤‡à¤•à¥‡', 'rural_municipality'::public.municipality_type, 9, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('dolpa-jagadulla', 'Dolpa', 'Jagadulla', 'à¤œà¤—à¤¦à¥à¤²à¥à¤²à¤¾', 'rural_municipality'::public.municipality_type, 6, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('dolpa-mudkechula', 'Dolpa', 'Mudkechula', 'à¤®à¥à¤¡à¥à¤•à¥‡à¤šà¥à¤²à¤¾', 'rural_municipality'::public.municipality_type, 9, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('dolpa-dolpobuddha', 'Dolpa', 'Dolpo Buddha', 'à¤¡à¥‹à¤²à¥à¤ªà¥‹ à¤¬à¥à¤¦à¥à¤§', 'rural_municipality'::public.municipality_type, 6, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('dolpa-sheyphoksundo', 'Dolpa', 'Shey Phoksundo', 'à¤¶à¥‡ à¤«à¥‹à¤•à¥à¤¸à¥à¤£à¥à¤¡à¥‹', 'rural_municipality'::public.municipality_type, 9, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('dolpa-chharkatangsong', 'Dolpa', 'Chharka Tangsong', 'à¤›à¤°à¥à¤•à¤¾ à¤¤à¤¾à¤™à¤¸à¥‹à¤™', 'rural_municipality'::public.municipality_type, 6, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('mugu-soru', 'Mugu', 'Soru', 'à¤¸à¥‹à¤°à¥', 'rural_municipality'::public.municipality_type, 11, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('mugu-khatyad', 'Mugu', 'Khatyad', 'à¤–à¤¤à¥à¤¯à¤¾à¤¡', 'rural_municipality'::public.municipality_type, 11, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('mugu-mugumkarmarong', 'Mugu', 'Mugum Karmarong', 'à¤®à¥à¤—à¥à¤® à¤•à¤°à¥à¤®à¤¾à¤°à¥‹à¤™', 'rural_municipality'::public.municipality_type, 9, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('humla-simkot', 'Humla', 'Simkot', 'à¤¸à¤¿à¤®à¤•à¥‹à¤Ÿ', 'rural_municipality'::public.municipality_type, 8, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('humla-namkha', 'Humla', 'Namkha', 'à¤¨à¤®à¥à¤–à¤¾', 'rural_municipality'::public.municipality_type, 6, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('humla-chankheli', 'Humla', 'Chankheli', 'à¤šà¤¨à¤–à¥‡à¤²à¥€', 'rural_municipality'::public.municipality_type, 6, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('humla-tanjakot', 'Humla', 'Tanjakot', 'à¤¤à¤¾à¤¨à¥à¤œà¤¾à¤•à¥‹à¤Ÿ', 'rural_municipality'::public.municipality_type, 9, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('humla-sarkegad', 'Humla', 'Sarkegad', 'à¤¸à¤¾à¤°à¥à¤•à¥‡à¤—à¤¡', 'rural_municipality'::public.municipality_type, 9, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('humla-adanchuli', 'Humla', 'Adanchuli', 'à¤…à¤¡à¤¾à¤‚à¤šà¥à¤²à¥€', 'rural_municipality'::public.municipality_type, 6, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('humla-kharpunath', 'Humla', 'Kharpunath', 'à¤–à¤¾à¤°à¥à¤ªà¥à¤¨à¤¾à¤¥', 'rural_municipality'::public.municipality_type, 5, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('jumla-hima', 'Jumla', 'Hima', 'à¤¹à¤¿à¤®à¤¾', 'rural_municipality'::public.municipality_type, 7, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('jumla-tila', 'Jumla', 'Tila', 'à¤¤à¤¿à¤²à¤¾', 'rural_municipality'::public.municipality_type, 9, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('jumla-sinja', 'Jumla', 'Sinja', 'à¤¸à¤¿à¤¨à¥à¤œà¤¾', 'rural_municipality'::public.municipality_type, 7, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('jumla-guthichaur', 'Jumla', 'Guthichaur', 'à¤—à¥à¤ à¥€à¤šà¥Œà¤°', 'rural_municipality'::public.municipality_type, 5, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('jumla-tatopani', 'Jumla', 'Tatopani', 'à¤¤à¤¾à¤¤à¥‹à¤ªà¤¾à¤¨à¥€', 'rural_municipality'::public.municipality_type, 8, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('jumla-patrasi', 'Jumla', 'Patrasi', 'à¤ªà¤¤à¥à¤°à¤¾à¤¸à¥€', 'rural_municipality'::public.municipality_type, 9, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('jumla-kanakasundari', 'Jumla', 'Kanakasundari', 'à¤•à¤¨à¤•à¤¸à¥à¤¨à¥à¤¦à¤°à¥€', 'rural_municipality'::public.municipality_type, 9, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('kalikot-mahawai', 'Kalikot', 'Mahawai', 'à¤®à¤¹à¤¾à¤µà¤¾à¤ˆ', 'rural_municipality'::public.municipality_type, 9, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('kalikot-palata', 'Kalikot', 'Palata', 'à¤ªà¤²à¤¾à¤¤à¤¾', 'rural_municipality'::public.municipality_type, 9, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('kalikot-naraharinath', 'Kalikot', 'Naraharinath', 'à¤¨à¤°à¤¹à¤°à¤¿à¤¨à¤¾à¤¥', 'rural_municipality'::public.municipality_type, 9, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('kalikot-pachaljharana', 'Kalikot', 'Pachaljharana', 'à¤ªà¤¾à¤à¤šà¤²à¤à¤°à¤¨à¤¾', 'rural_municipality'::public.municipality_type, 9, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('kalikot-subhakalika', 'Kalikot', 'Subha Kalika', 'à¤¶à¥à¤­ à¤•à¤¾à¤²à¤¿à¤•à¤¾', 'rural_municipality'::public.municipality_type, 8, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('kalikot-sannitribeni', 'Kalikot', 'Sanni Tribeni', 'à¤¸à¤¨à¥à¤¨à¥€ à¤¤à¥à¤°à¤¿à¤µà¥‡à¤£à¥€', 'rural_municipality'::public.municipality_type, 9, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('dailekh-bhairabi', 'Dailekh', 'Bhairabi', 'à¤­à¥ˆà¤°à¤µà¥€', 'rural_municipality'::public.municipality_type, 7, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('dailekh-mahabu', 'Dailekh', 'Mahabu', 'à¤®à¤¹à¤¾à¤¬à¥', 'rural_municipality'::public.municipality_type, 6, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('dailekh-gurans', 'Dailekh', 'Gurans', 'à¤—à¥à¤°à¤¾à¤à¤¸', 'rural_municipality'::public.municipality_type, 9, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('dailekh-naumule', 'Dailekh', 'Naumule', 'à¤¨à¥Œà¤®à¥à¤²à¥‡', 'rural_municipality'::public.municipality_type, 8, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('dailekh-bhagawatimai', 'Dailekh', 'Bhagawatimai', 'à¤­à¤—à¤µà¤¤à¥€à¤®à¤¾à¤ˆ', 'rural_municipality'::public.municipality_type, 7, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('dailekh-thantikandh', 'Dailekh', 'Thantikandh', 'à¤ à¤¾à¤¨à¥à¤Ÿà¤¿à¤•à¤¾à¤£à¥à¤¡', 'rural_municipality'::public.municipality_type, 9, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('dailekh-dungeshwor', 'Dailekh', 'Dungeshwor', 'à¤¡à¥à¤™à¥à¤—à¥‡à¤¶à¥à¤µà¤°', 'rural_municipality'::public.municipality_type, 9, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('jajarkot-kuse', 'Jajarkot', 'Kuse', 'à¤•à¥à¤¸à¥‡', 'rural_municipality'::public.municipality_type, 9, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('jajarkot-shiwalaya', 'Jajarkot', 'Shiwalaya', 'à¤¶à¤¿à¤µà¤¾à¤²à¤¯', 'rural_municipality'::public.municipality_type, 9, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('jajarkot-barekot', 'Jajarkot', 'Barekot', 'à¤¬à¤¾à¤°à¥‡à¤•à¥‹à¤Ÿ', 'rural_municipality'::public.municipality_type, 9, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('jajarkot-junichande', 'Jajarkot', 'Junichande', 'à¤œà¥à¤¨à¤¿à¤šà¤¨à¥à¤¦à¥‡', 'rural_municipality'::public.municipality_type, 11, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('rukumwest-tribeni', 'Rukum West', 'Tribeni', 'à¤¤à¥à¤°à¤¿à¤µà¥‡à¤£à¥€', 'rural_municipality'::public.municipality_type, 9, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('rukumwest-sanibheri', 'Rukum West', 'Sani Bheri', 'à¤¸à¤¾à¤¨à¥€ à¤­à¥‡à¤°à¥€', 'rural_municipality'::public.municipality_type, 9, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('rukumwest-banfikot', 'Rukum West', 'Banfikot', 'à¤¬à¤¨à¤«à¤¿à¤•à¥‹à¤Ÿ', 'rural_municipality'::public.municipality_type, 9, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('salyan-kumakh', 'Salyan', 'Kumakh', 'à¤•à¥à¤®à¤¾à¤–', 'rural_municipality'::public.municipality_type, 7, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('salyan-darma', 'Salyan', 'Darma', 'à¤¡à¤¾à¤°à¥à¤®à¤¾', 'rural_municipality'::public.municipality_type, 6, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('salyan-kapurkot', 'Salyan', 'Kapurkot', 'à¤•à¤ªà¥à¤°à¤•à¥‹à¤Ÿ', 'rural_municipality'::public.municipality_type, 5, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('salyan-kalimati', 'Salyan', 'Kalimati', 'à¤•à¤¾à¤²à¥€à¤®à¤¾à¤Ÿà¥€', 'rural_municipality'::public.municipality_type, 7, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('salyan-tribeni', 'Salyan', 'Tribeni', 'à¤¤à¥à¤°à¤¿à¤µà¥‡à¤£à¥€', 'rural_municipality'::public.municipality_type, 9, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('salyan-chhatreshwori', 'Salyan', 'Chhatreshwori', 'à¤›à¤¤à¥à¤°à¥‡à¤¶à¥à¤µà¤°à¥€', 'rural_municipality'::public.municipality_type, 9, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('salyan-siddhakumakh', 'Salyan', 'Siddha Kumakh', 'à¤¸à¤¿à¤¦à¥à¤§ à¤•à¥à¤®à¤¾à¤–', 'rural_municipality'::public.municipality_type, 5, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('surkhet-chaukune', 'Surkhet', 'Chaukune', 'à¤šà¥Œà¤•à¥à¤¨à¥‡', 'rural_municipality'::public.municipality_type, 10, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('surkhet-simta', 'Surkhet', 'Simta', 'à¤¸à¤¿à¤®à¥à¤¤à¤¾', 'rural_municipality'::public.municipality_type, 9, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('surkhet-chingad', 'Surkhet', 'Chingad', 'à¤šà¤¿à¤‚à¤—à¤¾à¤¡', 'rural_municipality'::public.municipality_type, 5, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('surkhet-barahtal', 'Surkhet', 'Barahtal', 'à¤¬à¤°à¤¾à¤¹à¤¤à¤¾à¤²', 'rural_municipality'::public.municipality_type, 9, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('bajura-gaumul', 'Bajura', 'Gaumul', 'à¤—à¥Œà¤®à¥à¤²', 'rural_municipality'::public.municipality_type, 6, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('bajura-himali', 'Bajura', 'Himali', 'à¤¹à¤¿à¤®à¤¾à¤²à¥€', 'rural_municipality'::public.municipality_type, 7, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('bajura-jagannath', 'Bajura', 'Jagannath', 'à¤œà¤—à¤¨à¥à¤¨à¤¾à¤¥', 'rural_municipality'::public.municipality_type, 6, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('bajura-khaptadchhededaha', 'Bajura', 'Khaptad Chhededaha', 'à¤–à¤ªà¥à¤¤à¤¡ à¤›à¥‡à¤¡à¥‡à¤¦à¤¹', 'rural_municipality'::public.municipality_type, 9, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('bajura-swamikartikkhaapar', 'Bajura', 'Swami Kartik Khaapar', 'à¤¸à¥à¤µà¤¾à¤®à¥€ à¤•à¤¾à¤°à¥à¤¤à¤¿à¤• à¤–à¤¾à¤ªà¤°', 'rural_municipality'::public.municipality_type, 9, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('bajhang-masta', 'Bajhang', 'Masta', 'à¤®à¤¸à¥à¤¤', 'rural_municipality'::public.municipality_type, 7, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('bajhang-thalara', 'Bajhang', 'Thalara', 'à¤¥à¤¾à¤²à¤¾à¤°à¤¾', 'rural_municipality'::public.municipality_type, 9, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('bajhang-talkot', 'Bajhang', 'Talkot', 'à¤¤à¤¾à¤²à¤•à¥‹à¤Ÿ', 'rural_municipality'::public.municipality_type, 9, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('bajhang-surma', 'Bajhang', 'Surma', 'à¤¸à¥à¤°à¥à¤®à¤¾', 'rural_municipality'::public.municipality_type, 5, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('bajhang-saipaal', 'Bajhang', 'SaiPaal', 'à¤¸à¤¾à¤‡à¤ªà¤¾à¤²', 'rural_municipality'::public.municipality_type, 9, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('bajhang-durgathali', 'Bajhang', 'Durgathali', 'à¤¦à¥à¤°à¥à¤—à¤¾à¤¥à¤²à¥€', 'rural_municipality'::public.municipality_type, 9, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('bajhang-bithadchir', 'Bajhang', 'Bithadchir', 'à¤¬à¤¿à¤ à¤¾à¤¡à¤šà¤¿à¤°', 'rural_municipality'::public.municipality_type, 9, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('bajhang-kedarseu', 'Bajhang', 'Kedarseu', 'à¤•à¥‡à¤¦à¤¾à¤°à¤¸à¥‡à¤‰', 'rural_municipality'::public.municipality_type, 9, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('bajhang-khaptadchhanna', 'Bajhang', 'Khaptadchhanna', 'à¤–à¤ªà¥à¤¤à¤¡à¤›à¤¨à¥à¤¨à¤¾', 'rural_municipality'::public.municipality_type, 9, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('bajhang-chabispathivera', 'Bajhang', 'Chabispathivera', 'à¤šà¤¾à¤¬à¤¿à¤¸à¥à¤ªà¤¾à¤¥à¥€à¤µà¥‡à¤°à¤¾', 'rural_municipality'::public.municipality_type, 9, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('darchula-lekam', 'Darchula', 'Lekam', 'à¤²à¥‡à¤•à¤®', 'rural_municipality'::public.municipality_type, 6, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('darchula-naugad', 'Darchula', 'Naugad', 'à¤¨à¥Œà¤—à¤¾à¤¡', 'rural_municipality'::public.municipality_type, 6, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('darchula-byas', 'Darchula', 'Byas', 'à¤¬à¥à¤¯à¤¾à¤¸', 'rural_municipality'::public.municipality_type, 9, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('darchula-dunhu', 'Darchula', 'Dunhu', 'à¤¦à¥à¤¨à¥à¤¹à¥', 'rural_municipality'::public.municipality_type, 9, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('darchula-marma', 'Darchula', 'Marma', 'à¤®à¤°à¥à¤®à¤¾', 'rural_municipality'::public.municipality_type, 6, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('darchula-apihimal', 'Darchula', 'Apihimal', 'à¤à¤ªà¤¿à¤¹à¤¿à¤®à¤²', 'rural_municipality'::public.municipality_type, 6, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('darchula-malikaarjun', 'Darchula', 'Malikaarjun', 'à¤®à¤¾à¤²à¤¿à¤•à¤¾à¤°à¥à¤œà¥à¤¨', 'rural_municipality'::public.municipality_type, 9, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('baitadi-sigas', 'Baitadi', 'Sigas', 'à¤¸à¤¿à¤—à¤¾à¤¸', 'rural_municipality'::public.municipality_type, 9, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('baitadi-shivanath', 'Baitadi', 'Shivanath', 'à¤¶à¤¿à¤µà¤¨à¤¾à¤¥', 'rural_municipality'::public.municipality_type, 6, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('baitadi-surnaya', 'Baitadi', 'Surnaya', 'à¤¸à¥à¤°à¥à¤¨à¤¾à¤¯à¤¾', 'rural_municipality'::public.municipality_type, 8, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('baitadi-dilasaini', 'Baitadi', 'Dilasaini', 'à¤¡à¤¿à¤²à¤¾à¤¸à¥ˆà¤¨à¥€', 'rural_municipality'::public.municipality_type, 9, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('baitadi-pancheshwar', 'Baitadi', 'Pancheshwar', 'à¤ªà¤žà¥à¤šà¥‡à¤¶à¥à¤µà¤°', 'rural_municipality'::public.municipality_type, 6, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('baitadi-dogadakedar', 'Baitadi', 'Dogadakedar', 'à¤¦à¥‹à¤—à¤¡à¤¾à¤•à¥‡à¤¦à¤¾à¤°', 'rural_municipality'::public.municipality_type, 8, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('dadeldhura-alital', 'Dadeldhura', 'Alital', 'à¤…à¤²à¤¿à¤¤à¤¾à¤²', 'rural_municipality'::public.municipality_type, 8, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('dadeldhura-ajaymeru', 'Dadeldhura', 'Ajaymeru', 'à¤…à¤œà¤¯à¤®à¥‡à¤°à¥', 'rural_municipality'::public.municipality_type, 6, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('dadeldhura-bhageshwar', 'Dadeldhura', 'Bhageshwar', 'à¤­à¤¾à¤—à¥‡à¤¶à¥à¤µà¤°', 'rural_municipality'::public.municipality_type, 5, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('dadeldhura-nawadurga', 'Dadeldhura', 'Nawadurga', 'à¤¨à¤µà¤¦à¥à¤°à¥à¤—à¤¾', 'rural_municipality'::public.municipality_type, 9, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('dadeldhura-ganayapdhura', 'Dadeldhura', 'Ganayapdhura', 'à¤—à¤£à¤¯à¤ªà¤§à¥à¤°à¤¾', 'rural_municipality'::public.municipality_type, 9, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('doti-sayal', 'Doti', 'Sayal', 'à¤¸à¤¾à¤¯à¤²', 'rural_municipality'::public.municipality_type, 6, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('doti-adharsha', 'Doti', 'Adharsha', 'à¤†à¤¦à¤°à¥à¤¶', 'rural_municipality'::public.municipality_type, 9, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('doti-jorayal', 'Doti', 'Jorayal', 'à¤œà¥‹à¤°à¤¯à¤¾à¤²', 'rural_municipality'::public.municipality_type, 6, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('doti-badikedar', 'Doti', 'Badikedar', 'à¤¬à¤¡à¥€à¤•à¥‡à¤¦à¤¾à¤°', 'rural_municipality'::public.municipality_type, 5, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('doti-purbichauki', 'Doti', 'Purbichauki', 'à¤ªà¥‚à¤°à¥à¤µà¤šà¥Œà¤•à¥€', 'rural_municipality'::public.municipality_type, 7, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('doti-kisingh', 'Doti', 'K I Singh', 'à¤•à¥‡ à¤†à¤ˆ à¤¸à¤¿à¤‚à¤¹', 'rural_municipality'::public.municipality_type, 7, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('doti-bogtanfoodsil', 'Doti', 'Bogtan Foodsil', 'Bogtan Foodsil', 'rural_municipality'::public.municipality_type, 9, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('achham-dhakari', 'Achham', 'Dhakari', 'à¤¢à¤•à¤¾à¤°à¥€', 'rural_municipality'::public.municipality_type, 8, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('achham-mellekh', 'Achham', 'Mellekh', 'à¤®à¥‡à¤²à¥à¤²à¥‡à¤–', 'rural_municipality'::public.municipality_type, 9, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('achham-chaurpati', 'Achham', 'Chaurpati', 'à¤šà¥Œà¤°à¤ªà¤¾à¤Ÿà¥€', 'rural_municipality'::public.municipality_type, 7, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('achham-ramaroshan', 'Achham', 'Ramaroshan', 'à¤°à¤¾à¤®à¤°à¥‹à¤¶à¤¨', 'rural_municipality'::public.municipality_type, 7, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('achham-turmakhad', 'Achham', 'Turmakhad', 'à¤¤à¥à¤°à¥à¤®à¤–à¤¾à¤¡', 'rural_municipality'::public.municipality_type, 9, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('achham-bannigadhi', 'Achham', 'Bannigadhi', 'à¤¬à¤¾à¤¨à¥à¤¨à¥€à¤—à¤¢à¥€', 'rural_municipality'::public.municipality_type, 9, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('kailali-chure', 'Kailali', 'Chure', 'à¤šà¥à¤°à¥‡', 'rural_municipality'::public.municipality_type, 6, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('kailali-janaki', 'Kailali', 'Janaki', 'à¤œà¤¾à¤¨à¤•à¥€', 'rural_municipality'::public.municipality_type, 9, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('kailali-kailari', 'Kailali', 'Kailari', 'à¤•à¥ˆà¤²à¤¾à¤°à¥€', 'rural_municipality'::public.municipality_type, 9, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('kailali-joshipur', 'Kailali', 'Joshipur', 'à¤œà¥‹à¤¶à¥€à¤ªà¥à¤°', 'rural_municipality'::public.municipality_type, 9, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('kailali-mohanyal', 'Kailali', 'Mohanyal', 'à¤®à¥‹à¤¹à¤¨à¥à¤¯à¤¾à¤²', 'rural_municipality'::public.municipality_type, 7, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('kailali-bardagoriya', 'Kailali', 'Bardagoriya', 'à¤¬à¤°à¥à¤¦à¤—à¥‹à¤°à¤¿à¤¯à¤¾', 'rural_municipality'::public.municipality_type, 6, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('kanchanpur-beldandi', 'Kanchanpur', 'Beldandi', 'à¤¬à¥‡à¤²à¤¡à¤¾à¤à¤¡à¥€', 'rural_municipality'::public.municipality_type, 6, '2026-10-05 04:17:33');
+
+insert into public.municipalities (slug, district, name, name_ne, type, ward_count, created_at) values
+  ('kanchanpur-laljhandi', 'Kanchanpur', 'Laljhandi', 'à¤²à¤¾à¤²à¤à¤£à¥à¤¡à¥€', 'rural_municipality'::public.municipality_type, 9, '2026-10-05 04:17:33');
+
+

@@ -12,8 +12,14 @@
 ///                       Released by `v1_contact_seller` under a daily cap.
 /// * `District`         - reference data. `region` decides hill vs terai area
 ///                       units throughout the app (Rule 25).
+/// * `AdminQueueEntry`  - one row of the verification queue. Admin-scoped.
+///                       See `v1_admin_get_queue`.
+/// * `QueueSla`         - how a queued listing stands against the 48h SLA.
+///                       Computed client-side, not by the RPC.
+/// * `AuditLogEntry`    - one admin action. Every approve/reject writes one.
 library;
 
+export 'src/admin_queue_entry.dart';
 export 'src/district.dart';
 export 'src/kyc_document.dart';
 export 'src/listing.dart';
@@ -22,4 +28,5 @@ export 'src/listing_query.dart';
 export 'src/listing_summary.dart';
 export 'src/notification.dart';
 export 'src/profile.dart';
+export 'src/queue_sla.dart';
 export 'src/seller_contact.dart';

@@ -18,18 +18,36 @@
 
   <meta charset="UTF-8">
   <meta content="IE=Edge" http-equiv="X-UA-Compatible">
-  <meta name="description" content="A new Flutter project.">
+  <meta name="description" content="nBhumi administration panel.">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+
+  <!--
+    Never index this panel.
+
+    The admin panel is authenticated, so nothing behind the login is useful in a
+    search result — but the login page itself would otherwise be indexed,
+    advertised as a destination, and surfaced in results for terms like
+    "nBhumi". `main.dart` states the panel must never be indexed; this is the
+    tag that makes that true. `robots.txt` disallows the whole host as a
+    belt-and-braces second signal, since some crawlers honour one and not the
+    other.
+
+    `noarchive` additionally asks caches not to store it, which matters for a
+    page that may render an admin's name and email on a shared machine.
+  -->
+  <meta name="robots" content="noindex, nofollow, noarchive, nosnippet">
+  <meta name="googlebot" content="noindex, nofollow">
 
   <!-- iOS meta tags & icons -->
   <meta name="mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black">
-  <meta name="apple-mobile-web-app-title" content="admin_panel">
+  <meta name="apple-mobile-web-app-title" content="nBhumi Admin">
   <link rel="apple-touch-icon" href="icons/Icon-192.png">
 
   <!-- Favicon -->
   <link rel="icon" type="image/png" href="favicon.png"/>
 
-  <title>admin_panel</title>
+  <title>nBhumi Admin</title>
   <link rel="manifest" href="manifest.json">
 </head>
 <body>

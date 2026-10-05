@@ -1,0 +1,9 @@
+# The nBhumi admin panel must never appear in search results.
+#
+# `index.html` also sends `noindex, nofollow` via meta robots. Both are declared
+# deliberately: some crawlers honour one and not the other, and an admin panel
+# has no legitimate reason to be indexed. The marketing site (M4, HYA-271) is a
+# separate plain-HTML deploy (see README.md), so disallowing this host costs
+# nothing.
+User-agent: *
+Disallow: /

@@ -23,10 +23,16 @@ jobs:
         run: dart pub get
 
       - name: Verify codegen is up to date
+        # Every package holding `@riverpod` or `@freezed` annotations must appear
+        # here. Generated files are committed (Rule 14) so CI never runs codegen
+        # itself, which means an unlisted package can silently drift from source.
+        # `features/admin_queue` is listed ahead of M2 because the verification
+        # queue adds `@riverpod` annotations there.
         run: |
           cd packages/models && dart run build_runner build && cd ../..
           cd packages/data && dart run build_runner build && cd ../..
           cd features/auth && dart run build_runner build && cd ../..
+          cd features/admin_queue && dart run build_runner build && cd ../..
           git diff --exit-code || (echo "::error::Generated files are out of date. Run build_runner locally and commit the results." && exit 1)
 
       - name: Analyze (zero warnings)
