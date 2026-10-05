@@ -1,7 +1,6 @@
 import 'package:models/models.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-import '../repositories/admin_repository.dart';
 import '../repositories/auth_repository.dart';
 import '../repositories/listing_repository.dart';
 import '../repositories/reference_repository.dart';
@@ -25,16 +24,6 @@ ListingRepository listingRepository(Ref ref) {
 @riverpod
 AuthRepository authRepository(Ref ref) {
   return AuthRepository(ref.watch(supabaseClientProvider));
-}
-
-/// Admin repository, for the verification queue.
-///
-/// Separate from [listingRepository] because moderation actions are not edits
-/// to a listing the caller owns. Keeping them apart means the seller write path
-/// cannot grow an admin capability by accident.
-@riverpod
-AdminRepository adminRepository(Ref ref) {
-  return SupabaseAdminRepository(ref.watch(supabaseClientProvider));
 }
 
 /// Auth service, for the admin panel's password sign-in.
