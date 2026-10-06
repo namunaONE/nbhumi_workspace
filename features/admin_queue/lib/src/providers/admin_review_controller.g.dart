@@ -27,15 +27,16 @@ part of 'admin_review_controller.dart';
 ///
 /// ### Why this provider is `keepAlive`
 ///
-/// A plain [Notifier] is disposed the moment nothing watches it, and for a
+/// A plain notifier is disposed the moment nothing watches it, and for a
 /// button-triggered action that is the common case: nothing holds this provider
 /// while the admin reads the listing. The disposal lands *mid-call* — the
-/// repository `await` returns, and then `ref.read` on a dead [Ref] throws
+/// repository `await` returns, and then `ref.read` on a dead ref throws
 /// `UnmountedRefException`. A widget test caught exactly that.
 ///
-/// `keepAlive` ties the controller's lifetime to the container instead, which is
-/// the right scope: the container outlives every screen, so a decision started
-/// in one pane finishes even if the admin navigates away mid-request.
+/// `keepAlive` ties the controller's lifetime to the container instead,
+/// which is the right scope: the container outlives every screen, so a
+/// decision started in one pane finishes even if the admin navigates away
+/// mid-request.
 ///
 /// ### Why the queue is updated here rather than in the widget
 ///
@@ -66,15 +67,16 @@ final adminReviewControllerProvider = AdminReviewControllerProvider._();
 ///
 /// ### Why this provider is `keepAlive`
 ///
-/// A plain [Notifier] is disposed the moment nothing watches it, and for a
+/// A plain notifier is disposed the moment nothing watches it, and for a
 /// button-triggered action that is the common case: nothing holds this provider
 /// while the admin reads the listing. The disposal lands *mid-call* — the
-/// repository `await` returns, and then `ref.read` on a dead [Ref] throws
+/// repository `await` returns, and then `ref.read` on a dead ref throws
 /// `UnmountedRefException`. A widget test caught exactly that.
 ///
-/// `keepAlive` ties the controller's lifetime to the container instead, which is
-/// the right scope: the container outlives every screen, so a decision started
-/// in one pane finishes even if the admin navigates away mid-request.
+/// `keepAlive` ties the controller's lifetime to the container instead,
+/// which is the right scope: the container outlives every screen, so a
+/// decision started in one pane finishes even if the admin navigates away
+/// mid-request.
 ///
 /// ### Why the queue is updated here rather than in the widget
 ///
@@ -103,15 +105,16 @@ final class AdminReviewControllerProvider
   ///
   /// ### Why this provider is `keepAlive`
   ///
-  /// A plain [Notifier] is disposed the moment nothing watches it, and for a
+  /// A plain notifier is disposed the moment nothing watches it, and for a
   /// button-triggered action that is the common case: nothing holds this provider
   /// while the admin reads the listing. The disposal lands *mid-call* — the
-  /// repository `await` returns, and then `ref.read` on a dead [Ref] throws
+  /// repository `await` returns, and then `ref.read` on a dead ref throws
   /// `UnmountedRefException`. A widget test caught exactly that.
   ///
-  /// `keepAlive` ties the controller's lifetime to the container instead, which is
-  /// the right scope: the container outlives every screen, so a decision started
-  /// in one pane finishes even if the admin navigates away mid-request.
+  /// `keepAlive` ties the controller's lifetime to the container instead,
+  /// which is the right scope: the container outlives every screen, so a
+  /// decision started in one pane finishes even if the admin navigates away
+  /// mid-request.
   ///
   /// ### Why the queue is updated here rather than in the widget
   ///
@@ -168,15 +171,16 @@ String _$adminReviewControllerHash() =>
 ///
 /// ### Why this provider is `keepAlive`
 ///
-/// A plain [Notifier] is disposed the moment nothing watches it, and for a
+/// A plain notifier is disposed the moment nothing watches it, and for a
 /// button-triggered action that is the common case: nothing holds this provider
 /// while the admin reads the listing. The disposal lands *mid-call* — the
-/// repository `await` returns, and then `ref.read` on a dead [Ref] throws
+/// repository `await` returns, and then `ref.read` on a dead ref throws
 /// `UnmountedRefException`. A widget test caught exactly that.
 ///
-/// `keepAlive` ties the controller's lifetime to the container instead, which is
-/// the right scope: the container outlives every screen, so a decision started
-/// in one pane finishes even if the admin navigates away mid-request.
+/// `keepAlive` ties the controller's lifetime to the container instead,
+/// which is the right scope: the container outlives every screen, so a
+/// decision started in one pane finishes even if the admin navigates away
+/// mid-request.
 ///
 /// ### Why the queue is updated here rather than in the widget
 ///

@@ -61,7 +61,24 @@ void main() {
       expect(paths, contains('/login'));
       expect(paths, contains('/forbidden'));
       expect(paths, contains('/queue'));
+      expect(paths, contains('/reports'));
       expect(paths, contains('/listing/:id'));
+    });
+
+    test('/reports is gated exactly like /queue', () {
+      // A separate screen, but the same moderation surface: a route that exists
+      // and is not gated would let a signed-in non-admin reach a reports queue.
+      // The guards are keyed on `isAdminPublicRoute`, so this asserts the route
+      // is registered *and* absent from the public set — the two facts together
+      // are what the redirect actually tests.
+      final container = ProviderContainer();
+      addTearDown(container.dispose);
+
+      expect(
+        routesOf(container).map((route) => route.path),
+        contains('/reports'),
+      );
+      expect(isAdminPublicRoute('/reports'), isFalse);
     });
 
     test('the listing route prefix matches the feature constant', () {

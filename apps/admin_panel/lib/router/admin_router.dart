@@ -156,6 +156,10 @@ final adminRouterProvider = Provider<GoRouter>((ref) {
         builder: (context, state) => const AdminQueueScreen(),
       ),
       GoRoute(
+        path: '/reports',
+        builder: (context, state) => const AdminReportsScreen(),
+      ),
+      GoRoute(
         path: '/listing/:id',
         builder: (context, state) => AdminListingDetailScreen(
           listingId: state.pathParameters['id']!,
