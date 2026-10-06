@@ -360,6 +360,168 @@ final class KycRepositoryProvider
 
 String _$kycRepositoryHash() => r'5a9f7a90c80a81be37ba01a502b9e32999aca9ed';
 
+/// The seller's own KYC documents, newest first.
+///
+/// An empty list is a successful answer (nothing submitted yet), not null:
+/// there is no "missing" state here, only "none yet".
+
+@ProviderFor(myKycDocuments)
+final myKycDocumentsProvider = MyKycDocumentsProvider._();
+
+/// The seller's own KYC documents, newest first.
+///
+/// An empty list is a successful answer (nothing submitted yet), not null:
+/// there is no "missing" state here, only "none yet".
+
+final class MyKycDocumentsProvider
+    extends
+        $FunctionalProvider<
+          AsyncValue<List<KycDocument>>,
+          List<KycDocument>,
+          FutureOr<List<KycDocument>>
+        >
+    with
+        $FutureModifier<List<KycDocument>>,
+        $FutureProvider<List<KycDocument>> {
+  /// The seller's own KYC documents, newest first.
+  ///
+  /// An empty list is a successful answer (nothing submitted yet), not null:
+  /// there is no "missing" state here, only "none yet".
+  MyKycDocumentsProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'myKycDocumentsProvider',
+        isAutoDispose: true,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$myKycDocumentsHash();
+
+  @$internal
+  @override
+  $FutureProviderElement<List<KycDocument>> $createElement(
+    $ProviderPointer pointer,
+  ) => $FutureProviderElement(pointer);
+
+  @override
+  FutureOr<List<KycDocument>> create(Ref ref) {
+    return myKycDocuments(ref);
+  }
+}
+
+String _$myKycDocumentsHash() => r'48ba6168f28d97979e1d96cbf2db1a1756921d02';
+
+/// Pending KYC documents for the admin review inbox, oldest first.
+///
+/// Seller-side reads are confined to their own rows by RLS; the inbox is
+/// only meaningful with an admin session. [limit] is clamped to 1..100 in
+/// the repository, so the default page here is just a hint.
+
+@ProviderFor(pendingKycDocuments)
+final pendingKycDocumentsProvider = PendingKycDocumentsFamily._();
+
+/// Pending KYC documents for the admin review inbox, oldest first.
+///
+/// Seller-side reads are confined to their own rows by RLS; the inbox is
+/// only meaningful with an admin session. [limit] is clamped to 1..100 in
+/// the repository, so the default page here is just a hint.
+
+final class PendingKycDocumentsProvider
+    extends
+        $FunctionalProvider<
+          AsyncValue<List<KycDocument>>,
+          List<KycDocument>,
+          FutureOr<List<KycDocument>>
+        >
+    with
+        $FutureModifier<List<KycDocument>>,
+        $FutureProvider<List<KycDocument>> {
+  /// Pending KYC documents for the admin review inbox, oldest first.
+  ///
+  /// Seller-side reads are confined to their own rows by RLS; the inbox is
+  /// only meaningful with an admin session. [limit] is clamped to 1..100 in
+  /// the repository, so the default page here is just a hint.
+  PendingKycDocumentsProvider._({
+    required PendingKycDocumentsFamily super.from,
+    required int super.argument,
+  }) : super(
+         retry: null,
+         name: r'pendingKycDocumentsProvider',
+         isAutoDispose: true,
+         dependencies: null,
+         $allTransitiveDependencies: null,
+       );
+
+  @override
+  String debugGetCreateSourceHash() => _$pendingKycDocumentsHash();
+
+  @override
+  String toString() {
+    return r'pendingKycDocumentsProvider'
+        ''
+        '($argument)';
+  }
+
+  @$internal
+  @override
+  $FutureProviderElement<List<KycDocument>> $createElement(
+    $ProviderPointer pointer,
+  ) => $FutureProviderElement(pointer);
+
+  @override
+  FutureOr<List<KycDocument>> create(Ref ref) {
+    final argument = this.argument as int;
+    return pendingKycDocuments(ref, limit: argument);
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return other is PendingKycDocumentsProvider && other.argument == argument;
+  }
+
+  @override
+  int get hashCode {
+    return argument.hashCode;
+  }
+}
+
+String _$pendingKycDocumentsHash() =>
+    r'8ce0ddbaba92c8e636123e35f39da140f371918b';
+
+/// Pending KYC documents for the admin review inbox, oldest first.
+///
+/// Seller-side reads are confined to their own rows by RLS; the inbox is
+/// only meaningful with an admin session. [limit] is clamped to 1..100 in
+/// the repository, so the default page here is just a hint.
+
+final class PendingKycDocumentsFamily extends $Family
+    with $FunctionalFamilyOverride<FutureOr<List<KycDocument>>, int> {
+  PendingKycDocumentsFamily._()
+    : super(
+        retry: null,
+        name: r'pendingKycDocumentsProvider',
+        dependencies: null,
+        $allTransitiveDependencies: null,
+        isAutoDispose: true,
+      );
+
+  /// Pending KYC documents for the admin review inbox, oldest first.
+  ///
+  /// Seller-side reads are confined to their own rows by RLS; the inbox is
+  /// only meaningful with an admin session. [limit] is clamped to 1..100 in
+  /// the repository, so the default page here is just a hint.
+
+  PendingKycDocumentsProvider call({int limit = 50}) =>
+      PendingKycDocumentsProvider._(argument: limit, from: this);
+
+  @override
+  String toString() => r'pendingKycDocumentsProvider';
+}
+
 /// One user's profile, by id.
 ///
 /// A family so the profile screen and any future seller preview read different

@@ -71,6 +71,28 @@ KycRepository kycRepository(Ref ref) {
   return KycRepository(ref.watch(supabaseClientProvider));
 }
 
+/// The seller's own KYC documents, newest first.
+///
+/// An empty list is a successful answer (nothing submitted yet), not null:
+/// there is no "missing" state here, only "none yet".
+@riverpod
+Future<List<KycDocument>> myKycDocuments(Ref ref) {
+  return ref.watch(kycRepositoryProvider).myDocuments();
+}
+
+/// Pending KYC documents for the admin review inbox, oldest first.
+///
+/// Seller-side reads are confined to their own rows by RLS; the inbox is
+/// only meaningful with an admin session. [limit] is clamped to 1..100 in
+/// the repository, so the default page here is just a hint.
+@riverpod
+Future<List<KycDocument>> pendingKycDocuments(
+  Ref ref, {
+  int limit = 50,
+}) {
+  return ref.watch(adminRepositoryProvider).pendingKycDocuments(limit: limit);
+}
+
 /// One user's profile, by id.
 ///
 /// A family so the profile screen and any future seller preview read different

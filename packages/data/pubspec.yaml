@@ -22,5 +22,11 @@ dev_dependencies:
   build_runner: ^2.16.0
   flutter_test:
     sdk: flutter
+  # `http` for the injected BaseClient in kyc_repository_test.dart. Testing the
+  # error-mapping path through a real http.Client (rather than a hand-built fake
+  # client object) is what makes the test assert on the exception shape the SDK
+  # actually produces. Already a transitive dependency via supabase_flutter, so
+  # this adds no new package to the graph - it just names it.
+  http: ^1.6.0
   riverpod_generator: ^4.0.0
   very_good_analysis: ^11.0.0
