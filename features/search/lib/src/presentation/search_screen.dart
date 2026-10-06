@@ -1,3 +1,5 @@
+import 'package:core/core.dart';
+import 'package:data/data.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -29,6 +31,7 @@ class SearchScreen extends ConsumerWidget {
         actions: <Widget>[
           _SortButton(filter: filter),
           _FilterButton(activeCount: filter.activeCount),
+          _SaveSearchButton(filter: filter),
           const SizedBox(width: 4),
         ],
       ),
@@ -151,3 +154,101 @@ class _SortButton extends ConsumerWidget {
     );
   }
 }
+
+/// Stores the current filter set as a named saved search.
+///
+/// Hidden while no filter is active: an unfiltered "everything" search would
+/// alert on every listing in the country, and the repository refuses it, so
+/// offering the button there would only ever error.
+class _SaveSearchButton extends ConsumerWidget {
+  const _SaveSearchButton({required this.filter});
+
+  final ListingFilter filter;
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    if (filter.isEmpty) return const SizedBox.shrink();
+    return IconButton(
+      icon: const Icon(Icons.bookmark_add_outlined),
+      tooltip: 'Save this search',
+      onPressed: () => _save(context, ref),
+    );
+  }
+
+  Future<void> _save(BuildContext context, WidgetRef ref) async {
+    final messenger = ScaffoldMessenger.of(context);
+    final session = ref.read(sessionProvider);
+    if (session == null) {
+      messenger.showSnackBar(
+        const SnackBar(
+          content: Text('Sign in to save searches.'),
+        ),
+      );
+      return;
+    }
+
+    try {
+      await ref.read(savedSearchRepositoryProvider).saveSearch(
+            userId: session.user.id,
+            name: _describeFilter(filter),
+            filter: filter,
+          );
+      if (!context.mounted) return;
+      messenger.showSnackBar(
+        SnackBar(
+          content: Text('Saved "${_describeFilter(filter)}".'),
+        ),
+      );
+    } on AppException catch (e) {
+      if (!context.mounted) return;
+      messenger.showSnackBar(
+        SnackBar(
+          content: Text(e.localizedForContext(context)),
+          action: e.isRetryable
+              ? SnackBarAction(
+                  label: 'Retry',
+                  onPressed: () => _save(context, ref),
+                )
+              : null,
+        ),
+      );
+    }
+  }
+}
+
+/// Human name for a filter set, for the saved-search row.
+///
+/// English only for now; HYA-266 owns localization. Built from the same
+/// fields the matcher will compare, so the name always describes what the
+/// alert actually watches.
+String _describeFilter(ListingFilter filter) {
+  final parts = <String>[
+    if (filter.propertyType case final type?)
+      '${_typeLabel(type)} ${_purposeLabel(filter.listingPurpose)}',
+    if (filter.propertyType == null)
+      if (filter.listingPurpose case final purpose?)
+        'Properties ${_purposeLabel(purpose)}',
+    if (filter.district case final district?) 'in $district',
+    if (filter.maxPriceNpr case final max?)
+      'under ${NepaliCurrency.compact(max)}',
+  ];
+  if (parts.isEmpty) return 'Custom search';
+  return parts.join(' ');
+}
+
+/// "for sale" / "for rent" / "for lease" for a purpose, defaulting to sale.
+String _purposeLabel(ListingPurpose? purpose) => switch (purpose) {
+      ListingPurpose.rent => 'for rent',
+      ListingPurpose.lease => 'for lease',
+      _ => 'for sale',
+    };
+
+/// Plural display name for a property type.
+String _typeLabel(PropertyType type) => switch (type) {
+      PropertyType.house => 'Houses',
+      PropertyType.apartment => 'Apartments',
+      PropertyType.land => 'Land',
+      PropertyType.villa => 'Villas',
+      PropertyType.commercial => 'Commercial',
+      PropertyType.business => 'Businesses',
+    };

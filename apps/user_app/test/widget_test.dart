@@ -208,16 +208,17 @@ void main() {
       expect(find.text('Sign in'), findsWidgets);
     });
 
-    testWidgets('the saved tab explains itself instead of showing nothing',
+    testWidgets('the saved tab prompts a guest instead of showing nothing',
         (tester) async {
-      // Favourites are M3. An empty list would read as a bug.
+      // Favourites landed in HYA-268 C1. A guest has no shelf, so the tab
+      // offers sign-in rather than the old "not available yet" placeholder.
       await pumpApp(tester);
 
       await tester.tap(find.text('Saved'));
       await tester.pumpAndSettle();
 
       expect(
-        find.text('Saved listings are not available yet'),
+        find.text('Sign in to save properties'),
         findsOneWidget,
       );
     });

@@ -415,6 +415,170 @@ final class MyKycDocumentsProvider
 
 String _$myKycDocumentsHash() => r'48ba6168f28d97979e1d96cbf2db1a1756921d02';
 
+/// Buyer bookmarks repository (HYA-268).
+///
+/// State lives in the `favorites` table, never in the `is_favorite` wire
+/// field the browse/detail RPCs still hardcode to false (flipping that is
+/// C2, verified against a live database).
+
+@ProviderFor(favoritesRepository)
+final favoritesRepositoryProvider = FavoritesRepositoryProvider._();
+
+/// Buyer bookmarks repository (HYA-268).
+///
+/// State lives in the `favorites` table, never in the `is_favorite` wire
+/// field the browse/detail RPCs still hardcode to false (flipping that is
+/// C2, verified against a live database).
+
+final class FavoritesRepositoryProvider
+    extends
+        $FunctionalProvider<
+          FavoritesRepository,
+          FavoritesRepository,
+          FavoritesRepository
+        >
+    with $Provider<FavoritesRepository> {
+  /// Buyer bookmarks repository (HYA-268).
+  ///
+  /// State lives in the `favorites` table, never in the `is_favorite` wire
+  /// field the browse/detail RPCs still hardcode to false (flipping that is
+  /// C2, verified against a live database).
+  FavoritesRepositoryProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'favoritesRepositoryProvider',
+        isAutoDispose: true,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$favoritesRepositoryHash();
+
+  @$internal
+  @override
+  $ProviderElement<FavoritesRepository> $createElement(
+    $ProviderPointer pointer,
+  ) => $ProviderElement(pointer);
+
+  @override
+  FavoritesRepository create(Ref ref) {
+    return favoritesRepository(ref);
+  }
+
+  /// {@macro riverpod.override_with_value}
+  Override overrideWithValue(FavoritesRepository value) {
+    return $ProviderOverride(
+      origin: this,
+      providerOverride: $SyncValueProvider<FavoritesRepository>(value),
+    );
+  }
+}
+
+String _$favoritesRepositoryHash() =>
+    r'c1da1454c78960410319a2300d24664c63429bdd';
+
+/// Ids the caller bookmarked.
+///
+/// Cards and the detail heart read favorite state from this set. An empty
+/// set is a successful answer (nothing saved yet), not an error.
+
+@ProviderFor(favoriteIds)
+final favoriteIdsProvider = FavoriteIdsProvider._();
+
+/// Ids the caller bookmarked.
+///
+/// Cards and the detail heart read favorite state from this set. An empty
+/// set is a successful answer (nothing saved yet), not an error.
+
+final class FavoriteIdsProvider
+    extends
+        $FunctionalProvider<
+          AsyncValue<Set<String>>,
+          Set<String>,
+          FutureOr<Set<String>>
+        >
+    with $FutureModifier<Set<String>>, $FutureProvider<Set<String>> {
+  /// Ids the caller bookmarked.
+  ///
+  /// Cards and the detail heart read favorite state from this set. An empty
+  /// set is a successful answer (nothing saved yet), not an error.
+  FavoriteIdsProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'favoriteIdsProvider',
+        isAutoDispose: true,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$favoriteIdsHash();
+
+  @$internal
+  @override
+  $FutureProviderElement<Set<String>> $createElement(
+    $ProviderPointer pointer,
+  ) => $FutureProviderElement(pointer);
+
+  @override
+  FutureOr<Set<String>> create(Ref ref) {
+    return favoriteIds(ref);
+  }
+}
+
+String _$favoriteIdsHash() => r'25714b5a37209f48a124683ab2a1187ab1d26caa';
+
+/// Saved listings as cards, newest bookmark first.
+
+@ProviderFor(savedListings)
+final savedListingsProvider = SavedListingsProvider._();
+
+/// Saved listings as cards, newest bookmark first.
+
+final class SavedListingsProvider
+    extends
+        $FunctionalProvider<
+          AsyncValue<List<ListingSummary>>,
+          List<ListingSummary>,
+          FutureOr<List<ListingSummary>>
+        >
+    with
+        $FutureModifier<List<ListingSummary>>,
+        $FutureProvider<List<ListingSummary>> {
+  /// Saved listings as cards, newest bookmark first.
+  SavedListingsProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'savedListingsProvider',
+        isAutoDispose: true,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$savedListingsHash();
+
+  @$internal
+  @override
+  $FutureProviderElement<List<ListingSummary>> $createElement(
+    $ProviderPointer pointer,
+  ) => $FutureProviderElement(pointer);
+
+  @override
+  FutureOr<List<ListingSummary>> create(Ref ref) {
+    return savedListings(ref);
+  }
+}
+
+String _$savedListingsHash() => r'6e2931041823a8a229902f30b1f7e0da294d0634';
+
 /// Pending KYC documents for the admin review inbox, oldest first.
 ///
 /// Seller-side reads are confined to their own rows by RLS; the inbox is
@@ -727,6 +891,114 @@ final class UnreadNotificationCountProvider
 
 String _$unreadNotificationCountHash() =>
     r'9329041df3e373fa603d295aadf0fb2b98d6ece7';
+
+/// Saved-search repository (HYA-268 C2b).
+///
+/// Owner-scoped like favorites: rows are ordinary user documents the matcher
+/// (C3) will read server-side.
+
+@ProviderFor(savedSearchRepository)
+final savedSearchRepositoryProvider = SavedSearchRepositoryProvider._();
+
+/// Saved-search repository (HYA-268 C2b).
+///
+/// Owner-scoped like favorites: rows are ordinary user documents the matcher
+/// (C3) will read server-side.
+
+final class SavedSearchRepositoryProvider
+    extends
+        $FunctionalProvider<
+          SavedSearchRepository,
+          SavedSearchRepository,
+          SavedSearchRepository
+        >
+    with $Provider<SavedSearchRepository> {
+  /// Saved-search repository (HYA-268 C2b).
+  ///
+  /// Owner-scoped like favorites: rows are ordinary user documents the matcher
+  /// (C3) will read server-side.
+  SavedSearchRepositoryProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'savedSearchRepositoryProvider',
+        isAutoDispose: true,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$savedSearchRepositoryHash();
+
+  @$internal
+  @override
+  $ProviderElement<SavedSearchRepository> $createElement(
+    $ProviderPointer pointer,
+  ) => $ProviderElement(pointer);
+
+  @override
+  SavedSearchRepository create(Ref ref) {
+    return savedSearchRepository(ref);
+  }
+
+  /// {@macro riverpod.override_with_value}
+  Override overrideWithValue(SavedSearchRepository value) {
+    return $ProviderOverride(
+      origin: this,
+      providerOverride: $SyncValueProvider<SavedSearchRepository>(value),
+    );
+  }
+}
+
+String _$savedSearchRepositoryHash() =>
+    r'a06f684f151ded8d3e04df4c28e43594e34b8ef9';
+
+/// The caller's saved searches, newest first.
+
+@ProviderFor(savedSearches)
+final savedSearchesProvider = SavedSearchesProvider._();
+
+/// The caller's saved searches, newest first.
+
+final class SavedSearchesProvider
+    extends
+        $FunctionalProvider<
+          AsyncValue<List<SavedSearch>>,
+          List<SavedSearch>,
+          FutureOr<List<SavedSearch>>
+        >
+    with
+        $FutureModifier<List<SavedSearch>>,
+        $FutureProvider<List<SavedSearch>> {
+  /// The caller's saved searches, newest first.
+  SavedSearchesProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'savedSearchesProvider',
+        isAutoDispose: true,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$savedSearchesHash();
+
+  @$internal
+  @override
+  $FutureProviderElement<List<SavedSearch>> $createElement(
+    $ProviderPointer pointer,
+  ) => $FutureProviderElement(pointer);
+
+  @override
+  FutureOr<List<SavedSearch>> create(Ref ref) {
+    return savedSearches(ref);
+  }
+}
+
+String _$savedSearchesHash() => r'74cd5e81cdee2d9c7b8d295c22f43cda0ecc3e79';
 
 /// One user's profile, by id.
 ///

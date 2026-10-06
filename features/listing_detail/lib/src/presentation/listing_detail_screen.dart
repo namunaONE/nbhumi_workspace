@@ -1,4 +1,5 @@
 import 'package:core/core.dart';
+import 'package:data/data.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -41,10 +42,76 @@ class ListingDetailScreen extends ConsumerWidget {
         // not-yours alike, so this screen cannot tell those apart and must
         // not pretend to.
         AsyncData(value: null) => const _NotAvailable(),
-        AsyncData(: final ListingDetail value) =>
-          ListingDetailBody(listing: value),
+        AsyncData(:final ListingDetail value) => _FavoriteBody(
+              listingId: listingId,
+              listing: value,
+            ),
       },
     );
+  }
+}
+
+/// Detail body with the favorite state attached.
+///
+/// Favorite state lives in `favoriteIdsProvider` (HYA-268 C1), not in the
+/// `is_favorite` wire field. Guests get no heart: saving needs a session,
+/// and a button that only ever errors is worse than none.
+class _FavoriteBody extends ConsumerWidget {
+  const _FavoriteBody({required this.listingId, required this.listing});
+
+  final String listingId;
+  final ListingDetail listing;
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final saved = switch (ref.watch(favoriteIdsProvider)) {
+      AsyncData(:final value) => value.contains(listingId),
+      _ => false,
+    };
+    final session = ref.watch(sessionProvider);
+
+    return ListingDetailBody(
+      listing: listing,
+      isFavorite: saved,
+      onFavoriteToggle:
+          session == null ? null : () => _toggle(context, ref),
+    );
+  }
+
+  Future<void> _toggle(BuildContext context, WidgetRef ref) async {
+    final messenger = ScaffoldMessenger.of(context);
+    final userId = ref.read(sessionProvider)?.user.id;
+    if (userId == null) return;
+
+    try {
+      final nowSaved = await ref
+          .read(favoritesRepositoryProvider)
+          .toggleFavorite(userId: userId, listingId: listingId);
+      ref
+        ..invalidate(favoriteIdsProvider)
+        ..invalidate(savedListingsProvider);
+      if (!context.mounted) return;
+      messenger.showSnackBar(
+        SnackBar(
+          content: Text(
+            nowSaved ? 'Saved to your list.' : 'Removed from your saved list.',
+          ),
+        ),
+      );
+    } on AppException catch (e) {
+      if (!context.mounted) return;
+      messenger.showSnackBar(
+        SnackBar(
+          content: Text(e.localizedForContext(context)),
+          action: e.isRetryable
+              ? SnackBarAction(
+                  label: 'Retry',
+                  onPressed: () => _toggle(context, ref),
+                )
+              : null,
+        ),
+      );
+    }
   }
 }
 

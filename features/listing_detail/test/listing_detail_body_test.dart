@@ -56,6 +56,8 @@ Widget _harness(
   ListingDetail listing, {
   Locale locale = const Locale('en'),
   Size size = const Size(500, 2400),
+  bool isFavorite = false,
+  VoidCallback? onFavoriteToggle,
 }) {
   final view = TestWidgetsFlutterBinding.instance.platformDispatcher.views
       .first
@@ -82,7 +84,13 @@ Widget _harness(
       // these too.
       localizationsDelegates: GlobalMaterialLocalizations.delegates,
       supportedLocales: const <Locale>[Locale('en'), Locale('ne')],
-      home: Scaffold(body: ListingDetailBody(listing: listing)),
+      home: Scaffold(
+        body: ListingDetailBody(
+          listing: listing,
+          isFavorite: isFavorite,
+          onFavoriteToggle: onFavoriteToggle,
+        ),
+      ),
     ),
   );
 }
@@ -393,6 +401,46 @@ void main() {
 
       expect(again, detail);
       expect(again.seller?.fullName, 'Ram Bahadur');
+    });
+  });
+
+  group('favorite button (HYA-268 C1)', () {
+    testWidgets('hidden without a toggle callback', (tester) async {
+      // Guests get no heart: saving needs a session, and the screen passes
+      // null for them. The default keeps provider-free pumps compiling.
+      await tester.pumpWidget(_harness(_detail()));
+      await tester.pump();
+
+      expect(find.byTooltip('Save this property'), findsNothing);
+      expect(find.byTooltip('Remove from saved'), findsNothing);
+    });
+
+    testWidgets('outline heart fires the toggle', (tester) async {
+      var toggled = 0;
+      await tester.pumpWidget(
+        _harness(
+          _detail(),
+          onFavoriteToggle: () => toggled++,
+        ),
+      );
+      await tester.pump();
+
+      await tester.tap(find.byTooltip('Save this property'));
+      expect(toggled, 1);
+    });
+
+    testWidgets('filled heart when already saved', (tester) async {
+      await tester.pumpWidget(
+        _harness(
+          _detail(),
+          isFavorite: true,
+          onFavoriteToggle: () {},
+        ),
+      );
+      await tester.pump();
+
+      expect(find.byTooltip('Remove from saved'), findsOneWidget);
+      expect(find.byIcon(Icons.favorite), findsOneWidget);
     });
   });
 }

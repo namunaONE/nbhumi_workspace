@@ -12,16 +12,43 @@ import 'contact_seller_button.dart';
 /// repository or a network.
 class ListingDetailBody extends StatelessWidget {
   /// Creates the detail body.
-  const ListingDetailBody({required this.listing, super.key});
+  const ListingDetailBody({
+    required this.listing,
+    this.isFavorite = false,
+    this.onFavoriteToggle,
+    super.key,
+  });
 
   /// The listing to render.
   final ListingDetail listing;
+
+  /// Whether the viewer bookmarked this listing.
+  ///
+  /// Read from `favoriteIdsProvider` by the screen, never from the
+  /// `is_favorite` wire field (hardcoded false until HYA-268 C2). Defaults
+  /// to false so provider-free tests keep pumping this directly.
+  final bool isFavorite;
+
+  /// Called when the viewer taps the heart. Null hides the button: guests
+  /// cannot save, so the screen passes null without a session rather than a
+  /// button that only ever errors.
+  final VoidCallback? onFavoriteToggle;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Text(listing.title, overflow: TextOverflow.ellipsis),
+        actions: <Widget>[
+          if (onFavoriteToggle != null)
+            IconButton(
+              icon: Icon(
+                isFavorite ? Icons.favorite : Icons.favorite_outline,
+              ),
+              tooltip: isFavorite ? 'Remove from saved' : 'Save this property',
+              onPressed: onFavoriteToggle,
+            ),
+        ],
       ),
       body: ListView(
         children: <Widget>[

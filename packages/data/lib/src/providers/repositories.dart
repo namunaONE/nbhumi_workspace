@@ -3,10 +3,12 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../repositories/admin_repository.dart';
 import '../repositories/auth_repository.dart';
+import '../repositories/favorites_repository.dart';
 import '../repositories/kyc_repository.dart';
 import '../repositories/listing_repository.dart';
 import '../repositories/notification_repository.dart';
 import '../repositories/reference_repository.dart';
+import '../repositories/saved_search_repository.dart';
 import '../repositories/user_repository.dart';
 import '../services/auth_service.dart';
 import '../services/supabase_service.dart';
@@ -81,6 +83,31 @@ Future<List<KycDocument>> myKycDocuments(Ref ref) {
   return ref.watch(kycRepositoryProvider).myDocuments();
 }
 
+/// Buyer bookmarks repository (HYA-268).
+///
+/// State lives in the `favorites` table, never in the `is_favorite` wire
+/// field the browse/detail RPCs still hardcode to false (flipping that is
+/// C2, verified against a live database).
+@riverpod
+FavoritesRepository favoritesRepository(Ref ref) {
+  return FavoritesRepository(ref.watch(supabaseClientProvider));
+}
+
+/// Ids the caller bookmarked.
+///
+/// Cards and the detail heart read favorite state from this set. An empty
+/// set is a successful answer (nothing saved yet), not an error.
+@riverpod
+Future<Set<String>> favoriteIds(Ref ref) {
+  return ref.watch(favoritesRepositoryProvider).favoriteIds();
+}
+
+/// Saved listings as cards, newest bookmark first.
+@riverpod
+Future<List<ListingSummary>> savedListings(Ref ref) {
+  return ref.watch(favoritesRepositoryProvider).savedListings();
+}
+
 /// Pending KYC documents for the admin review inbox, oldest first.
 ///
 /// Seller-side reads are confined to their own rows by RLS; the inbox is
@@ -121,6 +148,21 @@ Future<List<AppNotification>> notifications(
 @riverpod
 Future<int> unreadNotificationCount(Ref ref) {
   return ref.watch(notificationRepositoryProvider).unreadCount();
+}
+
+/// Saved-search repository (HYA-268 C2b).
+///
+/// Owner-scoped like favorites: rows are ordinary user documents the matcher
+/// (C3) will read server-side.
+@riverpod
+SavedSearchRepository savedSearchRepository(Ref ref) {
+  return SavedSearchRepository(ref.watch(supabaseClientProvider));
+}
+
+/// The caller's saved searches, newest first.
+@riverpod
+Future<List<SavedSearch>> savedSearches(Ref ref) {
+  return ref.watch(savedSearchRepositoryProvider).savedSearches();
 }
 
 /// One user's profile, by id.

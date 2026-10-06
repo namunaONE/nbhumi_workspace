@@ -33,4 +33,5 @@ export 'src/municipality.dart';
 export 'src/notification.dart';
 export 'src/profile.dart';
 export 'src/queue_sla.dart';
+export 'src/saved_search.dart';
 export 'src/seller_contact.dart';
