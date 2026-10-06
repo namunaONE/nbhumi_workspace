@@ -8,6 +8,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:models/models.dart';
+import 'package:user_app/l10n/output/app_localizations.dart';
 
 /// Account and seller actions.
 ///
@@ -22,61 +23,58 @@ class ProfileScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final session = ref.watch(sessionProvider);
     final theme = Theme.of(context);
+    final strings = AppLocalizations.of(context);
 
     return Scaffold(
-      appBar: AppBar(title: const Text('Profile')),
+      appBar: AppBar(title: Text(strings.profileTitle)),
       body: ListView(
         padding: const EdgeInsets.symmetric(vertical: 8),
         children: <Widget>[
           ListTile(
             leading: const Icon(Icons.person_outline),
-            title: Text(session?.user.email ?? 'Not signed in'),
+            title: Text(session?.user.email ?? strings.profileSignedOut),
             subtitle: session == null
-                ? const Text('Sign in with a magic link to post a property')
-                : const Text('Signed in'),
+                ? Text(strings.profileSignedOutHint)
+                : Text(strings.profileSignedIn),
           ),
           const Divider(),
           if (session != null) ...<Widget>[
             ListTile(
               leading: const Icon(Icons.add_home_work_outlined),
-              title: const Text('Post a property'),
-              subtitle: const Text('Create a listing for review'),
+              title: Text(strings.profilePostTitle),
+              subtitle: Text(strings.profilePostSubtitle),
               onTap: () => context.push('/post'),
             ),
             ListTile(
               leading: const Icon(Icons.verified_user_outlined),
-              title: const Text('Verify identity'),
-              subtitle: const Text('Citizenship check for the seller badge'),
+              title: Text(strings.profileKycTitle),
+              subtitle: Text(strings.profileKycSubtitle),
               onTap: () => context.push('/kyc'),
             ),
             ListTile(
               leading: const Icon(Icons.notifications_outlined),
-              title: const Text('Notifications'),
-              subtitle: const Text('Approvals, rejections and contact views'),
+              title: Text(strings.profileNotifTitle),
+              subtitle: Text(strings.profileNotifSubtitle),
               onTap: () => context.push('/notifications'),
             ),
             _AccountSection(userId: session.user.id),
           ] else
             ListTile(
               leading: const Icon(Icons.login),
-              title: const Text('Sign in'),
+              title: Text(strings.commonSignIn),
               subtitle: const Text('We email you a link, no password needed'),
               onTap: () => context.push('/login'),
             ),
-          const ListTile(
-            leading: Icon(Icons.help_outline),
-            title: Text('About nBhumi'),
-            subtitle: Text(
-              'We facilitate listings only. Ownership transfers are '
-              'completed at Malpot.',
-            ),
+          ListTile(
+            leading: const Icon(Icons.help_outline),
+            title: Text(strings.profileAboutTitle),
+            subtitle: Text(strings.profileAboutBody),
           ),
           const SizedBox(height: 24),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 16),
             child: Text(
-              'nBhumi collects the minimum information needed to operate a '
-              'marketplace, in line with the Privacy Act 2075 (2018).',
+              strings.profilePrivacyNote,
               style: theme.textTheme.bodySmall,
             ),
           ),
@@ -99,15 +97,16 @@ class _AccountSection extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final profile = ref.watch(userProfileProvider(userId: userId));
+    final strings = AppLocalizations.of(context);
 
     return switch (profile) {
-      AsyncLoading() => const ListTile(
-          leading: SizedBox(
+      AsyncLoading() => ListTile(
+          leading: const SizedBox(
             height: 20,
             width: 20,
             child: CircularProgressIndicator(strokeWidth: 2),
           ),
-          title: Text('Loading profile…'),
+          title: Text(strings.profileLoading),
         ),
       // A missing or unloadable profile must not hide the delete action: the
       // user who most needs self-service is the one whose data is broken.
@@ -125,12 +124,13 @@ class _SelfServiceTiles extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final name = profile?.fullName;
+    final strings = AppLocalizations.of(context);
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: <Widget>[
         ListTile(
           leading: const Icon(Icons.edit_outlined),
-          title: const Text('Edit profile'),
+          title: Text(strings.profileEditTitle),
           subtitle: Text(
             name == null || name.isEmpty ? 'Name, phone, agency' : name,
           ),
@@ -138,15 +138,14 @@ class _SelfServiceTiles extends ConsumerWidget {
         ),
         ListTile(
           leading: const Icon(Icons.download_outlined),
-          title: const Text('Download my data'),
-          subtitle: const Text('Profile, listings and reveal history as JSON'),
+          title: Text(strings.profileDownloadTitle),
+          subtitle: Text(strings.profileDownloadSubtitle),
           onTap: () => _export(context, ref),
         ),
         ListTile(
           leading: const Icon(Icons.logout_outlined),
-          title: const Text('Sign out'),
-          subtitle:
-              const Text('You can sign back in with a magic link any time'),
+          title: Text(strings.profileSignOutTitle),
+          subtitle: Text(strings.profileSignOutSubtitle),
           onTap: () => _signOut(context, ref),
         ),
         ListTile(
@@ -155,11 +154,11 @@ class _SelfServiceTiles extends ConsumerWidget {
             color: Theme.of(context).colorScheme.error,
           ),
           title: Text(
-            'Delete my account',
+            strings.profileDeleteTitle,
             style:
                 TextStyle(color: Theme.of(context).colorScheme.error),
           ),
-          subtitle: const Text('Permanent. Listings stay up without your name'),
+          subtitle: Text(strings.profileDeleteSubtitle),
           onTap: () => _confirmDelete(context, ref),
         ),
       ],
@@ -169,10 +168,11 @@ class _SelfServiceTiles extends ConsumerWidget {
   Future<void> _export(BuildContext context, WidgetRef ref) async {
     final messenger = ScaffoldMessenger.of(context);
     final session = ref.read(sessionProvider);
+    final strings = AppLocalizations.of(context);
     if (session == null) return;
 
     messenger.showSnackBar(
-      const SnackBar(content: Text('Preparing your data…')),
+      SnackBar(content: Text(strings.profilePreparingData)),
     );
 
     try {
@@ -204,6 +204,7 @@ class _SelfServiceTiles extends ConsumerWidget {
   /// with a retry where retryable (Rule 36).
   Future<void> _signOut(BuildContext context, WidgetRef ref) async {
     final messenger = ScaffoldMessenger.of(context);
+    final strings = AppLocalizations.of(context);
     try {
       await ref.read(authServiceProvider).signOut();
     } on AppException catch (e) {
@@ -213,7 +214,7 @@ class _SelfServiceTiles extends ConsumerWidget {
           content: Text(e.localizedForContext(context)),
           action: e.isRetryable
               ? SnackBarAction(
-                  label: 'Retry',
+                  label: strings.commonRetry,
                   onPressed: () => _signOut(context, ref),
                 )
               : null,
@@ -308,8 +309,9 @@ class _EditProfileDialogState extends ConsumerState<_EditProfileDialog> {
 
   @override
   Widget build(BuildContext context) {
+    final strings = AppLocalizations.of(context);
     return AlertDialog(
-      title: const Text('Edit profile'),
+      title: Text(strings.profileEditTitle),
       content: SingleChildScrollView(
         child: Column(
           mainAxisSize: MainAxisSize.min,
@@ -317,9 +319,9 @@ class _EditProfileDialogState extends ConsumerState<_EditProfileDialog> {
             TextField(
               controller: _name,
               textInputAction: TextInputAction.next,
-              decoration: const InputDecoration(
-                labelText: 'Full name',
-                border: OutlineInputBorder(),
+              decoration: InputDecoration(
+                labelText: strings.profileEditName,
+                border: const OutlineInputBorder(),
               ),
             ),
             const SizedBox(height: 12),
@@ -330,8 +332,8 @@ class _EditProfileDialogState extends ConsumerState<_EditProfileDialog> {
                 FilteringTextInputFormatter.digitsOnly,
               ],
               decoration: InputDecoration(
-                labelText: 'Phone (optional)',
-                hintText: '98XXXXXXXX',
+                labelText: strings.profileEditPhone,
+                hintText: strings.profileEditPhoneHint,
                 border: const OutlineInputBorder(),
                 errorText: _phoneError,
               ),
@@ -343,17 +345,17 @@ class _EditProfileDialogState extends ConsumerState<_EditProfileDialog> {
             TextField(
               controller: _agency,
               textInputAction: TextInputAction.next,
-              decoration: const InputDecoration(
-                labelText: 'Agency name (optional)',
-                border: OutlineInputBorder(),
+              decoration: InputDecoration(
+                labelText: strings.profileEditAgency,
+                border: const OutlineInputBorder(),
               ),
             ),
             const SizedBox(height: 12),
             TextField(
               controller: _regNo,
-              decoration: const InputDecoration(
-                labelText: 'Agency registration no. (optional)',
-                border: OutlineInputBorder(),
+              decoration: InputDecoration(
+                labelText: strings.profileEditRegNo,
+                border: const OutlineInputBorder(),
               ),
             ),
           ],
@@ -362,7 +364,7 @@ class _EditProfileDialogState extends ConsumerState<_EditProfileDialog> {
       actions: <Widget>[
         TextButton(
           onPressed: _busy ? null : () => Navigator.of(context).pop(),
-          child: const Text('Cancel'),
+          child: Text(strings.commonCancel),
         ),
         FilledButton(
           onPressed: _busy ? null : _save,
@@ -372,7 +374,7 @@ class _EditProfileDialogState extends ConsumerState<_EditProfileDialog> {
                   width: 18,
                   child: CircularProgressIndicator(strokeWidth: 2),
                 )
-              : const Text('Save'),
+              : Text(strings.commonSave),
         ),
       ],
     );
@@ -390,7 +392,8 @@ class _EditProfileDialogState extends ConsumerState<_EditProfileDialog> {
     final phone = Validators.canonicalNepaliPhone(_phone.text);
     if (phone.isNotEmpty && !Validators.isValidNepaliPhone(phone)) {
       setState(() {
-        _phoneError = 'Enter a 10-digit mobile starting 97 or 98';
+        _phoneError =
+            AppLocalizations.of(context).profileEditPhoneError;
       });
       return;
     }
@@ -421,9 +424,14 @@ class _EditProfileDialogState extends ConsumerState<_EditProfileDialog> {
       if (!mounted) return;
       Navigator.of(context).pop();
       final savedName = updated.fullName;
+      final strings = AppLocalizations.of(context);
       messenger.showSnackBar(
         SnackBar(
-          content: Text(savedName.isEmpty ? 'Saved' : 'Saved — $savedName'),
+          content: Text(
+            savedName.isEmpty
+                ? strings.profileSaved
+                : strings.profileSavedAs(savedName),
+          ),
         ),
       );
     } on AppException catch (e) {
@@ -448,8 +456,9 @@ class _ExportDialog extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final strings = AppLocalizations.of(context);
     return AlertDialog(
-      title: const Text('Your data'),
+      title: Text(strings.profileExportTitle),
       content: SizedBox(
         width: double.maxFinite,
         child: SingleChildScrollView(child: SelectableText(json)),
@@ -457,17 +466,17 @@ class _ExportDialog extends StatelessWidget {
       actions: <Widget>[
         TextButton(
           onPressed: () => Navigator.of(context).pop(),
-          child: const Text('Close'),
+          child: Text(strings.commonClose),
         ),
         FilledButton.icon(
           icon: const Icon(Icons.copy, size: 18),
-          label: const Text('Copy'),
+          label: Text(strings.commonCopy),
           onPressed: () async {
             await Clipboard.setData(ClipboardData(text: json));
             if (!context.mounted) return;
             Navigator.of(context).pop();
             ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(content: Text('Copied to clipboard')),
+              SnackBar(content: Text(strings.profileCopied)),
             );
           },
         ),
@@ -488,25 +497,19 @@ class _DeleteConfirmDialog extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final strings = AppLocalizations.of(context);
     return AlertDialog(
-      title: const Text('Delete your account?'),
+      title: Text(strings.profileDeleteConfirmTitle),
       content: Column(
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          const _Consequence(
-            'Your profile and sign-in are removed permanently.',
-          ),
-          const _Consequence(
-            'Your listings stay up, but without your name on them.',
-          ),
-          const _Consequence(
-            'Your contact-reveal history is kept without your identity, '
-            'as required for marketplace safety records.',
-          ),
+          _Consequence(strings.profileDeleteC1),
+          _Consequence(strings.profileDeleteC2),
+          _Consequence(strings.profileDeleteC3),
           const SizedBox(height: 8),
           Text(
-            'This cannot be undone.',
+            strings.profileDeleteFinal,
             style: theme.textTheme.bodyMedium?.copyWith(
               fontWeight: FontWeight.bold,
             ),
@@ -516,7 +519,7 @@ class _DeleteConfirmDialog extends StatelessWidget {
       actions: <Widget>[
         TextButton(
           onPressed: () => Navigator.of(context).pop(),
-          child: const Text('Cancel'),
+          child: Text(strings.commonCancel),
         ),
         FilledButton(
           style: FilledButton.styleFrom(
@@ -524,7 +527,7 @@ class _DeleteConfirmDialog extends StatelessWidget {
             foregroundColor: theme.colorScheme.onError,
           ),
           onPressed: onContinue,
-          child: const Text('Continue'),
+          child: Text(strings.profileDeleteContinue),
         ),
       ],
     );
@@ -569,8 +572,9 @@ class _TypeToConfirmDialogState extends State<_TypeToConfirmDialog> {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final strings = AppLocalizations.of(context);
     return AlertDialog(
-      title: const Text('Type DELETE to confirm'),
+      title: Text(strings.profileTypeDeleteTitle),
       content: TextField(
         controller: _controller,
         autofocus: true,
@@ -584,7 +588,7 @@ class _TypeToConfirmDialogState extends State<_TypeToConfirmDialog> {
       actions: <Widget>[
         TextButton(
           onPressed: _busy ? null : () => Navigator.of(context).pop(),
-          child: const Text('Cancel'),
+          child: Text(strings.commonCancel),
         ),
         FilledButton(
           style: FilledButton.styleFrom(
@@ -598,7 +602,7 @@ class _TypeToConfirmDialogState extends State<_TypeToConfirmDialog> {
                   width: 18,
                   child: CircularProgressIndicator(strokeWidth: 2),
                 )
-              : const Text('Delete my account'),
+              : Text(strings.profileDeleteTitle),
         ),
       ],
     );

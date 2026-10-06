@@ -1,0 +1,89 @@
+{
+  "@@locale": "en",
+  "@@last_modified": "2026-10-06T00:00:00.000",
+
+  "@title": {
+    "description": "Identity verification screen app bar."
+  },
+  "title": "Verify identity",
+
+  "@howItWorks": {
+    "description": "Disclaimer card heading."
+  },
+  "howItWorks": "How verification works",
+
+  "@howItWorksBody": {
+    "description": "Doc-check disclaimer (HYA-265 copy rule: never legal/title language)."
+  },
+  "howItWorksBody": "Our team checks that your document photo is readable and matches your account. This is an identity check only — never a legal or land-title verification. Ownership transfers are completed at Malpot.",
+
+  "@submitDocument": {
+    "description": "Button opening the submit sheet."
+  },
+  "submitDocument": "Submit a document",
+
+  "@emptyBody": {
+    "description": "Shown when no documents submitted yet."
+  },
+  "emptyBody": "No documents yet. Submit your citizenship to earn the verified badge buyers look for.",
+
+  "@chooseDocument": {
+    "description": "Submit sheet heading."
+  },
+  "chooseDocument": "Choose a document",
+
+  "@pickAndSubmit": {
+    "description": "Submit sheet action."
+  },
+  "pickAndSubmit": "Pick photo and submit",
+
+  "@uploading": {
+    "description": "Submit sheet action while uploading."
+  },
+  "uploading": "Uploading…",
+
+  "@submitted": {
+    "description": "Confirmation after a successful submission."
+  },
+  "submitted": "Submitted — we review within 48 hours.",
+
+  "@docCitizenship": {
+    "description": "Citizenship document option."
+  },
+  "docCitizenship": "Citizenship",
+
+  "@docLalpurja": {
+    "description": "Lalpurja document option."
+  },
+  "docLalpurja": "Lalpurja (land ownership)",
+
+  "@docAgencyReg": {
+    "description": "Agency registration option."
+  },
+  "docAgencyReg": "Agency registration",
+
+  "@statusPending": {
+    "description": "Pending review row subtitle."
+  },
+  "statusPending": "Pending review",
+
+  "@statusVerified": {
+    "description": "Verified row subtitle."
+  },
+  "statusVerified": "Verified — identity checked",
+
+  "@statusRejected": {
+    "description": "Rejected row subtitle."
+  },
+  "statusRejected": "Rejected — submit a clearer photo",
+
+  "@retry": {
+    "description": "Retry action (mirrors the app common strings; features cannot import them per Rule 10)."
+  },
+  "retry": "Retry",
+
+  "@loadFailed": {
+    "description": "Fallback when the failure carries no message."
+  },
+  "loadFailed": "Could not load your documents."
+}

@@ -2,6 +2,7 @@ import 'package:core/core.dart';
 import 'package:data/data.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:kyc/l10n/output/kyc_localizations.dart' as kyc_strings;
 import 'package:models/models.dart';
 
 import '../viewmodels/kyc_providers.dart';
@@ -18,9 +19,10 @@ class KycScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final documents = ref.watch(myKycDocumentsProvider);
+    final strings = kyc_strings.AppLocalizations.of(context);
 
     return Scaffold(
-      appBar: AppBar(title: const Text('Verify identity')),
+      appBar: AppBar(title: Text(strings.title)),
       body: ListView(
         padding: const EdgeInsets.all(16),
         children: <Widget>[
@@ -28,7 +30,7 @@ class KycScreen extends ConsumerWidget {
           const SizedBox(height: 16),
           FilledButton.icon(
             icon: const Icon(Icons.upload_file_outlined),
-            label: const Text('Submit a document'),
+            label: Text(strings.submitDocument),
             onPressed: () => _SubmitSheet.show(context),
           ),
           const SizedBox(height: 16),
@@ -43,13 +45,10 @@ class KycScreen extends ConsumerWidget {
                 error: error,
                 onRetry: () => ref.invalidate(myKycDocumentsProvider),
               ),
-            AsyncData(:final value) when value.isEmpty => const Card(
+            AsyncData(:final value) when value.isEmpty => Card(
                 child: Padding(
-                  padding: EdgeInsets.all(16),
-                  child: Text(
-                    'No documents yet. Submit your citizenship to earn the '
-                    'verified badge buyers look for.',
-                  ),
+                  padding: const EdgeInsets.all(16),
+                  child: Text(strings.emptyBody),
                 ),
               ),
             AsyncData(:final value) => Column(
@@ -76,6 +75,7 @@ class _DisclaimerCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final strings = kyc_strings.AppLocalizations.of(context);
     return Card(
       child: Padding(
         padding: const EdgeInsets.all(16),
@@ -90,18 +90,13 @@ class _DisclaimerCard extends StatelessWidget {
                 ),
                 const SizedBox(width: 8),
                 Text(
-                  'How verification works',
+                  strings.howItWorks,
                   style: theme.textTheme.titleSmall,
                 ),
               ],
             ),
             const SizedBox(height: 8),
-            const Text(
-              'Our team checks that your document photo is readable and '
-              'matches your account. This is an identity check only — never '
-              'a legal or land-title verification. Ownership transfers are '
-              'completed at Malpot.',
-            ),
+            Text(strings.howItWorksBody),
           ],
         ),
       ),
@@ -117,24 +112,25 @@ class _DocumentTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final strings = kyc_strings.AppLocalizations.of(context);
     final (icon, label) = switch (document.status) {
       KycDocStatus.pending => (
           Icons.hourglass_top_outlined,
-          'Pending review',
+          strings.statusPending,
         ),
       KycDocStatus.verified => (
           Icons.verified_outlined,
-          'Verified — identity checked',
+          strings.statusVerified,
         ),
       KycDocStatus.rejected => (
           Icons.gpp_bad_outlined,
-          'Rejected — submit a clearer photo',
+          strings.statusRejected,
         ),
     };
     return Card(
       child: ListTile(
         leading: Icon(icon),
-        title: Text(_docTypeLabel(document.docType)),
+        title: Text(_docTypeLabel(context, document.docType)),
         subtitle: Text(label),
       ),
     );
@@ -152,6 +148,7 @@ class _DocumentsError extends StatelessWidget {
   Widget build(BuildContext context) {
     final failure =
         error is AppException ? error as AppException : null;
+    final strings = kyc_strings.AppLocalizations.of(context);
     return Card(
       child: Padding(
         padding: const EdgeInsets.all(16),
@@ -159,14 +156,13 @@ class _DocumentsError extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             Text(
-              failure?.localizedForContext(context) ??
-                  'Could not load your documents.',
+              failure?.localizedForContext(context) ?? strings.loadFailed,
             ),
             const SizedBox(height: 8),
             if (failure == null || failure.isRetryable)
               TextButton.icon(
                 icon: const Icon(Icons.refresh),
-                label: const Text('Retry'),
+                label: Text(strings.retry),
                 onPressed: onRetry,
               ),
           ],
@@ -177,11 +173,14 @@ class _DocumentsError extends StatelessWidget {
 }
 
 /// Human-readable document type names.
-String _docTypeLabel(KycDocType type) => switch (type) {
-      KycDocType.citizenship => 'Citizenship',
-      KycDocType.lalpurja => 'Lalpurja (land ownership)',
-      KycDocType.agencyReg => 'Agency registration',
-    };
+String _docTypeLabel(BuildContext context, KycDocType type) {
+  final strings = kyc_strings.AppLocalizations.of(context);
+  return switch (type) {
+    KycDocType.citizenship => strings.docCitizenship,
+    KycDocType.lalpurja => strings.docLalpurja,
+    KycDocType.agencyReg => strings.docAgencyReg,
+  };
+}
 
 /// Bottom sheet that picks a document type and submits one photo.
 class _SubmitSheet extends ConsumerStatefulWidget {
@@ -204,6 +203,7 @@ class _SubmitSheetState extends ConsumerState<_SubmitSheet> {
   @override
   Widget build(BuildContext context) {
     final submit = ref.watch(kycSubmitControllerProvider);
+    final strings = kyc_strings.AppLocalizations.of(context);
     final bottom = MediaQuery.of(context).viewInsets.bottom;
 
     return Padding(
@@ -213,7 +213,7 @@ class _SubmitSheetState extends ConsumerState<_SubmitSheet> {
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: <Widget>[
           Text(
-            'Choose a document',
+            strings.chooseDocument,
             style: Theme.of(context).textTheme.titleSmall,
           ),
           SegmentedButton<KycDocType>(
@@ -221,7 +221,7 @@ class _SubmitSheetState extends ConsumerState<_SubmitSheet> {
               for (final type in KycDocType.values)
                 ButtonSegment<KycDocType>(
                   value: type,
-                  label: Text(_docTypeLabel(type)),
+                  label: Text(_docTypeLabel(context, type)),
                 ),
             ],
             selected: <KycDocType>{_type},
@@ -252,7 +252,7 @@ class _SubmitSheetState extends ConsumerState<_SubmitSheet> {
                   )
                 : const Icon(Icons.photo_library_outlined),
             label: Text(
-              submit.submitting ? 'Uploading…' : 'Pick photo and submit',
+              submit.submitting ? strings.uploading : strings.pickAndSubmit,
             ),
             onPressed: submit.submitting ? null : _submit,
           ),
@@ -277,9 +277,10 @@ class _SubmitSheetState extends ConsumerState<_SubmitSheet> {
     if (!mounted) return;
     if (done) {
       Navigator.of(context).pop();
+      final strings = kyc_strings.AppLocalizations.of(context);
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Submitted — we review within 48 hours.'),
+        SnackBar(
+          content: Text(strings.submitted),
         ),
       );
     }

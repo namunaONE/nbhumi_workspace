@@ -1,0 +1,13 @@
+# HYA-266 D1: Nepali + English localization (flutter gen-l10n, ARB).
+#
+# `flutter gen-l10n` runs implicitly on `flutter build`/`flutter test` when
+# this file exists. Output goes to a real directory (the synthetic-package
+# mode was removed from Flutter), imported as
+# `package:user_app/l10n/output/app_localizations.dart`. Only `intl`
+# (already in the graph via core) backs it — no new third-party package
+# enters (Rule 39).
+arb-dir: lib/l10n
+template-arb-file: app_en.arb
+output-localization-file: app_localizations.dart
+output-dir: lib/l10n/output
+nullable-getter: false

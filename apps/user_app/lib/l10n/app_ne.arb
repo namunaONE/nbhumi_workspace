@@ -1,0 +1,295 @@
+{
+  "@@locale": "ne",
+  "@@last_modified": "2026-10-06T00:00:00.000",
+
+  "@appTitle": {
+    "description": "App name shown in the expanded drawer header."
+  },
+  "appTitle": "नभूमि",
+
+  "@navHome": {
+    "description": "Bottom navigation: browse feed tab."
+  },
+  "navHome": "होम",
+
+  "@navSearch": {
+    "description": "Bottom navigation: search tab."
+  },
+  "navSearch": "खोज्नुहोस्",
+
+  "@navSaved": {
+    "description": "Bottom navigation: saved listings tab."
+  },
+  "navSaved": "सेभ",
+
+  "@navProfile": {
+    "description": "Bottom navigation: account tab."
+  },
+  "navProfile": "प्रोफाइल",
+
+  "@commonRetry": {
+    "description": "Retry action on error snackbars and cards (Rule 36)."
+  },
+  "commonRetry": "पुनः प्रयास",
+
+  "@commonCancel": {
+    "description": "Dialog cancel action."
+  },
+  "commonCancel": "रद्द गर्नुहोस्",
+
+  "@commonClose": {
+    "description": "Dialog close action."
+  },
+  "commonClose": "बन्द गर्नुहोस्",
+
+  "@commonSignIn": {
+    "description": "Sign-in button for guests."
+  },
+  "commonSignIn": "साइन इन",
+
+  "@profileTitle": {
+    "description": "Profile screen app bar."
+  },
+  "profileTitle": "प्रोफाइल",
+
+  "@profileSignedOut": {
+    "description": "Account row when no session exists."
+  },
+  "profileSignedOut": "साइन इन भएको छैन",
+
+  "@profileSignedOutHint": {
+    "description": "Prompt under the signed-out account row."
+  },
+  "profileSignedOutHint": "घरजग्गा पोस्ट गर्न म्याजिक लिङ्कबाट साइन इन गर्नुहोस्",
+
+  "@profileSignedIn": {
+    "description": "Subtitle of the account row with an active session."
+  },
+  "profileSignedIn": "साइन इन भएको छ",
+
+  "@profilePostTitle": {
+    "description": "Entry tile to the post-listing wizard."
+  },
+  "profilePostTitle": "घरजग्गा पोस्ट गर्नुहोस्",
+
+  "@profilePostSubtitle": {
+    "description": "Subtitle of the post-listing entry tile."
+  },
+  "profilePostSubtitle": "समीक्षाका लागि विज्ञापन बनाउनुहोस्",
+
+  "@profileKycTitle": {
+    "description": "Entry tile to identity verification (HYA-264)."
+  },
+  "profileKycTitle": "पहिचान प्रमाणित गर्नुहोस्",
+
+  "@profileKycSubtitle": {
+    "description": "Subtitle of the verification entry tile."
+  },
+  "profileKycSubtitle": "विक्रेता ब्याजका लागि नागरिकता जाँच",
+
+  "@profileNotifTitle": {
+    "description": "Entry tile to the notification inbox (HYA-242)."
+  },
+  "profileNotifTitle": "सूचनाहरू",
+
+  "@profileNotifSubtitle": {
+    "description": "Subtitle of the notifications entry tile."
+  },
+  "profileNotifSubtitle": "स्वीकृति, अस्वीकृति र सम्पर्क अवलोकन",
+
+  "@savedTitle": {
+    "description": "Saved tab app bar."
+  },
+  "savedTitle": "सेभ",
+
+  "@savedGuestPrompt": {
+    "description": "Shown to signed-out visitors of the Saved tab."
+  },
+  "savedGuestPrompt": "घरजग्गा सेभ गर्न साइन इन गर्नुहोस्",
+
+  "@savedEmptyTitle": {
+    "description": "Empty shelf heading."
+  },
+  "savedEmptyTitle": "अहिलेसम्म केही सेभ छैन",
+
+  "@savedEmptyBody": {
+    "description": "Empty shelf explanation."
+  },
+  "savedEmptyBody": "यहाँ राख्न कुनै घरजग्गामा मुटु थिच्नुहोस्।",
+
+  "@savedSearchesTitle": {
+    "description": "Saved-searches section header in the Saved tab."
+  },
+  "savedSearchesTitle": "सेभ गरिएका खोजीहरू",
+
+  "@savedSearchDelete": {
+    "description": "Tooltip of the saved-search delete button."
+  },
+  "savedSearchDelete": "सेभ गरिएको खोजी मेट्नुहोस्",
+
+  "@profileLoading": {
+    "description": "Profile loading row."
+  },
+  "profileLoading": "प्रोफाइल लोड हुँदैछ…",
+
+  "@profileSignInHint": {
+    "description": "Subtitle of the guest sign-in tile."
+  },
+  "profileSignInHint": "पासवर्डबिना लिङ्क इमेल गर्छौं",
+
+  "@profileAboutTitle": {
+    "description": "About section heading."
+  },
+  "profileAboutTitle": "नभूमिबारे",
+
+  "@profileAboutBody": {
+    "description": "About section copy."
+  },
+  "profileAboutBody": "हामी विज्ञापन मात्र सहजीकरण गर्छौं। स्वामित्व हस्तान्तरण मालपोतमा हुन्छ।",
+
+  "@profilePrivacyNote": {
+    "description": "Privacy Act footnote."
+  },
+  "profilePrivacyNote": "बजार सञ्चालनका लागि आवश्यक न्यूनतम जानकारी मात्र नभूमिले सङ्कलन गर्छ, गोपनीयता ऐन २०७५ (२०१८) अनुरूप।",
+
+  "@profileEditTitle": {
+    "description": "Edit-profile dialog title and entry tile."
+  },
+  "profileEditTitle": "प्रोफाइल सम्पादन गर्नुहोस्",
+
+  "@profileEditName": {
+    "description": "Full-name field label."
+  },
+  "profileEditName": "पुरा नाम",
+
+  "@profileEditPhone": {
+    "description": "Phone field label."
+  },
+  "profileEditPhone": "फोन (वैकल्पिक)",
+
+  "@profileEditPhoneHint": {
+    "description": "Phone field hint."
+  },
+  "profileEditPhoneHint": "98XXXXXXXX",
+
+  "@profileEditPhoneError": {
+    "description": "Invalid phone message."
+  },
+  "profileEditPhoneError": "९७ वा ९८ बाट सुरु हुने १० अंकको मोबाइल हाल्नुहोस्",
+
+  "@profileEditAgency": {
+    "description": "Agency name field label."
+  },
+  "profileEditAgency": "एजेन्सीको नाम (वैकल्पिक)",
+
+  "@profileEditRegNo": {
+    "description": "Agency registration number field label."
+  },
+  "profileEditRegNo": "एजेन्सी दर्ता नं. (वैकल्पिक)",
+
+  "@commonSave": {
+    "description": "Dialog save action."
+  },
+  "commonSave": "सेभ गर्नुहोस्",
+
+  "@commonCopy": {
+    "description": "Copy-to-clipboard action."
+  },
+  "commonCopy": "प्रतिलिपि",
+
+  "@profileDownloadTitle": {
+    "description": "Export-data entry tile."
+  },
+  "profileDownloadTitle": "मेरो डाटा डाउनलोड गर्नुहोस्",
+
+  "@profileDownloadSubtitle": {
+    "description": "Export-data subtitle."
+  },
+  "profileDownloadSubtitle": "प्रोफाइल, विज्ञापन र अवलोकन इतिहास JSON रूपमा",
+
+  "@profilePreparingData": {
+    "description": "Snackbar while the export assembles."
+  },
+  "profilePreparingData": "तपाईंको डाटा तयार हुँदैछ…",
+
+  "@profileExportTitle": {
+    "description": "Export dialog title."
+  },
+  "profileExportTitle": "तपाईंको डाटा",
+
+  "@profileCopied": {
+    "description": "Confirmation after copying the export."
+  },
+  "profileCopied": "क्लिपबोर्डमा प्रतिलिपि भयो",
+
+  "@profileSignOutTitle": {
+    "description": "Sign-out entry tile."
+  },
+  "profileSignOutTitle": "साइन आउट",
+
+  "@profileSignOutSubtitle": {
+    "description": "Sign-out subtitle."
+  },
+  "profileSignOutSubtitle": "जुनसुकै बेला म्याजिक लिङ्कबाट फेरि साइन इन गर्न सक्नुहुन्छ",
+
+  "@profileDeleteTitle": {
+    "description": "Delete-account entry tile, confirm button and dialog action."
+  },
+  "profileDeleteTitle": "मेरो खाता मेट्नुहोस्",
+
+  "@profileDeleteSubtitle": {
+    "description": "Delete-account subtitle."
+  },
+  "profileDeleteSubtitle": "स्थायी। तपाईंको नामबिना विज्ञापन रहन्छन्",
+
+  "@profileDeleteConfirmTitle": {
+    "description": "First delete-confirmation dialog title."
+  },
+  "profileDeleteConfirmTitle": "तपाईंको खाता मेट्ने?",
+
+  "@profileDeleteC1": {
+    "description": "First deletion consequence."
+  },
+  "profileDeleteC1": "तपाईंको प्रोफाइल र साइन-इन स्थायी रूपमा हट्छ।",
+
+  "@profileDeleteC2": {
+    "description": "Second deletion consequence."
+  },
+  "profileDeleteC2": "तपाईंका विज्ञापन रहन्छन्, तर तपाईंको नामबिना।",
+
+  "@profileDeleteC3": {
+    "description": "Third deletion consequence."
+  },
+  "profileDeleteC3": "बजार सुरक्षा रेकर्डका लागि आवश्यक भएकाले तपाईंको सम्पर्क-अवलोकन इतिहास पहिचानबिना राखिन्छ।",
+
+  "@profileDeleteFinal": {
+    "description": "Irreversibility warning."
+  },
+  "profileDeleteFinal": "यो फिर्ता हुन सक्दैन।",
+
+  "@profileDeleteContinue": {
+    "description": "First dialog continue action."
+  },
+  "profileDeleteContinue": "जारी राख्नुहोस्",
+
+  "@profileTypeDeleteTitle": {
+    "description": "Type-to-confirm dialog title."
+  },
+  "profileTypeDeleteTitle": "पुष्टि गर्न DELETE लेख्नुहोस्",
+
+  "@profileSaved": {
+    "description": "Profile-saved confirmation without a name."
+  },
+  "profileSaved": "सेभ भयो",
+
+  "@profileSavedAs": {
+    "description": "Profile-saved confirmation with the saved name.",
+    "placeholders": {
+      "name": {
+        "type": "String",
+        "example": "Sita Kumari"
+      }
+    }
+  },
+  "profileSavedAs": "सेभ भयो — {name}"
+}

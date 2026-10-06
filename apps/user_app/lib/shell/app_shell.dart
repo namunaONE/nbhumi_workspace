@@ -2,6 +2,7 @@ import 'package:data/data.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:user_app/l10n/output/app_localizations.dart';
 
 /// The four destinations of the bottom navigation, in order.
 ///
@@ -34,6 +35,17 @@ enum AppTab {
 
   /// Bottom navigation label.
   final String label;
+
+  /// Localized label for the destination.
+  ///
+  /// Kept separate from [label] (which stays English for the tab-order test):
+  /// labels render from here everywhere.
+  String localize(AppLocalizations strings) => switch (this) {
+        AppTab.home => strings.navHome,
+        AppTab.search => strings.navSearch,
+        AppTab.saved => strings.navSaved,
+        AppTab.profile => strings.navProfile,
+      };
 }
 
 /// Layout widths at which the navigation affordance changes.
@@ -84,6 +96,7 @@ class AppShell extends ConsumerWidget {
       AsyncData(:final value) => value,
       _ => 0,
     };
+    final strings = AppLocalizations.of(context);
     // LayoutBuilder, not MediaQuery: the shell sits inside the Scaffold
     // body, so its own constraints are the authoritative width and stay
     // correct across window resizes and split-screen.
@@ -100,6 +113,7 @@ class AppShell extends ConsumerWidget {
                   selectedIndex: navigationShell.currentIndex,
                   onSelected: _onDestinationSelected,
                   unreadCount: unread,
+                  strings: strings,
                 ),
                 const VerticalDivider(width: 1),
                 Expanded(child: navigationShell),
@@ -129,7 +143,7 @@ class AppShell extends ConsumerWidget {
                           selected: true,
                           unreadCount: unread,
                         ),
-                        label: Text(tab.label),
+                        label: Text(tab.localize(strings)),
                       ),
                   ],
                 ),
@@ -158,7 +172,7 @@ class AppShell extends ConsumerWidget {
                     selected: true,
                     unreadCount: unread,
                   ),
-                  label: tab.label,
+                  label: tab.localize(strings),
                 ),
             ],
           ),
@@ -206,6 +220,7 @@ class AppDrawer extends StatelessWidget {
   const AppDrawer({
     required this.selectedIndex,
     required this.onSelected,
+    required this.strings,
     this.unreadCount = 0,
     super.key,
   });
@@ -218,6 +233,9 @@ class AppDrawer extends StatelessWidget {
 
   /// Unread inbox rows. A positive count badges the profile destination.
   final int unreadCount;
+
+  /// Localized strings for labels and the app title.
+  final AppLocalizations strings;
 
   @override
   Widget build(BuildContext context) {
@@ -233,7 +251,10 @@ class AppDrawer extends StatelessWidget {
             children: <Widget>[
               Padding(
                 padding: const EdgeInsets.fromLTRB(20, 24, 16, 24),
-                child: Text('nBhumi', style: theme.textTheme.titleLarge),
+                child: Text(
+                  strings.appTitle,
+                  style: theme.textTheme.titleLarge,
+                ),
               ),
               for (var i = 0; i < AppTab.values.length; i++)
                 ListTile(
@@ -244,7 +265,7 @@ class AppDrawer extends StatelessWidget {
                         ? AppTab.values[i].selectedIcon
                         : AppTab.values[i].icon,
                   ),
-                  title: Text(AppTab.values[i].label),
+                  title: Text(AppTab.values[i].localize(strings)),
                   trailing:
                       AppTab.values[i] == AppTab.profile && unreadCount > 0
                           ? Badge(

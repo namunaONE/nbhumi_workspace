@@ -21,6 +21,7 @@ dependencies:
     sdk: flutter
   flutter_riverpod: ^3.0.0
   go_router: ^14.2.0
+  intl: ^0.20.3
   kyc:
     path: ../../features/kyc
   listing_detail:
@@ -43,3 +44,4 @@ dev_dependencies:
 
 flutter:
   uses-material-design: true
+  generate: true

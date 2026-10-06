@@ -1,0 +1,29 @@
+{
+  "@@locale": "ne",
+  "@@last_modified": "2026-10-06T00:00:00.000",
+
+  "@title": {
+    "description": "Inbox screen app bar."
+  },
+  "title": "सूचनाहरू",
+
+  "@markAllRead": {
+    "description": "Marks every unread notification read."
+  },
+  "markAllRead": "सबै पढियो",
+
+  "@emptyBody": {
+    "description": "Shown when the inbox has no rows yet."
+  },
+  "emptyBody": "अहिलेसम्म केही छैन। स्वीकृति, अस्वीकृति र सम्पर्क अवलोकन यहाँ देखिन्छ।",
+
+  "@loadFailed": {
+    "description": "Fallback when the failure carries no message."
+  },
+  "loadFailed": "सूचनाहरू लोड गर्न सकिएन।",
+
+  "@retry": {
+    "description": "Retry action (mirrors the app common strings; features cannot import them per Rule 10)."
+  },
+  "retry": "पुनः प्रयास"
+}

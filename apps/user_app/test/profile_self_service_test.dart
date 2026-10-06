@@ -8,6 +8,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:go_router/go_router.dart';
 import 'package:models/models.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
+import 'package:user_app/l10n/output/app_localizations.dart';
 import 'package:user_app/screens/profile_screen.dart';
 
 const Profile _profile = Profile(
@@ -108,6 +109,7 @@ Future<ProviderContainer> _pump(
   Session? session,
   _FakeUserRepository? repository,
   _FakeAuthService? authService,
+  Locale locale = const Locale('en'),
 }) async {
   // Tall portrait surface: the profile lists verification and notification
   // entries above account deletion, and the default 800x600 surface leaves
@@ -153,8 +155,13 @@ Future<ProviderContainer> _pump(
         routerConfig: router,
         // Required, or localizedForContext falls back to Nepali and every
         // English assertion below fails. main.dart supplies these too.
-        locale: const Locale('en'),
-        localizationsDelegates: GlobalMaterialLocalizations.delegates,
+        locale: locale,
+        localizationsDelegates: const <LocalizationsDelegate<dynamic>>[
+          AppLocalizations.delegate,
+          GlobalMaterialLocalizations.delegate,
+          GlobalWidgetsLocalizations.delegate,
+          GlobalCupertinoLocalizations.delegate,
+        ],
         supportedLocales: const <Locale>[Locale('en'), Locale('ne')],
       ),
     ),
@@ -185,6 +192,19 @@ void main() {
       expect(find.text('Download my data'), findsOneWidget);
       expect(find.text('Sign out'), findsOneWidget);
       expect(find.text('Delete my account'), findsOneWidget);
+    });
+
+    testWidgets('Nepali locale renders Nepali tiles', (tester) async {
+      await _pump(
+        tester,
+        session: _session(),
+        locale: const Locale('ne'),
+      );
+
+      expect(find.text('प्रोफाइल सम्पादन गर्नुहोस्'), findsOneWidget);
+      expect(find.text('मेरो डाटा डाउनलोड गर्नुहोस्'), findsOneWidget);
+      expect(find.text('साइन आउट'), findsOneWidget);
+      expect(find.text('मेरो खाता मेट्नुहोस्'), findsOneWidget);
     });
 
     testWidgets('shows the profile name on the edit tile', (tester) async {

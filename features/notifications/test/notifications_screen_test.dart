@@ -1,8 +1,11 @@
 import 'package:data/data.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:models/models.dart';
+import 'package:notifications/l10n/output/notifications_localizations.dart'
+    as notif_strings;
 import 'package:notifications/notifications.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
@@ -10,8 +13,26 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 ///
 /// Rule 33: pump with `ProviderScope` overrides, never real providers. The
 /// inbox comes from an overridden `notificationsProvider`, the Realtime
-/// subscription is stubbed out, and row actions run against a repository
-/// backed by a method-aware HTTP client.
+/// subscription is stubbed out, and row actions run against a hand-faked
+/// repository (a real client would start GoTrue timers that fail teardown).
+///
+/// Pumps with the delegates the real app supplies in main.dart, defaulting
+/// to English.
+Widget _harness(
+  Widget child, {
+  Locale locale = const Locale('en'),
+}) =>
+    MaterialApp(
+      locale: locale,
+      localizationsDelegates: const <LocalizationsDelegate<dynamic>>[
+        notif_strings.AppLocalizations.delegate,
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
+      ],
+      supportedLocales: const <Locale>[Locale('en'), Locale('ne')],
+      home: child,
+    );
 void main() {
   group('NotificationsScreen', () {
     testWidgets('empty inbox explains what lands here', (tester) async {
@@ -23,13 +44,34 @@ void main() {
             ),
             notificationsRealtimeProvider.overrideWith((ref) {}),
           ],
-          child: const MaterialApp(home: NotificationsScreen()),
+          child: _harness(const NotificationsScreen()),
         ),
       );
       await tester.pumpAndSettle();
 
       expect(find.textContaining('Nothing yet'), findsOneWidget);
       expect(find.text('Mark all read'), findsNothing);
+    });
+
+    testWidgets('Nepali locale renders Nepali chrome', (tester) async {
+      await tester.pumpWidget(
+        ProviderScope(
+          overrides: [
+            notificationsProvider().overrideWith(
+              (ref) async => const <AppNotification>[],
+            ),
+            notificationsRealtimeProvider.overrideWith((ref) {}),
+          ],
+          child: _harness(
+            const NotificationsScreen(),
+            locale: const Locale('ne'),
+          ),
+        ),
+      );
+      await tester.pumpAndSettle();
+
+      expect(find.text('सूचनाहरू'), findsOneWidget);
+      expect(find.textContaining('अहिलेसम्म केही छैन'), findsOneWidget);
     });
 
     testWidgets('renders rows with English bodies', (tester) async {
@@ -57,7 +99,7 @@ void main() {
             ),
             notificationsRealtimeProvider.overrideWith((ref) {}),
           ],
-          child: const MaterialApp(home: NotificationsScreen()),
+          child: _harness(const NotificationsScreen()),
         ),
       );
       await tester.pumpAndSettle();
@@ -81,7 +123,7 @@ void main() {
             notificationsRealtimeProvider.overrideWith((ref) {}),
             notificationRepositoryProvider.overrideWithValue(repository),
           ],
-          child: const MaterialApp(home: NotificationsScreen()),
+          child: _harness(const NotificationsScreen()),
         ),
       );
       await tester.pumpAndSettle();

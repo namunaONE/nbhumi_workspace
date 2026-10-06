@@ -2,10 +2,31 @@ import 'dart:typed_data';
 
 import 'package:data/data.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:kyc/kyc.dart';
+import 'package:kyc/l10n/output/kyc_localizations.dart' as kyc_strings;
 import 'package:models/models.dart';
+
+/// Pumps [child] with the delegates the real app supplies in main.dart.
+///
+/// Defaults to English; pass `ne` to assert the Nepali strings.
+Widget _harness(
+  Widget child, {
+  Locale locale = const Locale('en'),
+}) =>
+    MaterialApp(
+      locale: locale,
+      localizationsDelegates: const <LocalizationsDelegate<dynamic>>[
+        kyc_strings.AppLocalizations.delegate,
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
+      ],
+      supportedLocales: const <Locale>[Locale('en'), Locale('ne')],
+      home: child,
+    );
 
 /// Widget tests for [KycScreen].
 ///
@@ -22,13 +43,30 @@ void main() {
               (ref) async => const <KycDocument>[],
             ),
           ],
-          child: const MaterialApp(home: KycScreen()),
+          child: _harness(const KycScreen()),
         ),
       );
       await tester.pumpAndSettle();
 
       expect(find.textContaining('No documents yet'), findsOneWidget);
       expect(find.text('Submit a document'), findsOneWidget);
+    });
+
+    testWidgets('Nepali locale renders Nepali strings', (tester) async {
+      await tester.pumpWidget(
+        ProviderScope(
+          overrides: [
+            myKycDocumentsProvider.overrideWith(
+              (ref) async => const <KycDocument>[],
+            ),
+          ],
+          child: _harness(const KycScreen(), locale: const Locale('ne')),
+        ),
+      );
+      await tester.pumpAndSettle();
+
+      expect(find.text('पहिचान प्रमाणित गर्नुहोस्'), findsOneWidget);
+      expect(find.text('कागजात पेस गर्नुहोस्'), findsOneWidget);
     });
 
     testWidgets('renders each document with its review state', (tester) async {
@@ -53,7 +91,7 @@ void main() {
               ],
             ),
           ],
-          child: const MaterialApp(home: KycScreen()),
+          child: _harness(const KycScreen()),
         ),
       );
       await tester.pumpAndSettle();
@@ -74,7 +112,7 @@ void main() {
             docPickerProvider.overrideWithValue(const _CancellingPicker()),
             sessionProvider.overrideWithValue(null),
           ],
-          child: const MaterialApp(home: KycScreen()),
+          child: _harness(const KycScreen()),
         ),
       );
       await tester.pumpAndSettle();
@@ -102,7 +140,7 @@ void main() {
             docPickerProvider.overrideWithValue(const _PhotoPicker()),
             sessionProvider.overrideWithValue(null),
           ],
-          child: const MaterialApp(home: KycScreen()),
+          child: _harness(const KycScreen()),
         ),
       );
       await tester.pumpAndSettle();

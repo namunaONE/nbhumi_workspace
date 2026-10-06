@@ -1,0 +1,295 @@
+{
+  "@@locale": "en",
+  "@@last_modified": "2026-10-06T00:00:00.000",
+
+  "@appTitle": {
+    "description": "App name shown in the expanded drawer header."
+  },
+  "appTitle": "nBhumi",
+
+  "@navHome": {
+    "description": "Bottom navigation: browse feed tab."
+  },
+  "navHome": "Home",
+
+  "@navSearch": {
+    "description": "Bottom navigation: search tab."
+  },
+  "navSearch": "Search",
+
+  "@navSaved": {
+    "description": "Bottom navigation: saved listings tab."
+  },
+  "navSaved": "Saved",
+
+  "@navProfile": {
+    "description": "Bottom navigation: account tab."
+  },
+  "navProfile": "Profile",
+
+  "@commonRetry": {
+    "description": "Retry action on error snackbars and cards (Rule 36)."
+  },
+  "commonRetry": "Retry",
+
+  "@commonCancel": {
+    "description": "Dialog cancel action."
+  },
+  "commonCancel": "Cancel",
+
+  "@commonClose": {
+    "description": "Dialog close action."
+  },
+  "commonClose": "Close",
+
+  "@commonSignIn": {
+    "description": "Sign-in button for guests."
+  },
+  "commonSignIn": "Sign in",
+
+  "@profileTitle": {
+    "description": "Profile screen app bar."
+  },
+  "profileTitle": "Profile",
+
+  "@profileSignedOut": {
+    "description": "Account row when no session exists."
+  },
+  "profileSignedOut": "Not signed in",
+
+  "@profileSignedOutHint": {
+    "description": "Prompt under the signed-out account row."
+  },
+  "profileSignedOutHint": "Sign in with a magic link to post a property",
+
+  "@profileSignedIn": {
+    "description": "Subtitle of the account row with an active session."
+  },
+  "profileSignedIn": "Signed in",
+
+  "@profilePostTitle": {
+    "description": "Entry tile to the post-listing wizard."
+  },
+  "profilePostTitle": "Post a property",
+
+  "@profilePostSubtitle": {
+    "description": "Subtitle of the post-listing entry tile."
+  },
+  "profilePostSubtitle": "Create a listing for review",
+
+  "@profileKycTitle": {
+    "description": "Entry tile to identity verification (HYA-264)."
+  },
+  "profileKycTitle": "Verify identity",
+
+  "@profileKycSubtitle": {
+    "description": "Subtitle of the verification entry tile."
+  },
+  "profileKycSubtitle": "Citizenship check for the seller badge",
+
+  "@profileNotifTitle": {
+    "description": "Entry tile to the notification inbox (HYA-242)."
+  },
+  "profileNotifTitle": "Notifications",
+
+  "@profileNotifSubtitle": {
+    "description": "Subtitle of the notifications entry tile."
+  },
+  "profileNotifSubtitle": "Approvals, rejections and contact views",
+
+  "@savedTitle": {
+    "description": "Saved tab app bar."
+  },
+  "savedTitle": "Saved",
+
+  "@savedGuestPrompt": {
+    "description": "Shown to signed-out visitors of the Saved tab."
+  },
+  "savedGuestPrompt": "Sign in to save properties",
+
+  "@savedEmptyTitle": {
+    "description": "Empty shelf heading."
+  },
+  "savedEmptyTitle": "Nothing saved yet",
+
+  "@savedEmptyBody": {
+    "description": "Empty shelf explanation."
+  },
+  "savedEmptyBody": "Tap the heart on any property to keep it here.",
+
+  "@savedSearchesTitle": {
+    "description": "Saved-searches section header in the Saved tab."
+  },
+  "savedSearchesTitle": "Saved searches",
+
+  "@savedSearchDelete": {
+    "description": "Tooltip of the saved-search delete button."
+  },
+  "savedSearchDelete": "Delete saved search",
+
+  "@profileLoading": {
+    "description": "Profile loading row."
+  },
+  "profileLoading": "Loading profile…",
+
+  "@profileSignInHint": {
+    "description": "Subtitle of the guest sign-in tile."
+  },
+  "profileSignInHint": "We email you a link, no password needed",
+
+  "@profileAboutTitle": {
+    "description": "About section heading."
+  },
+  "profileAboutTitle": "About nBhumi",
+
+  "@profileAboutBody": {
+    "description": "About section copy."
+  },
+  "profileAboutBody": "We facilitate listings only. Ownership transfers are completed at Malpot.",
+
+  "@profilePrivacyNote": {
+    "description": "Privacy Act footnote."
+  },
+  "profilePrivacyNote": "nBhumi collects the minimum information needed to operate a marketplace, in line with the Privacy Act 2075 (2018).",
+
+  "@profileEditTitle": {
+    "description": "Edit-profile dialog title and entry tile."
+  },
+  "profileEditTitle": "Edit profile",
+
+  "@profileEditName": {
+    "description": "Full-name field label."
+  },
+  "profileEditName": "Full name",
+
+  "@profileEditPhone": {
+    "description": "Phone field label."
+  },
+  "profileEditPhone": "Phone (optional)",
+
+  "@profileEditPhoneHint": {
+    "description": "Phone field hint."
+  },
+  "profileEditPhoneHint": "98XXXXXXXX",
+
+  "@profileEditPhoneError": {
+    "description": "Invalid phone message."
+  },
+  "profileEditPhoneError": "Enter a 10-digit mobile starting 97 or 98",
+
+  "@profileEditAgency": {
+    "description": "Agency name field label."
+  },
+  "profileEditAgency": "Agency name (optional)",
+
+  "@profileEditRegNo": {
+    "description": "Agency registration number field label."
+  },
+  "profileEditRegNo": "Agency registration no. (optional)",
+
+  "@commonSave": {
+    "description": "Dialog save action."
+  },
+  "commonSave": "Save",
+
+  "@commonCopy": {
+    "description": "Copy-to-clipboard action."
+  },
+  "commonCopy": "Copy",
+
+  "@profileDownloadTitle": {
+    "description": "Export-data entry tile."
+  },
+  "profileDownloadTitle": "Download my data",
+
+  "@profileDownloadSubtitle": {
+    "description": "Export-data subtitle."
+  },
+  "profileDownloadSubtitle": "Profile, listings and reveal history as JSON",
+
+  "@profilePreparingData": {
+    "description": "Snackbar while the export assembles."
+  },
+  "profilePreparingData": "Preparing your data…",
+
+  "@profileExportTitle": {
+    "description": "Export dialog title."
+  },
+  "profileExportTitle": "Your data",
+
+  "@profileCopied": {
+    "description": "Confirmation after copying the export."
+  },
+  "profileCopied": "Copied to clipboard",
+
+  "@profileSignOutTitle": {
+    "description": "Sign-out entry tile."
+  },
+  "profileSignOutTitle": "Sign out",
+
+  "@profileSignOutSubtitle": {
+    "description": "Sign-out subtitle."
+  },
+  "profileSignOutSubtitle": "You can sign back in with a magic link any time",
+
+  "@profileDeleteTitle": {
+    "description": "Delete-account entry tile, confirm button and dialog action."
+  },
+  "profileDeleteTitle": "Delete my account",
+
+  "@profileDeleteSubtitle": {
+    "description": "Delete-account subtitle."
+  },
+  "profileDeleteSubtitle": "Permanent. Listings stay up without your name",
+
+  "@profileDeleteConfirmTitle": {
+    "description": "First delete-confirmation dialog title."
+  },
+  "profileDeleteConfirmTitle": "Delete your account?",
+
+  "@profileDeleteC1": {
+    "description": "First deletion consequence."
+  },
+  "profileDeleteC1": "Your profile and sign-in are removed permanently.",
+
+  "@profileDeleteC2": {
+    "description": "Second deletion consequence."
+  },
+  "profileDeleteC2": "Your listings stay up, but without your name on them.",
+
+  "@profileDeleteC3": {
+    "description": "Third deletion consequence."
+  },
+  "profileDeleteC3": "Your contact-reveal history is kept without your identity, as required for marketplace safety records.",
+
+  "@profileDeleteFinal": {
+    "description": "Irreversibility warning."
+  },
+  "profileDeleteFinal": "This cannot be undone.",
+
+  "@profileDeleteContinue": {
+    "description": "First dialog continue action."
+  },
+  "profileDeleteContinue": "Continue",
+
+  "@profileTypeDeleteTitle": {
+    "description": "Type-to-confirm dialog title."
+  },
+  "profileTypeDeleteTitle": "Type DELETE to confirm",
+
+  "@profileSaved": {
+    "description": "Profile-saved confirmation without a name."
+  },
+  "profileSaved": "Saved",
+
+  "@profileSavedAs": {
+    "description": "Profile-saved confirmation with the saved name.",
+    "placeholders": {
+      "name": {
+        "type": "String",
+        "example": "Sita Kumari"
+      }
+    }
+  },
+  "profileSavedAs": "Saved — {name}"
+}

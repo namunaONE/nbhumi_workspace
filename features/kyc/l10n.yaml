@@ -1,0 +1,10 @@
+# HYA-266 D1: feature-local ARB (see apps/user_app/l10n.yaml for the pattern).
+#
+# Features cannot import the app's generated localizations (Rule 10:
+# dependencies run apps -> features), so each user-facing feature owns its
+# strings. Output is committed like other generated files (Rule 14).
+arb-dir: lib/l10n
+template-arb-file: kyc_en.arb
+output-localization-file: kyc_localizations.dart
+output-dir: lib/l10n/output
+nullable-getter: false

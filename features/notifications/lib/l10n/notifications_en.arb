@@ -1,0 +1,29 @@
+{
+  "@@locale": "en",
+  "@@last_modified": "2026-10-06T00:00:00.000",
+
+  "@title": {
+    "description": "Inbox screen app bar."
+  },
+  "title": "Notifications",
+
+  "@markAllRead": {
+    "description": "Marks every unread notification read."
+  },
+  "markAllRead": "Mark all read",
+
+  "@emptyBody": {
+    "description": "Shown when the inbox has no rows yet."
+  },
+  "emptyBody": "Nothing yet. Approvals, rejections and contact views appear here.",
+
+  "@loadFailed": {
+    "description": "Fallback when the failure carries no message."
+  },
+  "loadFailed": "Could not load notifications.",
+
+  "@retry": {
+    "description": "Retry action (mirrors the app common strings; features cannot import them per Rule 10)."
+  },
+  "retry": "Retry"
+}

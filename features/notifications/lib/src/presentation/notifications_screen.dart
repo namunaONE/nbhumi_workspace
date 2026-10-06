@@ -3,6 +3,8 @@ import 'package:data/data.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:models/models.dart';
+import 'package:notifications/l10n/output/notifications_localizations.dart'
+    as notif_strings;
 
 import '../viewmodels/notifications_providers.dart';
 
@@ -22,10 +24,11 @@ class NotificationsScreen extends ConsumerWidget {
     // the inbox stays live. The returned void carries no data.
     ref.watch(notificationsRealtimeProvider);
     final inbox = ref.watch(notificationsProvider());
+    final strings = notif_strings.AppLocalizations.of(context);
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Notifications'),
+        title: Text(strings.title),
         actions: <Widget>[
           _MarkAllReadAction(hasUnread: switch (inbox) {
             AsyncData(:final value) => value.any((n) => !n.isRead),
@@ -39,13 +42,10 @@ class NotificationsScreen extends ConsumerWidget {
             error: error,
             onRetry: () => ref.invalidate(notificationsProvider()),
           ),
-        AsyncData(:final value) when value.isEmpty => const Center(
+        AsyncData(:final value) when value.isEmpty => Center(
             child: Padding(
-              padding: EdgeInsets.all(24),
-              child: Text(
-                'Nothing yet. Approvals, rejections and contact views '
-                'appear here.',
-              ),
+              padding: const EdgeInsets.all(24),
+              child: Text(strings.emptyBody),
             ),
           ),
         AsyncData(:final value) => ListView.builder(
@@ -68,14 +68,16 @@ class _MarkAllReadAction extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     if (!hasUnread) return const SizedBox.shrink();
+    final strings = notif_strings.AppLocalizations.of(context);
     return TextButton(
       onPressed: () => _markAllRead(context, ref),
-      child: const Text('Mark all read'),
+      child: Text(strings.markAllRead),
     );
   }
 
   Future<void> _markAllRead(BuildContext context, WidgetRef ref) async {
     final messenger = ScaffoldMessenger.of(context);
+    final strings = notif_strings.AppLocalizations.of(context);
     try {
       await ref.read(notificationRepositoryProvider).markAllRead();
       ref
@@ -88,7 +90,7 @@ class _MarkAllReadAction extends ConsumerWidget {
           content: Text(e.localizedForContext(context)),
           action: e.isRetryable
               ? SnackBarAction(
-                  label: 'Retry',
+                  label: strings.retry,
                   onPressed: () => _markAllRead(context, ref),
                 )
               : null,
@@ -168,6 +170,7 @@ class _InboxError extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final failure = error is AppException ? error as AppException : null;
+    final strings = notif_strings.AppLocalizations.of(context);
     return Center(
       child: Padding(
         padding: const EdgeInsets.all(24),
@@ -175,14 +178,13 @@ class _InboxError extends StatelessWidget {
           mainAxisSize: MainAxisSize.min,
           children: <Widget>[
             Text(
-              failure?.localizedForContext(context) ??
-                  'Could not load notifications.',
+              failure?.localizedForContext(context) ?? strings.loadFailed,
             ),
             const SizedBox(height: 8),
             if (failure == null || failure.isRetryable)
               TextButton.icon(
                 icon: const Icon(Icons.refresh),
-                label: const Text('Retry'),
+                label: Text(strings.retry),
                 onPressed: onRetry,
               ),
           ],

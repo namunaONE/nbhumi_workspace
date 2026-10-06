@@ -3,8 +3,12 @@ import 'package:data/data.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:kyc/l10n/output/kyc_localizations.dart' as kyc_strings;
+import 'package:notifications/l10n/output/notifications_localizations.dart'
+    as notif_strings;
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:user_app/deep_links/deep_link_listener.dart';
+import 'package:user_app/l10n/output/app_localizations.dart';
 import 'package:user_app/onboarding/onboarding_gate.dart';
 import 'package:user_app/router/app_router.dart';
 
@@ -60,6 +64,9 @@ class UserApp extends ConsumerWidget {
         // Wired now so M3's Nepali localisation only has to add .arb files
         // rather than also reworking every app entry point.
         localizationsDelegates: const <LocalizationsDelegate<Object>>[
+          AppLocalizations.delegate,
+          kyc_strings.AppLocalizations.delegate,
+          notif_strings.AppLocalizations.delegate,
           GlobalMaterialLocalizations.delegate,
           GlobalWidgetsLocalizations.delegate,
           GlobalCupertinoLocalizations.delegate,

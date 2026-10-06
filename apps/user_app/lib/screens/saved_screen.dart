@@ -5,6 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:models/models.dart';
 import 'package:search/search.dart' show browseFilterProvider;
+import 'package:user_app/l10n/output/app_localizations.dart';
 
 /// Saved listings.
 ///
@@ -18,9 +19,10 @@ class SavedScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final session = ref.watch(sessionProvider);
+    final strings = AppLocalizations.of(context);
     if (session == null) {
       return Scaffold(
-        appBar: AppBar(title: const Text('Saved')),
+        appBar: AppBar(title: Text(strings.savedTitle)),
         body: Center(
           child: Padding(
             padding: const EdgeInsets.all(32),
@@ -29,11 +31,11 @@ class SavedScreen extends ConsumerWidget {
               children: <Widget>[
                 const Icon(Icons.favorite_outline, size: 48),
                 const SizedBox(height: 16),
-                const Text('Sign in to save properties'),
+                Text(strings.savedGuestPrompt),
                 const SizedBox(height: 24),
                 FilledButton(
                   onPressed: () => context.push('/login'),
-                  child: const Text('Sign in'),
+                  child: Text(strings.commonSignIn),
                 ),
               ],
             ),
@@ -43,7 +45,7 @@ class SavedScreen extends ConsumerWidget {
     }
 
     return Scaffold(
-      appBar: AppBar(title: const Text('Saved')),
+      appBar: AppBar(title: Text(strings.savedTitle)),
       body: RefreshIndicator(
         onRefresh: () async {
           ref
@@ -82,22 +84,22 @@ class _ShelfSection extends ConsumerWidget {
           error: error,
           onRetry: () => ref.invalidate(savedListingsProvider),
         ),
-      AsyncData(:final value) when value.isEmpty => const Card(
+      AsyncData(:final value) when value.isEmpty => Card(
           child: Padding(
-            padding: EdgeInsets.all(16),
+            padding: const EdgeInsets.all(16),
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: <Widget>[
-                Icon(Icons.favorite_outline, size: 40),
-                SizedBox(height: 12),
+                const Icon(Icons.favorite_outline, size: 40),
+                const SizedBox(height: 12),
                 Text(
-                  'Nothing saved yet',
-                  style: TextStyle(fontSize: 18),
+                  AppLocalizations.of(context).savedEmptyTitle,
+                  style: const TextStyle(fontSize: 18),
                   textAlign: TextAlign.center,
                 ),
-                SizedBox(height: 8),
+                const SizedBox(height: 8),
                 Text(
-                  'Tap the heart on any property to keep it here.',
+                  AppLocalizations.of(context).savedEmptyBody,
                   textAlign: TextAlign.center,
                 ),
               ],
@@ -134,9 +136,9 @@ class _SearchesSection extends ConsumerWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              const Padding(
-                padding: EdgeInsets.fromLTRB(16, 12, 16, 0),
-                child: Text('Saved searches'),
+              Padding(
+                padding: const EdgeInsets.fromLTRB(16, 12, 16, 0),
+                child: Text(AppLocalizations.of(context).savedSearchesTitle),
               ),
               for (final search in value)
                 ListTile(
@@ -149,7 +151,7 @@ class _SearchesSection extends ConsumerWidget {
                   },
                   trailing: IconButton(
                     icon: const Icon(Icons.delete_outline),
-                    tooltip: 'Delete saved search',
+                    tooltip: AppLocalizations.of(context).savedSearchDelete,
                     onPressed: () => _delete(context, ref, search.id),
                   ),
                 ),
@@ -217,7 +219,7 @@ class _SavedError extends StatelessWidget {
             if (failure == null || failure.isRetryable)
               TextButton.icon(
                 icon: const Icon(Icons.refresh),
-                label: const Text('Retry'),
+                label: Text(AppLocalizations.of(context).commonRetry),
                 onPressed: onRetry,
               ),
           ],
