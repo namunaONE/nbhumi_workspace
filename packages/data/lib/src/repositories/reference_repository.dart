@@ -83,16 +83,17 @@ class ReferenceRepository {
     }
   }
 
-  /// Districts in one province.
+  /// Districts in one province, by province number (1–7).
   ///
   /// Used by the location step's province filter. Filtering in Dart because the
   /// list is already in memory and this keeps a single query path.
-  List<District> byProvince(List<District> districts, String province) =>
+  List<District> byProvince(List<District> districts, int province) =>
       districts.where((d) => d.province == province).toList(growable: false);
 
   /// The province names present in [districts], alphabetically.
   List<String> provinces(List<District> districts) {
-    final names = districts.map((d) => d.province).toSet().toList()..sort();
+    final names =
+        districts.map((d) => d.provinceName).toSet().toList()..sort();
     return names;
   }
 }

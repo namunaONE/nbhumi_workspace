@@ -5,16 +5,16 @@ import 'package:post_listing/src/viewmodels/listing_wizard_state.dart';
 import 'package:post_listing/src/viewmodels/listing_wizard_validation.dart';
 
 const District kathmandu = District(
-  id: 'd-ktm',
+  id: 29,
   name: 'Kathmandu',
-  province: 'Bagmati',
+  province: 3,
   region: Region.hill,
 );
 
 const District chitwan = District(
-  id: 'd-chi',
+  id: 35,
   name: 'Chitwan',
-  province: 'Bagmati',
+  province: 3,
   region: Region.terai,
 );
 
@@ -125,9 +125,9 @@ void main() {
         wardCount: 33,
       );
       const pokharaDistrict = District(
-        id: 'd-kas',
+        id: 40,
         name: 'Kaski',
-        province: 'Gandaki',
+        province: 4,
         region: Region.hill,
       );
       final state = _complete(district: pokharaDistrict).copyWith(

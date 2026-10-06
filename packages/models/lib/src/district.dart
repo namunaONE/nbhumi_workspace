@@ -32,13 +32,20 @@ enum Region {
 ///
 /// Reference data only: all 77 rows are readable by guests through the
 /// `districts_select_public` policy, so nothing here is sensitive.
+///
+/// Two fields are `int` where a reader might expect text, and that is the
+/// schema, not an accident: `districts.id` is `smallint generated always as
+/// identity` and `districts.province` is `smallint check (between 1 and 7)`.
+/// A previous revision of this model declared both as `String`, which made
+/// every live row throw in `fromJson` and the wizard's district dropdown
+/// never loaded. Display grouping uses [provinceName], never the number.
 @freezed
 sealed class District with _$District {
   @JsonSerializable(fieldRename: FieldRename.snake)
   const factory District({
-    required String id,
+    required int id,
     required String name,
-    required String province,
+    required int province,
     required Region region,
   }) = _District;
 
@@ -50,4 +57,24 @@ sealed class District with _$District {
 
   /// Whether this district measures area in hill units.
   bool get isHill => region == Region.hill;
+
+  /// The province's name for display grouping.
+  ///
+  /// Throws [ArgumentError] for a number outside 1–7 rather than defaulting,
+  /// so a future eighth province (or a corrupt row) surfaces instead of
+  /// grouping under a wrong name.
+  String get provinceName => switch (province) {
+        1 => 'Koshi',
+        2 => 'Madhesh',
+        3 => 'Bagmati',
+        4 => 'Gandaki',
+        5 => 'Lumbini',
+        6 => 'Karnali',
+        7 => 'Sudurpashchim',
+        _ => throw ArgumentError.value(
+            province,
+            'province',
+            'not a Nepali province number: expected 1–7',
+          ),
+      };
 }

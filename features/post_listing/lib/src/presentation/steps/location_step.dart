@@ -141,7 +141,7 @@ class _DistrictDropdown extends StatelessWidget {
     final byProvince = <String, List<District>>{};
     for (final district in districts) {
       byProvince
-          .putIfAbsent(district.province, () => <District>[])
+          .putIfAbsent(district.provinceName, () => <District>[])
           .add(district);
     }
 

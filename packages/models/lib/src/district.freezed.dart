@@ -16,7 +16,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$District {
 
- String get id; String get name; String get province; Region get region;
+ int get id; String get name; int get province; Region get region;
 /// Create a copy of District
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -54,7 +54,7 @@ abstract mixin class $DistrictCopyWith<$Res>  {
   factory $DistrictCopyWith(District value, $Res Function(District) _then) = _$DistrictCopyWithImpl;
 @useResult
 $Res call({
- String id, String name, String province, Region region
+ int id, String name, int province, Region region
 });
 
 
@@ -74,9 +74,9 @@ class _$DistrictCopyWithImpl<$Res>
 @pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? name = null,Object? province = null,Object? region = null,}) {
   return _then(District(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
-as String,name: null == name ? _self.name : name // ignore: cast_nullable_to_non_nullable
+as int,name: null == name ? _self.name : name // ignore: cast_nullable_to_non_nullable
 as String,province: null == province ? _self.province : province // ignore: cast_nullable_to_non_nullable
-as String,region: null == region ? _self.region : region // ignore: cast_nullable_to_non_nullable
+as int,region: null == region ? _self.region : region // ignore: cast_nullable_to_non_nullable
 as Region,
   ));
 }
@@ -159,7 +159,7 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String id,  String name,  String province,  Region region)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( int id,  String name,  int province,  Region region)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _District() when $default != null:
 return $default(_that.id,_that.name,_that.province,_that.region);case _:
@@ -180,7 +180,7 @@ return $default(_that.id,_that.name,_that.province,_that.region);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String id,  String name,  String province,  Region region)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( int id,  String name,  int province,  Region region)  $default,) {final _that = this;
 switch (_that) {
 case _District():
 return $default(_that.id,_that.name,_that.province,_that.region);}
@@ -197,7 +197,7 @@ return $default(_that.id,_that.name,_that.province,_that.region);}
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String id,  String name,  String province,  Region region)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( int id,  String name,  int province,  Region region)?  $default,) {final _that = this;
 switch (_that) {
 case _District() when $default != null:
 return $default(_that.id,_that.name,_that.province,_that.region);case _:
@@ -215,9 +215,9 @@ class _District extends District {
   const _District({required this.id, required this.name, required this.province, required this.region}): super._();
   factory _District.fromJson(Map<String, dynamic> json) => _$DistrictFromJson(json);
 
-@override final  String id;
+@override final  int id;
 @override final  String name;
-@override final  String province;
+@override final  int province;
 @override final  Region region;
 
 /// Create a copy of District
@@ -255,7 +255,7 @@ abstract mixin class _$DistrictCopyWith<$Res> implements $DistrictCopyWith<$Res>
   factory _$DistrictCopyWith(_District value, $Res Function(_District) _then) = __$DistrictCopyWithImpl;
 @override @useResult
 $Res call({
- String id, String name, String province, Region region
+ int id, String name, int province, Region region
 });
 
 
@@ -275,9 +275,9 @@ class __$DistrictCopyWithImpl<$Res>
 @override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? name = null,Object? province = null,Object? region = null,}) {
   return _then(_District(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
-as String,name: null == name ? _self.name : name // ignore: cast_nullable_to_non_nullable
+as int,name: null == name ? _self.name : name // ignore: cast_nullable_to_non_nullable
 as String,province: null == province ? _self.province : province // ignore: cast_nullable_to_non_nullable
-as String,region: null == region ? _self.region : region // ignore: cast_nullable_to_non_nullable
+as int,region: null == region ? _self.region : region // ignore: cast_nullable_to_non_nullable
 as Region,
   ));
 }

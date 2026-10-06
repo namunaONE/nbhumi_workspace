@@ -7,9 +7,9 @@ part of 'district.dart';
 // **************************************************************************
 
 _District _$DistrictFromJson(Map<String, dynamic> json) => _District(
-  id: json['id'] as String,
+  id: (json['id'] as num).toInt(),
   name: json['name'] as String,
-  province: json['province'] as String,
+  province: (json['province'] as num).toInt(),
   region: $enumDecode(_$RegionEnumMap, json['region']),
 );
 

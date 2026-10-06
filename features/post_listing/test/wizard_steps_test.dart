@@ -8,16 +8,16 @@ import 'package:models/models.dart';
 import 'package:post_listing/post_listing.dart';
 
 const District kathmandu = District(
-  id: 'd-ktm',
+  id: 29,
   name: 'Kathmandu',
-  province: 'Bagmati',
+  province: 3,
   region: Region.hill,
 );
 
 const District chitwan = District(
-  id: 'd-chi',
+  id: 35,
   name: 'Chitwan',
-  province: 'Bagmati',
+  province: 3,
   region: Region.terai,
 );
 
