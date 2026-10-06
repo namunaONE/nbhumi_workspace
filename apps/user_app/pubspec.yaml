@@ -21,6 +21,8 @@ dependencies:
     sdk: flutter
   flutter_riverpod: ^3.0.0
   go_router: ^14.2.0
+  kyc:
+    path: ../../features/kyc
   listing_detail:
     path: ../../features/listing_detail
   models:

@@ -3,6 +3,7 @@ import 'package:data/data.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:kyc/kyc.dart';
 import 'package:listing_detail/listing_detail.dart';
 import 'package:post_listing/post_listing.dart';
 import 'package:search/search.dart';
@@ -165,6 +166,15 @@ final appRouterProvider = Provider<GoRouter>((ref) {
         path: '/post',
         parentNavigatorKey: rootKey,
         builder: (context, state) => const PostListingScreen(),
+      ),
+
+      // Identity verification. Gated like `/post`: submitting needs a
+      // session, so it stays out of `kPublicRoutes` and the redirect sends
+      // guests to login.
+      GoRoute(
+        path: '/kyc',
+        parentNavigatorKey: rootKey,
+        builder: (context, state) => const KycScreen(),
       ),
 
       GoRoute(

@@ -43,6 +43,12 @@ class ProfileScreen extends ConsumerWidget {
               subtitle: const Text('Create a listing for review'),
               onTap: () => context.push('/post'),
             ),
+            ListTile(
+              leading: const Icon(Icons.verified_user_outlined),
+              title: const Text('Verify identity'),
+              subtitle: const Text('Citizenship check for the seller badge'),
+              onTap: () => context.push('/kyc'),
+            ),
             _AccountSection(userId: session.user.id),
           ] else
             ListTile(
