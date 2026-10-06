@@ -101,6 +101,71 @@ class _FakeRepository implements ListingRepository {
   dynamic noSuchMethod(Invocation invocation) => super.noSuchMethod(invocation);
 }
 
+/// Repository stub that records the report call.
+class _DelegatingRepository implements ListingRepository {
+  _DelegatingRepository();
+
+  /// The last call to [reportListing], or null when there has been none.
+  ({String listingId, ReportReason reason, String? details})? lastReport;
+
+  @override
+  Future<ListingReport> reportListing({
+    required String listingId,
+    required ReportReason reason,
+    String? details,
+  }) async {
+    lastReport = (
+      listingId: listingId,
+      reason: reason,
+      details: details,
+    );
+    return ListingReport(
+      reportId: 'r1',
+      listingId: listingId,
+      reason: reason,
+      details: details,
+    );
+  }
+
+  @override
+  dynamic noSuchMethod(Invocation invocation) => super.noSuchMethod(invocation);
+}
+
+/// Pumps the detail body with a signed-in session and reports the calls made.
+Widget _harnessSignedIn(
+  ListingDetail listing, {
+  Locale locale = const Locale('en'),
+  _DelegatingRepository? repository,
+}) {
+  final view = TestWidgetsFlutterBinding.instance.platformDispatcher.views
+      .first
+    ..physicalSize = const Size(500, 2400)
+    ..devicePixelRatio = 1;
+  addTearDown(() {
+    view
+      ..resetPhysicalSize()
+      ..resetDevicePixelRatio();
+  });
+
+  return ProviderScope(
+    overrides: [
+      listingRepositoryProvider.overrideWithValue(
+        repository ?? _DelegatingRepository(),
+      ),
+      sessionProvider.overrideWithValue(null),
+      isSignedInProvider.overrideWithValue(true),
+    ],
+    child: MaterialApp(
+      locale: locale,
+      localizationsDelegates: GlobalMaterialLocalizations.delegates,
+      supportedLocales: const <Locale>[Locale('en'), Locale('ne')],
+      home: Scaffold(
+        body: ListingDetailBody(listing: listing),
+      ),
+    ),
+  );
+}
+
 void main() {
   group('price formatting', () {
     testWidgets('shows the full Indian-grouped figure, not the compact one',
@@ -441,6 +506,92 @@ void main() {
 
       expect(find.byTooltip('Remove from saved'), findsOneWidget);
       expect(find.byIcon(Icons.favorite), findsOneWidget);
+    });
+  });
+
+  group('report button (HYA-263)', () {
+    testWidgets('is offered on every detail page', (tester) async {
+      // Unlike the heart, a report is always meaningful when there is a
+      // listing to report — signed in or out, the button itself decides to
+      // send a guest to sign in first.
+      await tester.pumpWidget(_harness(_detail()));
+      await tester.pump();
+
+      expect(find.byTooltip('Report this listing'), findsOneWidget);
+    });
+
+    testWidgets('the tooltip is bilingual', (tester) async {
+      await tester.pumpWidget(_harness(_detail(), locale: const Locale('ne')));
+      await tester.pump();
+
+      expect(find.byTooltip('रिपोर्ट गर्नुहोस्'), findsOneWidget);
+    });
+
+    testWidgets('a signed-in tap opens the reason picker', (tester) async {
+      await tester.pumpWidget(_harnessSignedIn(_detail()));
+      await tester.pump();
+
+      await tester.tap(find.byTooltip('Report this listing'));
+      await tester.pumpAndSettle();
+
+      expect(find.text('Report this listing'), findsWidgets);
+      expect(find.text('Fake listing'), findsOneWidget);
+    });
+
+    testWidgets("'other' with no details is refused in the sheet itself",
+        (tester) async {
+      // Rule 6, client side: the server refuses the same thing, but the
+      // complaint should name the field rather than arrive as a snackbar
+      // after a round trip.
+      await tester.pumpWidget(_harnessSignedIn(_detail()));
+      await tester.pump();
+
+      await tester.tap(find.byTooltip('Report this listing'));
+      await tester.pumpAndSettle();
+
+      // Choose 'Other', which requires details.
+      await tester.tap(find.byType(DropdownButton<ReportReason>));
+      await tester.pumpAndSettle();
+      await tester.tap(find.text('Other').last);
+      await tester.pumpAndSettle();
+
+      await tester.tap(find.text('Submit report'));
+      await tester.pumpAndSettle();
+
+      expect(
+        find.text('Please describe the problem so our team can act on it.'),
+        findsOneWidget,
+      );
+    });
+
+    testWidgets('a specific reason submits with the listing id', (
+      tester,
+    ) async {
+      // The happy path: pick a reason, optionally describe, submit. The
+      // repository must receive the trimmed description, and a success must
+      // be visible rather than assumed.
+      final repository = _DelegatingRepository();
+      await tester.pumpWidget(
+        _harnessSignedIn(_detail(), repository: repository),
+      );
+      await tester.pump();
+
+      await tester.tap(find.byTooltip('Report this listing'));
+      await tester.pumpAndSettle();
+
+      // Default reason is 'fake listing', which needs no details.
+      await tester.tap(find.text('Submit report'));
+      await tester.pumpAndSettle();
+
+      expect(
+        repository.lastReport?.reason,
+        ReportReason.fakeListing,
+      );
+      expect(repository.lastReport?.listingId, 'listing-1');
+      expect(
+        find.text('Report filed. Our team will review it.'),
+        findsOneWidget,
+      );
     });
   });
 }

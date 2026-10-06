@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:models/models.dart';
 
 import 'contact_seller_button.dart';
+import 'report_listing_button.dart';
 
 /// The loaded contents of a listing detail page.
 ///
@@ -48,6 +49,9 @@ class ListingDetailBody extends StatelessWidget {
               tooltip: isFavorite ? 'Remove from saved' : 'Save this property',
               onPressed: onFavoriteToggle,
             ),
+          // A report is always meaningful when there is a listing to report,
+          // signed in or out — the button itself decides to ask first.
+          ReportListingButton(listing: listing),
         ],
       ),
       body: ListView(
