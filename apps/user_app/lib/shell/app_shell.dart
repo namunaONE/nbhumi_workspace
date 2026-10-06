@@ -1,4 +1,6 @@
+import 'package:data/data.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
 /// The four destinations of the bottom navigation, in order.
@@ -52,7 +54,10 @@ abstract final class AppBreakpoints {
 /// Compact (<600) gets a [NavigationBar], medium (600-840) a [NavigationRail],
 /// expanded (>=840) a [NavigationDrawer]. Each branch renders the same
 /// [navigationShell], so tab state survives a rotation or a window resize.
-class AppShell extends StatelessWidget {
+///
+/// Watches the unread badge count: guests read zero rows under RLS, so no
+/// badge renders signed out and no session check is needed here.
+class AppShell extends ConsumerWidget {
   /// Wraps a [StatefulNavigationShell] in the appropriate navigation chrome.
   const AppShell({required this.navigationShell, super.key});
 
@@ -72,7 +77,13 @@ class AppShell extends StatelessWidget {
   }
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    // Guests read zero rows under RLS, so no badge renders signed out and
+    // no session check is needed here.
+    final unread = switch (ref.watch(unreadNotificationCountProvider)) {
+      AsyncData(:final value) => value,
+      _ => 0,
+    };
     // LayoutBuilder, not MediaQuery: the shell sits inside the Scaffold
     // body, so its own constraints are the authoritative width and stay
     // correct across window resizes and split-screen.
@@ -88,6 +99,7 @@ class AppShell extends StatelessWidget {
                 AppDrawer(
                   selectedIndex: navigationShell.currentIndex,
                   onSelected: _onDestinationSelected,
+                  unreadCount: unread,
                 ),
                 const VerticalDivider(width: 1),
                 Expanded(child: navigationShell),
@@ -107,8 +119,16 @@ class AppShell extends StatelessWidget {
                   destinations: <NavigationRailDestination>[
                     for (final tab in AppTab.values)
                       NavigationRailDestination(
-                        icon: Icon(tab.icon),
-                        selectedIcon: Icon(tab.selectedIcon),
+                        icon: _BadgedIcon(
+                          tab: tab,
+                          selected: false,
+                          unreadCount: unread,
+                        ),
+                        selectedIcon: _BadgedIcon(
+                          tab: tab,
+                          selected: true,
+                          unreadCount: unread,
+                        ),
                         label: Text(tab.label),
                       ),
                   ],
@@ -128,8 +148,16 @@ class AppShell extends StatelessWidget {
             destinations: <NavigationDestination>[
               for (final tab in AppTab.values)
                 NavigationDestination(
-                  icon: Icon(tab.icon),
-                  selectedIcon: Icon(tab.selectedIcon),
+                  icon: _BadgedIcon(
+                    tab: tab,
+                    selected: false,
+                    unreadCount: unread,
+                  ),
+                  selectedIcon: _BadgedIcon(
+                    tab: tab,
+                    selected: true,
+                    unreadCount: unread,
+                  ),
                   label: tab.label,
                 ),
             ],
@@ -140,12 +168,45 @@ class AppShell extends StatelessWidget {
   }
 }
 
+/// A tab icon with the unread badge on the profile destination.
+///
+/// The inbox lives under profile, so the badge lives there too — a fifth tab
+/// would silently repoint every saved tab index (see [AppTab]), and a bell
+/// in an app bar would need repeating on every screen.
+class _BadgedIcon extends StatelessWidget {
+  const _BadgedIcon({
+    required this.tab,
+    required this.selected,
+    required this.unreadCount,
+  });
+
+  /// Which destination this icon is for.
+  final AppTab tab;
+
+  /// Whether the destination is currently selected.
+  final bool selected;
+
+  /// Unread inbox rows. Zero renders a bare icon.
+  final int unreadCount;
+
+  @override
+  Widget build(BuildContext context) {
+    final icon = Icon(selected ? tab.selectedIcon : tab.icon);
+    if (tab != AppTab.profile || unreadCount <= 0) return icon;
+    return Badge(
+      label: Text(unreadCount > 99 ? '99+' : '$unreadCount'),
+      child: icon,
+    );
+  }
+}
+
 /// Always-visible navigation column used at the expanded breakpoint.
 class AppDrawer extends StatelessWidget {
   /// Creates the expanded-width navigation column.
   const AppDrawer({
     required this.selectedIndex,
     required this.onSelected,
+    this.unreadCount = 0,
     super.key,
   });
 
@@ -154,6 +215,9 @@ class AppDrawer extends StatelessWidget {
 
   /// Called with the index of the tab the user tapped.
   final ValueChanged<int> onSelected;
+
+  /// Unread inbox rows. A positive count badges the profile destination.
+  final int unreadCount;
 
   @override
   Widget build(BuildContext context) {
@@ -181,6 +245,14 @@ class AppDrawer extends StatelessWidget {
                         : AppTab.values[i].icon,
                   ),
                   title: Text(AppTab.values[i].label),
+                  trailing:
+                      AppTab.values[i] == AppTab.profile && unreadCount > 0
+                          ? Badge(
+                              label: Text(
+                                unreadCount > 99 ? '99+' : '$unreadCount',
+                              ),
+                            )
+                          : null,
                   onTap: () => onSelected(i),
                 ),
             ],

@@ -27,6 +27,8 @@ dependencies:
     path: ../../features/listing_detail
   models:
     path: ../../packages/models
+  notifications:
+    path: ../../features/notifications
   post_listing:
     path: ../../features/post_listing
   search:

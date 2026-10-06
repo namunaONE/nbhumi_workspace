@@ -109,6 +109,14 @@ Future<ProviderContainer> _pump(
   _FakeUserRepository? repository,
   _FakeAuthService? authService,
 }) async {
+  // Tall portrait surface: the profile lists verification and notification
+  // entries above account deletion, and the default 800x600 surface leaves
+  // the delete tile below the fold. Same precedent as widget_test's pumpApp,
+  // which sets its size explicitly for the same reason.
+  tester.view.physicalSize = const Size(400, 1000);
+  tester.view.devicePixelRatio = 1.0;
+  addTearDown(tester.view.reset);
+
   final container = ProviderContainer(
     overrides: [
       sessionProvider.overrideWithValue(session),

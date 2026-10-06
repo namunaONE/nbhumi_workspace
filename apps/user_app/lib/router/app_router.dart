@@ -5,6 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:kyc/kyc.dart';
 import 'package:listing_detail/listing_detail.dart';
+import 'package:notifications/notifications.dart';
 import 'package:post_listing/post_listing.dart';
 import 'package:search/search.dart';
 import 'package:user_app/onboarding/onboarding_gate.dart';
@@ -175,6 +176,13 @@ final appRouterProvider = Provider<GoRouter>((ref) {
         path: '/kyc',
         parentNavigatorKey: rootKey,
         builder: (context, state) => const KycScreen(),
+      ),
+
+      // Notification inbox. Gated for the same reason: a guest has no inbox.
+      GoRoute(
+        path: '/notifications',
+        parentNavigatorKey: rootKey,
+        builder: (context, state) => const NotificationsScreen(),
       ),
 
       GoRoute(

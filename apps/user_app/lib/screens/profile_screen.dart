@@ -49,6 +49,12 @@ class ProfileScreen extends ConsumerWidget {
               subtitle: const Text('Citizenship check for the seller badge'),
               onTap: () => context.push('/kyc'),
             ),
+            ListTile(
+              leading: const Icon(Icons.notifications_outlined),
+              title: const Text('Notifications'),
+              subtitle: const Text('Approvals, rejections and contact views'),
+              onTap: () => context.push('/notifications'),
+            ),
             _AccountSection(userId: session.user.id),
           ] else
             ListTile(

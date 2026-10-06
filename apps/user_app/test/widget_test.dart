@@ -59,6 +59,10 @@ void main() {
         overrides: [
           if (gateOverride != null)
             onboardingGateProvider.overrideWithValue(gateOverride),
+          // The shell badges the profile tab from the unread count. Pinned
+          // to zero here so shell tests never touch the network through the
+          // stub Supabase client; inbox tests cover the provider itself.
+          unreadNotificationCountProvider.overrideWith((ref) async => 0),
         ],
         child: const UserApp(),
       ),
