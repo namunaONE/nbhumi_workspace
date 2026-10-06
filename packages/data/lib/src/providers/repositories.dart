@@ -5,6 +5,7 @@ import '../repositories/admin_repository.dart';
 import '../repositories/auth_repository.dart';
 import '../repositories/kyc_repository.dart';
 import '../repositories/listing_repository.dart';
+import '../repositories/notification_repository.dart';
 import '../repositories/reference_repository.dart';
 import '../repositories/user_repository.dart';
 import '../services/auth_service.dart';
@@ -91,6 +92,35 @@ Future<List<KycDocument>> pendingKycDocuments(
   int limit = 50,
 }) {
   return ref.watch(adminRepositoryProvider).pendingKycDocuments(limit: limit);
+}
+
+/// Notification inbox repository (HYA-242).
+///
+/// Owner-scoped: reads and `is_read` flips on the caller's own rows. Rows
+/// are written server-side only, so this provider can never send.
+@riverpod
+NotificationRepository notificationRepository(Ref ref) {
+  return NotificationRepository(ref.watch(supabaseClientProvider));
+}
+
+/// The caller's notifications, newest first.
+///
+/// An empty list means no events yet — a successful answer, not an error.
+@riverpod
+Future<List<AppNotification>> notifications(
+  Ref ref, {
+  int limit = 50,
+}) {
+  return ref.watch(notificationRepositoryProvider).inbox(limit: limit);
+}
+
+/// Unread count for the inbox badge.
+///
+/// Kept separate from [notifications] so the shell badge does not refetch
+/// the whole page when all it needs is a number.
+@riverpod
+Future<int> unreadNotificationCount(Ref ref) {
+  return ref.watch(notificationRepositoryProvider).unreadCount();
 }
 
 /// One user's profile, by id.

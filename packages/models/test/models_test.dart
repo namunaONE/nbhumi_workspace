@@ -169,12 +169,14 @@ void main() {
         userId: 'user-id',
         type: NotificationType.listingApproved,
         message: 'Your listing is live!',
+        messageNe: 'तपाईंको विज्ञापन प्रकाशित भयो!',
       );
 
       final json = notification.toJson();
 
       expect(json['type'], 'listing_approved');
       expect(json['user_id'], 'user-id');
+      expect(json['message_ne'], 'तपाईंको विज्ञापन प्रकाशित भयो!');
       expect(json['is_read'], false);
     });
 
@@ -184,6 +186,7 @@ void main() {
         userId: 'user-id',
         type: NotificationType.newMessage,
         message: 'Hello',
+        messageNe: 'नमस्ते',
         isRead: true,
       );
 

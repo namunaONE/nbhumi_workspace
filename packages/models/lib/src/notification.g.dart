@@ -12,6 +12,7 @@ _AppNotification _$AppNotificationFromJson(Map<String, dynamic> json) =>
       userId: json['user_id'] as String,
       type: $enumDecode(_$NotificationTypeEnumMap, json['type']),
       message: json['message'] as String,
+      messageNe: json['message_ne'] as String,
       isRead: json['is_read'] as bool? ?? false,
       createdAt: json['created_at'] == null
           ? null
@@ -24,6 +25,7 @@ Map<String, dynamic> _$AppNotificationToJson(_AppNotification instance) =>
       'user_id': instance.userId,
       'type': _$NotificationTypeEnumMap[instance.type]!,
       'message': instance.message,
+      'message_ne': instance.messageNe,
       'is_read': instance.isRead,
       'created_at': instance.createdAt?.toIso8601String(),
     };

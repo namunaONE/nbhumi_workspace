@@ -14,6 +14,7 @@ export 'src/repositories/admin_repository.dart';
 export 'src/repositories/auth_repository.dart';
 export 'src/repositories/kyc_repository.dart';
 export 'src/repositories/listing_repository.dart';
+export 'src/repositories/notification_repository.dart';
 export 'src/repositories/reference_repository.dart';
 export 'src/repositories/user_repository.dart';
 export 'src/services/auth_service.dart';

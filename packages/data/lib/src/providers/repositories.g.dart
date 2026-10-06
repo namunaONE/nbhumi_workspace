@@ -522,6 +522,212 @@ final class PendingKycDocumentsFamily extends $Family
   String toString() => r'pendingKycDocumentsProvider';
 }
 
+/// Notification inbox repository (HYA-242).
+///
+/// Owner-scoped: reads and `is_read` flips on the caller's own rows. Rows
+/// are written server-side only, so this provider can never send.
+
+@ProviderFor(notificationRepository)
+final notificationRepositoryProvider = NotificationRepositoryProvider._();
+
+/// Notification inbox repository (HYA-242).
+///
+/// Owner-scoped: reads and `is_read` flips on the caller's own rows. Rows
+/// are written server-side only, so this provider can never send.
+
+final class NotificationRepositoryProvider
+    extends
+        $FunctionalProvider<
+          NotificationRepository,
+          NotificationRepository,
+          NotificationRepository
+        >
+    with $Provider<NotificationRepository> {
+  /// Notification inbox repository (HYA-242).
+  ///
+  /// Owner-scoped: reads and `is_read` flips on the caller's own rows. Rows
+  /// are written server-side only, so this provider can never send.
+  NotificationRepositoryProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'notificationRepositoryProvider',
+        isAutoDispose: true,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$notificationRepositoryHash();
+
+  @$internal
+  @override
+  $ProviderElement<NotificationRepository> $createElement(
+    $ProviderPointer pointer,
+  ) => $ProviderElement(pointer);
+
+  @override
+  NotificationRepository create(Ref ref) {
+    return notificationRepository(ref);
+  }
+
+  /// {@macro riverpod.override_with_value}
+  Override overrideWithValue(NotificationRepository value) {
+    return $ProviderOverride(
+      origin: this,
+      providerOverride: $SyncValueProvider<NotificationRepository>(value),
+    );
+  }
+}
+
+String _$notificationRepositoryHash() =>
+    r'3346e51a12e64025965c56e88b289b28118d9887';
+
+/// The caller's notifications, newest first.
+///
+/// An empty list means no events yet — a successful answer, not an error.
+
+@ProviderFor(notifications)
+final notificationsProvider = NotificationsFamily._();
+
+/// The caller's notifications, newest first.
+///
+/// An empty list means no events yet — a successful answer, not an error.
+
+final class NotificationsProvider
+    extends
+        $FunctionalProvider<
+          AsyncValue<List<AppNotification>>,
+          List<AppNotification>,
+          FutureOr<List<AppNotification>>
+        >
+    with
+        $FutureModifier<List<AppNotification>>,
+        $FutureProvider<List<AppNotification>> {
+  /// The caller's notifications, newest first.
+  ///
+  /// An empty list means no events yet — a successful answer, not an error.
+  NotificationsProvider._({
+    required NotificationsFamily super.from,
+    required int super.argument,
+  }) : super(
+         retry: null,
+         name: r'notificationsProvider',
+         isAutoDispose: true,
+         dependencies: null,
+         $allTransitiveDependencies: null,
+       );
+
+  @override
+  String debugGetCreateSourceHash() => _$notificationsHash();
+
+  @override
+  String toString() {
+    return r'notificationsProvider'
+        ''
+        '($argument)';
+  }
+
+  @$internal
+  @override
+  $FutureProviderElement<List<AppNotification>> $createElement(
+    $ProviderPointer pointer,
+  ) => $FutureProviderElement(pointer);
+
+  @override
+  FutureOr<List<AppNotification>> create(Ref ref) {
+    final argument = this.argument as int;
+    return notifications(ref, limit: argument);
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return other is NotificationsProvider && other.argument == argument;
+  }
+
+  @override
+  int get hashCode {
+    return argument.hashCode;
+  }
+}
+
+String _$notificationsHash() => r'7a3b2694d5a7bb77f32ea398c3dbb47453fafd4d';
+
+/// The caller's notifications, newest first.
+///
+/// An empty list means no events yet — a successful answer, not an error.
+
+final class NotificationsFamily extends $Family
+    with $FunctionalFamilyOverride<FutureOr<List<AppNotification>>, int> {
+  NotificationsFamily._()
+    : super(
+        retry: null,
+        name: r'notificationsProvider',
+        dependencies: null,
+        $allTransitiveDependencies: null,
+        isAutoDispose: true,
+      );
+
+  /// The caller's notifications, newest first.
+  ///
+  /// An empty list means no events yet — a successful answer, not an error.
+
+  NotificationsProvider call({int limit = 50}) =>
+      NotificationsProvider._(argument: limit, from: this);
+
+  @override
+  String toString() => r'notificationsProvider';
+}
+
+/// Unread count for the inbox badge.
+///
+/// Kept separate from [notifications] so the shell badge does not refetch
+/// the whole page when all it needs is a number.
+
+@ProviderFor(unreadNotificationCount)
+final unreadNotificationCountProvider = UnreadNotificationCountProvider._();
+
+/// Unread count for the inbox badge.
+///
+/// Kept separate from [notifications] so the shell badge does not refetch
+/// the whole page when all it needs is a number.
+
+final class UnreadNotificationCountProvider
+    extends $FunctionalProvider<AsyncValue<int>, int, FutureOr<int>>
+    with $FutureModifier<int>, $FutureProvider<int> {
+  /// Unread count for the inbox badge.
+  ///
+  /// Kept separate from [notifications] so the shell badge does not refetch
+  /// the whole page when all it needs is a number.
+  UnreadNotificationCountProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'unreadNotificationCountProvider',
+        isAutoDispose: true,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$unreadNotificationCountHash();
+
+  @$internal
+  @override
+  $FutureProviderElement<int> $createElement($ProviderPointer pointer) =>
+      $FutureProviderElement(pointer);
+
+  @override
+  FutureOr<int> create(Ref ref) {
+    return unreadNotificationCount(ref);
+  }
+}
+
+String _$unreadNotificationCountHash() =>
+    r'9329041df3e373fa603d295aadf0fb2b98d6ece7';
+
 /// One user's profile, by id.
 ///
 /// A family so the profile screen and any future seller preview read different
