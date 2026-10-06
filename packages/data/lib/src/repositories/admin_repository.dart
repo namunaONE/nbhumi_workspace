@@ -1,0 +1,469 @@
+import 'package:core/core.dart';
+import 'package:flutter/foundation.dart' show visibleForTesting;
+import 'package:models/models.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
+
+import '../errors/postgrest_error_mapper.dart';
+import '../providers/session_logging.dart';
+
+/// Repository for the admin verification queue.
+///
+/// Admin-only by construction: every method here reaches either a
+/// `SECURITY DEFINER` RPC gated on `private.is_admin()` or a table whose
+/// RLS admits admins. Nothing in this class authorises anything: the server
+/// on every call, and a caller without the role gets `42501` mapped to an
+/// [AuthFailureException].
+///
+/// ### Why these are not on the listing repository
+///
+/// Approve and reject are moderation actions on someone else's data, not edits
+/// to a listing the caller owns. Keeping them apart means the write path
+/// sellers use cannot accidentally grow an admin capability, and the role
+/// requirement is visible in the type rather than buried in a branch.
+abstract class AdminRepository {
+  /// One page of the verification queue.
+  ///
+  /// [status] selects the tab. [cursor] advances pagination; pass null for the
+  /// first page. Returns an empty [QueuePage] when there is nothing to review,
+  /// which is a successful answer rather than an error.
+  ///
+  /// Throws [AuthFailureException] when the caller is not an admin.
+  Future<QueuePage> getQueue({
+    ListingStatus status = ListingStatus.pendingReview,
+    QueueCursor? cursor,
+    int pageSize = 50,
+  });
+
+  /// Approves a pending listing, making it live.
+  ///
+  /// Returns the status the server reports afterwards, rather than void.
+  /// Both admin RPCs answer `{"id": …, "status": …}`, and discarding it
+  /// would force the UI to *assume* the outcome — to show "approved" on a
+  /// request that the database may have resolved differently. Reading it
+  /// costs nothing and is the only way to tell an admin that somebody else
+  /// got there first.
+  ///
+  /// Writes an `audit_log` row server-side (Rule 8). Throws
+  /// [ValidationException] when the listing is not in `pending_review` — most
+  /// often because another admin already actioned it.
+  Future<ListingStatus> approveListing(String listingId);
+
+  /// Rejects a pending listing with a reason shown to the seller.
+  ///
+  /// Returns the status the server reports afterwards, for the same reason as
+  /// [approveListing].
+  ///
+  /// [reason] must be non-blank: the RPC refuses whitespace-only text with
+  /// `22023`. Validated here too (Rule 6) so the user sees the problem before a
+  /// round trip. Writes an `audit_log` row server-side.
+  Future<ListingStatus> rejectListing(String listingId, String reason);
+
+  /// Pending KYC documents, oldest first.
+  ///
+  /// The admin review inbox for HYA-264 Tier 2 and HYA-265 Tier 3. Reads
+  /// `kyc_documents` directly under `kyc_select_own_or_admin`, served by the
+  /// `kyc_documents_pending_idx` partial index, rather than through an RPC:
+  /// there is nothing to compute server-side. [limit] is clamped to 1..100
+  /// here so a careless caller cannot page the whole table in one round trip.
+  ///
+  /// Throws [AuthFailureException] when the caller is not an admin.
+  Future<List<KycDocument>> pendingKycDocuments({int limit = 50});
+
+  /// Verifies a pending KYC document (doc-check only, never legal review).
+  ///
+  /// Calls `v1_admin_verify_kyc`, which flips `pending` to `verified`, bumps
+  /// `profiles.kyc_tier` (`identity` for Tier 2, `property` for Tier 3) and
+  /// writes the `audit_log` row (Rule 8). Returns the re-read row rather than
+  /// echoing the id, so the admin sees the verdict the database stored.
+  ///
+  /// Throws [ValidationException] when the document is already reviewed —
+  /// most often because another admin actioned it first.
+  Future<KycDocument> verifyKyc(String docId);
+
+  /// Rejects a pending KYC document with a reason shown to the seller.
+  ///
+  /// [reason] must be non-blank: the RPC refuses whitespace-only text with
+  /// `22023`. Validated here too (Rule 6). Writes the `audit_log` row with
+  /// the reason (Rule 8); the file bytes are purged after 30 days by
+  /// `purge_rejected_kyc_docs()`.
+  Future<KycDocument> rejectKyc(String docId, String reason);
+
+  /// Admin actions on one entity, newest first.
+  ///
+  /// Reads `audit_log` directly under `audit_log_select_admin` rather than
+  /// through an RPC: there is nothing to hide and nothing to compute, because
+  /// RLS already restricts the table to admins. [limit] is bounded server-side.
+  Future<List<AuditLogEntry>> auditTrail({
+    required String entityId,
+    String entityType = 'listing',
+    int limit = 50,
+  });
+}
+
+/// Supabase-backed [AdminRepository].
+class SupabaseAdminRepository implements AdminRepository {
+  /// Wraps a Supabase client.
+  SupabaseAdminRepository(this._client);
+
+  final SupabaseClient _client;
+
+  @override
+  Future<QueuePage> getQueue({
+    ListingStatus status = ListingStatus.pendingReview,
+    QueueCursor? cursor,
+    int pageSize = 50,
+  }) async {
+    final response = await _guard(
+      () => _client.rpc<Map<String, dynamic>>(
+        'v1_admin_get_queue',
+        params: <String, Object?>{
+          'p_status': status.wireName,
+          // Spread rather than assigned conditionally: PostgREST sends every
+          // declared parameter, and the RPC's `coalesce` exists because
+          // an explicit null would otherwise defeat the SQL default.
+          // Omitting the key entirely is tidier and equally wrong: see
+          // note in the migration about what the client actually sends.
+          ...?cursor?.toRpcParams(),
+          'p_page_size': pageSize,
+        },
+      ),
+      action: 'getQueue',
+    );
+
+    // The RPC returns a json object rather than a table, so there is no
+    // PostgREST row mapping here: parsing is QueuePage's job, and it owns the
+    // cursor rules.
+    return QueuePage.fromJson(response);
+  }
+
+  @override
+  Future<ListingStatus> approveListing(String listingId) async {
+    final response = await _guard(
+      () => _client.rpc<Map<String, dynamic>>(
+        'v1_admin_approve_listing',
+        params: <String, Object?>{'p_listing_id': listingId},
+      ),
+      action: 'approveListing',
+    );
+
+    return _readStatus(response, action: 'approveListing');
+  }
+
+  @override
+  Future<ListingStatus> rejectListing(String listingId, String reason) async {
+    final trimmed = reason.trim();
+
+    // Checked client-side as well as server-side (Rule 6). The RPC already
+    // refuses a blank reason with 22023; catching it here means the admin sees
+    // the complaint against the field they typed into rather than as a toast
+    // after a round trip.
+    if (trimmed.isEmpty) {
+      throw const ValidationException(
+        code: 'validation.rejectionReasonRequired',
+        messageEn: 'Please give a reason so the seller knows what to fix.',
+        messageNe: 'विक्रेतालाई के मिलाउने भन्ने जानकारी दिनुहोस्।',
+      );
+    }
+
+    final response = await _guard(
+      () => _client.rpc<Map<String, dynamic>>(
+        'v1_admin_reject_listing',
+        params: <String, Object?>{
+          'p_listing_id': listingId,
+          'p_reason': trimmed,
+        },
+      ),
+      action: 'rejectListing',
+    );
+
+    return _readStatus(response, action: 'rejectListing');
+  }
+
+  @override
+  Future<List<KycDocument>> pendingKycDocuments({int limit = 50}) async {
+    // Clamping is the caller's honesty bound: the table grows with every
+    // submission the platform ever receives, and an unbounded read is a cheap
+    // way to pull all of it in one round trip.
+    // Written out rather than `limit.clamp(1, 100)`: `clamp` returns num,
+    // and the implicit downcast is a no-op the analyzer flags. The explicit
+    // form states the int-ness rather than leaving it to inference.
+    final int bounded;
+    if (limit < 1) {
+      bounded = 1;
+    } else if (limit > 100) {
+      bounded = 100;
+    } else {
+      bounded = limit;
+    }
+    final response = await _guard(
+      () => _client
+          .from('kyc_documents')
+          .select()
+          .eq('status', 'pending')
+          .order('created_at', ascending: true)
+          .limit(bounded),
+      action: 'pendingKycDocuments',
+    );
+
+    return response.map(KycDocument.fromJson).toList(growable: false);
+  }
+
+  @override
+  Future<KycDocument> verifyKyc(String docId) async {
+    final trimmed = docId.trim();
+    if (trimmed.isEmpty) {
+      throw const ValidationException(
+        code: 'validation.kycDocIdRequired',
+        messageEn: 'That document could not be found. Refresh and try again.',
+        messageNe: 'यो कागजात फेला परेन। ताजा पारेर पुनः प्रयास गर्नुहोस्।',
+      );
+    }
+
+    await _guard(
+      () => _client.rpc<Map<String, dynamic>>(
+        'v1_admin_verify_kyc',
+        params: buildVerifyKycParams(docId: trimmed),
+      ),
+      action: 'verifyKyc',
+    );
+
+    return await _readKycDocument(trimmed, action: 'verifyKyc');
+  }
+
+  @override
+  Future<KycDocument> rejectKyc(String docId, String reason) async {
+    final trimmedId = docId.trim();
+    final trimmedReason = reason.trim();
+
+    if (trimmedId.isEmpty) {
+      throw const ValidationException(
+        code: 'validation.kycDocIdRequired',
+        messageEn: 'That document could not be found. Refresh and try again.',
+        messageNe: 'यो कागजात फेला परेन। ताजा पारेर पुनः प्रयास गर्नुहोस्।',
+      );
+    }
+
+    // Same reasoning as [rejectListing]: the RPC refuses a blank reason with
+    // 22023, but catching it here puts the complaint against the field the
+    // admin typed into rather than a toast after a round trip.
+    if (trimmedReason.isEmpty) {
+      throw const ValidationException(
+        code: 'validation.kycRejectionReasonRequired',
+        messageEn: 'Please give a reason so the seller knows what to fix.',
+        messageNe: 'विक्रेतालाई के मिलाउने भन्ने जानकारी दिनुहोस्।',
+      );
+    }
+
+    await _guard(
+      () => _client.rpc<Map<String, dynamic>>(
+        'v1_admin_reject_kyc',
+        params: buildRejectKycParams(
+          docId: trimmedId,
+          reason: trimmedReason,
+        ),
+      ),
+      action: 'rejectKyc',
+    );
+
+    return await _readKycDocument(trimmedId, action: 'rejectKyc');
+  }
+
+  /// Reads the `status` out of an admin RPC's response.
+  ///
+  /// Throws rather than defaulting. A response without a recognisable status
+  /// is a contract break between this client and the database, and defaulting
+  /// to [ListingStatus.live] would report a rejection as an approval — the
+  /// worst available failure, because the admin would leave believing the
+  /// listing was published. A mapped [ServerException] surfaces as "that did
+  /// not work, try again", which is honest and actionable.
+  ListingStatus _readStatus(
+    Map<String, dynamic> response, {
+    required String action,
+  }) {
+    final raw = response['status'];
+
+    if (raw is String) {
+      for (final status in ListingStatus.values) {
+        if (status.wireName == raw) return status;
+      }
+    }
+
+    const failure = ServerException(
+      code: 'server.unexpectedResponse',
+      messageEn: 'The server accepted the decision but did not say what it '
+          'did. Nothing was changed — please try again.',
+      // Nepali + English on every user-facing message (Rule 36). The two
+      // clauses are separated rather than joined so a translator can reorder
+      // them, which Nepali grammar often needs.
+      messageNe: 'सर्भरले निर्णय स्वीकार गर्‍यो तर के परिवर्तन भयो भन्ने '
+          'जानकारी दिएन। केही परिवर्तन भएको छैन — कृपया फेरि प्रयास '
+          'गर्नुहोस्।',
+    );
+    _logFailure(
+      failure,
+      action: action,
+      cause: StateError(
+        'v1_admin_*_listing returned no usable status: $response',
+      ),
+      detail: <String, Object?>{'response': response},
+    );
+    throw failure;
+  }
+
+  /// Re-reads one KYC row after a verdict RPC.
+  ///
+  /// The RPC answers a summary (`{"id": …, "status": …}`); the row is the
+  /// source of truth for everything the review screen renders (doc type,
+  /// listing binding, reviewer, timestamps). A missing row is remapped from
+  /// the generic `server.notFound` to an honest "no longer pending", because
+  /// the only thing this read can not find is a document that another admin
+  /// already actioned or the purge already removed.
+  Future<KycDocument> _readKycDocument(
+    String docId, {
+    required String action,
+  }) async {
+    try {
+      final row = await _guard(
+        () => _client.from('kyc_documents').select().eq('id', docId).single(),
+        action: action,
+      );
+      return KycDocument.fromJson(row);
+    } on ServerException catch (e) {
+      if (e.code == 'server.notFound') {
+        throw ValidationException(
+          code: 'validation.kycNotFound',
+          messageEn: 'That document is no longer pending review.',
+          messageNe: 'यो कागजात अब समीक्षामा छैन।',
+          context: action,
+          cause: e,
+        );
+      }
+      rethrow;
+    }
+  }
+
+  @override
+  Future<List<AuditLogEntry>> auditTrail({
+    required String entityId,
+    String entityType = 'listing',
+    int limit = 50,
+  }) async {
+    final response = await _guard(
+      () => _client
+          .from('audit_log')
+          .select()
+          .eq('entity_type', entityType)
+          .eq('entity_id', entityId)
+          .order('created_at', ascending: false)
+          .limit(limit),
+      action: 'auditTrail',
+    );
+
+    return response.map(AuditLogEntry.fromJson).toList(growable: false);
+  }
+
+  /// Runs [call], converting transport failures into the [AppException]
+  /// hierarchy so callers only match on types they can render (Rule 38), and
+  /// logging with full context (Rule 37).
+  ///
+  /// Mirrors the listing repository's guard. Duplicated rather than extracted:
+  /// it is nine lines, and lifting it into a mixin or shared base couples
+  /// two repositories with no reason to know each other. The rule that
+  /// matters is that every *call site* is wrapped, not that the wrapper is
+  /// shared.
+  Future<T> _guard<T>(
+    Future<T> Function() call, {
+    required String action,
+  }) async {
+    try {
+      return await call();
+    } on PostgrestException catch (e) {
+      final mapped = PostgrestErrorMapper.map(e, action: action);
+      _logFailure(mapped, action: action, cause: e);
+      throw mapped;
+    } on AuthException catch (e) {
+      final mapped = AuthExceptionMapper.map(e, action: action);
+      _logFailure(mapped, action: action, cause: e);
+      throw mapped;
+    }
+  }
+
+  /// Records a failed call.
+  ///
+  /// Network failures log at warning: a dropped connection is expected rather
+  /// than an incident, and promoting every blip to an error buries the real
+  /// ones. Everything else is an error.
+  ///
+  /// `detail` is included for the admin actions, where knowing *which* listing
+  /// failed matters: this is the surface where a mistake is a moderation error
+  /// against a real seller rather than a cosmetic failure.
+  void _logFailure(
+    AppException mapped, {
+    required String action,
+    required Object cause,
+    Map<String, Object?>? detail,
+  }) {
+    final context = logContext(
+      action: action,
+      detail: <String, Object?>{...?detail, 'code': mapped.code},
+    );
+
+    if (mapped is NetworkException) {
+      AppLogger.warning(
+        'Network failure in $action',
+        context: context,
+        error: cause,
+      );
+      return;
+    }
+
+    AppLogger.error(
+      'Failed in $action',
+      context: context,
+      error: cause,
+    );
+  }
+
+  /// RPC parameters for [getQueue], exposed for tests.
+  ///
+  /// Same reasoning as `ListingRepository.buildCreateParams`: asserting on the
+  /// parameter map catches a wrong key or dropped cursor without needing
+  /// a live database, which Rule 31 forbids in the unit test loop.
+  @visibleForTesting
+  static Map<String, Object?> buildQueueParams({
+    ListingStatus status = ListingStatus.pendingReview,
+    QueueCursor? cursor,
+    int pageSize = 50,
+  }) =>
+      <String, Object?>{
+        'p_status': status.wireName,
+        ...?cursor?.toRpcParams(),
+        'p_page_size': pageSize,
+      };
+
+  /// RPC parameters for `v1_admin_verify_kyc`, exposed for tests.
+  ///
+  /// A one-key map today; asserted so a renamed parameter fails here rather
+  /// than as a 400 from PostgREST with the admin staring at a queue.
+  @visibleForTesting
+  static Map<String, Object?> buildVerifyKycParams({
+    required String docId,
+  }) =>
+      <String, Object?>{'p_doc_id': docId};
+
+  /// RPC parameters for `v1_admin_reject_kyc`, exposed for tests.
+  ///
+  /// Takes the already-trimmed reason: trimming is the caller's job
+  /// ([rejectKyc]), and asserting on this map pins the wire contract —
+  /// `p_reason` arrives trimmed, so the seller never reads stray whitespace
+  /// in the rejection notice.
+  @visibleForTesting
+  static Map<String, Object?> buildRejectKycParams({
+    required String docId,
+    required String reason,
+  }) =>
+      <String, Object?>{
+        'p_doc_id': docId,
+        'p_reason': reason,
+      };
+}

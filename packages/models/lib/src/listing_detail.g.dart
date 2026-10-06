@@ -54,6 +54,9 @@ _ListingDetail _$ListingDetailFromJson(
   bedrooms: (json['bedrooms'] as num?)?.toInt(),
   bathrooms: (json['bathrooms'] as num?)?.toInt(),
   rejectionReason: json['rejection_reason'] as String?,
+  submittedAt: json['submitted_at'] == null
+      ? null
+      : DateTime.parse(json['submitted_at'] as String),
   photos:
       (json['photos'] as List<dynamic>?)?.map((e) => e as String).toList() ??
       const <String>[],
@@ -95,6 +98,7 @@ Map<String, dynamic> _$ListingDetailToJson(_ListingDetail instance) =>
       'bedrooms': instance.bedrooms,
       'bathrooms': instance.bathrooms,
       'rejection_reason': instance.rejectionReason,
+      'submitted_at': instance.submittedAt?.toIso8601String(),
       'photos': instance.photos,
       'seller': instance.seller?.toJson(),
       'area_display': instance.areaDisplay,

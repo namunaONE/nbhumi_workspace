@@ -69,6 +69,16 @@ sealed class ListingDetail with _$ListingDetail {
 
     String? rejectionReason,
 
+    /// When the seller submitted this for review. Null for a draft.
+    ///
+    /// Carried here rather than left to the admin queue's own model because the
+    /// admin panel deep-links to a listing by id: `/listing/:id` is reachable
+    /// in a fresh tab with no queue loaded, and without this the detail pane
+    /// would have no submission clock to compute the 48h SLA against.
+    /// Migration 010 added the column to `v1_get_listing_detail` for the same
+    /// reason.
+    DateTime? submittedAt,
+
     /// Ordered by `sort_order` server-side.
     @Default(<String>[]) List<String> photos,
 
