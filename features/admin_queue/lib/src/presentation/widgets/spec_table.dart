@@ -84,17 +84,28 @@ class SpecTable extends StatelessWidget {
     return '${sqm.toStringAsFixed(isWhole ? 0 : 2)} sqm';
   }
 
-  /// The ward, when it is a real ward number.
+  /// The ward, when it is one the database would accept.
   ///
-  /// [ListingDetail.ward] is a String because that is what the RPC sends. Rule
-  /// 28 puts the valid range at 1-32, and both bounds are checked: a listing
-  /// submitted before HYA-253 landed could carry 0, and an unparseable value is
-  /// dropped rather than rendered, since "Ward abc" is a bug report, not
-  /// information.
+  /// Delegates to [Validators.isValidWard] rather than parsing here. That is
+  /// not
+  /// a stylistic preference — this getter was wrong three ways when it parsed
+  /// for
+  /// itself:
+  ///
+  ///   * the ceiling was 32, but Pokhara Metropolitan City genuinely has 33
+  ///     wards, so a real ward 33 was dropped from the pane;
+  ///   * `int.tryParse('01')` succeeds, but the `ward_valid` CHECK has no `0`
+  ///     branch, so the database rejects a leading zero;
+  ///   * `.trim()` accepted `' 5'`, which the same pattern rejects.
+  ///
+  /// The rule is "show what the server would accept", and exactly one place
+  /// knows what that is. [Validators.maxWard] carries the ceiling and why it
+  /// has
+  /// already been corrected twice.
   int? get _ward {
-    final parsed = int.tryParse(listing.ward?.trim() ?? '');
-    if (parsed == null) return null;
-    return parsed >= 1 && parsed <= 32 ? parsed : null;
+    final raw = listing.ward;
+    if (raw == null || !Validators.isValidWard(raw)) return null;
+    return int.parse(raw);
   }
 
   /// Display name for a property type.

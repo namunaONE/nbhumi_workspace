@@ -80,8 +80,15 @@
 27. **Currency: NPR with lakh/crore formatting.** Display "NPR 25,00,000" (Indian
     digit grouping), not Western grouping. Prices stored as integer paisa-free
     NPR (`int priceNpr`).
-28. **Location: district → city/municipality → ward (1–32).** Ward is optional
-    but validated as 1–32 when present. Never free-text district names in the DB.
+28. **Location: district → city/municipality → ward (1–33).** Ward is optional
+    but validated as 1–33 when present, and `Validators.isValidWard` is the only
+    place that bound is written — do not parse the string yourself, because the
+    `ward_valid` CHECK is an anchored pattern that also rejects a leading zero and
+    surrounding whitespace. The ceiling is **33, not 32**: Pokhara Metropolitan
+    City has 33 wards and Kathmandu 32, so the real maximum is Pokhara's. This has
+    been "corrected" twice before (36, then 32 on the claim that KMC was
+    largest), so the bound carries its reason in `Validators.maxWard` rather than
+    as a bare literal. Never free-text district names in the DB.
 29. **Dates: store UTC, display local (NPT, UTC+5:45).** Bikram Sambat display
     support is a later milestone — design models to allow it.
 
