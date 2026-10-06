@@ -293,4 +293,93 @@ void main() {
       expect(Listing.fromJson(listing.toJson()), listing);
     });
   });
+
+  group('buildReportListingParams', () {
+    test('pins all three parameter names', () {
+      expect(
+        ListingRepository.buildReportListingParams(
+          listingId: 'l1',
+          reason: ReportReason.duplicateListing,
+          details: 'Same house is listed twice',
+        ),
+        <String, Object?>{
+          'p_listing_id': 'l1',
+          'p_reason': 'duplicate_listing',
+          'p_details': 'Same house is listed twice',
+        },
+      );
+    });
+
+    test('sends the enum label, not the Dart name', () {
+      // `duplicateListing` would be rejected by the RPC's own enum cast with a
+      // 22023. Every multi-word reason is wrong in the same way, so this
+      // enumerates all of them rather than sampling one.
+      final wrong = <String>[];
+      for (final reason in ReportReason.values) {
+        final sent = ListingRepository.buildReportListingParams(
+          listingId: 'l1',
+          reason: reason,
+        )['p_reason'];
+        if (sent != reason.wireName) wrong.add('${reason.name} -> $sent');
+        // And the wire value must be one the database actually has.
+        expect(
+          _databaseReportReasons,
+          contains(reason.wireName),
+          reason: '${reason.name} has no report_reason enum label',
+        );
+      }
+
+      expect(wrong, isEmpty);
+    });
+
+    test('every Dart reason has a database label', () {
+      // The other direction: a label in the database with no Dart enum value
+      // would be a reason the app can neither file nor read. Not a failure
+      // today, but worth a test that fails loudly when it happens.
+      expect(ReportReason.values.map((r) => r.wireName).toSet(),
+          _databaseReportReasons.toSet());
+    });
+
+    test('sends null details when the buyer gave none', () {
+      expect(
+        ListingRepository.buildReportListingParams(
+          listingId: 'l1',
+          reason: ReportReason.alreadySold,
+        )['p_details'],
+        isNull,
+      );
+    });
+
+    test('the builder passes the description through verbatim', () {
+      // Trimming belongs to `reportListing`, which owns the user-facing
+      // validation and runs before this builder. Asserting trimming here would
+      // pin a contract this function does not have, and the end-to-end trim is
+      // covered in `report_listing_test.dart` against the real request body.
+      final params = ListingRepository.buildReportListingParams(
+        listingId: 'l1',
+        reason: ReportReason.other,
+        details: '  The pin is 3 km away  ',
+      );
+
+      expect(params['p_details'], '  The pin is 3 km away  ');
+    });
+  });
 }
+
+/// The `report_reason` enum labels as they exist in the database.
+///
+/// Read out of migration `20261006055202_listing_reports.sql` and asserted
+/// against rather than duplicated: two lists that agree today can drift, and
+/// the direction that actually breaks a release — a Dart reason the database
+/// has no label for — is only caught if the expected set is written down
+/// independently.
+const Set<String> _databaseReportReasons = <String>{
+  'duplicate_listing',
+  'photos_misleading',
+  'price_suspicious',
+  'wrong_location',
+  'already_sold',
+  'seller_asked_offsite',
+  'fake_listing',
+  'other',
+};

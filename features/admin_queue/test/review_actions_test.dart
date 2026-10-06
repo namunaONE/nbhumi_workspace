@@ -378,8 +378,8 @@ class FakeAdminRepository implements AdminRepository {
   /// KYC methods added by HYA-264. Not exercised by these tests, but the
   /// interface requires them, so they are stubs rather than `noSuchMethod`.
   ///
-  /// A `noSuchMethod` stub would make the fake silently accept a call it cannot
-  /// it cannot handle, which turns a wrong test into a passing one. Stubs
+  /// A `noSuchMethod` stub would make the fake silently accept a call it
+  /// cannot handle, which turns a wrong test into a passing one. Stubs
   /// that throw would break any future test that reaches for them. These
   /// do neither: they answer with an empty result, the honest answer for
   /// "not set up here".
@@ -394,4 +394,23 @@ class FakeAdminRepository implements AdminRepository {
   @override
   Future<KycDocument> rejectKyc(String docId, String reason) async =>
       throw UnimplementedError('rejectKyc is not covered by these tests');
+
+  /// Report methods added by HYA-263, stubbed on the same reasoning as the KYC
+  /// pair above. The reports tab is tested in `reports_tab_test.dart`.
+  @override
+  Future<ReportPage> getReports({
+    ReportStatus status = ReportStatus.open,
+    ReportCursor? cursor,
+    int pageSize = 50,
+  }) async =>
+      ReportPage.empty;
+
+  @override
+  Future<ReportStatus> resolveReport(
+    String reportId,
+    ReportResolution resolution,
+  ) async =>
+      throw UnimplementedError(
+        'resolveReport is not covered by these tests',
+      );
 }

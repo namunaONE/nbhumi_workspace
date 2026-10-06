@@ -20,6 +20,10 @@
 /// * `QueueSla`         - how a queued listing stands against the 48h SLA.
 ///                       Computed client-side, not by the RPC.
 /// * `AuditLogEntry`    - one admin action. Every approve/reject writes one.
+/// * `ListingReport`    - a buyer's confirmation after reporting a listing.
+///                       See `v1_report_listing`.
+/// * `AdminReportEntry` - one row of the admin reports queue. Admin-scoped.
+///                       See `v1_admin_get_reports`.
 library;
 
 export 'src/admin_queue_entry.dart';
@@ -28,6 +32,7 @@ export 'src/kyc_document.dart';
 export 'src/listing.dart';
 export 'src/listing_detail.dart';
 export 'src/listing_query.dart';
+export 'src/listing_report.dart';
 export 'src/listing_summary.dart';
 export 'src/municipality.dart';
 export 'src/notification.dart';

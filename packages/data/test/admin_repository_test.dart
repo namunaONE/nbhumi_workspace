@@ -491,6 +491,312 @@ void main() {
       expect(transport.requestUrls[1].queryParameters['limit'], '1');
     });
   });
+
+  group('buildReportParams', () {
+    test('defaults to the open tab with no cursor', () {
+      expect(SupabaseAdminRepository.buildReportParams(), <String, Object?>{
+        'p_status': 'open',
+        'p_page_size': 50,
+      });
+    });
+
+    test('sends the enum label, not the Dart name', () {
+      // Both are single words today, so this cannot fail by accident. It exists
+      // so that adding a multi-word status breaks here rather than as a 400
+      // from PostgREST with an admin waiting on a queue.
+      expect(
+        SupabaseAdminRepository.buildReportParams(
+          status: ReportStatus.actioned,
+        )['p_status'],
+        'actioned',
+      );
+    });
+
+    test('spreads the cursor into the same keys the queue uses', () {
+      final params = SupabaseAdminRepository.buildReportParams(
+        cursor: ReportCursor(
+          createdAt: DateTime.utc(2026, 10, 6, 5, 30),
+          id: 'r9',
+        ),
+        pageSize: 2,
+      );
+
+      expect(params['p_cursor'], '2026-10-06T05:30:00.000Z');
+      expect(params['p_cursor_id'], 'r9');
+      expect(params['p_page_size'], 2);
+      expect(params['p_status'], 'open');
+    });
+
+    test('the report cursor is not the queue cursor', () {
+      // Both call the parameter names p_cursor/p_cursor_id, so a swapped type
+      // would compile and then silently restart pagination. The types are
+      // distinct precisely so this cannot happen.
+      expect(
+        SupabaseAdminRepository.buildReportParams().containsKey('p_cursor'),
+        isFalse,
+      );
+      expect(
+        SupabaseAdminRepository.buildQueueParams().containsKey('p_cursor'),
+        isFalse,
+      );
+    });
+  });
+
+  group('buildResolveReportParams', () {
+    test('pins both parameter names', () {
+      expect(
+        SupabaseAdminRepository.buildResolveReportParams(
+          reportId: 'r1',
+          resolution: ReportResolution.dismissed,
+        ),
+        <String, Object?>{'p_report_id': 'r1', 'p_resolution': 'dismissed'},
+      );
+    });
+
+    test('actioned and dismissed stay distinguishable', () {
+      // A single boolean would collapse these two, and they are different
+      // judgements with different consequences for the seller.
+      final actioned = SupabaseAdminRepository.buildResolveReportParams(
+        reportId: 'r1',
+        resolution: ReportResolution.actioned,
+      );
+      final dismissed = SupabaseAdminRepository.buildResolveReportParams(
+        reportId: 'r1',
+        resolution: ReportResolution.dismissed,
+      );
+
+      expect(actioned['p_resolution'], isNot(dismissed['p_resolution']));
+    });
+  });
+
+  group('getReports through the real PostgREST path', () {
+    test('reads entries, counts and the cursor', () async {
+      final repo = succeedingRepo(
+        jsonEncode(<String, Object?>{
+          'entries': <Object?>[
+            <String, Object?>{
+              'id': 'r1',
+              'listing_id': 'l1',
+              'reason': 'price_suspicious',
+              'status': 'open',
+              'created_at': '2026-10-06T05:00:00+00:00',
+              'resolved_at': null,
+              'details': '2 crore for 300 sqm',
+              'listing': <String, Object?>{
+                'id': 'l1',
+                'title': 'House in Kirtipur',
+                'price_npr': 25000000,
+                'status': 'live',
+                'district': 'Kathmandu',
+                'city': 'Kathmandu',
+                'seller_id': 's1',
+              },
+              'reporter': <String, Object?>{
+                'id': 'b1',
+                'full_name': 'Buyer One',
+                'role': 'buyer',
+                'is_verified': false,
+              },
+            },
+          ],
+          'counts': <String, Object?>{'open': 4, 'actioned': 1},
+          'next_cursor': <String, Object?>{
+            'created_at': '2026-10-06T05:00:00+00:00',
+            'id': 'r1',
+          },
+        }),
+      );
+
+      final page = await repo.getReports();
+
+      expect(page.entries, hasLength(1));
+      expect(page.entries.single.reason, ReportReason.priceSuspicious);
+      expect(page.entries.single.status, ReportStatus.open);
+      expect(page.entries.single.details, '2 crore for 300 sqm');
+      expect(page.entries.single.listing.priceNpr, 25000000);
+      expect(page.entries.single.listing.status, ListingStatus.live);
+      expect(page.entries.single.reporter.fullName, 'Buyer One');
+      expect(page.counts.open, 4);
+      expect(page.counts.actioned, 1);
+      // Absent from the counts object rather than present as 0, because the
+      // RPC builds it with json_object_agg keyed by enum label.
+      expect(page.counts.dismissed, 0);
+      expect(page.nextCursor?.id, 'r1');
+      expect(page.hasMore, isTrue);
+    });
+
+    test('a null next_cursor ends the walk', () async {
+      final repo = succeedingRepo(
+        jsonEncode(<String, Object?>{
+          'entries': <Object?>[],
+          'counts': <String, Object?>{},
+          'next_cursor': null,
+        }),
+      );
+
+      final page = await repo.getReports();
+
+      expect(page.isEmpty, isTrue);
+      expect(page.hasMore, isFalse);
+      expect(page.nextCursor, isNull);
+    });
+
+    test('42501 becomes a permission failure', () {
+      final repo = failingRepo(
+        status: '42501',
+        message: 'FORBIDDEN: admin only',
+      );
+
+      expect(
+        repo.getReports,
+        throwsA(
+          isA<AuthFailureException>().having(
+            (e) => e.code,
+            'code',
+            'auth.forbidden',
+          ),
+        ),
+      );
+    });
+  });
+
+  group('resolveReport', () {
+    test('returns the status the server stored', () async {
+      final repo = succeedingRepo(
+        '{"report_id":"r1","listing_id":"l1","status":"actioned"}',
+      );
+
+      expect(
+        await repo.resolveReport('r1', ReportResolution.actioned),
+        ReportStatus.actioned,
+      );
+    });
+
+    test('a dismissed resolution reads back as dismissed', () async {
+      final repo = succeedingRepo(
+        '{"report_id":"r1","listing_id":"l1","status":"dismissed"}',
+      );
+
+      expect(
+        await repo.resolveReport('r1', ReportResolution.dismissed),
+        ReportStatus.dismissed,
+      );
+    });
+
+    test('a response with no status throws rather than guessing', () async {
+      // The failure this guards: defaulting to `dismissed` after an *actioned*
+      // resolution would tell the admin the seller was cleared when the listing
+      // was actually pulled.
+      final repo = succeedingRepo('{"report_id":"r1"}');
+
+      expect(
+        () => repo.resolveReport('r1', ReportResolution.actioned),
+        throwsA(
+          isA<ServerException>().having(
+            (e) => e.code,
+            'code',
+            'server.unexpectedResponse',
+          ),
+        ),
+      );
+    });
+
+    test('an unrecognised status throws rather than defaulting', () {
+      final repo = succeedingRepo('{"report_id":"r1","status":"archived"}');
+
+      expect(
+        () => repo.resolveReport('r1', ReportResolution.actioned),
+        throwsA(isA<ServerException>()),
+      );
+    });
+
+    test('open is refused, though it is a real status', () async {
+      // A resolve can never legitimately leave a report open. This response is
+      // the exact signature of the SQL bug that used to live in
+      // v1_admin_resolve_report: one variable for both the requested
+      // resolution and the row's current status, so the UPDATE wrote 'open'
+      // while stamping resolved_at. Accepting it here would show the admin a
+      // success for work that did not happen.
+      final repo = succeedingRepo('{"report_id":"r1","status":"open"}');
+
+      expect(
+        () => repo.resolveReport('r1', ReportResolution.actioned),
+        throwsA(
+          isA<ServerException>().having(
+            (e) => e.code,
+            'code',
+            'server.unexpectedResponse',
+          ),
+        ),
+      );
+    });
+
+    test('the reported status is not echoed back from the request', () async {
+      // The server is the only authority on what it did. Asking for
+      // `dismissed` and having the response say `actioned` must surface as
+      // actioned, because the audit row records what actually happened.
+      final repo = succeedingRepo(
+        '{"report_id":"r1","listing_id":"l1","status":"actioned"}',
+      );
+
+      expect(
+        await repo.resolveReport('r1', ReportResolution.dismissed),
+        ReportStatus.actioned,
+      );
+    });
+
+    test('a blank report id fails before a round trip', () {
+      final repo = succeedingRepo('{"status":"actioned"}');
+
+      expect(
+        () => repo.resolveReport('   ', ReportResolution.actioned),
+        throwsA(
+          isA<ValidationException>().having(
+            (e) => e.code,
+            'code',
+            'validation.reportIdRequired',
+          ),
+        ),
+      );
+    });
+
+    test('22023 from an already-resolved report is a validation failure', () {
+      // The common case being another admin resolving it first.
+      final repo = failingRepo(
+        status: '22023',
+        message: 'VALIDATION_ERROR: this report is already actioned',
+      );
+
+      expect(
+        () => repo.resolveReport('r1', ReportResolution.dismissed),
+        throwsA(isA<ValidationException>()),
+      );
+    });
+
+    test('42501 from resolve reads as a permission failure', () {
+      final repo = failingRepo(status: '42501', message: 'FORBIDDEN');
+
+      expect(
+        () => repo.resolveReport('r1', ReportResolution.actioned),
+        throwsA(isA<AuthFailureException>()),
+      );
+    });
+
+    test('the failure carries a Nepali message', () {
+      final repo = failingRepo(status: '22023', message: 'already actioned');
+
+      expect(
+        () => repo.resolveReport('r1', ReportResolution.dismissed),
+        throwsA(
+          isA<ValidationException>().having(
+            (e) => e.messageNe,
+            'messageNe',
+            isNotEmpty,
+          ),
+        ),
+      );
+    });
+  });
 }
 
 /// A repository whose every RPC fails with [status] / [message].

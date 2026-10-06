@@ -222,6 +222,27 @@ class ListingRepository {
     };
   }
 
+  /// RPC parameters for `v1_report_listing`, exposed for tests.
+  ///
+  /// Takes the already-trimmed details: trimming is the caller's job
+  /// ([reportListing]), and asserting here pins the wire contract so the
+  /// description a moderator reads never carries stray whitespace.
+  ///
+  /// `p_reason` uses [ReportReason.wireName] rather than `.name` — the two
+  /// differ for every multi-word reason, and the RPC's enum cast is the only
+  /// thing that would catch it.
+  @visibleForTesting
+  static Map<String, Object?> buildReportListingParams({
+    required String listingId,
+    required ReportReason reason,
+    String? details,
+  }) =>
+      <String, Object?>{
+        'p_listing_id': listingId,
+        'p_reason': reason.wireName,
+        'p_details': details,
+      };
+
   /// Uploads one photo for a listing and returns its public URL.
   ///
   /// The Storage path is `<userId>/<random>.<ext>`: the leading folder must be
@@ -306,6 +327,60 @@ class ListingRepository {
       action: 'contactSeller',
     );
     return SellerContact.fromJson(response);
+  }
+
+  /// Reports a listing to the moderation queue (HYA-263).
+  ///
+  /// Returns the server's stored report rather than void, so the app can show
+  /// the reason that was actually recorded instead of assuming the submission
+  /// worked because nothing was thrown.
+  ///
+  /// Lives here rather than on `AdminRepository` because it is a buyer action
+  /// on someone else's listing — the same family as [contactSeller] — and only
+  /// the two admin methods are admin-scoped.
+  ///
+  /// Throws rather than returning a sentinel, because each failure is
+  /// meaningfully worded for the buyer:
+  ///
+  /// * `AuthFailureException`   - not signed in
+  /// * `ValidationException`    - already reported this listing, or your own,
+  ///                              or `other` with no description
+  /// * `NetworkException`       - transport failure, retryable
+  Future<ListingReport> reportListing({
+    required String listingId,
+    required ReportReason reason,
+    String? details,
+  }) async {
+    final trimmedDetails = details?.trim();
+
+    // Checked client-side as well as server-side (Rule 6). The RPC refuses this
+    // with 22023, but catching it here means the buyer sees the complaint
+    // against the field they typed into rather than as a snackbar after a round
+    // trip. `other` with nothing to say is not actionable, so the form should
+    // have asked for the description before submitting.
+    if (reason.requiresDetails &&
+        (trimmedDetails == null || trimmedDetails.isEmpty)) {
+      throw const ValidationException(
+        code: 'validation.reportDetailsRequired',
+        messageEn: 'Please describe the problem so our team can act on it.',
+        messageNe: 'कृपया समस्या बयान गर्नुहोस्, हाम्रो टोलीले कारबाही लिन '
+            'सक्नेछ।',
+      );
+    }
+
+    final response = await _guard(
+      () => _client.rpc<Map<String, dynamic>>(
+        'v1_report_listing',
+        params: buildReportListingParams(
+          listingId: listingId,
+          reason: reason,
+          details: trimmedDetails,
+        ),
+      ),
+      action: 'reportListing',
+    );
+
+    return ListingReport.fromJson(response);
   }
 
   /// Runs [call], converting transport failures into the [AppException]

@@ -98,6 +98,37 @@ abstract class AdminRepository {
     String entityType = 'listing',
     int limit = 50,
   });
+
+  /// One page of the buyer reports queue.
+  ///
+  /// [status] selects the tab. [cursor] advances pagination; pass null for the
+  /// first page. Returns an empty [ReportPage] when there is nothing to review,
+  /// which is a successful answer rather than an error.
+  ///
+  /// Throws [AuthFailureException] when the caller is not an admin.
+  Future<ReportPage> getReports({
+    ReportStatus status = ReportStatus.open,
+    ReportCursor? cursor,
+    int pageSize = 50,
+  });
+
+  /// Closes a report as actioned or dismissed.
+  ///
+  /// Returns the status the server stored rather than echoing [resolution],
+  /// for the same reason [approveListing] returns rather than void: a response
+  /// that does not say what it did means somebody else resolved the report
+  /// first, and the admin should be told that rather than shown a success.
+  ///
+  /// Writes an `audit_log` row server-side in the same transaction (Rule 8).
+  /// The row is recorded against the *listing*, not the report, so a report
+  /// outcome shows up in the listing's existing audit trail.
+  ///
+  /// Throws [ValidationException] when the report is not open — most often
+  /// because another admin resolved it first.
+  Future<ReportStatus> resolveReport(
+    String reportId,
+    ReportResolution resolution,
+  );
 }
 
 /// Supabase-backed [AdminRepository].
@@ -134,6 +165,27 @@ class SupabaseAdminRepository implements AdminRepository {
     // PostgREST row mapping here: parsing is QueuePage's job, and it owns the
     // cursor rules.
     return QueuePage.fromJson(response);
+  }
+
+  @override
+  Future<ReportPage> getReports({
+    ReportStatus status = ReportStatus.open,
+    ReportCursor? cursor,
+    int pageSize = 50,
+  }) async {
+    final response = await _guard(
+      () => _client.rpc<Map<String, dynamic>>(
+        'v1_admin_get_reports',
+        params: buildReportParams(
+          status: status,
+          cursor: cursor,
+          pageSize: pageSize,
+        ),
+      ),
+      action: 'getReports',
+    );
+
+    return ReportPage.fromJson(response);
   }
 
   @override
@@ -362,6 +414,94 @@ class SupabaseAdminRepository implements AdminRepository {
     return response.map(AuditLogEntry.fromJson).toList(growable: false);
   }
 
+  /// Closes a report as actioned or dismissed.
+  @override
+  Future<ReportStatus> resolveReport(
+    String reportId,
+    ReportResolution resolution,
+  ) async {
+    final trimmed = reportId.trim();
+    if (trimmed.isEmpty) {
+      throw const ValidationException(
+        code: 'validation.reportIdRequired',
+        messageEn: 'That report could not be found. Refresh and try again.',
+        messageNe: 'यो रिपोर्ट फेला परेन। ताजा पारेर पुनः प्रयास गर्नुहोस्।',
+      );
+    }
+
+    final response = await _guard(
+      () => _client.rpc<Map<String, dynamic>>(
+        'v1_admin_resolve_report',
+        params: <String, Object?>{
+          'p_report_id': trimmed,
+          // resolution.name, not a wireName lookup: ReportResolution has no
+          // multi-word value, so the Dart name IS the enum label. Both labels
+          // are checked against the report_status enum in the model, and the
+          // RPC refuses anything else with 22023 — so a future value added to
+          // only one of the two places fails loudly rather than silently
+          // resolving the report under a name the database does not have.
+          'p_resolution': resolution.name,
+        },
+      ),
+      action: 'resolveReport',
+    );
+
+    return _readReportStatus(response, action: 'resolveReport');
+  }
+
+  /// Reads the `status` out of `v1_admin_resolve_report`'s response.
+  ///
+  /// Throws rather than defaulting, for the same reason [_readStatus] does and
+  /// with the same severity: defaulting to [ReportStatus.dismissed] after an
+  /// *actioned* resolution would tell the admin the seller was cleared when the
+  /// listing was actually pulled.
+  ///
+  /// [ReportStatus.open] is refused even though it is a real status, and the
+  /// reason is the SQL bug this function exists to catch: the first version of
+  /// `v1_admin_resolve_report` reused one variable for both the requested
+  /// resolution and the row's current status, so the UPDATE wrote `status =
+  /// 'open'` while still stamping `resolved_at`. A response saying `open` means
+  /// the report was not resolved, and returning it would show the admin a
+  /// success for work that did not happen.
+  ///
+  /// The database now prevents that twice over — the two-variable fix, plus
+  /// `reports_resolution_consistent`, which refuses an open row carrying a
+  /// resolution timestamp. This is the third layer, and it is the one that
+  /// reports the problem as a failed action rather than as a silent no-op.
+  ReportStatus _readReportStatus(
+    Map<String, dynamic> response, {
+    required String action,
+  }) {
+    final raw = response['status'];
+
+    if (raw is String) {
+      for (final status in ReportStatus.values) {
+        if (status.name != raw) continue;
+        if (status == ReportStatus.open) break;
+        return status;
+      }
+    }
+
+    const failure = ServerException(
+      code: 'server.unexpectedResponse',
+      messageEn: 'The server accepted the decision but did not say what it '
+          'did. Nothing was changed — please try again.',
+      messageNe: 'सर्भरले निर्णय स्वीकार गर्‍यो तर के परिवर्तन भयो भन्ने '
+          'जानकारी दिएन। केही परिवर्तन भएको छैन — कृपया फेरि प्रयास '
+          'गर्नुहोस्।',
+    );
+    _logFailure(
+      failure,
+      action: action,
+      cause: StateError(
+        'v1_admin_resolve_report returned no usable resolved status: '
+        '$response',
+      ),
+      detail: <String, Object?>{'response': response},
+    );
+    throw failure;
+  }
+
   /// Runs [call], converting transport failures into the [AppException]
   /// hierarchy so callers only match on types they can render (Rule 38), and
   /// logging with full context (Rule 37).
@@ -465,5 +605,38 @@ class SupabaseAdminRepository implements AdminRepository {
       <String, Object?>{
         'p_doc_id': docId,
         'p_reason': reason,
+      };
+
+  /// RPC parameters for [getReports], exposed for tests.
+  ///
+  /// Separate from [buildQueueParams] even though the two look alike, because
+  /// asserting on the key *name* is what catches a rename: a shared builder
+  /// would let both tests pass against one shape while the other RPC silently
+  /// changed. `p_cursor` / `p_cursor_id` are the same names but order reports
+  /// by `(created_at, id)` where the queue orders by `(submitted_at, id)`.
+  @visibleForTesting
+  static Map<String, Object?> buildReportParams({
+    ReportStatus status = ReportStatus.open,
+    ReportCursor? cursor,
+    int pageSize = 50,
+  }) =>
+      <String, Object?>{
+        'p_status': status.name,
+        ...?cursor?.toRpcParams(),
+        'p_page_size': pageSize,
+      };
+
+  /// RPC parameters for [resolveReport], exposed for tests.
+  ///
+  /// A two-key map; asserted so a renamed parameter fails here rather than as a
+  /// 400 from PostgREST with the admin staring at a queue.
+  @visibleForTesting
+  static Map<String, Object?> buildResolveReportParams({
+    required String reportId,
+    required ReportResolution resolution,
+  }) =>
+      <String, Object?>{
+        'p_report_id': reportId,
+        'p_resolution': resolution.name,
       };
 }

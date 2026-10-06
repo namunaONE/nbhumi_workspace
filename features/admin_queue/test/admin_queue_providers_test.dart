@@ -596,4 +596,24 @@ class FakeAdminRepository implements AdminRepository {
   @override
   Future<KycDocument> rejectKyc(String docId, String reason) async =>
       throw UnimplementedError('rejectKyc is not covered by these tests');
+
+  /// Report methods added by HYA-263. Not exercised here either, and stubbed
+  /// on the same reasoning as the KYC pair above: the reports queue lives in
+  /// `reports_tab.dart` and is tested there.
+  @override
+  Future<ReportPage> getReports({
+    ReportStatus status = ReportStatus.open,
+    ReportCursor? cursor,
+    int pageSize = 50,
+  }) async =>
+      ReportPage.empty;
+
+  @override
+  Future<ReportStatus> resolveReport(
+    String reportId,
+    ReportResolution resolution,
+  ) async =>
+      throw UnimplementedError(
+        'resolveReport is not covered by these tests',
+      );
 }
