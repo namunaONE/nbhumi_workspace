@@ -120,15 +120,36 @@ update public.listings l
 --    zero.
 --
 --    Two per listing except where the fixture deliberately falls below the
---    wizard's floor of 3 — those are what the queue row's photo warning is for,
+--    wizard's floor of 3 - those are what the queue row's photo warning is for,
 --    and a fixture where every listing has enough photos never exercises it.
 --
---    The URLs point at the public `listing-photos` bucket but resolve to nothing:
---    there are no objects behind them. That is intentional. `Image.network`'s
---    `errorBuilder` renders a broken-image placeholder, and a fixture that made
---    real network calls would make verification depend on Supabase Storage
---    being reachable.
+--    ### Why this deletes first rather than using ON CONFLICT
+--
+--    An earlier version of this file used `on conflict do nothing`, which is a
+--    no-op here. `listing_photos` has a primary key on `id` and nothing else:
+--
+--      listing_photos_pkey            PRIMARY KEY (id)
+--      listing_photos_listing_id_fkey FOREIGN KEY (listing_id) ...
+--
+--    `id` defaults to `gen_random_uuid()`, so a re-run generates fresh keys and
+--    conflicts with nothing. Re-applying this file took the table from 101 rows
+--    to 202, duplicating every (listing_id, sort_order) pair. Measured, not
+--    assumed.
+--
+--    So this deletes the fixture's own photos by `listing_id` before inserting.
+--    Scoped to ids that cannot collide with a real listing's, so a re-run is
+--    now genuinely idempotent.
+--
+--    The URLs point at the public `listing-photos` bucket but resolve to
+--    nothing: there are no objects behind them. That is intentional.
+--    `Image.network`'s `errorBuilder` renders a broken-image placeholder, and a
+--    fixture that made real network calls would make verification depend on
+--    Supabase Storage being reachable.
 -- ---------------------------------------------------------------------------
+
+delete from public.listing_photos
+ where listing_id in (select md5('fixture-pending-' || n::text)::uuid
+                        from generate_series(1, 54) n);
 
 insert into public.listing_photos (listing_id, url, sort_order)
 select
@@ -143,8 +164,7 @@ cross join lateral (
   -- every 7th fixture gets a single photo, below the floor of 3
   select generate_series(1, case when g.n % 7 = 0 then 1 else 2 end) as n
 ) p
-where l.status = 'pending_review'
-on conflict do nothing;
+where l.status = 'pending_review';
 
 -- ---------------------------------------------------------------------------
 -- 5. Assert the fixture produced what the queue needs.
