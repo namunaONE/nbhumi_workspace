@@ -100,6 +100,23 @@ local-dev fallback only. The admin panel is web-only, so it takes
 `ENVIRONMENT` via `--dart-define` instead of flavors (see CI `build-web`).
 Sentry wiring is HYA-244; flavors already carry the DSN field through.
 
+## Launcher icons
+
+Source of truth is the split SVG in `apps/user_app/assets/icon/` (`ic_bg.svg`
+full-bleed gradient, `ic_fg.svg` glyph on transparency). Regenerate everything
+from them with:
+
+```bash
+cd apps/user_app
+# 1. render PNGs from SVG (needs node + sharp, one-off local step)
+# 2. generate native sets:
+dart run flutter_launcher_icons
+```
+
+This rewrites Android mipmaps + adaptive-icon XML and the iOS `AppIcon`
+set. Store listings live in `apps/user_app/assets/store/` (`play_512.png`,
+`appstore_1024.png` — full-bleed, no rounding, no alpha).
+
 ## Documentation
 
 See Linear project P-HYA-10 for full documentation:

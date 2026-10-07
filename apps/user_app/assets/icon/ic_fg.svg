@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024">
+  <!-- Foreground glyph on transparency. Bounding box x 221-803 / y 369-804
+       sits inside the 66dp adaptive safe zone (199-825), so no launcher mask
+       clips the arc tips. White strokes + logo green #4FD166. -->
+  <g transform="translate(512 530)">
+    <!-- roof -->
+    <path d="M -232 100 L 0 -132 L 232 100" fill="none" stroke="#FFFFFF" stroke-width="58" stroke-linecap="round" stroke-linejoin="round"/>
+    <!-- side walls -->
+    <path d="M -165 62 L -165 152 M 165 62 L 165 152" fill="none" stroke="#FFFFFF" stroke-width="58" stroke-linecap="round"/>
+    <!-- green land arc (bhumi) -->
+    <path d="M -262 190 Q 0 300 262 190" fill="none" stroke="#4FD166" stroke-width="58" stroke-linecap="round"/>
+    <!-- location pin dot (door) -->
+    <circle cx="0" cy="45" r="62" fill="#4FD166"/>
+    <circle cx="0" cy="45" r="24" fill="#002C6D"/>
+  </g>
+</svg>
