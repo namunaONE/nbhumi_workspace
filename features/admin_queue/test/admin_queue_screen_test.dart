@@ -360,7 +360,11 @@ void main() {
       tester,
     ) async {
       final container = ProviderContainer(
-        overrides: [adminRepositoryProvider.overrideWithValue(FakeAdminRepository([page([row()])]))],
+        overrides: [
+          adminRepositoryProvider.overrideWithValue(
+            FakeAdminRepository([page([row()])]),
+          ),
+        ],
       );
       addTearDown(container.dispose);
 
