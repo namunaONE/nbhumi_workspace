@@ -39,6 +39,7 @@ dependencies:
 
 dev_dependencies:
   flutter_launcher_icons: ^0.14.4
+  flutter_native_splash: ^2.4.6
   flutter_test:
     sdk: flutter
   very_good_analysis: ^11.0.0
@@ -57,3 +58,18 @@ flutter_launcher_icons:
   adaptive_icon_foreground: "assets/icon/ic_fg.png"
   adaptive_icon_background: "assets/icon/ic_bg.png"
   remove_alpha_ios: true
+
+# Splash screen from the logo (brand blue + glyph). flutter_native_splash
+# consumes the same split assets: solid brand background, transparent glyph
+# centered on top. Regenerate with: dart run flutter_native_splash:create
+flutter_native_splash:
+  android: true
+  ios: true
+  web: false
+  color: "#002C6D"
+  color_dark: "#002C6D"
+  image: assets/icon/ic_fg.png
+  image_dark: assets/icon/ic_fg.png
+  android_12:
+    color: "#002C6D"
+    image: assets/icon/ic_fg.png

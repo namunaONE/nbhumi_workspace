@@ -117,6 +117,13 @@ This rewrites Android mipmaps + adaptive-icon XML and the iOS `AppIcon`
 set. Store listings live in `apps/user_app/assets/store/` (`play_512.png`,
 `appstore_1024.png` — full-bleed, no rounding, no alpha).
 
+## Splash screen
+
+`flutter_native_splash` (config in `apps/user_app/pubspec.yaml`) paints the
+brand-blue `#002C6D` window with the white/green glyph centered, on Android
+(incl. Android 12+ splash API + night variants) and iOS storyboard. Regenerate
+with `dart run flutter_native_splash:create` from `apps/user_app`.
+
 ## Documentation
 
 See Linear project P-HYA-10 for full documentation:
