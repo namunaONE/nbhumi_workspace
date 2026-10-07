@@ -1,3 +1,4 @@
+import 'package:core/src/theme/brand_colors.dart';
 import 'package:core/src/theme/marketplace_colors.dart';
 import 'package:flutter/material.dart';
 
@@ -5,8 +6,9 @@ import 'package:flutter/material.dart';
 class AppTheme {
   AppTheme._();
 
-  /// Brand seed color — Intense Cobalt Blue (Fidelity).
-  static const Color seedColor = Color(0xFF002C6D);
+  /// Brand seed color — the logo's deep blue. Aliased (not re-declared) so
+  /// the seed can never drift from [BrandColors.logoBlue].
+  static const Color seedColor = BrandColors.logoBlue;
 
   /// Light theme.
   static ThemeData get light => ThemeData(

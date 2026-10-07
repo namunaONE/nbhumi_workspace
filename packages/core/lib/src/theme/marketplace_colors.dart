@@ -1,3 +1,4 @@
+import 'package:core/src/theme/brand_colors.dart';
 import 'package:flutter/material.dart';
 
 /// Custom color tokens for the nBhumi marketplace.
@@ -22,7 +23,9 @@ class MarketplaceColors extends ThemeExtension<MarketplaceColors> {
     required this.onLeaseTeal,
   });
 
-  /// KYC-verified badge fill. Green reads as "checked" without needing an icon.
+  /// KYC-verified badge fill: the logo green. Green reads as "checked"
+  /// without needing an icon, and sharing the logo's exact value keeps
+  /// badges, pin and land arc visibly one brand.
   final Color verifiedGreen;
 
   /// Foreground that meets contrast on [verifiedGreen].
@@ -46,10 +49,11 @@ class MarketplaceColors extends ThemeExtension<MarketplaceColors> {
   /// Foreground for text on [leaseTeal].
   final Color onLeaseTeal;
 
-  /// Light-mode tokens. Accents are dark enough to take white text.
+  /// Light-mode tokens. [verifiedGreen] is the logo green; its foreground
+  /// is the logo blue (≈6.3:1, WCAG AA), mirroring the logo's own pupil.
   static const MarketplaceColors light = MarketplaceColors(
-    verifiedGreen: Color(0xFF2E7D32),
-    onVerifiedGreen: Color(0xFFFFFFFF),
+    verifiedGreen: BrandColors.logoGreen,
+    onVerifiedGreen: BrandColors.logoBlue,
     saleOrange: Color(0xFFE65100),
     onSaleOrange: Color(0xFFFFFFFF),
     rentBlue: Color(0xFF1565C0),
@@ -58,11 +62,12 @@ class MarketplaceColors extends ThemeExtension<MarketplaceColors> {
     onLeaseTeal: Color(0xFFFFFFFF),
   );
 
-  /// Dark-mode tokens. Purpose accents are lightened so they stay legible
-  /// against a dark surface, so their foregrounds flip to dark.
+  /// Dark-mode tokens. The verified pair stays logo-locked in both schemes:
+  /// one brand mark, one contrast pair, no per-scheme drift. Other purpose
+  /// accents are lightened so they stay legible against a dark surface.
   static const MarketplaceColors dark = MarketplaceColors(
-    verifiedGreen: Color(0xFF66BB6A),
-    onVerifiedGreen: Color(0xFF003300),
+    verifiedGreen: BrandColors.logoGreen,
+    onVerifiedGreen: BrandColors.logoBlue,
     saleOrange: Color(0xFFFF8A65),
     onSaleOrange: Color(0xFF3E1500),
     rentBlue: Color(0xFF64B5F6),
