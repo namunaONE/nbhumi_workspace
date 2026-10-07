@@ -280,44 +280,50 @@ class ListingWizard extends _$ListingWizard {
     state = state.copyWith(photos: next);
   }
 
-  /// Creates the listing and submits it for review.
+  /// Creates a draft, attaches photos, then submits it for review via RPC.
   ///
-  /// Creates as `pending_review` directly rather than as a draft and then
-  /// updating: the wizard's whole purpose is submission, and one call avoids a
-  /// window where a half-written listing exists as a draft.
-  ///
-  /// Photos are attached after the listing row exists, because
-  /// `listing_photos.listing_id` is a foreign key.
+  /// A failed attachment must never strand a `pending_review` listing with
+  /// no photo. Once the draft exists its id is retained across retries within
+  /// this wizard, so attachment or submission failures do not duplicate it.
+  /// The server independently refuses a status transition without a photo.
   Future<bool> submit(post_strings.AppLocalizations strings) async {
-    if (state.submitting) return false;
+    if (state.submitting || state.isSubmitted) return false;
     if (!state.canSubmit(strings)) return false;
 
     state = state.copyWith(submitting: true, clearSubmitError: true);
-
     final repository = ref.read(listingRepositoryProvider);
 
     try {
-      final listingId = await repository.createListing(
-        listing: _toListing(),
+      var draftId = state.draftListingId;
+      if (draftId == null) {
+        draftId = await repository.createListing(listing: _toListing());
+        // Store the id *before* attaching. Even a partial photo failure must
+        // leave the same draft available for a retry, not create a new one.
+        state = state.copyWith(draftListingId: draftId);
+      } else {
+        // The seller may have edited the form after a failed attempt. Apply
+        // those changes to the existing draft before retrying submission.
+        await repository.updateListing(
+          listingId: draftId,
+          listing: _toListing(),
+        );
+      }
+
+      await repository.attachListingPhotos(draftId, state.uploadedPhotoUrls);
+      await repository.updateListing(
+        listingId: draftId,
         status: ListingStatus.pendingReview,
       );
 
-      final urls = state.uploadedPhotoUrls;
-      if (urls.isNotEmpty) {
-        await repository.attachListingPhotos(listingId, urls);
-      }
-
       state = state.copyWith(
         submitting: false,
-        createdListingId: listingId,
+        createdListingId: draftId,
       );
       return true;
     } on AppException catch (e) {
-      // Rule 38: the repository has already mapped this, so the message is
-      // user-safe and needs no further translation.
       state = state.copyWith(
         submitting: false,
-        submitError: e.message(),
+        submitError: e.message(preferNepali: strings.localeName != 'en'),
       );
       return false;
     }

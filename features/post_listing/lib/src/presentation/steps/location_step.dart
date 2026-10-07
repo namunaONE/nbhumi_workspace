@@ -4,8 +4,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:models/models.dart';
 import 'package:post_listing/l10n/output/post_localizations.dart'
     as post_strings;
-import 'package:post_listing/l10n/output/post_localizations.dart'
-    as post_strings;
 
 import '../../viewmodels/listing_wizard_state.dart';
 import '../../viewmodels/listing_wizard_validation.dart';

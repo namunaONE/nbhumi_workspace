@@ -11,10 +11,10 @@ import 'listing_wizard_state.dart';
 /// will reject later, and a rule the app and the server disagree on is how a
 /// seller fills in a correct form and gets an error anyway.
 ///
-/// Messages resolve through [AppLocalizations] passed in by the caller, which
+/// Messages resolve through the localizations passed in by the caller, which
 /// always has a BuildContext (steps, screen) or constructs the English
 /// lookup directly (unit tests). Field hints are UI strings, not failures,
-/// so they do not go through [AppException] (Rule 36 covers the latter).
+/// so they do not go through `AppException`.
 extension ListingWizardValidation on ListingWizardState {
   /// Validates [step] and returns any problems.
   StepValidation validate(WizardStep step, post_strings.AppLocalizations s) =>
@@ -135,7 +135,9 @@ extension ListingWizardValidation on ListingWizardState {
 
     if (usesHillUnits) {
       errors
-        ..addAll(_optionalNonNegative(s, 'areaRopani', areaRopani, s.unitRopani))
+        ..addAll(
+          _optionalNonNegative(s, 'areaRopani', areaRopani, s.unitRopani),
+        )
         ..addAll(_optionalNonNegative(s, 'areaAana', areaAana, s.unitAana))
         ..addAll(
           _optionalNonNegative(s, 'areaPaisa', areaPaisa, s.unitPaisa),
@@ -214,4 +216,3 @@ extension ListingWizardValidation on ListingWizardState {
     return int.tryParse(trimmed);
   }
 }
-

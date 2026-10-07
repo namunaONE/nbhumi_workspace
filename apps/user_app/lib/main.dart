@@ -1,3 +1,4 @@
+import 'package:auth/l10n/output/auth_localizations.dart' as auth_strings;
 import 'package:core/core.dart';
 import 'package:data/data.dart';
 import 'package:flutter/material.dart';
@@ -8,6 +9,8 @@ import 'package:listing_detail/l10n/output/detail_localizations.dart'
     as detail_strings;
 import 'package:notifications/l10n/output/notifications_localizations.dart'
     as notif_strings;
+import 'package:post_listing/l10n/output/post_localizations.dart'
+    as post_strings;
 import 'package:search/l10n/output/search_localizations.dart'
     as search_strings;
 import 'package:supabase_flutter/supabase_flutter.dart';
@@ -73,8 +76,10 @@ class UserApp extends ConsumerWidget {
         // rather than also reworking every app entry point.
         localizationsDelegates: const <LocalizationsDelegate<Object>>[
           AppLocalizations.delegate,
+          auth_strings.AppLocalizations.delegate,
           kyc_strings.AppLocalizations.delegate,
           notif_strings.AppLocalizations.delegate,
+          post_strings.AppLocalizations.delegate,
           detail_strings.AppLocalizations.delegate,
           search_strings.AppLocalizations.delegate,
           GlobalMaterialLocalizations.delegate,

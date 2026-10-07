@@ -1,0 +1,6 @@
+#include "Generated.xcconfig"
+
+// HYA-239 staging flavor: staging Supabase (HYA-284), verbose logging
+// (ENVIRONMENT=staging). Installs side-by-side via the .staging suffix.
+PRODUCT_BUNDLE_IDENTIFIER=com.nbhumi.userApp.staging
+BUNDLE_DISPLAY_NAME=nBhumi Staging

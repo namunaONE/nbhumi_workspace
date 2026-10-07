@@ -291,5 +291,50 @@
       }
     }
   },
-  "profileSavedAs": "Saved — {name}"
+  "profileSavedAs": "Saved — {name}",
+
+  "@onboardingTagline": {
+    "description": "Onboarding headline."
+  },
+  "onboardingTagline": "Buy and sell property across Nepal",
+
+  "@onboardingSearchTitle": {
+    "description": "First onboarding feature."
+  },
+  "onboardingSearchTitle": "Search in your own units",
+
+  "@onboardingSearchBody": {
+    "description": "First onboarding feature body."
+  },
+  "onboardingSearchBody": "Filter by district, price and area in ropani, aana or bigha depending on the region.",
+
+  "@onboardingVerifiedTitle": {
+    "description": "Second onboarding feature."
+  },
+  "onboardingVerifiedTitle": "Verified sellers",
+
+  "@onboardingVerifiedBody": {
+    "description": "Second onboarding feature body."
+  },
+  "onboardingVerifiedBody": "Sellers who have had their identity documents checked carry a verified badge.",
+
+  "@onboardingPostTitle": {
+    "description": "Third onboarding feature."
+  },
+  "onboardingPostTitle": "Post your property",
+
+  "@onboardingPostBody": {
+    "description": "Third onboarding feature body."
+  },
+  "onboardingPostBody": "Add photos and details. A reviewer checks each listing before it goes live.",
+
+  "@onboardingDisclaimer": {
+    "description": "Legal disclaimer (DATA.md requires it visible)."
+  },
+  "onboardingDisclaimer": "nBhumi helps people advertise and find property. It is not a broker and does not handle money. Ownership transfers are completed at Malpot with the concerned authorities.",
+
+  "@onboardingBrowse": {
+    "description": "Onboarding primary action."
+  },
+  "onboardingBrowse": "Browse listings"
 }

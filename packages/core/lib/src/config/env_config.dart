@@ -43,6 +43,9 @@ abstract final class EnvConfig {
   /// Whether this is the production environment.
   static bool get isProd => environment == 'prod';
 
+  /// Whether this is the staging environment.
+  static bool get isStaging => environment == 'staging';
+
   /// Whether this is the development environment.
   static bool get isDev => environment == 'dev';
 

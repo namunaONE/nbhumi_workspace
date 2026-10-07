@@ -1,6 +1,8 @@
 import 'package:auth/auth.dart';
+import 'package:auth/l10n/output/auth_localizations.dart' as auth_strings;
 import 'package:data/data.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:go_router/go_router.dart';
@@ -44,6 +46,13 @@ void main() {
         overrides: [isSignedInProvider.overrideWithValue(false)],
         child: MaterialApp.router(
           locale: const Locale('en'),
+          localizationsDelegates: const <LocalizationsDelegate<dynamic>>[
+            auth_strings.AppLocalizations.delegate,
+            GlobalMaterialLocalizations.delegate,
+            GlobalWidgetsLocalizations.delegate,
+            GlobalCupertinoLocalizations.delegate,
+          ],
+          supportedLocales: const <Locale>[Locale('en'), Locale('ne')],
           routerConfig: router,
         ),
       ),
@@ -82,7 +91,17 @@ void main() {
           isSignedInProvider.overrideWithValue(true),
           authServiceProvider.overrideWithValue(service),
         ],
-        child: MaterialApp.router(routerConfig: router),
+        child: MaterialApp.router(
+          locale: const Locale('en'),
+          localizationsDelegates: const <LocalizationsDelegate<dynamic>>[
+            auth_strings.AppLocalizations.delegate,
+            GlobalMaterialLocalizations.delegate,
+            GlobalWidgetsLocalizations.delegate,
+            GlobalCupertinoLocalizations.delegate,
+          ],
+          supportedLocales: const <Locale>[Locale('en'), Locale('ne')],
+          routerConfig: router,
+        ),
       ),
     );
     await tester.pumpAndSettle();

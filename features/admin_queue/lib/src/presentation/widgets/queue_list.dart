@@ -17,7 +17,15 @@ import 'queue_row.dart';
 /// that neither layout should own.
 class QueueList extends ConsumerStatefulWidget {
   /// Creates the list pane.
-  const QueueList({super.key});
+  ///
+  /// [onOpenReports] is wired by the admin panel's router to the second admin
+  /// queue (buyer reports). The feature deliberately has no go_router
+  /// dependency, so this is the seam; when null the affordance is hidden
+  /// rather than dead, and tests that don't care about reports never see it.
+  const QueueList({super.key, this.onOpenReports});
+
+  /// Called when the admin asks to switch to the reports queue.
+  final VoidCallback? onOpenReports;
 
   @override
   ConsumerState<QueueList> createState() => _QueueListState();
@@ -60,6 +68,12 @@ class _QueueListState extends ConsumerState<QueueList> {
       appBar: AppBar(
         title: const Text('Verification Queue'),
         actions: <Widget>[
+          if (widget.onOpenReports != null)
+            IconButton(
+              onPressed: widget.onOpenReports,
+              icon: const Icon(Icons.flag_outlined),
+              tooltip: 'Open the reports queue',
+            ),
           IconButton(
             onPressed: () => ref.read(adminQueueProvider.notifier).retry(),
             icon: const Icon(Icons.refresh),

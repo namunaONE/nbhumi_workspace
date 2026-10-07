@@ -88,6 +88,9 @@ class AppLocalizationsNe extends AppLocalizations {
   String get wardHint => 'वडा नम्बर १ देखि ३३ सम्म हुन्छ। नेपालमा सबैभन्दा धेरै वडा भएको स्थानीय तह पोखरा महानगरपालिका हो, ३३ वटा।';
 
   @override
+  String get wardNoMunicipality => 'पहिले नगरपालिका छान्नुहोस्, अनि वडा छान्नुहोस्।';
+
+  @override
   String get municipalitiesLoading => 'नगरपालिकाहरू';
 
   @override
@@ -97,6 +100,9 @@ class AppLocalizationsNe extends AppLocalizations {
 
   @override
   String get municipalitiesError => 'नगरपालिका लोड गर्न सकिएन। इन्टरनेट जडान जाँच गर्नुहोस्।';
+
+  @override
+  String get retryAction => 'पुनः प्रयास';
 
   @override
   String get fieldRoadAccess => 'बाटोको पहुँच';

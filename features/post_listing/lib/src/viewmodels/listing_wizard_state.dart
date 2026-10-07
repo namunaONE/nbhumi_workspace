@@ -134,6 +134,7 @@ class ListingWizardState {
     this.photos = const <WizardPhoto>[],
     this.submitting = false,
     this.submitError,
+    this.draftListingId,
     this.createdListingId,
   });
 
@@ -214,6 +215,12 @@ class ListingWizardState {
 
   /// Message from the last failed submit.
   final String? submitError;
+
+  /// Id of the draft created before photos are attached.
+  ///
+  /// Kept after a failed attach or submit so retry uses the same row instead
+  /// of adding duplicate drafts. Null until the first create succeeds.
+  final String? draftListingId;
 
   /// Id of the listing created by a successful submit.
   final String? createdListingId;
@@ -319,6 +326,7 @@ class ListingWizardState {
     List<WizardPhoto>? photos,
     bool? submitting,
     String? submitError,
+    String? draftListingId,
     String? createdListingId,
     bool clearSubmitError = false,
     bool clearDistrict = false,
@@ -351,6 +359,7 @@ class ListingWizardState {
         submitting: submitting ?? this.submitting,
         submitError:
             clearSubmitError ? null : (submitError ?? this.submitError),
+        draftListingId: draftListingId ?? this.draftListingId,
         createdListingId: createdListingId ?? this.createdListingId,
       );
 

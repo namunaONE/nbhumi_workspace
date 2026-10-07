@@ -1,0 +1,6 @@
+#include "Generated.xcconfig"
+
+// HYA-239 dev flavor: local Supabase, debug logging (ENVIRONMENT=dev).
+// Installs side-by-side with staging/prod via the .dev bundle suffix.
+PRODUCT_BUNDLE_IDENTIFIER=com.nbhumi.userApp.dev
+BUNDLE_DISPLAY_NAME=nBhumi Dev

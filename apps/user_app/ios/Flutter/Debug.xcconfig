@@ -1,1 +1,4 @@
 #include "Generated.xcconfig"
+// HYA-239: unflavored builds keep working. Debug behaves like dev,
+// Release like prod; flavored configs override both keys below.
+BUNDLE_DISPLAY_NAME=nBhumi Dev

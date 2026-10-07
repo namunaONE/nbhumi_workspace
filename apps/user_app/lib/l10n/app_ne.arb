@@ -291,5 +291,50 @@
       }
     }
   },
-  "profileSavedAs": "सेभ भयो — {name}"
+  "profileSavedAs": "सेभ भयो — {name}",
+
+  "@onboardingTagline": {
+    "description": "Onboarding headline."
+  },
+  "onboardingTagline": "नेपालभर घरजग्गा किन्नुहोस् र बेच्नुहोस्",
+
+  "@onboardingSearchTitle": {
+    "description": "First onboarding feature."
+  },
+  "onboardingSearchTitle": "आफ्नै एकाइमा खोज्नुहोस्",
+
+  "@onboardingSearchBody": {
+    "description": "First onboarding feature body."
+  },
+  "onboardingSearchBody": "क्षेत्रअनुसार जिल्ला, मूल्य र रोपनी, आना वा बिघामा क्षेत्रफलबाट फिल्टर गर्नुहोस्।",
+
+  "@onboardingVerifiedTitle": {
+    "description": "Second onboarding feature."
+  },
+  "onboardingVerifiedTitle": "प्रमाणित विक्रेताहरू",
+
+  "@onboardingVerifiedBody": {
+    "description": "Second onboarding feature body."
+  },
+  "onboardingVerifiedBody": "पहिचान कागजात जाँच भएका विक्रेतासँग प्रमाणित ब्याज हुन्छ।",
+
+  "@onboardingPostTitle": {
+    "description": "Third onboarding feature."
+  },
+  "onboardingPostTitle": "आफ्नो घरजग्गा पोस्ट गर्नुहोस्",
+
+  "@onboardingPostBody": {
+    "description": "Third onboarding feature body."
+  },
+  "onboardingPostBody": "फोटो र विवरण थप्नुहोस्। प्रत्येक विज्ञापन प्रकाशित हुनुअघि समीक्षकले जाँच्छ।",
+
+  "@onboardingDisclaimer": {
+    "description": "Legal disclaimer (DATA.md requires it visible)."
+  },
+  "onboardingDisclaimer": "नभूमिले घरजग्गा विज्ञापन र खोजीमा सघाउँछ। यो ब्रोकर होइन र पैसाको कारोबार गर्दैन। स्वामित्व हस्तान्तरण सम्बन्धित निकायमार्फत मालपोतमा हुन्छ।",
+
+  "@onboardingBrowse": {
+    "description": "Onboarding primary action."
+  },
+  "onboardingBrowse": "विज्ञापन हेर्नुहोस्"
 }

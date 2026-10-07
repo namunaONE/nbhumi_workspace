@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:auth/l10n/output/auth_localizations.dart' as auth_strings;
 import 'package:core/core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -75,12 +76,13 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
   void _fail(AppException e) {
     if (!mounted) return;
     final retry = e.isRetryable ? _submit : null;
+    final strings = auth_strings.AppLocalizations.of(context);
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         content: Text(e.localizedForContext(context)),
         action: retry == null
             ? null
-            : SnackBarAction(label: 'Retry', onPressed: retry),
+            : SnackBarAction(label: strings.retry, onPressed: retry),
       ),
     );
   }
@@ -129,20 +131,23 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
     }
   }
 
-  String? _emailError(String? value) =>
-      Validators.isValidEmail((value ?? '').trim())
-          ? null
-          : 'Enter a valid email address.';
+  String? _emailError(String? value) {
+    if (Validators.isValidEmail((value ?? '').trim())) return null;
+    return auth_strings.AppLocalizations.of(context).emailError;
+  }
 
-  String? _passwordError(String? value) =>
-      Validators.isValidPassword(value ?? '')
-          ? null
-          : 'At least ${Validators.minPasswordLength} characters.';
+  String? _passwordError(String? value) {
+    if (Validators.isValidPassword(value ?? '')) return null;
+    return auth_strings.AppLocalizations.of(context).passwordError(
+      Validators.minPasswordLength,
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
+    final strings = auth_strings.AppLocalizations.of(context);
     return Scaffold(
-      appBar: AppBar(title: const Text('Sign in')),
+      appBar: AppBar(title: Text(strings.title)),
       body: SafeArea(
         child: SingleChildScrollView(
           padding: const EdgeInsets.all(24),
@@ -152,16 +157,16 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
                 SegmentedButton<_Pane>(
-                  segments: const [
+                  segments: [
                     ButtonSegment(
                       value: _Pane.link,
-                      label: Text('Magic link'),
-                      icon: Icon(Icons.mail_outline),
+                      label: Text(strings.paneLink),
+                      icon: const Icon(Icons.mail_outline),
                     ),
                     ButtonSegment(
                       value: _Pane.password,
-                      label: Text('Password'),
-                      icon: Icon(Icons.lock_outline),
+                      label: Text(strings.panePassword),
+                      icon: const Icon(Icons.lock_outline),
                     ),
                   ],
                   selected: {_pane},
@@ -173,19 +178,17 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                 const SizedBox(height: 24),
                 if (_pane == _Pane.link) ...[
                   Text(
-                    'Sign in with a magic link',
+                    strings.linkTitle,
                     style: Theme.of(context).textTheme.headlineSmall,
                   ),
                   const SizedBox(height: 8),
-                  const Text(
-                    'We email you a sign-in link. No password to remember.',
-                  ),
+                  Text(strings.linkSubtitle),
                 ] else ...[
                   Text(
                     switch (_mode) {
-                      _PasswordMode.signIn => 'Sign in with your password',
-                      _PasswordMode.signUp => 'Create your account',
-                      _PasswordMode.reset => 'Reset your password',
+                      _PasswordMode.signIn => strings.passwordSignInTitle,
+                      _PasswordMode.signUp => strings.signUpTitle,
+                      _PasswordMode.reset => strings.resetTitle,
                     },
                     style: Theme.of(context).textTheme.headlineSmall,
                   ),
@@ -193,11 +196,9 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                   Text(
                     switch (_mode) {
                       _PasswordMode.signIn =>
-                        'Prefer no password? The link tab needs only email.',
-                      _PasswordMode.signUp =>
-                        'One account for posting and contacting sellers.',
-                      _PasswordMode.reset =>
-                        'We email you a link to choose a new password.',
+                        strings.passwordSignInSubtitle,
+                      _PasswordMode.signUp => strings.signUpSubtitle,
+                      _PasswordMode.reset => strings.resetSubtitle,
                     },
                   ),
                 ],
@@ -207,9 +208,9 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                   keyboardType: TextInputType.emailAddress,
                   textInputAction: TextInputAction.next,
                   enabled: !_busy,
-                  decoration: const InputDecoration(
-                    labelText: 'Email',
-                    border: OutlineInputBorder(),
+                  decoration: InputDecoration(
+                    labelText: strings.emailLabel,
+                    border: const OutlineInputBorder(),
                   ),
                   validator: _emailError,
                   onFieldSubmitted: (_) => _submit(),
@@ -222,7 +223,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                     obscureText: _obscure,
                     enabled: !_busy,
                     decoration: InputDecoration(
-                      labelText: 'Password',
+                      labelText: strings.passwordLabel,
                       border: const OutlineInputBorder(),
                       suffixIcon: IconButton(
                         icon: Icon(
@@ -245,13 +246,13 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                     controller: _confirm,
                     obscureText: _obscure,
                     enabled: !_busy,
-                    decoration: const InputDecoration(
-                      labelText: 'Confirm password',
-                      border: OutlineInputBorder(),
+                    decoration: InputDecoration(
+                      labelText: strings.confirmLabel,
+                      border: const OutlineInputBorder(),
                     ),
                     validator: (value) => value == _password.text
                         ? null
-                        : 'Passwords do not match.',
+                        : strings.mismatchError,
                     onFieldSubmitted: (_) => _submit(),
                   ),
                 ],
@@ -260,21 +261,21 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                   onPressed: _busy || _cooldownSeconds > 0 ? null : _submit,
                   child: Text(
                     _busy
-                        ? 'Sending…'
+                        ? strings.sending
                         : _cooldownSeconds > 0
-                            ? 'Resend in ${_cooldownSeconds}s'
+                            ? strings.resendIn(_cooldownSeconds)
                             : switch ((_pane, _mode)) {
                                 (_Pane.link, _) => _sentTo == null
-                                    ? 'Send sign-in link'
-                                    : 'Resend link',
+                                    ? strings.sendLink
+                                    : strings.resendLink,
                                 (_Pane.password, _PasswordMode.signIn) =>
-                                  'Sign in',
+                                  strings.signInAction,
                                 (_Pane.password, _PasswordMode.signUp) =>
-                                  'Create account',
+                                  strings.signUpAction,
                                 (_Pane.password, _PasswordMode.reset) =>
                                   _sentTo == null
-                                      ? 'Send reset link'
-                                      : 'Resend reset link',
+                                      ? strings.sendReset
+                                      : strings.resendReset,
                               },
                   ),
                 ),
@@ -291,8 +292,8 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                             }),
                     child: Text(
                       _mode == _PasswordMode.signIn
-                          ? 'New here? Create an account'
-                          : 'Have an account? Sign in',
+                          ? strings.switchToSignUp
+                          : strings.switchToSignIn,
                     ),
                   ),
                 if (_pane == _Pane.password &&
@@ -304,7 +305,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                               _mode = _PasswordMode.reset;
                               _sentTo = null;
                             }),
-                    child: const Text('Forgot your password?'),
+                    child: Text(strings.forgotPassword),
                   ),
                 if (_pane == _Pane.password &&
                     _mode == _PasswordMode.reset)
@@ -313,20 +314,16 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                         ? null
                         : () => setState(
                             () => _mode = _PasswordMode.signIn),
-                    child: const Text('Back to sign in'),
+                    child: Text(strings.backToSignIn),
                   ),
                 if (_sentTo != null) ...[
                   const SizedBox(height: 16),
                   Text(
                     switch ((_pane, _mode)) {
-                      (_Pane.link, _) =>
-                        'Check your inbox — a sign-in link '
-                        'is on its way to $_sentTo.',
+                      (_Pane.link, _) => strings.sentLink(_sentTo!),
                       (_Pane.password, _PasswordMode.signUp) =>
-                        'Account created for $_sentTo. If confirmation '
-                        'is on, tap the emailed link to finish signing in.',
-                      (_, _) =>
-                        'Check your inbox — we sent a reset link to $_sentTo.',
+                        strings.accountCreated(_sentTo!),
+                      (_, _) => strings.resetSent(_sentTo!),
                     },
                   ),
                 ],

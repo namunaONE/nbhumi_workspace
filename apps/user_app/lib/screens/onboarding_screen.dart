@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:user_app/l10n/output/app_localizations.dart';
 import 'package:user_app/onboarding/onboarding_gate.dart';
 
 /// First-run explanation of what nBhumi is and is not.
@@ -20,6 +21,7 @@ class OnboardingScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final theme = Theme.of(context);
+    final strings = AppLocalizations.of(context);
 
     return Scaffold(
       body: SafeArea(
@@ -39,37 +41,31 @@ class OnboardingScreen extends ConsumerWidget {
                   ),
                   const SizedBox(height: 24),
                   Text(
-                    'nBhumi',
+                    strings.appTitle,
                     style: theme.textTheme.headlineMedium,
                     textAlign: TextAlign.center,
                   ),
                   const SizedBox(height: 8),
                   Text(
-                    'Buy and sell property across Nepal',
+                    strings.onboardingTagline,
                     style: theme.textTheme.titleMedium,
                     textAlign: TextAlign.center,
                   ),
                   const SizedBox(height: 32),
-                  const _Feature(
+                  _Feature(
                     icon: Icons.search,
-                    title: 'Search in your own units',
-                    body:
-                        'Filter by district, price and area in ropani, aana '
-                        'or bigha depending on the region.',
+                    title: strings.onboardingSearchTitle,
+                    body: strings.onboardingSearchBody,
                   ),
-                  const _Feature(
+                  _Feature(
                     icon: Icons.verified_user_outlined,
-                    title: 'Verified sellers',
-                    body:
-                        'Sellers who have had their identity documents '
-                        'checked carry a verified badge.',
+                    title: strings.onboardingVerifiedTitle,
+                    body: strings.onboardingVerifiedBody,
                   ),
-                  const _Feature(
+                  _Feature(
                     icon: Icons.photo_camera_outlined,
-                    title: 'Post your property',
-                    body:
-                        'Add photos and details. A reviewer checks each '
-                        'listing before it goes live.',
+                    title: strings.onboardingPostTitle,
+                    body: strings.onboardingPostBody,
                   ),
                   const SizedBox(height: 32),
                   // DATA.md: this disclaimer must be visible, not buried in
@@ -89,10 +85,7 @@ class OnboardingScreen extends ConsumerWidget {
                           const SizedBox(width: 12),
                           Expanded(
                             child: Text(
-                              'nBhumi helps people advertise and find '
-                              'property. It is not a broker and does not '
-                              'handle money. Ownership transfers are completed '
-                              'at Malpot with the concerned authorities.',
+                              strings.onboardingDisclaimer,
                               style: theme.textTheme.bodySmall,
                             ),
                           ),
@@ -112,7 +105,7 @@ class OnboardingScreen extends ConsumerWidget {
                     await ref.read(onboardingGateProvider).markSeen();
                     if (context.mounted) context.go('/');
                   },
-                  child: const Text('Browse listings'),
+                  child: Text(strings.onboardingBrowse),
                 ),
               ),
             ),

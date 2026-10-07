@@ -1,0 +1,252 @@
+{
+  "@@locale": "en",
+  "@@last_modified": "2026-10-06T00:00:00.000",
+
+  "@title": {
+    "description": "Login screen app bar."
+  },
+  "title": "Sign in",
+
+  "@paneLink": {
+    "description": "Magic-link pane segment."
+  },
+  "paneLink": "Magic link",
+
+  "@panePassword": {
+    "description": "Password pane segment."
+  },
+  "panePassword": "Password",
+
+  "@linkTitle": {
+    "description": "Magic-link pane heading."
+  },
+  "linkTitle": "Sign in with a magic link",
+
+  "@linkSubtitle": {
+    "description": "Magic-link pane explanation."
+  },
+  "linkSubtitle": "We email you a sign-in link. No password to remember.",
+
+  "@passwordSignInTitle": {
+    "description": "Password sign-in heading."
+  },
+  "passwordSignInTitle": "Sign in with your password",
+
+  "@passwordSignInSubtitle": {
+    "description": "Password sign-in explanation."
+  },
+  "passwordSignInSubtitle": "Prefer no password? The link tab needs only email.",
+
+  "@signUpTitle": {
+    "description": "Account creation heading."
+  },
+  "signUpTitle": "Create your account",
+
+  "@signUpSubtitle": {
+    "description": "Account creation explanation."
+  },
+  "signUpSubtitle": "One account for posting and contacting sellers.",
+
+  "@resetTitle": {
+    "description": "Password reset heading."
+  },
+  "resetTitle": "Reset your password",
+
+  "@resetSubtitle": {
+    "description": "Password reset explanation."
+  },
+  "resetSubtitle": "We email you a link to choose a new password.",
+
+  "@emailLabel": {
+    "description": "Email field label."
+  },
+  "emailLabel": "Email",
+
+  "@passwordLabel": {
+    "description": "Password field label."
+  },
+  "passwordLabel": "Password",
+
+  "@confirmLabel": {
+    "description": "Confirm-password field label."
+  },
+  "confirmLabel": "Confirm password",
+
+  "@emailError": {
+    "description": "Invalid email message."
+  },
+  "emailError": "Enter a valid email address.",
+
+  "@passwordError": {
+    "description": "Short password message.",
+    "placeholders": {
+      "min": { "type": "int", "example": "8" }
+    }
+  },
+  "passwordError": "At least {min} characters.",
+
+  "@mismatchError": {
+    "description": "Password mismatch message."
+  },
+  "mismatchError": "Passwords do not match.",
+
+  "@sending": {
+    "description": "Submit button while busy."
+  },
+  "sending": "Sending…",
+
+  "@resendIn": {
+    "description": "Cooldown submit button.",
+    "placeholders": {
+      "seconds": { "type": "int", "example": "30" }
+    }
+  },
+  "resendIn": "Resend in {seconds}s",
+
+  "@sendLink": {
+    "description": "Send magic link action."
+  },
+  "sendLink": "Send sign-in link",
+
+  "@resendLink": {
+    "description": "Resend magic link action."
+  },
+  "resendLink": "Resend link",
+
+  "@signInAction": {
+    "description": "Password sign-in action."
+  },
+  "signInAction": "Sign in",
+
+  "@signUpAction": {
+    "description": "Account creation action."
+  },
+  "signUpAction": "Create account",
+
+  "@sendReset": {
+    "description": "Send reset link action."
+  },
+  "sendReset": "Send reset link",
+
+  "@resendReset": {
+    "description": "Resend reset link action."
+  },
+  "resendReset": "Resend reset link",
+
+  "@switchToSignUp": {
+    "description": "Toggle to account creation."
+  },
+  "switchToSignUp": "New here? Create an account",
+
+  "@switchToSignIn": {
+    "description": "Toggle back to sign-in."
+  },
+  "switchToSignIn": "Have an account? Sign in",
+
+  "@forgotPassword": {
+    "description": "Forgot-password toggle."
+  },
+  "forgotPassword": "Forgot your password?",
+
+  "@backToSignIn": {
+    "description": "Back-to-sign-in toggle."
+  },
+  "backToSignIn": "Back to sign in",
+
+  "@sentLink": {
+    "description": "Magic link sent confirmation.",
+    "placeholders": {
+      "email": { "type": "String", "example": "sita@example.com" }
+    }
+  },
+  "sentLink": "Check your inbox — a sign-in link is on its way to {email}.",
+
+  "@accountCreated": {
+    "description": "Account created confirmation.",
+    "placeholders": {
+      "email": { "type": "String", "example": "sita@example.com" }
+    }
+  },
+  "accountCreated": "Account created for {email}. If confirmation is on, tap the emailed link to finish signing in.",
+
+  "@resetSent": {
+    "description": "Reset link sent confirmation.",
+    "placeholders": {
+      "email": { "type": "String", "example": "sita@example.com" }
+    }
+  },
+  "resetSent": "Check your inbox — we sent a reset link to {email}.",
+
+  "@retry": {
+    "description": "Retry action (mirrors the app common strings; features cannot import them per Rule 10)."
+  },
+  "retry": "Retry",
+
+  "@callbackSignedIn": {
+    "description": "Signed-in bounce message."
+  },
+  "callbackSignedIn": "Signed in. Taking you home…",
+
+  "@callbackSigningIn": {
+    "description": "Signing-in app bar."
+  },
+  "callbackSigningIn": "Signing in",
+
+  "@callbackWorking": {
+    "description": "Signing-in heading."
+  },
+  "callbackWorking": "Signing you in…",
+
+  "@callbackSlowHint": {
+    "description": "Slow-exchange explanation."
+  },
+  "callbackSlowHint": "If this takes more than a few seconds, the link may have expired or been used already. Request a fresh one from the login screen.",
+
+  "@callbackBackToLogin": {
+    "description": "Back-to-login action."
+  },
+  "callbackBackToLogin": "Back to login",
+
+  "@callbackFailedTitle": {
+    "description": "Failed-link app bar."
+  },
+  "callbackFailedTitle": "Sign-in link failed",
+
+  "@callbackRequestNew": {
+    "description": "Request-new-link action."
+  },
+  "callbackRequestNew": "Request a new link",
+
+  "@newPasswordTitle": {
+    "description": "Set-new-password app bar."
+  },
+  "newPasswordTitle": "Choose a new password",
+
+  "@newPasswordIntro": {
+    "description": "Set-new-password explanation.",
+    "placeholders": {
+      "min": { "type": "int", "example": "8" }
+    }
+  },
+  "newPasswordIntro": "Enter a new password for your account. At least {min} characters.",
+
+  "@newPasswordLabel": {
+    "description": "New-password field label."
+  },
+  "newPasswordLabel": "New password",
+
+  "@confirmNewLabel": {
+    "description": "Confirm-new-password field label."
+  },
+  "confirmNewLabel": "Confirm new password",
+
+  "@saving": {
+    "description": "Saving state."
+  },
+  "saving": "Saving…",
+
+  "@savePassword": {
+    "description": "Save-new-password action."
+  },
+  "savePassword": "Save new password"
+}

@@ -34,7 +34,13 @@ const double listPaneWidth = 400;
 /// and would lose the list's scroll position on every decision.
 class AdminQueueScreen extends ConsumerWidget {
   /// Creates the queue.
-  const AdminQueueScreen({super.key});
+  ///
+  /// [onOpenReports] is forwarded to the list's reports affordance; see
+  /// [QueueList] for why it is a callback rather than a route name.
+  const AdminQueueScreen({super.key, this.onOpenReports});
+
+  /// Called when the admin chooses the reports queue.
+  final VoidCallback? onOpenReports;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -58,7 +64,10 @@ class AdminQueueScreen extends ConsumerWidget {
           return Scaffold(
             body: Row(
               children: <Widget>[
-                const SizedBox(width: listPaneWidth, child: QueueList()),
+                SizedBox(
+                  width: listPaneWidth,
+                  child: QueueList(onOpenReports: onOpenReports),
+                ),
                 const VerticalDivider(width: 1),
                 // Keyed on the id so switching listings discards the previous
                 // pane rather than keeping its scroll offset — otherwise a long
@@ -155,5 +164,4 @@ class _NothingSelected extends StatelessWidget {
 /// Duplicated from the router's own path rather than imported from it, because
 /// `go_router` is not a dependency of this feature: importing it would couple
 /// the feature to a navigation library its screens never use. The admin panel's
-/// router test asserts the two agree.
-const String adminListingRoutePrefix = '/listing';
+/// router te

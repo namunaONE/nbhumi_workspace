@@ -1,3 +1,4 @@
+import 'package:auth/l10n/output/auth_localizations.dart' as auth_strings;
 import 'package:core/core.dart';
 import 'package:data/data.dart';
 import 'package:flutter/material.dart';
@@ -47,15 +48,17 @@ class AuthCallbackScreen extends ConsumerWidget {
       WidgetsBinding.instance.addPostFrameCallback((_) {
         if (context.mounted) context.go('/');
       });
-      return const Scaffold(
+      final strings = auth_strings.AppLocalizations.of(context);
+      return Scaffold(
         body: SafeArea(
-          child: Center(child: Text('Signed in. Taking you home…')),
+          child: Center(child: Text(strings.callbackSignedIn)),
         ),
       );
     }
 
+    final strings = auth_strings.AppLocalizations.of(context);
     return Scaffold(
-      appBar: AppBar(title: const Text('Signing in')),
+      appBar: AppBar(title: Text(strings.callbackSigningIn)),
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.all(24),
@@ -65,19 +68,15 @@ class AuthCallbackScreen extends ConsumerWidget {
               const LinearProgressIndicator(),
               const SizedBox(height: 24),
               Text(
-                'Signing you in…',
+                strings.callbackWorking,
                 style: Theme.of(context).textTheme.headlineSmall,
               ),
               const SizedBox(height: 8),
-              const Text(
-                'If this takes more than a few seconds, the link may have '
-                'expired or been used already. Request a fresh one from the '
-                'login screen.',
-              ),
+              Text(strings.callbackSlowHint),
               const SizedBox(height: 16),
               OutlinedButton(
                 onPressed: () => context.go('/login'),
-                child: const Text('Back to login'),
+                child: Text(strings.callbackBackToLogin),
               ),
             ],
           ),
@@ -106,8 +105,9 @@ class _CallbackError extends StatelessWidget {
             messageEn: 'We could not sign you in. Request a new link.',
             messageNe: 'साइन इन हुन सकेन। कृपया नयाँ लिङ्क माग्नुहोस्।',
           );
+    final strings = auth_strings.AppLocalizations.of(context);
     return Scaffold(
-      appBar: AppBar(title: const Text('Sign-in link failed')),
+      appBar: AppBar(title: Text(strings.callbackFailedTitle)),
       body: SafeArea(
         child: Center(
           child: Padding(
@@ -119,7 +119,7 @@ class _CallbackError extends StatelessWidget {
                 const SizedBox(height: 16),
                 FilledButton(
                   onPressed: () => context.go('/login'),
-                  child: const Text('Request a new link'),
+                  child: Text(strings.callbackRequestNew),
                 ),
               ],
             ),
@@ -174,8 +174,9 @@ class _SetPasswordFormState extends ConsumerState<_SetPasswordForm> {
 
   @override
   Widget build(BuildContext context) {
+    final strings = auth_strings.AppLocalizations.of(context);
     return Scaffold(
-      appBar: AppBar(title: const Text('Choose a new password')),
+      appBar: AppBar(title: Text(strings.newPasswordTitle)),
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.all(24),
@@ -184,9 +185,8 @@ class _SetPasswordFormState extends ConsumerState<_SetPasswordForm> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                const Text(
-                  'Enter a new password for your account. At least '
-                  '8 characters.',
+                Text(
+                  strings.newPasswordIntro(Validators.minPasswordLength),
                 ),
                 const SizedBox(height: 24),
                 TextFormField(
@@ -194,7 +194,7 @@ class _SetPasswordFormState extends ConsumerState<_SetPasswordForm> {
                   obscureText: _obscure,
                   enabled: !_busy,
                   decoration: InputDecoration(
-                    labelText: 'New password',
+                    labelText: strings.newPasswordLabel,
                     border: const OutlineInputBorder(),
                     suffixIcon: IconButton(
                       icon: Icon(
@@ -208,8 +208,9 @@ class _SetPasswordFormState extends ConsumerState<_SetPasswordForm> {
                   validator: (value) =>
                       Validators.isValidPassword(value ?? '')
                           ? null
-                          : 'At least '
-                              '${Validators.minPasswordLength} characters.',
+                          : strings.passwordError(
+                              Validators.minPasswordLength,
+                            ),
                   onFieldSubmitted: (_) => _save(),
                 ),
                 const SizedBox(height: 16),
@@ -217,19 +218,21 @@ class _SetPasswordFormState extends ConsumerState<_SetPasswordForm> {
                   controller: _confirm,
                   obscureText: _obscure,
                   enabled: !_busy,
-                  decoration: const InputDecoration(
-                    labelText: 'Confirm new password',
-                    border: OutlineInputBorder(),
+                  decoration: InputDecoration(
+                    labelText: strings.confirmNewLabel,
+                    border: const OutlineInputBorder(),
                   ),
                   validator: (value) => value == _password.text
                       ? null
-                      : 'Passwords do not match.',
+                      : strings.mismatchError,
                   onFieldSubmitted: (_) => _save(),
                 ),
                 const SizedBox(height: 16),
                 FilledButton(
                   onPressed: _busy ? null : _save,
-                  child: Text(_busy ? 'Saving…' : 'Save new password'),
+                  child: Text(
+                    _busy ? strings.saving : strings.savePassword,
+                  ),
                 ),
               ],
             ),

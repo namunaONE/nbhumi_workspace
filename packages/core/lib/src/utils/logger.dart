@@ -1,5 +1,7 @@
 import 'dart:developer' as developer;
 
+import '../config/env_config.dart';
+
 /// Structured logging for nBhumi (Rule 21, Rule 37).
 ///
 /// Every entry carries enough context to answer "which user, on which screen,
@@ -15,6 +17,20 @@ abstract final class AppLogger {
 
   /// The `name` shown in `dart:developer` and picked up by Sentry.
   static const String source = 'nBhumi';
+
+  /// Minimum `dart:developer` level emitted for an environment name.
+  ///
+  /// HYA-239 flavor contract: dev and staging are verbose (everything from
+  /// [debug] up); prod is minimal ([warning] and [error] only) so user
+  /// devices stop chattering while crashes still surface. Unknown values fail
+  /// open to verbose — a misconfigured build must never swallow an error.
+  static int minLevelFor(String environment) => switch (environment) {
+        'prod' => 900,
+        _ => 500,
+      };
+
+  /// Whether a log at [level] is emitted in the current build.
+  static bool emits(int level) => level >= minLevelFor(EnvConfig.environment);
 
   /// Verbose developer diagnostics. Not shipped to error reporting.
   static void debug(
@@ -83,6 +99,7 @@ abstract final class AppLogger {
     Object? error,
     StackTrace? stackTrace,
   }) {
+    if (!emits(level)) return;
     developer.log(
       context == null ? message : '$message | $context',
       name: source,

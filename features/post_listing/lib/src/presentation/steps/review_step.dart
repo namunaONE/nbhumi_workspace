@@ -79,17 +79,17 @@ class ReviewStep extends StatelessWidget {
         ),
         _Row(
           label: strings.reviewArea,
-          value: _area(state),
+          value: _area(context, state),
           onTap: () => onEditStep(WizardStep.specs),
         ),
         _Row(
           label: strings.reviewRooms,
-          value: _rooms(state),
+          value: _rooms(context, state),
           onTap: () => onEditStep(WizardStep.specs),
         ),
         _Row(
           label: strings.reviewPrice,
-          value: _price(state),
+          value: _price(context, state),
           onTap: () => onEditStep(WizardStep.price),
         ),
         _Row(
@@ -150,47 +150,66 @@ class ReviewStep extends StatelessWidget {
   static String _humanise(String value) =>
       '${value[0].toUpperCase()}${value.substring(1)}';
 
-  static String _location(ListingWizardState state) {
+  static String _location(BuildContext context, ListingWizardState state) {
+    final strings = post_strings.AppLocalizations.of(context);
     final parts = <String>[
       if (state.district != null) state.district!.name,
       if (state.city.trim().isNotEmpty) state.city.trim(),
-      if (state.ward.trim().isNotEmpty) 'Ward ${state.ward.trim()}',
+      if (state.ward.trim().isNotEmpty)
+        switch (int.tryParse(state.ward.trim())) {
+          final n? => strings.wardNumber(n),
+          // Unparseable ward text passes through rather than crashing review:
+          // validation flags it on its own step, and review must never throw
+          // on a state the seller was allowed to reach.
+          _ => state.ward.trim(),
+        },
     ];
-    return parts.isEmpty ? 'Not set' : parts.join(', ');
+    return parts.isEmpty ? strings.reviewNotSet : parts.join(', ');
   }
 
   /// The seller's own units, which is what they entered and what the listing
   /// will display.
-  static String _area(ListingWizardState state) {
+  static String _area(BuildContext context, ListingWizardState state) {
+    final strings = post_strings.AppLocalizations.of(context);
     final parts = <String>[
       if (state.usesHillUnits) ...<String>[
-        if (state.areaRopani.isNotEmpty) '${state.areaRopani} ropani',
-        if (state.areaAana.isNotEmpty) '${state.areaAana} aana',
-        if (state.areaPaisa.isNotEmpty) '${state.areaPaisa} paisa',
-        if (state.areaDam.isNotEmpty) '${state.areaDam} dam',
+        if (state.areaRopani.isNotEmpty)
+          '${state.areaRopani} ${strings.unitRopani}',
+        if (state.areaAana.isNotEmpty)
+          '${state.areaAana} ${strings.unitAana}',
+        if (state.areaPaisa.isNotEmpty)
+          '${state.areaPaisa} ${strings.unitPaisa}',
+        if (state.areaDam.isNotEmpty) '${state.areaDam} ${strings.unitDam}',
       ] else ...<String>[
-        if (state.areaBigha.isNotEmpty) '${state.areaBigha} bigha',
-        if (state.areaKattha.isNotEmpty) '${state.areaKattha} kattha',
-        if (state.areaDhur.isNotEmpty) '${state.areaDhur} dhur',
+        if (state.areaBigha.isNotEmpty)
+          '${state.areaBigha} ${strings.unitBigha}',
+        if (state.areaKattha.isNotEmpty)
+          '${state.areaKattha} ${strings.unitKattha}',
+        if (state.areaDhur.isNotEmpty)
+          '${state.areaDhur} ${strings.unitDhur}',
       ],
     ];
-    if (parts.isEmpty) return 'Not set';
+    if (parts.isEmpty) return strings.reviewNotSet;
     final sqm = state.areaSqm;
     if (sqm == null) return parts.join(' ');
     return '${parts.join(' ')} (~${sqm.toStringAsFixed(0)} sqm)';
   }
 
-  static String _rooms(ListingWizardState state) {
+  static String _rooms(BuildContext context, ListingWizardState state) {
+    final strings = post_strings.AppLocalizations.of(context);
     final parts = <String>[
-      if (state.bedrooms.trim().isNotEmpty) '${state.bedrooms.trim()} bed',
-      if (state.bathrooms.trim().isNotEmpty) '${state.bathrooms.trim()} bath',
+      if (state.bedrooms.trim().isNotEmpty)
+        '${state.bedrooms.trim()} ${strings.fieldBedrooms}',
+      if (state.bathrooms.trim().isNotEmpty)
+        '${state.bathrooms.trim()} ${strings.fieldBathrooms}',
     ];
-    return parts.isEmpty ? 'Not applicable' : parts.join(' · ');
+    return parts.isEmpty ? strings.reviewNotApplicable : parts.join(' · ');
   }
 
-  static String _price(ListingWizardState state) {
+  static String _price(BuildContext context, ListingWizardState state) {
+    final strings = post_strings.AppLocalizations.of(context);
     final price = int.tryParse(state.priceNpr.trim());
-    if (price == null || price <= 0) return 'Not set';
+    if (price == null || price <= 0) return strings.reviewNotSet;
     return NepaliCurrency.full(price);
   }
 }

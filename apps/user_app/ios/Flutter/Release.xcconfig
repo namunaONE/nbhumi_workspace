@@ -1,1 +1,3 @@
 #include "Generated.xcconfig"
+// HYA-239: unflavored Release behaves like the prod flavor.
+BUNDLE_DISPLAY_NAME=nBhumi

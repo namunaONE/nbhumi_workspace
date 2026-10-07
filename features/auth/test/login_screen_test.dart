@@ -1,6 +1,8 @@
 ﻿import 'package:auth/auth.dart';
+import 'package:auth/l10n/output/auth_localizations.dart' as auth_strings;
 import 'package:data/data.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 
@@ -49,16 +51,26 @@ class _SpyAuthService implements AuthService {
       throw StateError('unused: ${invocation.memberName}');
 }
 
-/// Pumps the screen in an English locale so localized messages render English.
-Widget _app(_SpyAuthService spy) {
+/// Pumps the screen in [locale] so localized messages render accordingly.
+Widget _app(
+  _SpyAuthService spy, {
+  Locale locale = const Locale('en'),
+}) {
   return ProviderScope(
     overrides: [
       isSignedInProvider.overrideWithValue(false),
       authServiceProvider.overrideWithValue(spy),
     ],
-    child: const MaterialApp(
-      locale: Locale('en'),
-      home: LoginScreen(),
+    child: MaterialApp(
+      locale: locale,
+      localizationsDelegates: const <LocalizationsDelegate<dynamic>>[
+        auth_strings.AppLocalizations.delegate,
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
+      ],
+      supportedLocales: const <Locale>[Locale('en'), Locale('ne')],
+      home: const LoginScreen(),
     ),
   );
 }
@@ -164,5 +176,15 @@ void main() {
 
     expect(spy.resetEmail, 's@s.com');
     expect(find.textContaining('reset link to'), findsOneWidget);
+  });
+
+  testWidgets('Nepali locale renders Nepali chrome', (tester) async {
+    final spy = _SpyAuthService();
+    await tester.pumpWidget(_app(spy, locale: const Locale('ne')));
+    await tester.pumpAndSettle();
+
+    expect(find.text('साइन इन'), findsWidgets);
+    expect(find.text('म्याजिक लिङ्क'), findsOneWidget);
+    expect(find.text('पासवर्ड'), findsOneWidget);
   });
 }

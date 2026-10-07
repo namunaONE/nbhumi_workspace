@@ -1,8 +1,17 @@
 import 'package:core/core.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:models/models.dart';
+import 'package:post_listing/l10n/output/post_localizations.dart';
+import 'package:post_listing/l10n/output/post_localizations_en.dart';
+import 'package:post_listing/l10n/output/post_localizations_ne.dart';
 import 'package:post_listing/src/viewmodels/listing_wizard_state.dart';
 import 'package:post_listing/src/viewmodels/listing_wizard_validation.dart';
+
+/// English strings for message assertions.
+final AppLocalizations en = AppLocalizationsEn();
+
+/// Nepali strings for message assertions.
+final AppLocalizations ne = AppLocalizationsNe();
 
 const District kathmandu = District(
   id: 29,
@@ -73,7 +82,7 @@ void main() {
   group('step one: type and purpose', () {
     test('requires both', () {
       const state = ListingWizardState();
-      final errors = state.validate(WizardStep.type).errors;
+      final errors = state.validate(WizardStep.type, en).errors;
 
       expect(
         errors.keys,
@@ -83,7 +92,7 @@ void main() {
 
     test('passes with both chosen', () {
       expect(
-        _complete().validate(WizardStep.type).isValid,
+        _complete().validate(WizardStep.type, en).isValid,
         isTrue,
       );
     });
@@ -92,7 +101,7 @@ void main() {
   group('step two: location', () {
     test('requires a district and a municipality', () {
       const state = ListingWizardState();
-      final errors = state.validate(WizardStep.location).errors;
+      final errors = state.validate(WizardStep.location, en).errors;
 
       expect(
         errors.keys,
@@ -108,7 +117,7 @@ void main() {
       // produce this (the dropdown is district-scoped), but the database
       // refuses the pair with a bare 23503, so validation names it first.
       final state = _complete().copyWith(municipality: lalitpurMetro);
-      final errors = state.validate(WizardStep.location).errors;
+      final errors = state.validate(WizardStep.location, en).errors;
 
       expect(errors['municipality'], contains('not in Kathmandu'));
     });
@@ -135,13 +144,14 @@ void main() {
         city: 'Pokhara',
         ward: '33',
       );
-      expect(state.validate(WizardStep.location).isValid, isTrue);
+      expect(state.validate(WizardStep.location, en).isValid, isTrue);
     });
 
     test('accepts a ward at exactly the body\u2019s count', () {
       expect(
         _complete().copyWith(municipality: kirtipur, ward: '10').validate(
               WizardStep.location,
+              en,
             ).isValid,
         isTrue,
       );
@@ -152,7 +162,7 @@ void main() {
       final state =
           _complete().copyWith(municipality: kirtipur, ward: '11');
       expect(
-        state.validate(WizardStep.location)['ward'],
+        state.validate(WizardStep.location, en)['ward'],
         'Kirtipur has 10 wards',
       );
     });
@@ -160,7 +170,10 @@ void main() {
     test('ward is optional', () {
       // Rule 28: ward is optional.
       expect(
-        _complete().copyWith(ward: '').validate(WizardStep.location).isValid,
+        _complete()
+            .copyWith(ward: '')
+            .validate(WizardStep.location, en)
+            .isValid,
         isTrue,
       );
     });
@@ -168,7 +181,7 @@ void main() {
     test('accepts a ward inside the agreed range', () {
       for (final ward in <String>['1', '16', '32']) {
         expect(
-          _complete().copyWith(ward: ward).validate(WizardStep.location)
+          _complete().copyWith(ward: ward).validate(WizardStep.location, en)
               .isValid,
           isTrue,
           reason: 'ward $ward',
@@ -182,7 +195,7 @@ void main() {
       for (final ward in <String>['34', '36', '0', '-1', '01', 'abc', '']) {
         if (ward.isEmpty) continue;
         expect(
-          _complete().copyWith(ward: ward).validate(WizardStep.location)
+          _complete().copyWith(ward: ward).validate(WizardStep.location, en)
               .isValid,
           isFalse,
           reason: 'ward "$ward"',
@@ -192,12 +205,17 @@ void main() {
 
     test('rejects a negative road frontage', () {
       final state = _complete().copyWith(roadAccessFt: '-5');
-      expect(state.validate(WizardStep.location)['roadAccessFt'], isNotNull);
+      expect(
+        state.validate(WizardStep.location, en)['roadAccessFt'],
+        isNotNull,
+      );
     });
 
     test('accepts a blank road frontage', () {
       expect(
-        _complete().copyWith(roadAccessFt: '').validate(WizardStep.location)
+        _complete()
+            .copyWith(roadAccessFt: '')
+            .validate(WizardStep.location, en)
             .isValid,
         isTrue,
       );
@@ -208,7 +226,7 @@ void main() {
     test('a hill district uses hill units', () {
       final state = _complete();
       expect(state.usesHillUnits, isTrue);
-      expect(state.validate(WizardStep.specs).isValid, isTrue);
+      expect(state.validate(WizardStep.specs, en).isValid, isTrue);
     });
 
     test('a terai district uses terai units', () {
@@ -220,7 +238,7 @@ void main() {
         areaBigha: '2',
       );
       expect(state.usesHillUnits, isFalse);
-      expect(state.validate(WizardStep.specs).isValid, isTrue);
+      expect(state.validate(WizardStep.specs, en).isValid, isTrue);
     });
 
     test('rejects hill units entered for a terai district', () {
@@ -229,7 +247,7 @@ void main() {
       final state = _complete(
         district: chitwan,
       );
-      expect(state.validate(WizardStep.specs)['area'], isNotNull);
+      expect(state.validate(WizardStep.specs, en)['area'], isNotNull);
     });
 
     test('rejects terai units entered for a hill district', () {
@@ -241,12 +259,12 @@ void main() {
         areaPaisa: '',
         areaBigha: '2',
       );
-      expect(state.validate(WizardStep.specs)['area'], isNotNull);
+      expect(state.validate(WizardStep.specs, en)['area'], isNotNull);
     });
 
     test('requires some area', () {
       final state = _complete().copyWith(areaAana: '', areaPaisa: '');
-      expect(state.validate(WizardStep.specs)['area'], isNotNull);
+      expect(state.validate(WizardStep.specs, en)['area'], isNotNull);
     });
 
     test('computes sqm from hill units', () {
@@ -274,7 +292,7 @@ void main() {
       // CHECK (bedrooms > 0): catching it here turns a server error into a
       // hint rather than a failed submission.
       final state = _complete().copyWith(bedrooms: '0');
-      expect(state.validate(WizardStep.specs)['bedrooms'], isNotNull);
+      expect(state.validate(WizardStep.specs, en)['bedrooms'], isNotNull);
     });
 
     test('accepts absent bedrooms for land', () {
@@ -283,24 +301,24 @@ void main() {
         areaAana: '',
         areaBigha: '1',
       ).copyWith(bedrooms: '', bathrooms: '');
-      expect(state.validate(WizardStep.specs).isValid, isTrue);
+      expect(state.validate(WizardStep.specs, en).isValid, isTrue);
     });
   });
 
   group('step four: price and photos', () {
     test('requires a price', () {
       final state = _complete().copyWith(priceNpr: '');
-      expect(state.validate(WizardStep.price)['priceNpr'], isNotNull);
+      expect(state.validate(WizardStep.price, en)['priceNpr'], isNotNull);
     });
 
     test('rejects a zero price', () {
       final state = _complete(price: '0');
-      expect(state.validate(WizardStep.price)['priceNpr'], isNotNull);
+      expect(state.validate(WizardStep.price, en)['priceNpr'], isNotNull);
     });
 
     test('requires at least one uploaded photo', () {
       final state = _complete().copyWith(photos: const <WizardPhoto>[]);
-      expect(state.validate(WizardStep.price)['photos'], isNotNull);
+      expect(state.validate(WizardStep.price, en)['photos'], isNotNull);
     });
 
     test('an in-flight photo does not count', () {
@@ -308,7 +326,7 @@ void main() {
       final state = _complete().copyWith(
         photos: const <WizardPhoto>[WizardPhoto(url: '', isUploading: true)],
       );
-      expect(state.validate(WizardStep.price)['photos'], isNotNull);
+      expect(state.validate(WizardStep.price, en)['photos'], isNotNull);
     });
 
     test('a failed photo does not count', () {
@@ -324,24 +342,24 @@ void main() {
           ),
         ],
       );
-      expect(state.validate(WizardStep.price)['photos'], isNotNull);
+      expect(state.validate(WizardStep.price, en)['photos'], isNotNull);
     });
   });
 
   group('canSubmit', () {
     test('is true only when every step passes', () {
-      expect(_complete().canSubmit, isTrue);
+      expect(_complete().canSubmit(en), isTrue);
     });
 
     test('is false when an early step is incomplete', () {
       // The seller can reach review by stepping back and forth, so submission
       // has to re-check everything rather than trusting arrival at review.
       expect(
-        _complete().copyWith(clearDistrict: true).canSubmit,
+        _complete().copyWith(clearDistrict: true).canSubmit(en),
         isFalse,
       );
-      expect(_complete().copyWith(priceNpr: '').canSubmit, isFalse);
-      expect(_complete().copyWith(ward: '99').canSubmit, isFalse);
+      expect(_complete().copyWith(priceNpr: '').canSubmit(en), isFalse);
+      expect(_complete().copyWith(ward: '99').canSubmit(en), isFalse);
     });
   });
 
@@ -362,6 +380,40 @@ void main() {
       for (var i = 0; i < WizardStep.values.length; i++) {
         expect(WizardStep.values[i].position, i);
       }
+    });
+  });
+
+  group('Nepali messages (HYA-266 D2)', () {
+    test('required fields name the field in Nepali', () {
+      const state = ListingWizardState();
+      final errors = state.validate(WizardStep.type, ne).errors;
+
+      expect(errors['propertyType'], 'घरजग्गाको किसिम आवश्यक छ');
+      expect(errors['listingPurpose'], 'बिक्री, भाडा वा लिज आवश्यक छ');
+    });
+
+    test('ward range carries the ceiling in Nepali', () {
+      final state = _complete().copyWith(ward: '99');
+      expect(
+        state.validate(WizardStep.location, ne)['ward'],
+        contains('33'),
+      );
+    });
+
+    test('wrong-unit areas explain themselves in Nepali', () {
+      final state = _complete(district: chitwan);
+      expect(
+        state.validate(WizardStep.specs, ne)['area'],
+        contains('तराई'),
+      );
+    });
+
+    test('price and photo hints are Nepali', () {
+      final state = _complete().copyWith(priceNpr: '0', photos: const []);
+      final errors = state.validate(WizardStep.price, ne).errors;
+
+      expect(errors['priceNpr'], 'मूल्य शून्यभन्दा बढी हुनुपर्छ');
+      expect(errors['photos'], 'कम्तीमा एउटा फोटो थप्नुहोस्');
     });
   });
 }

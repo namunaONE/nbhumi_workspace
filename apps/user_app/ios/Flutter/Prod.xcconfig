@@ -1,0 +1,6 @@
+#include "Generated.xcconfig"
+
+// HYA-239 prod flavor: production Supabase, minimal logging
+// (ENVIRONMENT=prod). Keeps the base bundle identifier.
+PRODUCT_BUNDLE_IDENTIFIER=com.nbhumi.userApp
+BUNDLE_DISPLAY_NAME=nBhumi

@@ -5,6 +5,8 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:models/models.dart';
+import 'package:post_listing/l10n/output/post_localizations.dart'
+    as post_strings;
 import 'package:post_listing/post_listing.dart';
 
 const District kathmandu = District(
@@ -69,7 +71,12 @@ ListingWizardState _state({
 
 Widget _app(Widget child) => MaterialApp(
       locale: const Locale('en'),
-      localizationsDelegates: GlobalMaterialLocalizations.delegates,
+      localizationsDelegates: const <LocalizationsDelegate<dynamic>>[
+        post_strings.AppLocalizations.delegate,
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
+      ],
       supportedLocales: const <Locale>[Locale('en'), Locale('ne')],
       home: Scaffold(body: SingleChildScrollView(child: child)),
     );
@@ -359,7 +366,7 @@ void main() {
     testWidgets('echoes the seller units alongside sqm', (tester) async {
       await tester.pumpWidget(_app(build(_state())));
 
-      expect(find.textContaining('5 aana'), findsOneWidget);
+      expect(find.textContaining('5 Aana'), findsOneWidget);
       expect(find.textContaining('2053 sqm'), findsOneWidget);
     });
 

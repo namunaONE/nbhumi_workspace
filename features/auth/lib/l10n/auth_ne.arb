@@ -1,0 +1,252 @@
+{
+  "@@locale": "ne",
+  "@@last_modified": "2026-10-06T00:00:00.000",
+
+  "@title": {
+    "description": "Login screen app bar."
+  },
+  "title": "साइन इन",
+
+  "@paneLink": {
+    "description": "Magic-link pane segment."
+  },
+  "paneLink": "म्याजिक लिङ्क",
+
+  "@panePassword": {
+    "description": "Password pane segment."
+  },
+  "panePassword": "पासवर्ड",
+
+  "@linkTitle": {
+    "description": "Magic-link pane heading."
+  },
+  "linkTitle": "म्याजिक लिङ्कबाट साइन इन गर्नुहोस्",
+
+  "@linkSubtitle": {
+    "description": "Magic-link pane explanation."
+  },
+  "linkSubtitle": "हामी साइन-इन लिङ्क इमेल गर्छौं। पासवर्ड सम्झनु पर्दैन।",
+
+  "@passwordSignInTitle": {
+    "description": "Password sign-in heading."
+  },
+  "passwordSignInTitle": "आफ्नो पासवर्डबाट साइन इन गर्नुहोस्",
+
+  "@passwordSignInSubtitle": {
+    "description": "Password sign-in explanation."
+  },
+  "passwordSignInSubtitle": "पासवर्ड चाहनुहुन्न? लिङ्क ट्याबलाई इमेल मात्र चाहिन्छ।",
+
+  "@signUpTitle": {
+    "description": "Account creation heading."
+  },
+  "signUpTitle": "आफ्नो खाता बनाउनुहोस्",
+
+  "@signUpSubtitle": {
+    "description": "Account creation explanation."
+  },
+  "signUpSubtitle": "पोस्ट गर्न र विक्रेतालाई सम्पर्क गर्न एउटै खाता।",
+
+  "@resetTitle": {
+    "description": "Password reset heading."
+  },
+  "resetTitle": "आफ्नो पासवर्ड रिसेट गर्नुहोस्",
+
+  "@resetSubtitle": {
+    "description": "Password reset explanation."
+  },
+  "resetSubtitle": "नयाँ पासवर्ड छान्ने लिङ्क हामी इमेल गर्छौं।",
+
+  "@emailLabel": {
+    "description": "Email field label."
+  },
+  "emailLabel": "इमेल",
+
+  "@passwordLabel": {
+    "description": "Password field label."
+  },
+  "passwordLabel": "पासवर्ड",
+
+  "@confirmLabel": {
+    "description": "Confirm-password field label."
+  },
+  "confirmLabel": "पासवर्ड पुष्टि गर्नुहोस्",
+
+  "@emailError": {
+    "description": "Invalid email message."
+  },
+  "emailError": "मान्य इमेल ठेगाना हाल्नुहोस्।",
+
+  "@passwordError": {
+    "description": "Short password message.",
+    "placeholders": {
+      "min": { "type": "int", "example": "8" }
+    }
+  },
+  "passwordError": "कम्तीमा {min} अक्षर।",
+
+  "@mismatchError": {
+    "description": "Password mismatch message."
+  },
+  "mismatchError": "पासवर्ड मिलेन।",
+
+  "@sending": {
+    "description": "Submit button while busy."
+  },
+  "sending": "पठाउँदैछ…",
+
+  "@resendIn": {
+    "description": "Cooldown submit button.",
+    "placeholders": {
+      "seconds": { "type": "int", "example": "30" }
+    }
+  },
+  "resendIn": "{seconds} सेकेन्डमा पुनः पठाउनुहोस्",
+
+  "@sendLink": {
+    "description": "Send magic link action."
+  },
+  "sendLink": "साइन-इन लिङ्क पठाउनुहोस्",
+
+  "@resendLink": {
+    "description": "Resend magic link action."
+  },
+  "resendLink": "लिङ्क पुनः पठाउनुहोस्",
+
+  "@signInAction": {
+    "description": "Password sign-in action."
+  },
+  "signInAction": "साइन इन",
+
+  "@signUpAction": {
+    "description": "Account creation action."
+  },
+  "signUpAction": "खाता बनाउनुहोस्",
+
+  "@sendReset": {
+    "description": "Send reset link action."
+  },
+  "sendReset": "रिसेट लिङ्क पठाउनुहोस्",
+
+  "@resendReset": {
+    "description": "Resend reset link action."
+  },
+  "resendReset": "रिसेट लिङ्क पुनः पठाउनुहोस्",
+
+  "@switchToSignUp": {
+    "description": "Toggle to account creation."
+  },
+  "switchToSignUp": "नयाँ हुनुहुन्छ? खाता बनाउनुहोस्",
+
+  "@switchToSignIn": {
+    "description": "Toggle back to sign-in."
+  },
+  "switchToSignIn": "खाता छ? साइन इन गर्नुहोस्",
+
+  "@forgotPassword": {
+    "description": "Forgot-password toggle."
+  },
+  "forgotPassword": "पासवर्ड बिर्सनुभयो?",
+
+  "@backToSignIn": {
+    "description": "Back-to-sign-in toggle."
+  },
+  "backToSignIn": "साइन इनमा फर्कनुहोस्",
+
+  "@sentLink": {
+    "description": "Magic link sent confirmation.",
+    "placeholders": {
+      "email": { "type": "String", "example": "sita@example.com" }
+    }
+  },
+  "sentLink": "इनबक्स जाँच गर्नुहोस् — {email} मा साइन-इन लिङ्क जाँदैछ।",
+
+  "@accountCreated": {
+    "description": "Account created confirmation.",
+    "placeholders": {
+      "email": { "type": "String", "example": "sita@example.com" }
+    }
+  },
+  "accountCreated": "{email} का लागि खाता बन्यो। पुष्टि चलेको छ भने साइन इन पूरा गर्न इमेल गरिएको लिङ्क थिच्नुहोस्।",
+
+  "@resetSent": {
+    "description": "Reset link sent confirmation.",
+    "placeholders": {
+      "email": { "type": "String", "example": "sita@example.com" }
+    }
+  },
+  "resetSent": "इनबक्स जाँच गर्नुहोस् — {email} मा रिसेट लिङ्क पठायौं।",
+
+  "@retry": {
+    "description": "Retry action (mirrors the app common strings; features cannot import them per Rule 10)."
+  },
+  "retry": "पुनः प्रयास",
+
+  "@callbackSignedIn": {
+    "description": "Signed-in bounce message."
+  },
+  "callbackSignedIn": "साइन इन भयो। होममा लैजाँदैछ…",
+
+  "@callbackSigningIn": {
+    "description": "Signing-in app bar."
+  },
+  "callbackSigningIn": "साइन इन हुँदैछ",
+
+  "@callbackWorking": {
+    "description": "Signing-in heading."
+  },
+  "callbackWorking": "साइन इन गर्दैछ…",
+
+  "@callbackSlowHint": {
+    "description": "Slow-exchange explanation."
+  },
+  "callbackSlowHint": "केही सेकेन्डभन्दा बढी लागे लिङ्कको म्याद सकिएको वा प्रयोग भइसकेको हुन सक्छ। लगइन स्क्रिनबाट नयाँ माग्नुहोस्।",
+
+  "@callbackBackToLogin": {
+    "description": "Back-to-login action."
+  },
+  "callbackBackToLogin": "लगइनमा फर्कनुहोस्",
+
+  "@callbackFailedTitle": {
+    "description": "Failed-link app bar."
+  },
+  "callbackFailedTitle": "साइन-इन लिङ्क असफल",
+
+  "@callbackRequestNew": {
+    "description": "Request-new-link action."
+  },
+  "callbackRequestNew": "नयाँ लिङ्क माग्नुहोस्",
+
+  "@newPasswordTitle": {
+    "description": "Set-new-password app bar."
+  },
+  "newPasswordTitle": "नयाँ पासवर्ड छान्नुहोस्",
+
+  "@newPasswordIntro": {
+    "description": "Set-new-password explanation.",
+    "placeholders": {
+      "min": { "type": "int", "example": "8" }
+    }
+  },
+  "newPasswordIntro": "आफ्नो खाताका लागि नयाँ पासवर्ड हाल्नुहोस्। कम्तीमा {min} अक्षर।",
+
+  "@newPasswordLabel": {
+    "description": "New-password field label."
+  },
+  "newPasswordLabel": "नयाँ पासवर्ड",
+
+  "@confirmNewLabel": {
+    "description": "Confirm-new-password field label."
+  },
+  "confirmNewLabel": "नयाँ पासवर्ड पुष्टि गर्नुहोस्",
+
+  "@saving": {
+    "description": "Saving state."
+  },
+  "saving": "सेभ हुँदैछ…",
+
+  "@savePassword": {
+    "description": "Save-new-password action."
+  },
+  "savePassword": "नयाँ पासवर्ड सेभ गर्नुहोस्"
+}

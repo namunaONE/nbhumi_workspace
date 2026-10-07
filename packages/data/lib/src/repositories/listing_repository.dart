@@ -284,15 +284,26 @@ class ListingRepository {
   /// listing, so a seller cannot attach a photo to somebody else's.
   ///
   /// Inserted one row per call rather than as a batch so a failure part-way
-  /// through leaves the earlier photos attached and retryable, instead of the
-  /// whole set rolling back.
+  /// through leaves the earlier photos attached and retryable. Re-reading the
+  /// seller's attached URLs before retrying prevents duplicate photo rows on
+  /// the same draft (the table has no `(listing_id, url)` unique constraint).
   Future<void> attachListingPhotos(
     String listingId,
     List<String> urls,
   ) async {
     if (urls.isEmpty) return;
 
+    final rows = await _guard(
+      () => _client
+          .from('listing_photos')
+          .select('url')
+          .eq('listing_id', listingId),
+      action: 'getAttachedListingPhotos',
+    );
+    final attached = rows.map((row) => row['url'] as String).toSet();
+
     for (var i = 0; i < urls.length; i++) {
+      if (attached.contains(urls[i])) continue;
       await _guard(
         () => _client.from('listing_photos').insert(<String, Object?>{
           'listing_id': listingId,
@@ -301,6 +312,7 @@ class ListingRepository {
         }),
         action: 'attachListingPhotos',
       );
+      attached.add(urls[i]);
     }
   }
 

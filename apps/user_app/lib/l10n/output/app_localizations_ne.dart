@@ -1,6 +1,5 @@
 // ignore: unused_import
 import 'package:intl/intl.dart' as intl;
-
 import 'app_localizations.dart';
 
 // ignore_for_file: type=lint
@@ -43,8 +42,7 @@ class AppLocalizationsNe extends AppLocalizations {
   String get profileSignedOut => 'साइन इन भएको छैन';
 
   @override
-  String get profileSignedOutHint =>
-      'घरजग्गा पोस्ट गर्न म्याजिक लिङ्कबाट साइन इन गर्नुहोस्';
+  String get profileSignedOutHint => 'घरजग्गा पोस्ट गर्न म्याजिक लिङ्कबाट साइन इन गर्नुहोस्';
 
   @override
   String get profileSignedIn => 'साइन इन भएको छ';
@@ -95,12 +93,10 @@ class AppLocalizationsNe extends AppLocalizations {
   String get profileAboutTitle => 'नभूमिबारे';
 
   @override
-  String get profileAboutBody =>
-      'हामी विज्ञापन मात्र सहजीकरण गर्छौं। स्वामित्व हस्तान्तरण मालपोतमा हुन्छ।';
+  String get profileAboutBody => 'हामी विज्ञापन मात्र सहजीकरण गर्छौं। स्वामित्व हस्तान्तरण मालपोतमा हुन्छ।';
 
   @override
-  String get profilePrivacyNote =>
-      'बजार सञ्चालनका लागि आवश्यक न्यूनतम जानकारी मात्र नभूमिले सङ्कलन गर्छ, गोपनीयता ऐन २०७५ (२०१८) अनुरूप।';
+  String get profilePrivacyNote => 'बजार सञ्चालनका लागि आवश्यक न्यूनतम जानकारी मात्र नभूमिले सङ्कलन गर्छ, गोपनीयता ऐन २०७५ (२०१८) अनुरूप।';
 
   @override
   String get profileEditTitle => 'प्रोफाइल सम्पादन गर्नुहोस्';
@@ -115,8 +111,7 @@ class AppLocalizationsNe extends AppLocalizations {
   String get profileEditPhoneHint => '98XXXXXXXX';
 
   @override
-  String get profileEditPhoneError =>
-      '९७ वा ९८ बाट सुरु हुने १० अंकको मोबाइल हाल्नुहोस्';
+  String get profileEditPhoneError => '९७ वा ९८ बाट सुरु हुने १० अंकको मोबाइल हाल्नुहोस्';
 
   @override
   String get profileEditAgency => 'एजेन्सीको नाम (वैकल्पिक)';
@@ -134,8 +129,7 @@ class AppLocalizationsNe extends AppLocalizations {
   String get profileDownloadTitle => 'मेरो डाटा डाउनलोड गर्नुहोस्';
 
   @override
-  String get profileDownloadSubtitle =>
-      'प्रोफाइल, विज्ञापन र अवलोकन इतिहास JSON रूपमा';
+  String get profileDownloadSubtitle => 'प्रोफाइल, विज्ञापन र अवलोकन इतिहास JSON रूपमा';
 
   @override
   String get profilePreparingData => 'तपाईंको डाटा तयार हुँदैछ…';
@@ -150,15 +144,13 @@ class AppLocalizationsNe extends AppLocalizations {
   String get profileSignOutTitle => 'साइन आउट';
 
   @override
-  String get profileSignOutSubtitle =>
-      'जुनसुकै बेला म्याजिक लिङ्कबाट फेरि साइन इन गर्न सक्नुहुन्छ';
+  String get profileSignOutSubtitle => 'जुनसुकै बेला म्याजिक लिङ्कबाट फेरि साइन इन गर्न सक्नुहुन्छ';
 
   @override
   String get profileDeleteTitle => 'मेरो खाता मेट्नुहोस्';
 
   @override
-  String get profileDeleteSubtitle =>
-      'स्थायी। तपाईंको नामबिना विज्ञापन रहन्छन्';
+  String get profileDeleteSubtitle => 'स्थायी। तपाईंको नामबिना विज्ञापन रहन्छन्';
 
   @override
   String get profileDeleteConfirmTitle => 'तपाईंको खाता मेट्ने?';
@@ -170,8 +162,7 @@ class AppLocalizationsNe extends AppLocalizations {
   String get profileDeleteC2 => 'तपाईंका विज्ञापन रहन्छन्, तर तपाईंको नामबिना।';
 
   @override
-  String get profileDeleteC3 =>
-      'बजार सुरक्षा रेकर्डका लागि आवश्यक भएकाले तपाईंको सम्पर्क-अवलोकन इतिहास पहिचानबिना राखिन्छ।';
+  String get profileDeleteC3 => 'बजार सुरक्षा रेकर्डका लागि आवश्यक भएकाले तपाईंको सम्पर्क-अवलोकन इतिहास पहिचानबिना राखिन्छ।';
 
   @override
   String get profileDeleteFinal => 'यो फिर्ता हुन सक्दैन।';
@@ -189,4 +180,31 @@ class AppLocalizationsNe extends AppLocalizations {
   String profileSavedAs(String name) {
     return 'सेभ भयो — $name';
   }
+
+  @override
+  String get onboardingTagline => 'नेपालभर घरजग्गा किन्नुहोस् र बेच्नुहोस्';
+
+  @override
+  String get onboardingSearchTitle => 'आफ्नै एकाइमा खोज्नुहोस्';
+
+  @override
+  String get onboardingSearchBody => 'क्षेत्रअनुसार जिल्ला, मूल्य र रोपनी, आना वा बिघामा क्षेत्रफलबाट फिल्टर गर्नुहोस्।';
+
+  @override
+  String get onboardingVerifiedTitle => 'प्रमाणित विक्रेताहरू';
+
+  @override
+  String get onboardingVerifiedBody => 'पहिचान कागजात जाँच भएका विक्रेतासँग प्रमाणित ब्याज हुन्छ।';
+
+  @override
+  String get onboardingPostTitle => 'आफ्नो घरजग्गा पोस्ट गर्नुहोस्';
+
+  @override
+  String get onboardingPostBody => 'फोटो र विवरण थप्नुहोस्। प्रत्येक विज्ञापन प्रकाशित हुनुअघि समीक्षकले जाँच्छ।';
+
+  @override
+  String get onboardingDisclaimer => 'नभूमिले घरजग्गा विज्ञापन र खोजीमा सघाउँछ। यो ब्रोकर होइन र पैसाको कारोबार गर्दैन। स्वामित्व हस्तान्तरण सम्बन्धित निकायमार्फत मालपोतमा हुन्छ।';
+
+  @override
+  String get onboardingBrowse => 'विज्ञापन हेर्नुहोस्';
 }

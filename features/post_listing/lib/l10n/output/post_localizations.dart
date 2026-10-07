@@ -245,6 +245,12 @@ abstract class AppLocalizations {
   /// **'Ward numbers run from 1 to 33. Pokhara Metropolitan City has the most wards of any local body in Nepal, at 33.'**
   String get wardHint;
 
+  /// Note when the ward picker has no bound yet.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose a municipality first, then pick its ward.'**
+  String get wardNoMunicipality;
+
   /// Municipality loading row.
   ///
   /// In en, this message translates to:
@@ -262,6 +268,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Could not load municipalities. Check your connection.'**
   String get municipalitiesError;
+
+  /// Inline retry action.
+  ///
+  /// In en, this message translates to:
+  /// **'Retry'**
+  String get retryAction;
 
   /// Road frontage field label.
   ///

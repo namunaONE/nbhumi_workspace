@@ -88,6 +88,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get wardHint => 'Ward numbers run from 1 to 33. Pokhara Metropolitan City has the most wards of any local body in Nepal, at 33.';
 
   @override
+  String get wardNoMunicipality => 'Choose a municipality first, then pick its ward.';
+
+  @override
   String get municipalitiesLoading => 'Municipalities';
 
   @override
@@ -97,6 +100,9 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get municipalitiesError => 'Could not load municipalities. Check your connection.';
+
+  @override
+  String get retryAction => 'Retry';
 
   @override
   String get fieldRoadAccess => 'Road access';

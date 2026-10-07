@@ -36,6 +36,30 @@ android {
             signingConfig = signingConfigs.getByName("debug")
         }
     }
+
+    // HYA-239: one flavor per backend. The flavor selects the *native*
+    // identity (applicationId, display name) so dev/staging/prod install
+    // side-by-side; the Dart side selects its backend via
+    // `--dart-define=ENVIRONMENT=<flavor>` (see Makefile app-dev/app-staging/
+    // app-prod and EnvConfig). Keep the flavor name identical to the
+    // ENVIRONMENT value or logging/config will disagree with the icon.
+    flavorDimensions += "environment"
+    productFlavors {
+        create("dev") {
+            dimension = "environment"
+            applicationIdSuffix = ".dev"
+            manifestPlaceholders["appName"] = "nBhumi Dev"
+        }
+        create("staging") {
+            dimension = "environment"
+            applicationIdSuffix = ".staging"
+            manifestPlaceholders["appName"] = "nBhumi Staging"
+        }
+        create("prod") {
+            dimension = "environment"
+            manifestPlaceholders["appName"] = "nBhumi"
+        }
+    }
 }
 
 kotlin {
