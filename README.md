@@ -74,6 +74,32 @@ nbhumi_workspace/
 
 Guest (browse) → Buyer (save/contact) → Seller/Agent (post listings, KYC) → Admin (verify/moderate)
 
+## Environments & Flavors (HYA-239)
+
+One flavor per backend. The flavor selects the *native* identity
+(applicationId, display name) so builds install side-by-side; the
+`ENVIRONMENT` dart-define selects the Dart-side backend and log verbosity
+and **must match the flavor**.
+
+| Flavor | Backend | Logging | App name (Android / iOS) |
+|--------|---------|---------|--------------------------|
+| `dev` | local Supabase (`127.0.0.1:54321`; emulator: `10.0.2.2`) | debug, everything | nBhumi Dev |
+| `staging` | staging Supabase (**pending HYA-284**) | verbose, everything | nBhumi Staging |
+| `prod` | `rerjioibpqvcomdingte.supabase.co` | minimal, warnings+errors | nBhumi |
+
+```bash
+make app-dev      # flutter run --flavor dev (local backend)
+make app-staging  # fails fast until HYA-284 lands
+make app-prod     # flutter run --flavor prod
+make apk-dev      # debug APK, no secrets needed
+make apk-prod     # release APK, needs SUPABASE_PUBLISHABLE_KEY in env
+```
+
+Keys come from the shell, never from git (Rule 7); `EnvConfig` defaults are a
+local-dev fallback only. The admin panel is web-only, so it takes
+`ENVIRONMENT` via `--dart-define` instead of flavors (see CI `build-web`).
+Sentry wiring is HYA-244; flavors already carry the DSN field through.
+
 ## Documentation
 
 See Linear project P-HYA-10 for full documentation:
@@ -97,7 +123,12 @@ See Linear project P-HYA-10 for full documentation:
 | `make gen` | Run code generation |
 | `make analyze` | Run static analysis |
 | `make test` | Run all tests |
-| `make app` | Run mobile app |
+| `make app` | Run mobile app (dev flavor) |
+| `make app-dev` | Run mobile app (dev flavor, local Supabase) |
+| `make app-staging` | Run mobile app (staging flavor; needs HYA-284) |
+| `make app-prod` | Run mobile app (prod flavor) |
+| `make apk-dev` | Debug APK, dev flavor (no secrets) |
+| `make apk-prod` | Release APK, prod flavor |
 | `make admin` | Run admin panel |
 | `make ci` | CI pipeline (analyze + test) |
 | `make clean` | Clean build artifacts |

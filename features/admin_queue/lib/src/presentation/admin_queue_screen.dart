@@ -94,7 +94,9 @@ class AdminQueueScreen extends ConsumerWidget {
           );
         }
 
-        return const Scaffold(body: QueueList());
+        return Scaffold(
+          body: QueueList(onOpenReports: onOpenReports),
+        );
       },
     );
   }
@@ -164,4 +166,5 @@ class _NothingSelected extends StatelessWidget {
 /// Duplicated from the router's own path rather than imported from it, because
 /// `go_router` is not a dependency of this feature: importing it would couple
 /// the feature to a navigation library its screens never use. The admin panel's
-/// router te
+/// router test asserts the two agree.
+const String adminListingRoutePrefix = '/listing';

@@ -92,9 +92,15 @@ jobs:
 
       - name: Build web
         working-directory: apps/admin_panel
+        # EnvConfig reads SUPABASE_PUBLISHABLE_KEY (the ANON_KEY define below
+        # is legacy and read by nothing — kept so a dashboard still on the
+        # old secret name does not silently fall back to the compiled-in
+        # default key). TODO(HYA-239 follow-up): drop ANON_KEY once the
+        # SUPABASE_PUBLISHABLE_KEY secret exists.
         run: |
           flutter build web --release \
             --dart-define=SUPABASE_URL=${{ secrets.SUPABASE_URL }} \
+            --dart-define=SUPABASE_PUBLISHABLE_KEY=${{ secrets.SUPABASE_PUBLISHABLE_KEY }} \
             --dart-define=SUPABASE_ANON_KEY=${{ secrets.SUPABASE_ANON_KEY }} \
             --dart-define=ENVIRONMENT=prod
 
@@ -103,4 +109,44 @@ jobs:
         with:
           name: admin-panel-web
           path: apps/admin_panel/build/web
+          retention-days: 7
+
+  build-android:
+    name: Build Android flavors (HYA-239)
+    runs-on: ubuntu-latest
+    needs: test
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: subosito/flutter-action@v2
+        with:
+          flutter-version: 3.47.0
+          channel: stable
+          cache: true
+
+      - name: Install dependencies
+        run: dart pub get
+
+      # Dev flavor builds against compiled-in local defaults — validates the
+      # flavor wiring itself without any secrets.
+      - name: Build dev APK (debug)
+        working-directory: apps/user_app
+        run: |
+          flutter build apk --flavor dev --debug \
+            --dart-define=ENVIRONMENT=dev
+
+      - name: Build prod APK (release)
+        working-directory: apps/user_app
+        run: |
+          flutter build apk --flavor prod --release \
+            --dart-define=SUPABASE_URL=${{ secrets.SUPABASE_URL }} \
+            --dart-define=SUPABASE_PUBLISHABLE_KEY=${{ secrets.SUPABASE_PUBLISHABLE_KEY }} \
+            --dart-define=SUPABASE_ANON_KEY=${{ secrets.SUPABASE_ANON_KEY }} \
+            --dart-define=ENVIRONMENT=prod
+
+      - name: Upload prod APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: user-app-prod-apk
+          path: apps/user_app/build/app/outputs/flutter-apk/app-prod-release.apk
           retention-days: 7

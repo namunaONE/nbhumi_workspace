@@ -505,14 +505,18 @@ class _PriceLabel extends StatelessWidget {
 
 /// The two resolution buttons.
 ///
-/// Both are always offered and neither is a default: "actioned" tells a seller
-/// their listing was pulled and "dismissed" tells them a complaint was
-/// unfounded, so a wrong guess is worse than an extra click.
+/// Both are always offered and neither is a default: "Upheld" confirms the
+/// complaint, "Dismissed" rejects it, and the certainty of which they need —
+/// closing a report wrong way forfeits the trail an audit exists for.
 ///
 /// Neither button auto-resolves the listing. Resolving a report records what an
 /// admin concluded about a complaint; it does not remove anyone's property, and
 /// HYA-262 owns the admin actions that do. Bundling them would make one tap do
 /// two things, one of which the admin did not choose.
+///
+/// The status value stored is the enum label (`actioned`/`dismissed`); the
+/// button text is "Upheld"/"Dismissed" because "actioned" in a queue reads as
+/// "we changed the listing", which this server call never does.
 class _ResolutionActions extends ConsumerStatefulWidget {
   const _ResolutionActions({required this.entry});
 
@@ -555,7 +559,7 @@ class _ResolutionActionsState extends ConsumerState<_ResolutionActions> {
             // is caught before it leaves the screen.
             onPressed: () => _resolve(ref, ReportResolution.actioned),
             icon: const Icon(Icons.gavel_outlined, size: 16),
-            label: const Text('Actioned'),
+            label: const Text('Uphold'),
             style: OutlinedButton.styleFrom(
               padding: const EdgeInsets.symmetric(vertical: 8),
             ),
@@ -602,11 +606,11 @@ class _ResolutionActionsState extends ConsumerState<_ResolutionActions> {
 
       // Wording comes from the server's status, never from `resolution`. The
       // admin pressed a button and the database decided; if the two disagree,
-      // saying "actioned" because that was the button would misreport what
-      // happened to the listing.
+      // saying "upheld" because that was the button would misreport what
+      // happened to the record.
       final closed = reportStatusLabel(outcome.serverStatus).toLowerCase();
       final verb = outcome.serverStatus == ReportStatus.actioned
-          ? 'actioned'
+          ? 'upheld'
           : 'dismissed';
       messenger.showSnackBar(
         SnackBar(

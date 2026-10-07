@@ -55,13 +55,17 @@ class ReportsController extends _$ReportsController {
   /// Whether [reportId] has a resolution in flight.
   bool isBusy(String reportId) => _inFlight.contains(reportId);
 
-  /// Marks [reportId] as actioned: the report was justified and the listing was
-  /// dealt with.
+  /// Marks [reportId] as upheld: the complaint was justified.
+  ///
+  /// This only closes the **report**. It does not publish, reject, or
+  /// unpublish the listing it points at — that belongs to the admin review
+  /// queue and HYA-262's moderation actions (the reports timeline is read-only
+  /// evidence either way).
   Future<ReportResolutionOutcome> action(String reportId) =>
       _resolve(reportId, ReportResolution.actioned);
 
-  /// Marks [reportId] as dismissed: the report was unfounded and the listing
-  /// stays up.
+  /// Marks [reportId] as dismissed: the complaint was unfounded and needs no
+  /// further action. The listing is unchanged.
   Future<ReportResolutionOutcome> dismiss(String reportId) =>
       _resolve(reportId, ReportResolution.dismissed);
 

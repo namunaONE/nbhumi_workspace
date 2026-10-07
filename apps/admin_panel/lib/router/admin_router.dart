@@ -153,7 +153,11 @@ final adminRouterProvider = Provider<GoRouter>((ref) {
       ),
       GoRoute(
         path: '/queue',
-        builder: (context, state) => const AdminQueueScreen(),
+        builder: (context, state) => AdminQueueScreen(
+          // The affordance lives on the list's app bar; wiring it here keeps the
+          // feature free of a go_router dependency.
+          onOpenReports: () => GoRouter.of(context).go('/reports'),
+        ),
       ),
       GoRoute(
         path: '/reports',

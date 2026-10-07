@@ -244,10 +244,10 @@ void main() {
       final container = containerWith(repository);
       await pumpList(tester, container);
 
-      await tester.tap(find.widgetWithText(OutlinedButton, 'Actioned').first);
+      await tester.tap(find.widgetWithText(OutlinedButton, 'Uphold').first);
       await tester.pumpAndSettle();
 
-      expect(find.text('Report actioned.'), findsOneWidget);
+      expect(find.text('Report upheld.'), findsOneWidget);
       // One row left, and it is the other one.
       expect(find.textContaining('House b'), findsOneWidget);
       expect(find.textContaining('House a'), findsNothing);
@@ -268,18 +268,18 @@ void main() {
     testWidgets('a race is reported as someone else having closed it', (
       tester,
     ) async {
-      // The admin pressed "actioned" and the database says "dismissed". Saying
-      // "actioned" would misreport what happened to the listing; hiding the
+      // The admin pressed "Uphold" and the database says "dismissed". Saying
+      // "upheld" would misreport what happened to the record; hiding the
       // mismatch would hide the race.
       final repository = FakeReportsRepository([page([report('a')])])
         ..resolutionStatus = ReportStatus.dismissed;
       final container = containerWith(repository);
       await pumpList(tester, container);
 
-      await tester.tap(find.widgetWithText(OutlinedButton, 'Actioned'));
+      await tester.tap(find.widgetWithText(OutlinedButton, 'Uphold'));
       await tester.pumpAndSettle();
 
-      expect(find.text('Report actioned.'), findsNothing);
+      expect(find.text('Report upheld.'), findsNothing);
       expect(
         find.text('Already closed by someone else as dismissed.'),
         findsOneWidget,
@@ -294,7 +294,7 @@ void main() {
       await pumpList(tester, container);
 
       repository.failWith = reportsNetworkFailure;
-      await tester.tap(find.widgetWithText(OutlinedButton, 'Actioned'));
+      await tester.tap(find.widgetWithText(OutlinedButton, 'Uphold'));
       await tester.pumpAndSettle();
 
       expect(find.text('Retry'), findsOneWidget);
@@ -314,11 +314,11 @@ void main() {
 
       // Started but not settled: the gate holds the call open, so the busy
       // branch is observable rather than over before the next pump.
-      await tester.tap(find.widgetWithText(OutlinedButton, 'Actioned'));
+      await tester.tap(find.widgetWithText(OutlinedButton, 'Uphold'));
       await tester.pump();
 
       expect(find.byType(CircularProgressIndicator), findsWidgets);
-      expect(find.widgetWithText(OutlinedButton, 'Actioned'), findsNothing);
+      expect(find.widgetWithText(OutlinedButton, 'Uphold'), findsNothing);
 
       // The guard must release once the call lands, or the row is dead for the
       // rest of the session.
@@ -326,7 +326,7 @@ void main() {
       await tester.pumpAndSettle();
 
       expect(find.byType(CircularProgressIndicator), findsNothing);
-      expect(find.text('Report actioned.'), findsOneWidget);
+      expect(find.text('Report upheld.'), findsOneWidget);
     });
 
     testWidgets('only the busy row shows a spinner', (tester) async {
@@ -339,12 +339,12 @@ void main() {
       final container = containerWith(repository);
       await pumpList(tester, container);
 
-      await tester.tap(find.widgetWithText(OutlinedButton, 'Actioned').first);
+      await tester.tap(find.widgetWithText(OutlinedButton, 'Uphold').first);
       await tester.pump();
 
       // Two buttons were shown before the tap; one is gone with the busy row's
       // action strip, the other is untouched.
-      expect(find.widgetWithText(OutlinedButton, 'Actioned'), findsOneWidget);
+      expect(find.widgetWithText(OutlinedButton, 'Uphold'), findsOneWidget);
 
       gate.complete();
       await tester.pumpAndSettle();
@@ -366,9 +366,9 @@ void main() {
 
       await pumpList(tester, container);
 
-      // Scoped to the tab bar: "Actioned" is also a row button's label, and a
-      // bare find would match both and report "too many" rather than the
-      // thing this test is about.
+      // Scoped to the tab bar: the tab's "Actioned" is distinct from the row's
+      // "Uphold" button only by wording, so a bare find of the row text would
+      // not confuse it — but the scoped assertion is the honest one.
       final bar = find.byType(NavigationBar);
       expect(find.descendant(of: bar, matching: find.text('Open')), findsOne);
       expect(

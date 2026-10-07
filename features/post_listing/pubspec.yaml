@@ -29,6 +29,7 @@ dev_dependencies:
   flutter_test:
     sdk: flutter
   riverpod_generator: ^4.0.0
+  supabase_flutter: ^2.6.0
   very_good_analysis: ^11.0.0
 
 flutter:

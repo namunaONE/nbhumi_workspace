@@ -344,6 +344,47 @@ void main() {
       expect(find.text('Drafts'), findsNothing);
     });
 
+    testWidgets('the reports affordance is hidden without a callback', (
+      tester,
+    ) async {
+      // Standalone tests and embedded use that has no second admin queue must
+      // not show a dead affordance.
+      final container = containerWith(FakeAdminRepository([page([row()])]));
+
+      await pumpList(tester, container);
+
+      expect(find.byTooltip('Open the reports queue'), findsNothing);
+    });
+
+    testWidgets('the reports affordance calls back when wired', (
+      tester,
+    ) async {
+      final container = ProviderContainer(
+        overrides: [adminRepositoryProvider.overrideWithValue(FakeAdminRepository([page([row()])]))],
+      );
+      addTearDown(container.dispose);
+
+      var opened = 0;
+      // Mount with both tabs off and the callback set, so the button is the one
+      // observable that changed between this and the test above.
+      await tester.pumpWidget(
+        UncontrolledProviderScope(
+          container: container,
+          child: MaterialApp(
+            home: AdminQueueScreen(onOpenReports: () => opened++),
+          ),
+        ),
+      );
+      await tester.pump();
+      container.read(adminQueueTabProvider.notifier).tab =
+          ListingStatus.pendingReview;
+      await tester.pumpAndSettle();
+
+      expect(find.byTooltip('Open the reports queue'), findsOneWidget);
+      await tester.tap(find.byTooltip('Open the reports queue'));
+      expect(opened, 1);
+    });
+
     testWidgets('switching tabs refetches for the new status', (tester) async {
       final repository = FakeAdminRepository([
         page([entry('a')]),

@@ -184,12 +184,13 @@ void main() {
       expect(await notifier.submit(strings), isFalse);
       expect(repository.calls, <String>['create:draft', 'attach:1']);
 
-      // Retry: no new create, attach succeeds, submit succeeds.
+      // Retry: no new create, form update, attach succeeds, submit succeeds.
       repository.attachFailure = null;
       expect(await notifier.submit(strings), isTrue);
       expect(repository.calls, <String>[
         'create:draft',
         'attach:1',
+        'update:none',
         'attach:1',
         'update:pending_review',
       ]);
@@ -238,7 +239,8 @@ void main() {
       expect(await notifier.submit(strings), isTrue);
       final callsAfterFirst = List<String>.from(repository.calls);
 
-      expect(await notifier.submit(strings), isTrue);
+      // A second submit is a no-op: returns false, makes no new calls.
+      expect(await notifier.submit(strings), isFalse);
       expect(repository.calls, callsAfterFirst);
     });
   });
