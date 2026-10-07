@@ -1,0 +1,498 @@
+{
+  "@@locale": "en",
+  "@@last_modified": "2026-10-06T00:00:00.000",
+
+  "@stepType": {
+    "description": "Step 1 app-bar title."
+  },
+  "stepType": "Property type",
+
+  "@stepLocation": {
+    "description": "Step 2 app-bar title."
+  },
+  "stepLocation": "Location",
+
+  "@stepSpecs": {
+    "description": "Step 3 app-bar title."
+  },
+  "stepSpecs": "Size & rooms",
+
+  "@stepPrice": {
+    "description": "Step 4 app-bar title."
+  },
+  "stepPrice": "Price & photos",
+
+  "@stepReview": {
+    "description": "Step 5 app-bar title."
+  },
+  "stepReview": "Review",
+
+  "@navBack": {
+    "description": "Wizard back action."
+  },
+  "navBack": "Back",
+
+  "@navNext": {
+    "description": "Wizard next action."
+  },
+  "navNext": "Next",
+
+  "@navSubmit": {
+    "description": "Wizard submit action on the last step."
+  },
+  "navSubmit": "Submit",
+
+  "@progressOf": {
+    "description": "Linear progress label.",
+    "placeholders": {
+      "n": { "type": "int", "example": "2" },
+      "total": { "type": "int", "example": "5" }
+    }
+  },
+  "progressOf": "Step {n} of {total}",
+
+  "@districtsUnavailableTitle": {
+    "description": "Heading when reference data fails to load."
+  },
+  "districtsUnavailableTitle": "Could not load districts",
+
+  "@districtsUnavailableBody": {
+    "description": "Explanation when reference data fails to load."
+  },
+  "districtsUnavailableBody": "Check your connection and try again.",
+
+  "@sentForReview": {
+    "description": "Confirmation after submitting."
+  },
+  "sentForReview": "Sent for review. It will appear once approved.",
+
+  "@typeQuestion": {
+    "description": "Step 1 first question."
+  },
+  "typeQuestion": "What are you listing?",
+
+  "@purposeQuestion": {
+    "description": "Step 1 second question."
+  },
+  "purposeQuestion": "How do you want to sell it?",
+
+  "@purposeSell": {
+    "description": "Sell purpose chip."
+  },
+  "purposeSell": "Sell",
+  "@purposeRentOut": {
+    "description": "Rent-out purpose chip."
+  },
+  "purposeRentOut": "Rent out",
+
+  "@purposeLeaseTx": {
+    "description": "Lease purpose chip."
+  },
+  "purposeLeaseTx": "Lease",
+
+  "@locationTitle": {
+    "description": "Location section heading."
+  },
+  "locationTitle": "Where is it?",
+
+  "@locationSubtitle": {
+    "description": "Location section explanation."
+  },
+  "locationSubtitle": "The district decides whether area is entered in ropani or in bigha.",
+
+  "@fieldDistrict": {
+    "description": "District picker label and required-field name."
+  },
+  "fieldDistrict": "District",
+
+  "@fieldMunicipality": {
+    "description": "Municipality picker label and required-field name."
+  },
+  "fieldMunicipality": "Municipality",
+
+  "@fieldWard": {
+    "description": "Ward picker label."
+  },
+  "fieldWard": "Ward (optional)",
+
+  "@wardNone": {
+    "description": "Ward picker empty choice."
+  },
+  "wardNone": "No ward",
+
+  "@wardNumber": {
+    "description": "Ward picker entry.",
+    "placeholders": {
+      "number": { "type": "int", "example": "16" }
+    }
+  },
+  "wardNumber": "Ward {number}",
+
+  "@wardHint": {
+    "description": "Note on ward numbering (Rule 28)."
+  },
+  "wardHint": "Ward numbers run from 1 to 33. Pokhara Metropolitan City has the most wards of any local body in Nepal, at 33.",
+
+  "@wardNoMunicipality": {
+    "description": "Note when the ward picker has no bound yet."
+  },
+  "wardNoMunicipality": "Choose a municipality first, then pick its ward.",
+
+  "@municipalitiesLoading": {
+    "description": "Municipality loading row."
+  },
+  "municipalitiesLoading": "Municipalities",
+
+  "@loadingSuffix": {
+    "description": "Loading row template.",
+    "placeholders": {
+      "label": { "type": "String", "example": "Municipalities" }
+    }
+  },
+  "loadingSuffix": "Loading {label}…",
+
+  "@municipalitiesError": {
+    "description": "Municipality load failure."
+  },
+  "municipalitiesError": "Could not load municipalities. Check your connection.",
+
+  "@retryAction": {
+    "description": "Inline retry action."
+  },
+  "retryAction": "Retry",
+
+  "@fieldRoadAccess": {
+    "description": "Road frontage field label."
+  },
+  "fieldRoadAccess": "Road access",
+
+  "@fieldOptional": {
+    "description": "Optional-field hint."
+  },
+  "fieldOptional": "Optional",
+
+  "@unitRopani": {
+    "description": "Ropani field label."
+  },
+  "unitRopani": "Ropani",
+
+  "@unitAana": {
+    "description": "Aana field label."
+  },
+  "unitAana": "Aana",
+
+  "@unitPaisa": {
+    "description": "Paisa field label."
+  },
+  "unitPaisa": "Paisa",
+
+  "@unitDam": {
+    "description": "Dam field label."
+  },
+  "unitDam": "Dam",
+
+  "@unitBigha": {
+    "description": "Bigha field label."
+  },
+  "unitBigha": "Bigha",
+
+  "@unitKattha": {
+    "description": "Kattha field label."
+  },
+  "unitKattha": "Kattha",
+
+  "@unitDhur": {
+    "description": "Dhur field label."
+  },
+  "unitDhur": "Dhur",
+
+  "@specsAreaTitle": {
+    "description": "Area section heading."
+  },
+  "specsAreaTitle": "Area",
+
+  "@specsAreaHill": {
+    "description": "Hill-district area explanation.",
+    "placeholders": {
+      "district": { "type": "String", "example": "Kathmandu" }
+    }
+  },
+  "specsAreaHill": "{district} is a hill district. Enter ropani, aana, paisa or dam.",
+
+  "@specsAreaTerai": {
+    "description": "Terai-district area explanation.",
+    "placeholders": {
+      "district": { "type": "String", "example": "Chitwan" }
+    }
+  },
+  "specsAreaTerai": "{district} is a terai district. Enter bigha, kattha or dhur.",
+
+  "@specsNoDistrict": {
+    "description": "Note when no district is chosen yet."
+  },
+  "specsNoDistrict": "Choose a district first. Area is entered in ropani for hill districts and in bigha for terai districts.",
+
+  "@specsRooms": {
+    "description": "Rooms section heading."
+  },
+  "specsRooms": "Rooms",
+
+  "@fieldBedrooms": {
+    "description": "Bedrooms field label."
+  },
+  "fieldBedrooms": "Bedrooms",
+
+  "@fieldBathrooms": {
+    "description": "Bathrooms field label."
+  },
+  "fieldBathrooms": "Bathrooms",
+
+  "@derivedArea": {
+    "description": "Derived square-metre note.",
+    "placeholders": {
+      "sqm": { "type": "String", "example": "508" }
+    }
+  },
+  "derivedArea": "About {sqm} sqm in total. Listings are stored in sqm and shown to buyers in the units you entered.",
+
+  "@priceTitle": {
+    "description": "Asking-price section heading."
+  },
+  "priceTitle": "Asking price",
+
+  "@fieldPrice": {
+    "description": "Price field label and required-field name."
+  },
+  "fieldPrice": "Price",
+
+  "@buyersWillSee": {
+    "description": "Formatted-price echo.",
+    "placeholders": {
+      "amount": { "type": "String", "example": "NPR 2,50,00,000" }
+    }
+  },
+  "buyersWillSee": "Buyers will see {amount}",
+
+  "@photosTitle": {
+    "description": "Photos section heading."
+  },
+  "photosTitle": "Photos",
+
+  "@photosSubtitle": {
+    "description": "Photos section explanation."
+  },
+  "photosSubtitle": "Add at least one. Listings with photos get far more enquiries.",
+
+  "@removePhoto": {
+    "description": "Remove-photo tooltip."
+  },
+  "removePhoto": "Remove photo",
+
+  "@reviewTitle": {
+    "description": "Review step heading."
+  },
+  "reviewTitle": "Check your listing",
+
+  "@reviewSubtitle": {
+    "description": "Review step explanation."
+  },
+  "reviewSubtitle": "It will be reviewed before it appears publicly.",
+
+  "@reviewType": {
+    "description": "Type summary row label."
+  },
+  "reviewType": "Type",
+
+  "@reviewTitleRow": {
+    "description": "Title summary row label."
+  },
+  "reviewTitleRow": "Title",
+
+  "@reviewLocation": {
+    "description": "Location summary row label."
+  },
+  "reviewLocation": "Location",
+
+  "@reviewArea": {
+    "description": "Area summary row label."
+  },
+  "reviewArea": "Area",
+
+  "@reviewRooms": {
+    "description": "Rooms summary row label."
+  },
+  "reviewRooms": "Rooms",
+
+  "@reviewPrice": {
+    "description": "Price summary row label."
+  },
+  "reviewPrice": "Price",
+
+  "@reviewPhotos": {
+    "description": "Photos summary row label."
+  },
+  "reviewPhotos": "Photos",
+
+  "@reviewDescription": {
+    "description": "Description summary section label."
+  },
+  "reviewDescription": "Description",
+
+  "@reviewNotSet": {
+    "description": "Placeholder for an empty summary value."
+  },
+  "reviewNotSet": "Not set",
+
+  "@reviewNotApplicable": {
+    "description": "Placeholder when rooms do not apply."
+  },
+  "reviewNotApplicable": "Not applicable",
+
+  "@reviewPhotosAdded": {
+    "description": "Photo count summary.",
+    "placeholders": {
+      "count": { "type": "int", "example": "3" }
+    }
+  },
+  "reviewPhotosAdded": "{count} added",
+
+  "@reviewContactNote": {
+    "description": "Note on contact visibility."
+  },
+  "reviewContactNote": "Buyers see your contact details only after signing in and requesting them, so your number is never published on the listing.",
+
+  "@reviewSubmit": {
+    "description": "Review submit action."
+  },
+  "reviewSubmit": "Submit for review",
+
+  "@fieldPropertyType": {
+    "description": "Property-type required-field name."
+  },
+  "fieldPropertyType": "Property type",
+
+  "@fieldPurpose": {
+    "description": "Purpose required-field name."
+  },
+  "fieldPurpose": "Sale, rent or lease",
+
+  "@requiredField": {
+    "description": "Generic required-field message.",
+    "placeholders": {
+      "label": { "type": "String", "example": "District" }
+    }
+  },
+  "requiredField": "{label} is required",
+
+  "@crossDistrict": {
+    "description": "Cross-district municipality message.",
+    "placeholders": {
+      "name": { "type": "String", "example": "Kirtipur" },
+      "district": { "type": "String", "example": "Lalitpur" }
+    }
+  },
+  "crossDistrict": "{name} is not in {district}",
+
+  "@wardRange": {
+    "description": "Ward out-of-range message.",
+    "placeholders": {
+      "max": { "type": "int", "example": "33" }
+    }
+  },
+  "wardRange": "Ward must be a number from 1 to {max}",
+
+  "@wardCount": {
+    "description": "Ward exceeds body count message.",
+    "placeholders": {
+      "name": { "type": "String", "example": "Kirtipur" },
+      "count": { "type": "int", "example": "10" }
+    }
+  },
+  "wardCount": "{name} has {count} wards",
+
+  "@numberInvalid": {
+    "description": "Non-numeric input message.",
+    "placeholders": {
+      "label": { "type": "String", "example": "Road access" }
+    }
+  },
+  "numberInvalid": "{label} must be a number",
+
+  "@numberNegative": {
+    "description": "Negative input message.",
+    "placeholders": {
+      "label": { "type": "String", "example": "Road access" }
+    }
+  },
+  "numberNegative": "{label} cannot be negative",
+
+  "@areaWrongHill": {
+    "description": "Terai units in a hill district."
+  },
+  "areaWrongHill": "This district measures area in hill units (ropani, aana, paisa, dam), not bigha",
+
+  "@areaWrongTerai": {
+    "description": "Hill units in a terai district."
+  },
+  "areaWrongTerai": "This district measures area in terai units (bigha, kattha, dhur), not ropani",
+
+  "@areaHillEmpty": {
+    "description": "No hill area entered."
+  },
+  "areaHillEmpty": "Enter the area in ropani, aana, paisa or dam",
+
+  "@areaTeraiEmpty": {
+    "description": "No terai area entered."
+  },
+  "areaTeraiEmpty": "Enter the area in bigha, kattha or dhur",
+
+  "@bedroomsMin": {
+    "description": "Bedroom minimum message."
+  },
+  "bedroomsMin": "Bedrooms must be 1 or more",
+
+  "@bathroomsMin": {
+    "description": "Bathroom minimum message."
+  },
+  "bathroomsMin": "Bathrooms must be 1 or more",
+
+  "@priceInvalid": {
+    "description": "Non-positive price message."
+  },
+  "priceInvalid": "Price must be more than zero",
+
+  "@photosRequired": {
+    "description": "Missing photo message."
+  },
+  "photosRequired": "Add at least one photo",
+
+  "@chipLand": {
+    "description": "Land type chip."
+  },
+  "chipLand": "Land",
+
+  "@chipHouse": {
+    "description": "House type chip."
+  },
+  "chipHouse": "House",
+
+  "@chipApartment": {
+    "description": "Apartment type chip."
+  },
+  "chipApartment": "Apartment",
+
+  "@chipVilla": {
+    "description": "Villa type chip."
+  },
+  "chipVilla": "Villa",
+
+  "@chipCommercial": {
+    "description": "Commercial type chip."
+  },
+  "chipCommercial": "Commercial",
+
+  "@chipBusiness": {
+    "description": "Business type chip."
+  },
+  "chipBusiness": "Business"
+}

@@ -1,5 +1,7 @@
 import 'package:core/core.dart';
 import 'package:flutter/material.dart';
+import 'package:post_listing/l10n/output/post_localizations.dart'
+    as post_strings;
 
 import '../../viewmodels/listing_wizard_state.dart';
 import '../../viewmodels/listing_wizard_validation.dart';
@@ -38,15 +40,16 @@ class PricePhotosStep extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final errors = state.validate(WizardStep.price);
+    final strings = post_strings.AppLocalizations.of(context);
+    final errors = state.validate(WizardStep.price, strings);
     final price = int.tryParse(state.priceNpr.trim());
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
-        const WizardSection('Asking price'),
+        WizardSection(strings.priceTitle),
         WizardField(
-          label: 'Price',
+          label: strings.fieldPrice,
           suffixText: 'NPR',
           value: state.priceNpr,
           error: errors['priceNpr'],
@@ -61,13 +64,12 @@ class PricePhotosStep extends StatelessWidget {
             padding: const EdgeInsets.only(bottom: 16),
             child: WizardNote(
               icon: Icons.check_circle_outline,
-              text: 'Buyers will see ${NepaliCurrency.full(price)}',
+              text: strings.buyersWillSee(NepaliCurrency.full(price)),
             ),
           ),
-        const WizardSection(
-          'Photos',
-          subtitle: 'Add at least one. Listings with photos get far more '
-              'enquiries.',
+        WizardSection(
+          strings.photosTitle,
+          subtitle: strings.photosSubtitle,
         ),
         _PhotoGrid(
           photos: state.photos,
@@ -190,7 +192,7 @@ class _PhotoTile extends StatelessWidget {
               padding: EdgeInsets.zero,
               constraints: const BoxConstraints(minWidth: 28, minHeight: 28),
               icon: const Icon(Icons.close),
-              tooltip: 'Remove photo',
+              tooltip: post_strings.AppLocalizations.of(context).removePhoto,
               onPressed: onRemove,
             ),
           ),

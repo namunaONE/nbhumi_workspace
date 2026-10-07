@@ -1,5 +1,7 @@
 import 'package:core/core.dart';
 import 'package:flutter/material.dart';
+import 'package:post_listing/l10n/output/post_localizations.dart'
+    as post_strings;
 
 import '../../viewmodels/listing_wizard_state.dart';
 import '../../viewmodels/listing_wizard_validation.dart';
@@ -46,16 +48,16 @@ class SpecsStep extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final errors = state.validate(WizardStep.specs);
+    final strings = post_strings.AppLocalizations.of(context);
+    final errors = state.validate(WizardStep.specs, strings);
 
     // No district yet means no unit system, so there is nothing honest to ask
     // for. The location step is the previous one and validation blocks skipping
     // past it.
     if (state.district == null) {
-      return const WizardNote(
+      return WizardNote(
         icon: Icons.place_outlined,
-        text: 'Choose a district first. Area is entered in ropani for hill '
-            'districts and in bigha for terai districts.',
+        text: strings.specsNoDistrict,
       );
     }
 
@@ -63,22 +65,20 @@ class SpecsStep extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
         WizardSection(
-          'Area',
+          strings.specsAreaTitle,
           subtitle: state.usesHillUnits
-              ? '${state.district!.name} is a hill district. Enter ropani, '
-                  'aana, paisa or dam.'
-              : '${state.district!.name} is a terai district. Enter bigha, '
-                  'kattha or dhur.',
+              ? strings.specsAreaHill(state.district!.name)
+              : strings.specsAreaTerai(state.district!.name),
         ),
         if (state.usesHillUnits) ...<Widget>[
-          _unit('areaRopani', 'Ropani', state.areaRopani, errors),
-          _unit('areaAana', 'Aana', state.areaAana, errors),
-          _unit('areaPaisa', 'Paisa', state.areaPaisa, errors),
-          _unit('areaDam', 'Dam', state.areaDam, errors),
+          _unit('areaRopani', strings.unitRopani, state.areaRopani, errors),
+          _unit('areaAana', strings.unitAana, state.areaAana, errors),
+          _unit('areaPaisa', strings.unitPaisa, state.areaPaisa, errors),
+          _unit('areaDam', strings.unitDam, state.areaDam, errors),
         ] else ...<Widget>[
-          _unit('areaBigha', 'Bigha', state.areaBigha, errors),
-          _unit('areaKattha', 'Kattha', state.areaKattha, errors),
-          _unit('areaDhur', 'Dhur', state.areaDhur, errors),
+          _unit('areaBigha', strings.unitBigha, state.areaBigha, errors),
+          _unit('areaKattha', strings.unitKattha, state.areaKattha, errors),
+          _unit('areaDhur', strings.unitDhur, state.areaDhur, errors),
         ],
         if (errors['area'] case final areaError?) ...<Widget>[
           _AreaError(message: areaError),
@@ -88,12 +88,12 @@ class SpecsStep extends StatelessWidget {
         // claim about a plot the seller has not described yet.
         if (state.areaSqm case final sqm?) _DerivedArea(sqm: sqm),
         const SizedBox(height: 24),
-        const WizardSection('Rooms'),
+        WizardSection(strings.specsRooms),
         WizardField(
-          label: 'Bedrooms',
+          label: strings.fieldBedrooms,
           // Land and commercial premises have none, so this is optional and
           // blank is a legitimate value.
-          hint: 'Optional',
+          hint: strings.fieldOptional,
           value: state.bedrooms,
           error: errors['bedrooms'],
           keyboardType: TextInputType.number,
@@ -101,8 +101,8 @@ class SpecsStep extends StatelessWidget {
           onChanged: onBedroomsChanged,
         ),
         WizardField(
-          label: 'Bathrooms',
-          hint: 'Optional',
+          label: strings.fieldBathrooms,
+          hint: strings.fieldOptional,
           value: state.bathrooms,
           error: errors['bathrooms'],
           keyboardType: TextInputType.number,
@@ -155,10 +155,10 @@ class _DerivedArea extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final strings = post_strings.AppLocalizations.of(context);
     return WizardNote(
       icon: Icons.square_foot,
-      text: 'About ${sqm.toStringAsFixed(0)} sqm in total. Listings are stored '
-          'in sqm and shown to buyers in the units you entered.',
+      text: strings.derivedArea(sqm.toStringAsFixed(0)),
     );
   }
 }

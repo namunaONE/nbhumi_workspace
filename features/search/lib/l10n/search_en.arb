@@ -1,0 +1,228 @@
+{
+  "@@locale": "en",
+  "@@last_modified": "2026-10-06T00:00:00.000",
+
+  "@title": {
+    "description": "Search screen app bar."
+  },
+  "title": "Search",
+
+  "@sortTooltip": {
+    "description": "Sort menu button tooltip."
+  },
+  "sortTooltip": "Sort",
+
+  "@filtersTooltip": {
+    "description": "Filter sheet button tooltip."
+  },
+  "filtersTooltip": "Filters",
+
+  "@searchHint": {
+    "description": "Title/location query field hint."
+  },
+  "searchHint": "Search by title or location",
+
+  "@saveSearchTooltip": {
+    "description": "Save-search button tooltip (HYA-268 C2b)."
+  },
+  "saveSearchTooltip": "Save this search",
+
+  "@signInToSave": {
+    "description": "Prompt when a guest taps save-search."
+  },
+  "signInToSave": "Sign in to save searches.",
+
+  "@savedToast": {
+    "description": "Confirmation naming the stored search.",
+    "placeholders": {
+      "name": {
+        "type": "String",
+        "example": "Houses in Kathmandu"
+      }
+    }
+  },
+  "savedToast": "Saved \"{name}\".",
+
+  "@noMatchTitle": {
+    "description": "Empty feed heading."
+  },
+  "noMatchTitle": "No listings match",
+
+  "@noMatchBody": {
+    "description": "Empty feed explanation."
+  },
+  "noMatchBody": "Try removing a filter or widening the price range.",
+
+  "@tryAgain": {
+    "description": "Feed retry action."
+  },
+  "tryAgain": "Try again",
+
+  "@feedRetryHint": {
+    "description": "Hint under a retryable feed failure."
+  },
+  "feedRetryHint": "Check your connection and try again.",
+
+  "@feedLaterHint": {
+    "description": "Hint under a non-retryable feed failure."
+  },
+  "feedLaterHint": "Pull to refresh, or try again in a moment.",
+
+  "@sheetTitle": {
+    "description": "Filter sheet heading."
+  },
+  "sheetTitle": "Filters",
+
+  "@sheetClear": {
+    "description": "Clear-all action with the active count.",
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "3"
+      }
+    }
+  },
+  "sheetClear": "Clear {count}",
+
+  "@sheetCancel": {
+    "description": "Sheet cancel action."
+  },
+  "sheetCancel": "Cancel",
+
+  "@sheetApply": {
+    "description": "Sheet apply action."
+  },
+  "sheetApply": "Apply",
+
+  "@labelType": {
+    "description": "Property-type section label."
+  },
+  "labelType": "Property type",
+
+  "@labelPurpose": {
+    "description": "Purpose section label."
+  },
+  "labelPurpose": "Purpose",
+
+  "@labelPrice": {
+    "description": "Price range section label."
+  },
+  "labelPrice": "Price range (NPR)",
+
+  "@labelArea": {
+    "description": "Area section label."
+  },
+  "labelArea": "Area (sqm)",
+
+  "@labelSort": {
+    "description": "Sort section label."
+  },
+  "labelSort": "Sort",
+
+  "@labelDistrict": {
+    "description": "District section label."
+  },
+  "labelDistrict": "District",
+
+  "@fieldMin": {
+    "description": "Range minimum field label."
+  },
+  "fieldMin": "Min",
+
+  "@fieldMax": {
+    "description": "Range maximum field label."
+  },
+  "fieldMax": "Max",
+
+  "@sortNewest": {
+    "description": "Newest-first sort chip."
+  },
+  "sortNewest": "Newest",
+
+  "@sortOldest": {
+    "description": "Oldest-first sort chip."
+  },
+  "sortOldest": "Oldest",
+
+  "@sortPriceAsc": {
+    "description": "Cheapest-first sort chip."
+  },
+  "sortPriceAsc": "Price: low to high",
+
+  "@sortPriceDesc": {
+    "description": "Most-expensive-first sort chip."
+  },
+  "sortPriceDesc": "Price: high to low",
+
+  "@typeLand": {
+    "description": "Land type chip and saved-name word."
+  },
+  "typeLand": "Land",
+
+  "@typeHouse": {
+    "description": "House type chip and saved-name word."
+  },
+  "typeHouse": "Houses",
+
+  "@typeApartment": {
+    "description": "Apartment type chip and saved-name word."
+  },
+  "typeApartment": "Apartments",
+
+  "@typeVilla": {
+    "description": "Villa type chip and saved-name word."
+  },
+  "typeVilla": "Villas",
+
+  "@typeCommercial": {
+    "description": "Commercial type chip and saved-name word."
+  },
+  "typeCommercial": "Commercial",
+
+  "@typeBusiness": {
+    "description": "Business type chip and saved-name word."
+  },
+  "typeBusiness": "Businesses",
+
+  "@purposeSale": {
+    "description": "Sale purpose chip."
+  },
+  "purposeSale": "Sale",
+
+  "@purposeRent": {
+    "description": "Rent purpose chip."
+  },
+  "purposeRent": "Rent",
+
+  "@purposeLease": {
+    "description": "Lease purpose chip."
+  },
+  "purposeLease": "Lease",
+
+  "@savedNameInDistrict": {
+    "description": "District segment of a generated saved-search name.",
+    "placeholders": {
+      "district": {
+        "type": "String",
+        "example": "Kathmandu"
+      }
+    }
+  },
+  "savedNameInDistrict": "in {district}",
+
+  "@savedNameUnderPrice": {
+    "description": "Price-cap segment of a generated saved-search name.",
+    "placeholders": {
+      "price": {
+        "type": "String",
+        "example": "NPR 50,00,000"
+      }
+    }
+  },
+  "savedNameUnderPrice": "under {price}",
+
+  "@savedNameFallback": {
+    "description": "Name when the filter has no describable part."
+  },
+  "savedNameFallback": "Custom search"
+}

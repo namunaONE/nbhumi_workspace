@@ -4,8 +4,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:kyc/l10n/output/kyc_localizations.dart' as kyc_strings;
+import 'package:listing_detail/l10n/output/detail_localizations.dart'
+    as detail_strings;
 import 'package:notifications/l10n/output/notifications_localizations.dart'
     as notif_strings;
+import 'package:search/l10n/output/search_localizations.dart'
+    as search_strings;
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:user_app/deep_links/deep_link_listener.dart';
 import 'package:user_app/l10n/output/app_localizations.dart';
@@ -67,6 +71,8 @@ class UserApp extends ConsumerWidget {
           AppLocalizations.delegate,
           kyc_strings.AppLocalizations.delegate,
           notif_strings.AppLocalizations.delegate,
+          detail_strings.AppLocalizations.delegate,
+          search_strings.AppLocalizations.delegate,
           GlobalMaterialLocalizations.delegate,
           GlobalWidgetsLocalizations.delegate,
           GlobalCupertinoLocalizations.delegate,

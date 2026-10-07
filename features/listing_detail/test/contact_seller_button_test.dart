@@ -5,6 +5,8 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:go_router/go_router.dart';
+import 'package:listing_detail/l10n/output/detail_localizations.dart'
+    as detail_strings;
 import 'package:listing_detail/listing_detail.dart';
 import 'package:models/models.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
@@ -101,7 +103,12 @@ Future<ProviderContainer> _pump(
       child: MaterialApp.router(
         routerConfig: router,
         locale: locale,
-        localizationsDelegates: GlobalMaterialLocalizations.delegates,
+        localizationsDelegates: const <LocalizationsDelegate<dynamic>>[
+          detail_strings.AppLocalizations.delegate,
+          GlobalMaterialLocalizations.delegate,
+          GlobalWidgetsLocalizations.delegate,
+          GlobalCupertinoLocalizations.delegate,
+        ],
         supportedLocales: const <Locale>[Locale('en'), Locale('ne')],
       ),
     ),

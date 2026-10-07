@@ -2,8 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:models/models.dart';
+import 'package:search/l10n/output/search_localizations.dart'
+    as search_strings;
 
 import '../providers/browse_providers.dart';
+import '../utils/search_labels.dart';
 
 /// Bottom sheet for narrowing a browse query by type, purpose, district, price
 /// and area.
@@ -53,6 +56,7 @@ class _FilterSheetState extends ConsumerState<FilterSheet> {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final strings = search_strings.AppLocalizations.of(context);
 
     return SafeArea(
       child: ConstrainedBox(
@@ -69,12 +73,15 @@ class _FilterSheetState extends ConsumerState<FilterSheet> {
               child: Row(
                 children: <Widget>[
                   Expanded(
-                    child: Text('Filters', style: theme.textTheme.titleLarge),
+                    child: Text(
+                      strings.sheetTitle,
+                      style: theme.textTheme.titleLarge,
+                    ),
                   ),
                   if (_draft.activeCount > 0)
                     TextButton(
                       onPressed: () => _update(const ListingFilter()),
-                      child: Text('Clear ${_draft.activeCount}'),
+                      child: Text(strings.sheetClear(_draft.activeCount)),
                     ),
                 ],
               ),
@@ -85,12 +92,12 @@ class _FilterSheetState extends ConsumerState<FilterSheet> {
                 shrinkWrap: true,
                 padding: const EdgeInsets.fromLTRB(20, 16, 20, 16),
                 children: <Widget>[
-                  const _Label('Property type'),
+                  _Label(strings.labelType),
                   _Wrap(
                     children: <Widget>[
                       for (final type in PropertyType.values)
                         ChoiceChip(
-                          label: Text(_humanise(type.name)),
+                          label: Text(searchTypeLabel(context, type)),
                           selected: _draft.propertyType == type,
                           onSelected: (selected) => _update(
                             _draft.copyWith(
@@ -101,12 +108,12 @@ class _FilterSheetState extends ConsumerState<FilterSheet> {
                     ],
                   ),
                   const SizedBox(height: 20),
-                  const _Label('Purpose'),
+                  _Label(strings.labelPurpose),
                   _Wrap(
                     children: <Widget>[
                       for (final purpose in ListingPurpose.values)
                         ChoiceChip(
-                          label: Text(_humanise(purpose.name)),
+                          label: Text(searchPurposeLabel(context, purpose)),
                           selected: _draft.listingPurpose == purpose,
                           onSelected: (selected) => _update(
                             _draft.copyWith(
@@ -117,12 +124,12 @@ class _FilterSheetState extends ConsumerState<FilterSheet> {
                     ],
                   ),
                   const SizedBox(height: 20),
-                  const _Label('Price range (NPR)'),
+                  _Label(strings.labelPrice),
                   Row(
                     children: <Widget>[
                       Expanded(
                         child: _NumberField(
-                          label: 'Min',
+                          label: strings.fieldMin,
                           value: _draft.minPriceNpr,
                           onChanged: (value) =>
                               _update(_draft.copyWith(minPriceNpr: value)),
@@ -131,7 +138,7 @@ class _FilterSheetState extends ConsumerState<FilterSheet> {
                       const SizedBox(width: 12),
                       Expanded(
                         child: _NumberField(
-                          label: 'Max',
+                          label: strings.fieldMax,
                           value: _draft.maxPriceNpr,
                           onChanged: (value) =>
                               _update(_draft.copyWith(maxPriceNpr: value)),
@@ -140,12 +147,12 @@ class _FilterSheetState extends ConsumerState<FilterSheet> {
                     ],
                   ),
                   const SizedBox(height: 20),
-                  const _Label('Area (sqm)'),
+                  _Label(strings.labelArea),
                   Row(
                     children: <Widget>[
                       Expanded(
                         child: _NumberField(
-                          label: 'Min',
+                          label: strings.fieldMin,
                           value: _draft.minAreaSqm?.round(),
                           onChanged: (value) => _update(
                             _draft.copyWith(minAreaSqm: value?.toDouble()),
@@ -155,7 +162,7 @@ class _FilterSheetState extends ConsumerState<FilterSheet> {
                       const SizedBox(width: 12),
                       Expanded(
                         child: _NumberField(
-                          label: 'Max',
+                          label: strings.fieldMax,
                           value: _draft.maxAreaSqm?.round(),
                           onChanged: (value) => _update(
                             _draft.copyWith(maxAreaSqm: value?.toDouble()),
@@ -165,12 +172,12 @@ class _FilterSheetState extends ConsumerState<FilterSheet> {
                     ],
                   ),
                   const SizedBox(height: 20),
-                  const _Label('Sort'),
+                  _Label(strings.labelSort),
                   _Wrap(
                     children: <Widget>[
                       for (final sort in ListingSort.values)
                         ChoiceChip(
-                          label: Text(_sortLabel(sort)),
+                          label: Text(searchSortLabel(context, sort)),
                           selected: _draft.sort == sort,
                           onSelected: (_) =>
                               _update(_draft.copyWith(sort: sort)),
@@ -179,7 +186,7 @@ class _FilterSheetState extends ConsumerState<FilterSheet> {
                   ),
                   if (widget.districts.isNotEmpty) ...<Widget>[
                     const SizedBox(height: 20),
-                    const _Label('District'),
+                    _Label(strings.labelDistrict),
                     _Wrap(
                       children: <Widget>[
                         for (final district in widget.districts)
@@ -206,14 +213,14 @@ class _FilterSheetState extends ConsumerState<FilterSheet> {
                   Expanded(
                     child: OutlinedButton(
                       onPressed: () => Navigator.of(context).pop(),
-                      child: const Text('Cancel'),
+                      child: Text(strings.sheetCancel),
                     ),
                   ),
                   const SizedBox(width: 12),
                   Expanded(
                     child: FilledButton(
                       onPressed: () => Navigator.of(context).pop(_draft),
-                      child: const Text('Apply'),
+                      child: Text(strings.sheetApply),
                     ),
                   ),
                 ],
@@ -225,17 +232,6 @@ class _FilterSheetState extends ConsumerState<FilterSheet> {
     );
   }
 
-  /// `pendingReview` and `post_listing` must never reach a chip label.
-  static String _humanise(String value) => value.isEmpty
-      ? value
-      : '${value[0].toUpperCase()}${value.substring(1)}';
-
-  static String _sortLabel(ListingSort sort) => switch (sort) {
-        ListingSort.newest => 'Newest',
-        ListingSort.oldest => 'Oldest',
-        ListingSort.priceAsc => 'Price: low to high',
-        ListingSort.priceDesc => 'Price: high to low',
-      };
 }
 
 class _Label extends StatelessWidget {

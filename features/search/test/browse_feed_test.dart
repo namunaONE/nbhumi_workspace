@@ -7,6 +7,8 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:models/models.dart';
+import 'package:search/l10n/output/search_localizations.dart'
+    as search_strings;
 import 'package:search/search.dart';
 
 ListingSummary _listing(String id) => ListingSummary(
@@ -91,7 +93,12 @@ Future<ProviderContainer> _pump(
       container: container,
       child: MaterialApp(
         locale: locale,
-        localizationsDelegates: GlobalMaterialLocalizations.delegates,
+        localizationsDelegates: const <LocalizationsDelegate<dynamic>>[
+          search_strings.AppLocalizations.delegate,
+          GlobalMaterialLocalizations.delegate,
+          GlobalWidgetsLocalizations.delegate,
+          GlobalCupertinoLocalizations.delegate,
+        ],
         supportedLocales: const <Locale>[Locale('en'), Locale('ne')],
         home: Scaffold(body: child),
       ),

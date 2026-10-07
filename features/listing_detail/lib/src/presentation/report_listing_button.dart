@@ -3,6 +3,8 @@ import 'package:data/data.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:listing_detail/l10n/output/detail_localizations.dart'
+    as detail_strings;
 import 'package:models/models.dart';
 
 /// Flags a listing for moderation (HYA-263).
@@ -71,13 +73,10 @@ class _ReportListingButtonState extends ConsumerState<ReportListingButton> {
           );
 
       if (!mounted) return;
+      final strings = detail_strings.AppLocalizations.of(context);
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text(
-            _isNepali
-                ? 'रिपोर्ट गरियो। हाम्रो टोलीले हेर्नेछ।'
-                : 'Report filed. Our team will review it.',
-          ),
+          content: Text(strings.reportFiled),
         ),
       );
     } on AppException catch (e) {
@@ -92,9 +91,6 @@ class _ReportListingButtonState extends ConsumerState<ReportListingButton> {
     }
   }
 
-  bool get _isNepali =>
-      Localizations.maybeLocaleOf(context)?.languageCode != 'en';
-
   @override
   Widget build(BuildContext context) {
     return IconButton(
@@ -105,7 +101,7 @@ class _ReportListingButtonState extends ConsumerState<ReportListingButton> {
               child: CircularProgressIndicator(strokeWidth: 2),
             )
           : const Icon(Icons.outlined_flag_outlined),
-      tooltip: _isNepali ? 'रिपोर्ट गर्नुहोस्' : 'Report this listing',
+      tooltip: detail_strings.AppLocalizations.of(context).reportTooltip,
       onPressed: _busy ? null : _report,
     );
   }
@@ -144,20 +140,16 @@ class _ReportSheetState extends State<_ReportSheet> {
     super.dispose();
   }
 
-  bool get _isNepali =>
-      Localizations.maybeLocaleOf(context)?.languageCode != 'en';
-
   void _submit() {
     final trimmed = _details.text.trim();
+    final strings = detail_strings.AppLocalizations.of(context);
 
     // Rule 6, client side: the server refuses the same thing, but catching it
     // here means the buyer sees the complaint against the field, not as a
     // snackbar after a round trip.
     if (_reason.requiresDetails && trimmed.isEmpty) {
       setState(() {
-        _error = _isNepali
-            ? 'कृपया समस्या बयान गर्नुहोस्, हाम्रो टोलीले कारबाही लिन सक्नेछ।'
-            : 'Please describe the problem so our team can act on it.';
+        _error = strings.reportDetailsError;
       });
       return;
     }
@@ -174,6 +166,7 @@ class _ReportSheetState extends State<_ReportSheet> {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final strings = detail_strings.AppLocalizations.of(context);
     final keyboardInset = MediaQuery.viewInsetsOf(context).bottom;
 
     return Padding(
@@ -183,7 +176,7 @@ class _ReportSheetState extends State<_ReportSheet> {
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: <Widget>[
           Text(
-            _isNepali ? 'यो लिस्टिङ रिपोर्ट गर्नुहोस्' : 'Report this listing',
+            strings.reportTitle,
             style: theme.textTheme.titleMedium,
           ),
           const SizedBox(height: 12),
@@ -191,14 +184,14 @@ class _ReportSheetState extends State<_ReportSheet> {
             initialValue: _reason,
             isExpanded: true,
             decoration: InputDecoration(
-              labelText: _isNepali ? 'कारण' : 'Reason',
+              labelText: strings.reportReasonLabel,
               border: const OutlineInputBorder(),
             ),
             items: <DropdownMenuItem<ReportReason>>[
               for (final reason in ReportReason.values)
                 DropdownMenuItem<ReportReason>(
                   value: reason,
-                  child: Text(_reasonLabel(reason)),
+                  child: Text(_reasonLabel(context, reason)),
                 ),
             ],
             onChanged: (value) {
@@ -216,8 +209,8 @@ class _ReportSheetState extends State<_ReportSheet> {
             maxLines: 4,
             decoration: InputDecoration(
               labelText: _reason.requiresDetails
-                  ? (_isNepali ? 'विवरण *' : 'Details *')
-                  : (_isNepali ? 'विवरण (वैकल्पिक)' : 'Details (optional)'),
+                  ? strings.reportDetailsRequired
+                  : strings.reportDetailsOptional,
               border: const OutlineInputBorder(),
               errorText: _error,
             ),
@@ -225,7 +218,7 @@ class _ReportSheetState extends State<_ReportSheet> {
           const SizedBox(height: 16),
           FilledButton(
             onPressed: _submit,
-            child: Text(_isNepali ? 'रिपोर्ट पठाउनुहोस्' : 'Submit report'),
+            child: Text(strings.reportSubmit),
           ),
         ],
       ),
@@ -237,22 +230,17 @@ class _ReportSheetState extends State<_ReportSheet> {
   /// Kept next to the picker rather than on the enum: the label is UI, and the
   /// model package is dependency-free by design (models has no Flutter and is
   /// consumed by tooling, so wording does not belong in it).
-  String _reasonLabel(ReportReason reason) => switch (reason) {
-        ReportReason.duplicateListing =>
-          _isNepali ? 'डुप्लिकेट लिस्टिङ' : 'Duplicate listing',
-        ReportReason.photosMisleading =>
-          _isNepali ? 'फोटोहरू भ्रामक' : 'Photos are misleading',
-        ReportReason.priceSuspicious =>
-          _isNepali ? 'मूल्य शंकास्पद' : 'Price looks wrong',
-        ReportReason.wrongLocation =>
-          _isNepali ? 'गलत ठेगाना' : 'Wrong location',
-        ReportReason.alreadySold =>
-          _isNepali ? 'पहिल्यै बिकाइसक्यो' : 'Already sold',
-        ReportReason.sellerAskedOffsite => _isNepali
-            ? 'विक्रेताले बाहिर कारोबार गर्न भनेको'
-            : 'Seller asked to deal off-site',
-        ReportReason.fakeListing =>
-          _isNepali ? 'नक्कली लिस्टिङ' : 'Fake listing',
-        ReportReason.other => _isNepali ? 'अन्य' : 'Other',
-      };
+  String _reasonLabel(BuildContext context, ReportReason reason) {
+    final strings = detail_strings.AppLocalizations.of(context);
+    return switch (reason) {
+      ReportReason.duplicateListing => strings.reasonDuplicate,
+      ReportReason.photosMisleading => strings.reasonPhotos,
+      ReportReason.priceSuspicious => strings.reasonPrice,
+      ReportReason.wrongLocation => strings.reasonLocation,
+      ReportReason.alreadySold => strings.reasonSold,
+      ReportReason.sellerAskedOffsite => strings.reasonOffsite,
+      ReportReason.fakeListing => strings.reasonFake,
+      ReportReason.other => strings.reasonOther,
+    };
+  }
 }

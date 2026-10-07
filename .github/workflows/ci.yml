@@ -26,13 +26,16 @@ jobs:
         # Every package holding `@riverpod` or `@freezed` annotations must appear
         # here. Generated files are committed (Rule 14) so CI never runs codegen
         # itself, which means an unlisted package can silently drift from source.
-        # `features/admin_queue` is listed ahead of M2 because the verification
-        # queue adds `@riverpod` annotations there.
         run: |
           cd packages/models && dart run build_runner build && cd ../..
           cd packages/data && dart run build_runner build && cd ../..
           cd features/auth && dart run build_runner build && cd ../..
           cd features/admin_queue && dart run build_runner build && cd ../..
+          cd features/search && dart run build_runner build && cd ../..
+          cd features/kyc && dart run build_runner build && cd ../..
+          cd features/notifications && dart run build_runner build && cd ../..
+          cd features/post_listing && dart run build_runner build && cd ../..
+          cd features/listing_detail && dart run build_runner build && cd ../..
           git diff --exit-code || (echo "::error::Generated files are out of date. Run build_runner locally and commit the results." && exit 1)
 
       - name: Analyze (zero warnings)
@@ -57,7 +60,7 @@ jobs:
       - name: Run tests with coverage
         run: |
           set -e
-          for pkg in packages/models packages/core packages/data features/auth features/search features/listing_detail features/post_listing features/admin_queue apps/user_app apps/admin_panel; do
+          for pkg in packages/models packages/core packages/data features/auth features/search features/listing_detail features/post_listing features/admin_queue features/kyc features/notifications apps/user_app apps/admin_panel; do
             if [ -d "$pkg/test" ]; then
               echo "::group::Testing $pkg"
               (cd "$pkg" && flutter test --coverage)

@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:models/models.dart';
+import 'package:post_listing/l10n/output/post_localizations.dart'
+    as post_strings;
 
 import '../../viewmodels/listing_wizard_state.dart';
 
@@ -32,11 +34,12 @@ class TypeStep extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final strings = post_strings.AppLocalizations.of(context);
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
-        Text('What are you listing?', style: theme.textTheme.titleLarge),
+        Text(strings.typeQuestion, style: theme.textTheme.titleLarge),
         const SizedBox(height: 16),
         Wrap(
           spacing: 8,
@@ -44,7 +47,7 @@ class TypeStep extends StatelessWidget {
           children: <Widget>[
             for (final type in PropertyType.values)
               ChoiceChip(
-                label: Text(_humanise(type.name)),
+                label: Text(_typeLabel(strings, type)),
                 selected: state.propertyType == type,
                 onSelected: (selected) {
                   if (selected) onTypeSelected(type);
@@ -53,7 +56,7 @@ class TypeStep extends StatelessWidget {
           ],
         ),
         const SizedBox(height: 24),
-        Text('How do you want to sell it?', style: theme.textTheme.titleLarge),
+        Text(strings.purposeQuestion, style: theme.textTheme.titleLarge),
         const SizedBox(height: 16),
         Wrap(
           spacing: 8,
@@ -61,7 +64,7 @@ class TypeStep extends StatelessWidget {
           children: <Widget>[
             for (final purpose in ListingPurpose.values)
               ChoiceChip(
-                label: Text(_purposeLabel(purpose)),
+                label: Text(_purposeLabel(strings, purpose)),
                 selected: state.listingPurpose == purpose,
                 onSelected: (selected) {
                   if (selected) onPurposeSelected(purpose);
@@ -73,13 +76,27 @@ class TypeStep extends StatelessWidget {
     );
   }
 
-  static String _humanise(String value) =>
-      '${value[0].toUpperCase()}${value.substring(1)}';
+  static String _typeLabel(
+    post_strings.AppLocalizations strings,
+    PropertyType type,
+  ) =>
+      switch (type) {
+        PropertyType.land => strings.chipLand,
+        PropertyType.house => strings.chipHouse,
+        PropertyType.apartment => strings.chipApartment,
+        PropertyType.villa => strings.chipVilla,
+        PropertyType.commercial => strings.chipCommercial,
+        PropertyType.business => strings.chipBusiness,
+      };
 
-  /// Enum names do not read as English labels.
-  static String _purposeLabel(ListingPurpose purpose) => switch (purpose) {
-        ListingPurpose.sale => 'Sell',
-        ListingPurpose.rent => 'Rent out',
-        ListingPurpose.lease => 'Lease',
+  /// Enum names do not read as labels in either language.
+  static String _purposeLabel(
+    post_strings.AppLocalizations strings,
+    ListingPurpose purpose,
+  ) =>
+      switch (purpose) {
+        ListingPurpose.sale => strings.purposeSell,
+        ListingPurpose.rent => strings.purposeRentOut,
+        ListingPurpose.lease => strings.purposeLeaseTx,
       };
 }

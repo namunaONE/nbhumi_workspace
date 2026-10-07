@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:models/models.dart';
+import 'package:post_listing/l10n/output/post_localizations.dart'
+    as post_strings;
 
 import '../viewmodels/listing_wizard_provider.dart';
 import '../viewmodels/listing_wizard_state.dart';
@@ -32,10 +34,11 @@ class PostListingScreen extends ConsumerWidget {
     final state = ref.watch(listingWizardProvider);
     final notifier = ref.read(listingWizardProvider.notifier);
     final districts = ref.watch(districtsProvider);
+    final strings = post_strings.AppLocalizations.of(context);
 
     return Scaffold(
       appBar: AppBar(
-        title: Text(state.step.title),
+        title: Text(_stepTitle(strings, state.step)),
         // Leaving mid-form is allowed and the answers are kept, so a seller
         // interrupted by a call does not lose the listing.
         leading: CloseButton(
@@ -66,6 +69,19 @@ class PostListingScreen extends ConsumerWidget {
   }
 }
 
+/// App-bar title for a wizard step.
+String _stepTitle(
+  post_strings.AppLocalizations strings,
+  WizardStep step,
+) =>
+    switch (step) {
+      WizardStep.type => strings.stepType,
+      WizardStep.location => strings.stepLocation,
+      WizardStep.specs => strings.stepSpecs,
+      WizardStep.price => strings.stepPrice,
+      WizardStep.review => strings.stepReview,
+    };
+
 /// Renders the current step and the navigation bar.
 class _StepBody extends StatelessWidget {
   const _StepBody({
@@ -80,8 +96,7 @@ class _StepBody extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final step = switch (state.step) {
-      WizardStep.type => TypeStep(
+    final step = switch (state.step) {      WizardStep.type => TypeStep(
           state: state,
           onTypeSelected: notifier.setPropertyType,
           onPurposeSelected: notifier.setPurpose,
@@ -126,7 +141,9 @@ class _StepBody extends StatelessWidget {
           onBack: notifier.back,
           onNext: state.step == WizardStep.review
               ? () => _submit(context)
-              : notifier.next,
+              : () => notifier.next(
+                    post_strings.AppLocalizations.of(context),
+                  ),
         ),
       ],
     );
@@ -135,13 +152,14 @@ class _StepBody extends StatelessWidget {
   Future<void> _submit(BuildContext context) async {
     final messenger = ScaffoldMessenger.of(context);
     final router = GoRouter.of(context);
+    final strings = post_strings.AppLocalizations.of(context);
 
-    final ok = await notifier.submit();
+    final ok = await notifier.submit(strings);
     if (!ok) return;
 
     messenger.showSnackBar(
-      const SnackBar(
-        content: Text('Sent for review. It will appear once approved.'),
+      SnackBar(
+        content: Text(strings.sentForReview),
       ),
     );
     router.go('/');
@@ -167,7 +185,8 @@ class _Navigation extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final isLast = state.step == WizardStep.review;
-    final isValid = state.canLeave(state.step);
+    final strings = post_strings.AppLocalizations.of(context);
+    final isValid = state.canLeave(state.step, strings);
 
     return Padding(
       padding: const EdgeInsets.all(16),
@@ -177,7 +196,7 @@ class _Navigation extends StatelessWidget {
             Expanded(
               child: OutlinedButton(
                 onPressed: onBack,
-                child: const Text('Back'),
+                child: Text(strings.navBack),
               ),
             ),
             const SizedBox(width: 12),
@@ -186,7 +205,7 @@ class _Navigation extends StatelessWidget {
             flex: 2,
             child: FilledButton(
               onPressed: isValid ? onNext : null,
-              child: Text(isLast ? 'Submit' : 'Next'),
+              child: Text(isLast ? strings.navSubmit : strings.navNext),
             ),
           ),
         ],
@@ -203,6 +222,7 @@ class _Progress extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final strings = post_strings.AppLocalizations.of(context);
     return Padding(
       padding: const EdgeInsets.fromLTRB(16, 0, 16, 12),
       child: Column(
@@ -213,7 +233,7 @@ class _Progress extends StatelessWidget {
           ),
           const SizedBox(height: 4),
           Text(
-            'Step ${step.position + 1} of ${WizardStep.values.length}',
+            strings.progressOf(step.position + 1, WizardStep.values.length),
             style: Theme.of(context).textTheme.labelSmall,
           ),
         ],
@@ -230,6 +250,7 @@ class _DistrictsUnavailable extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final strings = post_strings.AppLocalizations.of(context);
     return Center(
       child: Padding(
         padding: const EdgeInsets.all(32),
@@ -243,12 +264,12 @@ class _DistrictsUnavailable extends StatelessWidget {
             ),
             const SizedBox(height: 16),
             Text(
-              'Could not load districts',
+              strings.districtsUnavailableTitle,
               style: Theme.of(context).textTheme.titleMedium,
             ),
             const SizedBox(height: 8),
             Text(
-              'Check your connection and try again.',
+              strings.districtsUnavailableBody,
               style: Theme.of(context).textTheme.bodySmall,
               textAlign: TextAlign.center,
             ),

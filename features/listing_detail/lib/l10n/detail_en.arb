@@ -1,0 +1,270 @@
+{
+  "@@locale": "en",
+  "@@last_modified": "2026-10-06T00:00:00.000",
+
+  "@sectionLocation": {
+    "description": "Location section heading."
+  },
+  "sectionLocation": "Location",
+
+  "@sectionDetails": {
+    "description": "Bedrooms/bathrooms section heading."
+  },
+  "sectionDetails": "Details",
+
+  "@sectionDescription": {
+    "description": "Description section heading."
+  },
+  "sectionDescription": "Description",
+
+  "@sectionSeller": {
+    "description": "Seller section heading."
+  },
+  "sectionSeller": "Seller",
+
+  "@specRoadAccess": {
+    "description": "Road frontage spec.",
+    "placeholders": {
+      "feet": { "type": "int", "example": "15" }
+    }
+  },
+  "specRoadAccess": "{feet} ft road access",
+
+  "@specBedrooms": {
+    "description": "Bedroom count spec.",
+    "placeholders": {
+      "count": { "type": "int", "example": "3" }
+    }
+  },
+  "specBedrooms": "{count, plural, =1{1 bedroom} other{{count} bedrooms}}",
+
+  "@specBathrooms": {
+    "description": "Bathroom count spec.",
+    "placeholders": {
+      "count": { "type": "int", "example": "2" }
+    }
+  },
+  "specBathrooms": "{count, plural, =1{1 bathroom} other{{count} bathrooms}}",
+
+  "@specWard": {
+    "description": "City-plus-ward address line.",
+    "placeholders": {
+      "city": { "type": "String", "example": "Kathmandu" },
+      "ward": { "type": "String", "example": "16" }
+    }
+  },
+  "specWard": "{city}, Ward {ward}",
+
+  "@sellerUnavailable": {
+    "description": "Fallback when the seller has no displayable name."
+  },
+  "sellerUnavailable": "Seller details unavailable",
+
+  "@favoriteSave": {
+    "description": "Save heart tooltip."
+  },
+  "favoriteSave": "Save this property",
+
+  "@favoriteRemove": {
+    "description": "Unsave heart tooltip."
+  },
+  "favoriteRemove": "Remove from saved",
+
+  "@favoriteSaved": {
+    "description": "Confirmation after bookmarking."
+  },
+  "favoriteSaved": "Saved to your list.",
+
+  "@favoriteRemoved": {
+    "description": "Confirmation after unbookmarking."
+  },
+  "favoriteRemoved": "Removed from your saved list.",
+
+  "@notAvailableTitle": {
+    "description": "Missing/unpublished listing heading."
+  },
+  "notAvailableTitle": "This property is no longer available",
+
+  "@notAvailableBody": {
+    "description": "Missing/unpublished listing explanation."
+  },
+  "notAvailableBody": "It may have been sold, withdrawn by the seller, or the link may be wrong.",
+
+  "@browseOthers": {
+    "description": "Back-to-feed action."
+  },
+  "browseOthers": "Browse other properties",
+
+  "@tryAgain": {
+    "description": "Load retry action."
+  },
+  "tryAgain": "Try again",
+
+  "@loadRetryHint": {
+    "description": "Hint under the load error."
+  },
+  "loadRetryHint": "Check your connection and try again.",
+
+  "@contactLoading": {
+    "description": "Contact button while revealing."
+  },
+  "contactLoading": "Loading…",
+
+  "@contactSignIn": {
+    "description": "Contact button for guests."
+  },
+  "contactSignIn": "Sign in to contact",
+
+  "@contactSeller": {
+    "description": "Contact button for signed-in buyers."
+  },
+  "contactSeller": "Contact seller",
+
+  "@contactPhone": {
+    "description": "Phone row label."
+  },
+  "contactPhone": "Phone",
+
+  "@contactEmail": {
+    "description": "Email row label."
+  },
+  "contactEmail": "Email",
+
+  "@contactCopy": {
+    "description": "Copy-to-clipboard tooltip."
+  },
+  "contactCopy": "Copy",
+
+  "@contactCopied": {
+    "description": "Confirmation naming the copied row.",
+    "placeholders": {
+      "label": { "type": "String", "example": "Phone" }
+    }
+  },
+  "contactCopied": "{label} copied",
+
+  "@reportTooltip": {
+    "description": "Report button tooltip."
+  },
+  "reportTooltip": "Report this listing",
+
+  "@reportFiled": {
+    "description": "Confirmation after filing a report."
+  },
+  "reportFiled": "Report filed. Our team will review it.",
+
+  "@reportTitle": {
+    "description": "Report sheet heading."
+  },
+  "reportTitle": "Report this listing",
+
+  "@reportReasonLabel": {
+    "description": "Reason picker label."
+  },
+  "reportReasonLabel": "Reason",
+
+  "@reportDetailsRequired": {
+    "description": "Details field label when required."
+  },
+  "reportDetailsRequired": "Details *",
+
+  "@reportDetailsOptional": {
+    "description": "Details field label when optional."
+  },
+  "reportDetailsOptional": "Details (optional)",
+
+  "@reportDetailsError": {
+    "description": "Inline error when required details are blank."
+  },
+  "reportDetailsError": "Please describe the problem so our team can act on it.",
+
+  "@reportSubmit": {
+    "description": "Report submit action."
+  },
+  "reportSubmit": "Submit report",
+
+  "@reasonDuplicate": {
+    "description": "Duplicate-listing report reason."
+  },
+  "reasonDuplicate": "Duplicate listing",
+
+  "@reasonPhotos": {
+    "description": "Misleading-photos report reason."
+  },
+  "reasonPhotos": "Photos are misleading",
+
+  "@reasonPrice": {
+    "description": "Suspicious-price report reason."
+  },
+  "reasonPrice": "Price looks wrong",
+
+  "@reasonLocation": {
+    "description": "Wrong-location report reason."
+  },
+  "reasonLocation": "Wrong location",
+
+  "@reasonSold": {
+    "description": "Already-sold report reason."
+  },
+  "reasonSold": "Already sold",
+
+  "@reasonOffsite": {
+    "description": "Off-site-dealing report reason."
+  },
+  "reasonOffsite": "Seller asked to deal off-site",
+
+  "@reasonFake": {
+    "description": "Fake-listing report reason."
+  },
+  "reasonFake": "Fake listing",
+
+  "@reasonOther": {
+    "description": "Other report reason."
+  },
+  "reasonOther": "Other",
+
+  "@typeLand": {
+    "description": "Land chip."
+  },
+  "typeLand": "Land",
+
+  "@typeHouse": {
+    "description": "House chip."
+  },
+  "typeHouse": "House",
+
+  "@typeApartment": {
+    "description": "Apartment chip."
+  },
+  "typeApartment": "Apartment",
+
+  "@typeVilla": {
+    "description": "Villa chip."
+  },
+  "typeVilla": "Villa",
+
+  "@typeCommercial": {
+    "description": "Commercial chip."
+  },
+  "typeCommercial": "Commercial",
+
+  "@typeBusiness": {
+    "description": "Business chip."
+  },
+  "typeBusiness": "Business",
+
+  "@purposeSale": {
+    "description": "Sale chip."
+  },
+  "purposeSale": "Sale",
+
+  "@purposeRent": {
+    "description": "Rent chip."
+  },
+  "purposeRent": "Rent",
+
+  "@purposeLease": {
+    "description": "Lease chip."
+  },
+  "purposeLease": "Lease"
+}

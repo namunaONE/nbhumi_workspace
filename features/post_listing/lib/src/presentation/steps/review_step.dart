@@ -1,5 +1,7 @@
 import 'package:core/core.dart';
 import 'package:flutter/material.dart';
+import 'package:post_listing/l10n/output/post_localizations.dart'
+    as post_strings;
 
 import '../../viewmodels/listing_wizard_state.dart';
 import '../../viewmodels/listing_wizard_validation.dart';
@@ -41,64 +43,69 @@ class ReviewStep extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final strings = post_strings.AppLocalizations.of(context);
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
-        Text('Check your listing', style: theme.textTheme.titleLarge),
+        Text(strings.reviewTitle, style: theme.textTheme.titleLarge),
         const SizedBox(height: 4),
         Text(
-          'It will be reviewed before it appears publicly.',
+          strings.reviewSubtitle,
           style: theme.textTheme.bodySmall
               ?.copyWith(color: theme.colorScheme.outline),
         ),
         const SizedBox(height: 16),
         _Row(
-          label: 'Type',
-          value: _join(state.propertyType?.name, state.listingPurpose?.name),
+          label: strings.reviewType,
+          value: _join(
+            context,
+            state.propertyType?.name,
+            state.listingPurpose?.name,
+          ),
           onTap: () => onEditStep(WizardStep.type),
         ),
         _Row(
-          label: 'Title',
-          value: state.title.isEmpty ? 'Not set' : state.title,
+          label: strings.reviewTitleRow,
+          value: state.title.isEmpty
+              ? strings.reviewNotSet
+              : state.title,
           onTap: () => onEditStep(WizardStep.type),
         ),
         _Row(
-          label: 'Location',
-          value: _location(state),
+          label: strings.reviewLocation,
+          value: _location(context, state),
           onTap: () => onEditStep(WizardStep.location),
         ),
         _Row(
-          label: 'Area',
+          label: strings.reviewArea,
           value: _area(state),
           onTap: () => onEditStep(WizardStep.specs),
         ),
         _Row(
-          label: 'Rooms',
+          label: strings.reviewRooms,
           value: _rooms(state),
           onTap: () => onEditStep(WizardStep.specs),
         ),
         _Row(
-          label: 'Price',
+          label: strings.reviewPrice,
           value: _price(state),
           onTap: () => onEditStep(WizardStep.price),
         ),
         _Row(
-          label: 'Photos',
-          value: '${state.uploadedPhotoUrls.length} added',
+          label: strings.reviewPhotos,
+          value: strings.reviewPhotosAdded(state.uploadedPhotoUrls.length),
           onTap: () => onEditStep(WizardStep.price),
         ),
         if (state.description.trim().isNotEmpty) ...<Widget>[
           const SizedBox(height: 8),
-          const WizardSection('Description'),
+          WizardSection(strings.reviewDescription),
           Text(state.description.trim(), style: theme.textTheme.bodyMedium),
         ],
         const SizedBox(height: 16),
-        const WizardNote(
+        WizardNote(
           icon: Icons.phone_outlined,
-          text: 'Buyers see your contact details only after signing in and '
-              'requesting them, so your number is never published on the '
-              'listing.',
+          text: strings.reviewContactNote,
         ),
         if (state.submitError case final message?) ...<Widget>[
           const SizedBox(height: 16),
@@ -113,7 +120,9 @@ class ReviewStep extends StatelessWidget {
         FilledButton(
           // Disabled unless every step passes, not just this one: the
           // seller can reach review by stepping backwards.
-          onPressed: state.canSubmit && !state.submitting ? onSubmit : null,
+          onPressed: state.canSubmit(strings) && !state.submitting
+              ? onSubmit
+              : null,
           style: FilledButton.styleFrom(
             minimumSize: const Size.fromHeight(48),
           ),
@@ -123,18 +132,19 @@ class ReviewStep extends StatelessWidget {
                   width: 20,
                   child: CircularProgressIndicator(strokeWidth: 2),
                 )
-              : const Text('Submit for review'),
+              : Text(strings.reviewSubmit),
         ),
       ],
     );
   }
 
-  static String _join(String? a, String? b) {
+  static String _join(BuildContext context, String? a, String? b) {
+    final strings = post_strings.AppLocalizations.of(context);
     final parts = <String>[
       if (a != null) _humanise(a),
       if (b != null) _humanise(b),
     ];
-    return parts.isEmpty ? 'Not set' : parts.join(' · ');
+    return parts.isEmpty ? strings.reviewNotSet : parts.join(' · ');
   }
 
   static String _humanise(String value) =>

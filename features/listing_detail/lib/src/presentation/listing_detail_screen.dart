@@ -3,6 +3,8 @@ import 'package:data/data.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:listing_detail/l10n/output/detail_localizations.dart'
+    as detail_strings;
 import 'package:models/models.dart';
 
 import '../providers/listing_detail_providers.dart';
@@ -69,16 +71,21 @@ class _FavoriteBody extends ConsumerWidget {
       _ => false,
     };
     final session = ref.watch(sessionProvider);
+    final strings = detail_strings.AppLocalizations.of(context);
 
     return ListingDetailBody(
       listing: listing,
       isFavorite: saved,
       onFavoriteToggle:
-          session == null ? null : () => _toggle(context, ref),
+          session == null ? null : () => _toggle(context, ref, strings),
     );
   }
 
-  Future<void> _toggle(BuildContext context, WidgetRef ref) async {
+  Future<void> _toggle(
+    BuildContext context,
+    WidgetRef ref,
+    detail_strings.AppLocalizations strings,
+  ) async {
     final messenger = ScaffoldMessenger.of(context);
     final userId = ref.read(sessionProvider)?.user.id;
     if (userId == null) return;
@@ -94,7 +101,7 @@ class _FavoriteBody extends ConsumerWidget {
       messenger.showSnackBar(
         SnackBar(
           content: Text(
-            nowSaved ? 'Saved to your list.' : 'Removed from your saved list.',
+            nowSaved ? strings.favoriteSaved : strings.favoriteRemoved,
           ),
         ),
       );
@@ -105,8 +112,8 @@ class _FavoriteBody extends ConsumerWidget {
           content: Text(e.localizedForContext(context)),
           action: e.isRetryable
               ? SnackBarAction(
-                  label: 'Retry',
-                  onPressed: () => _toggle(context, ref),
+                  label: strings.tryAgain,
+                  onPressed: () => _toggle(context, ref, strings),
                 )
               : null,
         ),
@@ -129,6 +136,7 @@ class _NotAvailable extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final strings = detail_strings.AppLocalizations.of(context);
     return Scaffold(
       appBar: AppBar(),
       body: Center(
@@ -144,20 +152,19 @@ class _NotAvailable extends StatelessWidget {
               ),
               const SizedBox(height: 16),
               Text(
-                'This property is no longer available',
+                strings.notAvailableTitle,
                 style: Theme.of(context).textTheme.titleMedium,
                 textAlign: TextAlign.center,
               ),
               const SizedBox(height: 8),
-              const Text(
-                'It may have been sold, withdrawn by the seller, or the link '
-                'may be wrong.',
+              Text(
+                strings.notAvailableBody,
                 textAlign: TextAlign.center,
               ),
               const SizedBox(height: 24),
               FilledButton(
                 onPressed: () => context.go('/'),
-                child: const Text('Browse other properties'),
+                child: Text(strings.browseOthers),
               ),
             ],
           ),
@@ -175,8 +182,7 @@ class _LoadError extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final isNepali = Localizations.maybeLocaleOf(context)?.languageCode != 'en';
-
+    final strings = detail_strings.AppLocalizations.of(context);
     return Scaffold(
       appBar: AppBar(),
       body: Center(
@@ -201,13 +207,11 @@ class _LoadError extends ConsumerWidget {
                 onPressed: () => ref
                     .read(listingDetailViewProvider(listingId).notifier)
                     .retry(),
-                child: const Text('Try again'),
+                child: Text(strings.tryAgain),
               ),
               const SizedBox(height: 8),
               Text(
-                isNepali
-                    ? 'इन्टरनेट जडान जाँच गर्नुहोस्।'
-                    : 'Check your connection and try again.',
+                strings.loadRetryHint,
                 style: Theme.of(context).textTheme.bodySmall,
                 textAlign: TextAlign.center,
               ),

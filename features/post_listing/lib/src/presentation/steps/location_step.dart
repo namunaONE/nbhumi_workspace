@@ -2,6 +2,10 @@ import 'package:data/data.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:models/models.dart';
+import 'package:post_listing/l10n/output/post_localizations.dart'
+    as post_strings;
+import 'package:post_listing/l10n/output/post_localizations.dart'
+    as post_strings;
 
 import '../../viewmodels/listing_wizard_state.dart';
 import '../../viewmodels/listing_wizard_validation.dart';
@@ -52,7 +56,8 @@ class LocationStep extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final errors = state.validate(WizardStep.location);
+    final strings = post_strings.AppLocalizations.of(context);
+    final errors = state.validate(WizardStep.location, strings);
     final district = state.district;
 
     // Always watched with a possibly-empty district, which the provider maps
@@ -64,10 +69,9 @@ class LocationStep extends ConsumerWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
-        const WizardSection(
-          'Where is it?',
-          subtitle: 'The district decides whether area is entered in ropani '
-              'or in bigha.',
+        WizardSection(
+          strings.locationTitle,
+          subtitle: strings.locationSubtitle,
         ),
         _DistrictDropdown(
           districts: districts,
@@ -76,10 +80,11 @@ class LocationStep extends ConsumerWidget {
           onChanged: onDistrictChanged,
         ),
         municipalities.when(
-          loading: () => const _ReferenceLoading(label: 'Municipalities'),
+          loading: () => _ReferenceLoading(
+            label: strings.municipalitiesLoading,
+          ),
           error: (error, stackTrace) => _ReferenceError(
-            message:
-                'Could not load municipalities. Check your connection.',
+            message: strings.municipalitiesError,
             onRetry: () => ref.invalidate(
               municipalitiesProvider(district: district?.name ?? ''),
             ),
@@ -99,8 +104,8 @@ class LocationStep extends ConsumerWidget {
           onChanged: onWardChanged,
         ),
         WizardField(
-          label: 'Road access',
-          hint: 'Optional',
+          label: strings.fieldRoadAccess,
+          hint: strings.fieldOptional,
           suffixText: 'ft',
           value: state.roadAccessFt,
           error: errors['roadAccessFt'],
@@ -108,10 +113,9 @@ class LocationStep extends ConsumerWidget {
           inputFormatters: digitsOnly,
           onChanged: onRoadAccessChanged,
         ),
-        const WizardNote(
+        WizardNote(
           icon: Icons.map_outlined,
-          text: 'Ward numbers run from 1 to 33. Pokhara Metropolitan City '
-              'has the most wards of any local body in Nepal, at 33.',
+          text: strings.wardHint,
         ),
       ],
     );
@@ -138,6 +142,7 @@ class _DistrictDropdown extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final strings = post_strings.AppLocalizations.of(context);
     final byProvince = <String, List<District>>{};
     for (final district in districts) {
       byProvince
@@ -153,7 +158,7 @@ class _DistrictDropdown extends StatelessWidget {
         initialValue: selected,
         isExpanded: true,
         decoration: InputDecoration(
-          labelText: 'District',
+          labelText: strings.fieldDistrict,
           border: const OutlineInputBorder(),
           errorText: error,
         ),
@@ -204,13 +209,14 @@ class _MunicipalityDropdown extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final strings = post_strings.AppLocalizations.of(context);
     return Padding(
       padding: const EdgeInsets.only(bottom: 16),
       child: DropdownButtonFormField<Municipality>(
         initialValue: selected,
         isExpanded: true,
         decoration: InputDecoration(
-          labelText: 'Municipality',
+          labelText: strings.fieldMunicipality,
           border: const OutlineInputBorder(),
           errorText: error,
         ),
@@ -255,16 +261,17 @@ class _WardPicker extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final strings = post_strings.AppLocalizations.of(context);
     final body = municipality;
     if (body == null) {
       // No municipality yet means the ward has no bound, so there is nothing
       // honest to offer. The municipality is required to leave the step, which
       // is what unblocks this picker.
-      return const Padding(
-        padding: EdgeInsets.only(bottom: 16),
+      return Padding(
+        padding: const EdgeInsets.only(bottom: 16),
         child: WizardNote(
           icon: Icons.numbers,
-          text: 'Choose a municipality first, then pick its ward.',
+          text: strings.wardNoMunicipality,
         ),
       );
     }
@@ -279,18 +286,18 @@ class _WardPicker extends StatelessWidget {
         initialValue: inRange ? selected : null,
         isExpanded: true,
         decoration: InputDecoration(
-          labelText: 'Ward (optional)',
+          labelText: strings.fieldWard,
           border: const OutlineInputBorder(),
           errorText: error,
         ),
         items: <DropdownMenuItem<int?>>[
-          const DropdownMenuItem<int?>(
-            child: Text('No ward'),
+          DropdownMenuItem<int?>(
+            child: Text(strings.wardNone),
           ),
           for (var number = 1; number <= body.wardCount; number++)
             DropdownMenuItem<int?>(
               value: number,
-              child: Text('Ward $number'),
+              child: Text(strings.wardNumber(number)),
             ),
         ],
         onChanged: (number) => onChanged(number?.toString() ?? ''),
@@ -307,6 +314,7 @@ class _ReferenceLoading extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final strings = post_strings.AppLocalizations.of(context);
     return Padding(
       padding: const EdgeInsets.only(bottom: 16),
       child: Row(
@@ -317,7 +325,10 @@ class _ReferenceLoading extends StatelessWidget {
             child: CircularProgressIndicator(strokeWidth: 2),
           ),
           const SizedBox(width: 12),
-          Text('Loading $label…', style: Theme.of(context).textTheme.bodySmall),
+          Text(
+            strings.loadingSuffix(label),
+            style: Theme.of(context).textTheme.bodySmall,
+          ),
         ],
       ),
     );
@@ -334,6 +345,7 @@ class _ReferenceError extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final strings = post_strings.AppLocalizations.of(context);
     return Padding(
       padding: const EdgeInsets.only(bottom: 16),
       child: Row(
@@ -345,7 +357,10 @@ class _ReferenceError extends StatelessWidget {
                   ?.copyWith(color: theme.colorScheme.error),
             ),
           ),
-          TextButton(onPressed: onRetry, child: const Text('Retry')),
+          TextButton(
+            onPressed: onRetry,
+            child: Text(strings.retryAction),
+          ),
         ],
       ),
     );

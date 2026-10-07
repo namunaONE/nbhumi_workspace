@@ -1,5 +1,6 @@
 // ignore: unused_import
 import 'package:intl/intl.dart' as intl;
+
 import 'app_localizations.dart';
 
 // ignore_for_file: type=lint
@@ -42,7 +43,8 @@ class AppLocalizationsEn extends AppLocalizations {
   String get profileSignedOut => 'Not signed in';
 
   @override
-  String get profileSignedOutHint => 'Sign in with a magic link to post a property';
+  String get profileSignedOutHint =>
+      'Sign in with a magic link to post a property';
 
   @override
   String get profileSignedIn => 'Signed in';
@@ -93,10 +95,12 @@ class AppLocalizationsEn extends AppLocalizations {
   String get profileAboutTitle => 'About nBhumi';
 
   @override
-  String get profileAboutBody => 'We facilitate listings only. Ownership transfers are completed at Malpot.';
+  String get profileAboutBody =>
+      'We facilitate listings only. Ownership transfers are completed at Malpot.';
 
   @override
-  String get profilePrivacyNote => 'nBhumi collects the minimum information needed to operate a marketplace, in line with the Privacy Act 2075 (2018).';
+  String get profilePrivacyNote =>
+      'nBhumi collects the minimum information needed to operate a marketplace, in line with the Privacy Act 2075 (2018).';
 
   @override
   String get profileEditTitle => 'Edit profile';
@@ -111,7 +115,8 @@ class AppLocalizationsEn extends AppLocalizations {
   String get profileEditPhoneHint => '98XXXXXXXX';
 
   @override
-  String get profileEditPhoneError => 'Enter a 10-digit mobile starting 97 or 98';
+  String get profileEditPhoneError =>
+      'Enter a 10-digit mobile starting 97 or 98';
 
   @override
   String get profileEditAgency => 'Agency name (optional)';
@@ -129,7 +134,8 @@ class AppLocalizationsEn extends AppLocalizations {
   String get profileDownloadTitle => 'Download my data';
 
   @override
-  String get profileDownloadSubtitle => 'Profile, listings and reveal history as JSON';
+  String get profileDownloadSubtitle =>
+      'Profile, listings and reveal history as JSON';
 
   @override
   String get profilePreparingData => 'Preparing your data…';
@@ -144,25 +150,30 @@ class AppLocalizationsEn extends AppLocalizations {
   String get profileSignOutTitle => 'Sign out';
 
   @override
-  String get profileSignOutSubtitle => 'You can sign back in with a magic link any time';
+  String get profileSignOutSubtitle =>
+      'You can sign back in with a magic link any time';
 
   @override
   String get profileDeleteTitle => 'Delete my account';
 
   @override
-  String get profileDeleteSubtitle => 'Permanent. Listings stay up without your name';
+  String get profileDeleteSubtitle =>
+      'Permanent. Listings stay up without your name';
 
   @override
   String get profileDeleteConfirmTitle => 'Delete your account?';
 
   @override
-  String get profileDeleteC1 => 'Your profile and sign-in are removed permanently.';
+  String get profileDeleteC1 =>
+      'Your profile and sign-in are removed permanently.';
 
   @override
-  String get profileDeleteC2 => 'Your listings stay up, but without your name on them.';
+  String get profileDeleteC2 =>
+      'Your listings stay up, but without your name on them.';
 
   @override
-  String get profileDeleteC3 => 'Your contact-reveal history is kept without your identity, as required for marketplace safety records.';
+  String get profileDeleteC3 =>
+      'Your contact-reveal history is kept without your identity, as required for marketplace safety records.';
 
   @override
   String get profileDeleteFinal => 'This cannot be undone.';

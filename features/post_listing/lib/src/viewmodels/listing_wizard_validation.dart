@@ -1,4 +1,6 @@
 import 'package:core/core.dart';
+import 'package:post_listing/l10n/output/post_localizations.dart'
+    as post_strings;
 
 import 'listing_wizard_state.dart';
 
@@ -9,56 +11,62 @@ import 'listing_wizard_state.dart';
 /// will reject later, and a rule the app and the server disagree on is how a
 /// seller fills in a correct form and gets an error anyway.
 ///
-/// Messages are bilingual inline rather than through [AppException], because
-/// these are field-level hints attached to inputs, not failures to report
-/// (Rule 36 covers the latter).
+/// Messages resolve through [AppLocalizations] passed in by the caller, which
+/// always has a BuildContext (steps, screen) or constructs the English
+/// lookup directly (unit tests). Field hints are UI strings, not failures,
+/// so they do not go through [AppException] (Rule 36 covers the latter).
 extension ListingWizardValidation on ListingWizardState {
   /// Validates [step] and returns any problems.
-  StepValidation validate(WizardStep step) => switch (step) {
-        WizardStep.type => _validateType(),
-        WizardStep.location => _validateLocation(),
-        WizardStep.specs => _validateSpecs(),
-        WizardStep.price => _validatePrice(),
+  StepValidation validate(WizardStep step, post_strings.AppLocalizations s) =>
+      switch (step) {
+        WizardStep.type => _validateType(s),
+        WizardStep.location => _validateLocation(s),
+        WizardStep.specs => _validateSpecs(s),
+        WizardStep.price => _validatePrice(s),
         WizardStep.review => const StepValidation.valid(),
       };
 
   /// Whether [step] may be left.
-  bool canLeave(WizardStep step) => validate(step).isValid;
+  bool canLeave(WizardStep step, post_strings.AppLocalizations s) =>
+      validate(step, s).isValid;
 
   /// Whether the whole wizard may be submitted.
   ///
   /// Checks every step, not just the current one, because the seller can reach
   /// review by stepping back and forth and the review step shows everything at
   /// once. Without this a listing could be submitted with a hole in it.
-  bool get canSubmit => WizardStep.values
+  bool canSubmit(post_strings.AppLocalizations s) => WizardStep.values
       .where((step) => step != WizardStep.review)
-      .every((step) => validate(step).isValid);
+      .every((step) => validate(step, s).isValid);
 
   /// Validates [step] and returns the first field that is wrong.
   ///
   /// Convenience for tests and for deciding which step to jump to when
   /// submission is blocked.
-  String? firstInvalidField(WizardStep step) {
-    final errors = validate(step).errors;
+  String? firstInvalidField(
+    WizardStep step,
+    post_strings.AppLocalizations s,
+  ) {
+    final errors = validate(step, s).errors;
     return errors.isEmpty ? null : errors.keys.first;
   }
 
-  StepValidation _validateType() {
+  StepValidation _validateType(post_strings.AppLocalizations s) {
     final errors = <String, String>{};
     if (propertyType == null) {
-      errors['propertyType'] = _required('Property type');
+      errors['propertyType'] = s.requiredField(s.fieldPropertyType);
     }
     if (listingPurpose == null) {
-      errors['listingPurpose'] = _required('Sale, rent or lease');
+      errors['listingPurpose'] = s.requiredField(s.fieldPurpose);
     }
     return StepValidation(errors);
   }
 
-  StepValidation _validateLocation() {
+  StepValidation _validateLocation(post_strings.AppLocalizations s) {
     final errors = <String, String>{};
 
     if (district == null) {
-      errors['district'] = _required('District');
+      errors['district'] = s.requiredField(s.fieldDistrict);
     }
 
     // The municipality is chosen from a dropdown scoped to the district, never
@@ -70,10 +78,12 @@ extension ListingWizardValidation on ListingWizardState {
     // `this` is not promotable in Dart.
     final chosen = municipality;
     if (chosen == null) {
-      errors['municipality'] = _required('Municipality');
+      errors['municipality'] = s.requiredField(s.fieldMunicipality);
     } else if (chosen.district != district?.name) {
-      errors['municipality'] =
-          '${chosen.name} is not in ${district?.name ?? 'this district'}';
+      errors['municipality'] = s.crossDistrict(
+        chosen.name,
+        district?.name ?? '',
+      );
     }
 
     // Ward is optional (Rule 28) but must be in range when present. Two bounds
@@ -84,25 +94,23 @@ extension ListingWizardValidation on ListingWizardState {
     final wardValue = ward.trim();
     if (wardValue.isNotEmpty) {
       if (!Validators.isValidWard(wardValue)) {
-        errors['ward'] =
-            'Ward must be a number from 1 to ${Validators.maxWard}';
+        errors['ward'] = s.wardRange(Validators.maxWard);
       } else if (chosen != null) {
         final number = int.parse(wardValue);
         if (number > chosen.wardCount) {
-          errors['ward'] =
-              '${chosen.name} has ${chosen.wardCount} wards';
+          errors['ward'] = s.wardCount(chosen.name, chosen.wardCount);
         }
       }
     }
 
     errors.addAll(
-      _optionalNonNegative('roadAccessFt', roadAccessFt, 'Road access'),
+      _optionalNonNegative(s, 'roadAccessFt', roadAccessFt, s.fieldRoadAccess),
     );
 
     return StepValidation(errors);
   }
 
-  StepValidation _validateSpecs() {
+  StepValidation _validateSpecs(post_strings.AppLocalizations s) {
     final errors = <String, String>{};
 
     // Which units are required depends on the district's region (Rule 25).
@@ -110,7 +118,7 @@ extension ListingWizardValidation on ListingWizardState {
     // and 1 ropani differ by about 12x, so a seller who typed terai units for a
     // hill district would publish a wildly wrong size.
     if (district == null) {
-      errors['district'] = _required('District');
+      errors['district'] = s.requiredField(s.fieldDistrict);
       return StepValidation(errors);
     }
 
@@ -120,28 +128,26 @@ extension ListingWizardValidation on ListingWizardState {
       // and telling a seller their bigha figure is invalid for a Terai district
       // when they simply have not noticed the fields changed is unhelpful.
       errors['area'] = hasAreaInWrongUnits
-          ? (usesHillUnits
-              ? 'This district measures area in hill units '
-                  '(ropani, aana, paisa, dam), not bigha'
-              : 'This district measures area in terai units '
-                  '(bigha, kattha, dhur), not ropani')
-          : (usesHillUnits
-              ? 'Enter the area in ropani, aana, paisa or dam'
-              : 'Enter the area in bigha, kattha or dhur');
+          ? (usesHillUnits ? s.areaWrongHill : s.areaWrongTerai)
+          : (usesHillUnits ? s.areaHillEmpty : s.areaTeraiEmpty);
       return StepValidation(errors);
     }
 
     if (usesHillUnits) {
       errors
-        ..addAll(_optionalNonNegative('areaRopani', areaRopani, 'Ropani'))
-        ..addAll(_optionalNonNegative('areaAana', areaAana, 'Aana'))
-        ..addAll(_optionalNonNegative('areaPaisa', areaPaisa, 'Paisa'))
-        ..addAll(_optionalNonNegative('areaDam', areaDam, 'Dam'));
+        ..addAll(_optionalNonNegative(s, 'areaRopani', areaRopani, s.unitRopani))
+        ..addAll(_optionalNonNegative(s, 'areaAana', areaAana, s.unitAana))
+        ..addAll(
+          _optionalNonNegative(s, 'areaPaisa', areaPaisa, s.unitPaisa),
+        )
+        ..addAll(_optionalNonNegative(s, 'areaDam', areaDam, s.unitDam));
     } else {
       errors
-        ..addAll(_optionalNonNegative('areaBigha', areaBigha, 'Bigha'))
-        ..addAll(_optionalNonNegative('areaKattha', areaKattha, 'Kattha'))
-        ..addAll(_optionalNonNegative('areaDhur', areaDhur, 'Dhur'));
+        ..addAll(_optionalNonNegative(s, 'areaBigha', areaBigha, s.unitBigha))
+        ..addAll(
+          _optionalNonNegative(s, 'areaKattha', areaKattha, s.unitKattha),
+        )
+        ..addAll(_optionalNonNegative(s, 'areaDhur', areaDhur, s.unitDhur));
     }
 
     // Bedrooms and bathrooms are optional, but the column carries
@@ -155,22 +161,22 @@ extension ListingWizardValidation on ListingWizardState {
       if (entry.value.trim().isNotEmpty &&
           (parsed == null || parsed < 1)) {
         errors[entry.key] = entry.key == 'bedrooms'
-            ? 'Bedrooms must be 1 or more'
-            : 'Bathrooms must be 1 or more';
+            ? s.bedroomsMin
+            : s.bathroomsMin;
       }
     }
 
     return StepValidation(errors);
   }
 
-  StepValidation _validatePrice() {
+  StepValidation _validatePrice(post_strings.AppLocalizations s) {
     final errors = <String, String>{};
 
     final price = _parse(priceNpr);
     if (price == null) {
-      errors['priceNpr'] = _required('Price');
+      errors['priceNpr'] = s.requiredField(s.fieldPrice);
     } else if (!Validators.isValidPrice(price)) {
-      errors['priceNpr'] = 'Price must be more than zero';
+      errors['priceNpr'] = s.priceInvalid;
     }
 
     // One photo is required so a listing is never invisible in search results.
@@ -178,7 +184,7 @@ extension ListingWizardValidation on ListingWizardState {
     // is not in the repository, so the requirement is not asserted as fact.
     // Raising it to three is a product decision, not a validation fix.
     if (uploadedPhotoUrls.isEmpty) {
-      errors['photos'] = 'Add at least one photo';
+      errors['photos'] = s.photosRequired;
     }
 
     return StepValidation(errors);
@@ -186,6 +192,7 @@ extension ListingWizardValidation on ListingWizardState {
 
   /// Validates a non-negative optional integer field.
   Map<String, String> _optionalNonNegative(
+    post_strings.AppLocalizations s,
     String field,
     String raw,
     String label,
@@ -193,10 +200,10 @@ extension ListingWizardValidation on ListingWizardState {
     if (raw.trim().isEmpty) return const <String, String>{};
     final parsed = _parse(raw);
     if (parsed == null) {
-      return <String, String>{field: '$label must be a number'};
+      return <String, String>{field: s.numberInvalid(label)};
     }
     if (parsed < 0) {
-      return <String, String>{field: '$label cannot be negative'};
+      return <String, String>{field: s.numberNegative(label)};
     }
     return const <String, String>{};
   }
@@ -206,6 +213,5 @@ extension ListingWizardValidation on ListingWizardState {
     if (trimmed.isEmpty) return null;
     return int.tryParse(trimmed);
   }
-
-  static String _required(String what) => '$what is required';
 }
+

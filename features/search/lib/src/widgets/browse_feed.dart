@@ -3,6 +3,8 @@ import 'dart:async';
 import 'package:core/core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:search/l10n/output/search_localizations.dart'
+    as search_strings;
 
 import '../providers/browse_providers.dart';
 import 'listing_grid.dart';
@@ -156,24 +158,16 @@ class _ErrorState extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    // Nepali or English depending on the locale in effect, rather than always
-    // Nepali (Rule 36).
-    final isNepali = Localizations.maybeLocaleOf(context)?.languageCode != 'en';
+    final strings = search_strings.AppLocalizations.of(context);
     return _EmptyState(
       title: error.localizedForContext(context),
-      body: error.isRetryable
-          ? (isNepali
-                ? 'इन्टरनेट जडान जाँच गरी पुनः प्रयास गर्नुहोस्।'
-                : 'Check your connection and try again.')
-          : (isNepali
-                ? 'तान्नुहोस् वा केही बेरपछि प्रयास गर्नुहोस्।'
-                : 'Pull to refresh, or try again in a moment.'),
+      body: error.isRetryable ? strings.feedRetryHint : strings.feedLaterHint,
       icon: error is AuthFailureException
           ? Icons.lock_outline
           : Icons.error_outline,
       action: FilledButton(
         onPressed: () => ref.read(browseProvider.notifier).retry(),
-        child: const Text('Try again'),
+        child: Text(strings.tryAgain),
       ),
     );
   }

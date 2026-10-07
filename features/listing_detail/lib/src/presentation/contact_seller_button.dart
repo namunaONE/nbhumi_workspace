@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:listing_detail/l10n/output/detail_localizations.dart'
+    as detail_strings;
 import 'package:models/models.dart';
 
 /// Reveals the seller's phone number for this listing.
@@ -82,7 +84,7 @@ class _ContactSellerButtonState extends ConsumerState<ContactSellerButton> {
 
   @override
   Widget build(BuildContext context) {
-    final isNepali = Localizations.maybeLocaleOf(context)?.languageCode != 'en';
+    final strings = detail_strings.AppLocalizations.of(context);
     final theme = Theme.of(context);
     final contact = _contact;
 
@@ -117,16 +119,13 @@ class _ContactSellerButtonState extends ConsumerState<ContactSellerButton> {
                   : const Icon(Icons.phone_outlined),
               label: Text(
                 switch ((_busy, contact, _isSignedIn)) {
-                  (true, _, _) => isNepali ? 'लोड हुँदैछ…' : 'Loading…',
-                  (false, _, false) => isNepali
-                      ? 'सम्पर्क गर्न साइन इन गर्नुहोस्'
-                      : 'Sign in to contact',
+                  (true, _, _) => strings.contactLoading,
+                  (false, _, false) => strings.contactSignIn,
                   // Re-offered rather than hidden: the reveal may have expired
                   // server-side, and a user who has hit the daily cap needs
                   // to see that it is still there rather than wonder where
                   // it went.
-                  (false, _, true) =>
-                    isNepali ? 'विक्रेता सम्पर्क' : 'Contact seller',
+                  (false, _, true) => strings.contactSeller,
                 },
               ),
               style: FilledButton.styleFrom(
@@ -153,7 +152,7 @@ class _ContactCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final isNepali = Localizations.maybeLocaleOf(context)?.languageCode != 'en';
+    final strings = detail_strings.AppLocalizations.of(context);
 
     return Material(
       color: theme.colorScheme.surfaceContainerHighest,
@@ -167,13 +166,13 @@ class _ContactCard extends StatelessWidget {
               _CopyRow(
                 icon: Icons.phone,
                 value: phone,
-                label: isNepali ? 'फोन' : 'Phone',
+                label: strings.contactPhone,
               ),
             if (contact.sellerEmail case final email? when email.isNotEmpty)
               _CopyRow(
                 icon: Icons.email_outlined,
                 value: email,
-                label: isNepali ? 'इमेल' : 'Email',
+                label: strings.contactEmail,
               ),
             if (contact.agencyName case final agency? when agency.isNotEmpty)
               Padding(
@@ -241,17 +240,15 @@ class _CopyRow extends StatelessWidget {
           ),
           IconButton(
             icon: const Icon(Icons.copy, size: 18),
-            tooltip: 'Copy',
+            tooltip: detail_strings.AppLocalizations.of(context).contactCopy,
             onPressed: () async {
+              final strings =
+                  detail_strings.AppLocalizations.of(context);
               await Clipboard.setData(ClipboardData(text: value));
               if (!context.mounted) return;
               ScaffoldMessenger.of(context).showSnackBar(
                 SnackBar(
-                  content: Text(
-                    Localizations.localeOf(context).languageCode == 'en'
-                        ? '$label copied'
-                        : '$label प्रतिलिपि भयो',
-                  ),
+                  content: Text(strings.contactCopied(label)),
                 ),
               );
             },

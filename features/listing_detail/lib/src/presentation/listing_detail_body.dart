@@ -1,5 +1,7 @@
 import 'package:core/core.dart';
 import 'package:flutter/material.dart';
+import 'package:listing_detail/l10n/output/detail_localizations.dart'
+    as detail_strings;
 import 'package:models/models.dart';
 
 import 'contact_seller_button.dart';
@@ -37,6 +39,7 @@ class ListingDetailBody extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final strings = detail_strings.AppLocalizations.of(context);
     return Scaffold(
       appBar: AppBar(
         title: Text(listing.title, overflow: TextOverflow.ellipsis),
@@ -46,7 +49,8 @@ class ListingDetailBody extends StatelessWidget {
               icon: Icon(
                 isFavorite ? Icons.favorite : Icons.favorite_outline,
               ),
-              tooltip: isFavorite ? 'Remove from saved' : 'Save this property',
+              tooltip:
+                  isFavorite ? strings.favoriteRemove : strings.favoriteSave,
               onPressed: onFavoriteToggle,
             ),
           // A report is always meaningful when there is a listing to report,
@@ -82,15 +86,19 @@ class ListingDetailBody extends StatelessWidget {
                   runSpacing: 8,
                   children: <Widget>[
                     _Chip(
-                      label: _humanise(listing.listingPurpose.name),
+                      label: _purposeLabel(
+                        context,
+                        listing.listingPurpose,
+                      ),
                       colors: _purposeColors(
                         context,
                         listing.listingPurpose,
                       ),
                     ),
                     _Chip(
-                      label: _humanise(
-                        listing.propertyType.name,
+                      label: _typeLabel(
+                        context,
+                        listing.propertyType,
                       ),
                     ),
                     // Rule 25: the seller's own units, pre-formatted
@@ -104,19 +112,19 @@ class ListingDetailBody extends StatelessWidget {
           ),
           const Divider(height: 32),
           _Section(
-            title: 'Location',
+            title: strings.sectionLocation,
             children: <Widget>[
               _Spec(
                 icon: Icons.place_outlined,
                 label: listing.ward == null
                     ? '${listing.district}, ${listing.city}'
-                    : '${listing.city}, Ward ${listing.ward}',
+                    : strings.specWard(listing.city, listing.ward!),
                 detail: listing.district,
               ),
               if (listing.roadAccessFt case final feet?)
                 _Spec(
                   icon: Icons.alt_route,
-                  label: '$feet ft road access',
+                  label: strings.specRoadAccess(feet),
                 ),
             ],
           ),
@@ -127,17 +135,17 @@ class ListingDetailBody extends StatelessWidget {
               listing.bathrooms != null) ...<Widget>[
             const Divider(height: 32),
             _Section(
-              title: 'Details',
+              title: strings.sectionDetails,
               children: <Widget>[
                 if (listing.bedrooms case final beds?)
                   _Spec(
                     icon: Icons.bed_outlined,
-                    label: beds == 1 ? '1 bedroom' : '$beds bedrooms',
+                    label: strings.specBedrooms(beds),
                   ),
                 if (listing.bathrooms case final baths?)
                   _Spec(
                     icon: Icons.bathtub_outlined,
-                    label: baths == 1 ? '1 bathroom' : '$baths bathrooms',
+                    label: strings.specBathrooms(baths),
                   ),
               ],
             ),
@@ -145,7 +153,7 @@ class ListingDetailBody extends StatelessWidget {
           if ((listing.description ?? '').trim().isNotEmpty) ...<Widget>[
             const Divider(height: 32),
             _Section(
-              title: 'Description',
+              title: strings.sectionDescription,
               children: <Widget>[
                 Text(
                   listing.description!.trim(),
@@ -156,7 +164,7 @@ class ListingDetailBody extends StatelessWidget {
           ],
           const Divider(height: 32),
           _Section(
-            title: 'Seller',
+            title: strings.sectionSeller,
             children: <Widget>[_SellerCard(seller: listing.seller)],
           ),
           const SizedBox(height: 96),
@@ -166,9 +174,28 @@ class ListingDetailBody extends StatelessWidget {
     );
   }
 
-  /// `house` -> `House`. Enum values are snake_case; UI copy is not.
-  static String _humanise(String value) =>
-      value.isEmpty ? value : '${value[0].toUpperCase()}${value.substring(1)}';
+  /// Localized display name for a property type.
+  static String _typeLabel(BuildContext context, PropertyType type) {
+    final strings = detail_strings.AppLocalizations.of(context);
+    return switch (type) {
+      PropertyType.land => strings.typeLand,
+      PropertyType.house => strings.typeHouse,
+      PropertyType.apartment => strings.typeApartment,
+      PropertyType.villa => strings.typeVilla,
+      PropertyType.commercial => strings.typeCommercial,
+      PropertyType.business => strings.typeBusiness,
+    };
+  }
+
+  /// Localized display name for a listing purpose.
+  static String _purposeLabel(BuildContext context, ListingPurpose purpose) {
+    final strings = detail_strings.AppLocalizations.of(context);
+    return switch (purpose) {
+      ListingPurpose.sale => strings.purposeSale,
+      ListingPurpose.rent => strings.purposeRent,
+      ListingPurpose.lease => strings.purposeLease,
+    };
+  }
 }
 
 /// Purpose-tinted chips, matching the browse card so a purpose reads the same
@@ -345,13 +372,14 @@ class _SellerCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final colors = theme.extension<MarketplaceColors>();
+    final strings = detail_strings.AppLocalizations.of(context);
     final name = seller?.fullName;
 
     if (seller == null || (name == null || name.isEmpty)) {
       // The RPC always returns a seller object, but a profile with no name set
       // must not render an empty heading.
       return Text(
-        'Seller details unavailable',
+        strings.sellerUnavailable,
         style: theme.textTheme.bodyMedium
             ?.copyWith(color: theme.colorScheme.outline),
       );

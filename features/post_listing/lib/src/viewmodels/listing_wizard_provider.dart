@@ -4,6 +4,8 @@ import 'package:core/core.dart';
 import 'package:data/data.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:models/models.dart';
+import 'package:post_listing/l10n/output/post_localizations.dart'
+    as post_strings;
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import 'listing_wizard_state.dart';
@@ -93,11 +95,11 @@ class ListingWizard extends _$ListingWizard {
   ///
   /// Returns false and changes nothing when it does not, so the caller can show
   /// the inline messages rather than silently refusing to advance.
-  bool next() {
+  bool next(post_strings.AppLocalizations strings) {
     final current = state.step;
     final nextStep = current.next;
     if (nextStep == null) return false;
-    if (!state.canLeave(current)) return false;
+    if (!state.canLeave(current, strings)) return false;
     state = state.copyWith(step: nextStep);
     return true;
   }
@@ -286,9 +288,9 @@ class ListingWizard extends _$ListingWizard {
   ///
   /// Photos are attached after the listing row exists, because
   /// `listing_photos.listing_id` is a foreign key.
-  Future<bool> submit() async {
+  Future<bool> submit(post_strings.AppLocalizations strings) async {
     if (state.submitting) return false;
-    if (!state.canSubmit) return false;
+    if (!state.canSubmit(strings)) return false;
 
     state = state.copyWith(submitting: true, clearSubmitError: true);
 

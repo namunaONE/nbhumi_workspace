@@ -1,0 +1,270 @@
+{
+  "@@locale": "ne",
+  "@@last_modified": "2026-10-06T00:00:00.000",
+
+  "@sectionLocation": {
+    "description": "Location section heading."
+  },
+  "sectionLocation": "स्थान",
+
+  "@sectionDetails": {
+    "description": "Bedrooms/bathrooms section heading."
+  },
+  "sectionDetails": "विवरण",
+
+  "@sectionDescription": {
+    "description": "Description section heading."
+  },
+  "sectionDescription": "वर्णन",
+
+  "@sectionSeller": {
+    "description": "Seller section heading."
+  },
+  "sectionSeller": "विक्रेता",
+
+  "@specRoadAccess": {
+    "description": "Road frontage spec.",
+    "placeholders": {
+      "feet": { "type": "int", "example": "15" }
+    }
+  },
+  "specRoadAccess": "{feet} फिट बाटो",
+
+  "@specBedrooms": {
+    "description": "Bedroom count spec.",
+    "placeholders": {
+      "count": { "type": "int", "example": "3" }
+    }
+  },
+  "specBedrooms": "{count} शयनकक्ष",
+
+  "@specBathrooms": {
+    "description": "Bathroom count spec.",
+    "placeholders": {
+      "count": { "type": "int", "example": "2" }
+    }
+  },
+  "specBathrooms": "{count} स्नानगृह",
+
+  "@specWard": {
+    "description": "City-plus-ward address line.",
+    "placeholders": {
+      "city": { "type": "String", "example": "Kathmandu" },
+      "ward": { "type": "String", "example": "16" }
+    }
+  },
+  "specWard": "{city}, वडा {ward}",
+
+  "@sellerUnavailable": {
+    "description": "Fallback when the seller has no displayable name."
+  },
+  "sellerUnavailable": "विक्रेता विवरण उपलब्ध छैन",
+
+  "@favoriteSave": {
+    "description": "Save heart tooltip."
+  },
+  "favoriteSave": "यो घरजग्गा सेभ गर्नुहोस्",
+
+  "@favoriteRemove": {
+    "description": "Unsave heart tooltip."
+  },
+  "favoriteRemove": "सेभबाट हटाउनुहोस्",
+
+  "@favoriteSaved": {
+    "description": "Confirmation after bookmarking."
+  },
+  "favoriteSaved": "तपाईंको सूचीमा सेभ भयो।",
+
+  "@favoriteRemoved": {
+    "description": "Confirmation after unbookmarking."
+  },
+  "favoriteRemoved": "सेभ सूचीबाट हटाइयो।",
+
+  "@notAvailableTitle": {
+    "description": "Missing/unpublished listing heading."
+  },
+  "notAvailableTitle": "यो घरजग्गा अब उपलब्ध छैन",
+
+  "@notAvailableBody": {
+    "description": "Missing/unpublished listing explanation."
+  },
+  "notAvailableBody": "यो बिकिसकेको, विक्रेताले फिर्ता लिएको वा लिङ्क गलत हुन सक्छ।",
+
+  "@browseOthers": {
+    "description": "Back-to-feed action."
+  },
+  "browseOthers": "अन्य घरजग्गा हेर्नुहोस्",
+
+  "@tryAgain": {
+    "description": "Load retry action."
+  },
+  "tryAgain": "पुनः प्रयास गर्नुहोस्",
+
+  "@loadRetryHint": {
+    "description": "Hint under the load error."
+  },
+  "loadRetryHint": "इन्टरनेट जडान जाँच गरी पुनः प्रयास गर्नुहोस्।",
+
+  "@contactLoading": {
+    "description": "Contact button while revealing."
+  },
+  "contactLoading": "लोड हुँदैछ…",
+
+  "@contactSignIn": {
+    "description": "Contact button for guests."
+  },
+  "contactSignIn": "सम्पर्क गर्न साइन इन गर्नुहोस्",
+
+  "@contactSeller": {
+    "description": "Contact button for signed-in buyers."
+  },
+  "contactSeller": "विक्रेता सम्पर्क",
+
+  "@contactPhone": {
+    "description": "Phone row label."
+  },
+  "contactPhone": "फोन",
+
+  "@contactEmail": {
+    "description": "Email row label."
+  },
+  "contactEmail": "इमेल",
+
+  "@contactCopy": {
+    "description": "Copy-to-clipboard tooltip."
+  },
+  "contactCopy": "प्रतिलिपि",
+
+  "@contactCopied": {
+    "description": "Confirmation naming the copied row.",
+    "placeholders": {
+      "label": { "type": "String", "example": "Phone" }
+    }
+  },
+  "contactCopied": "{label} प्रतिलिपि भयो",
+
+  "@reportTooltip": {
+    "description": "Report button tooltip."
+  },
+  "reportTooltip": "रिपोर्ट गर्नुहोस्",
+
+  "@reportFiled": {
+    "description": "Confirmation after filing a report."
+  },
+  "reportFiled": "रिपोर्ट गरियो। हाम्रो टोलीले हेर्नेछ।",
+
+  "@reportTitle": {
+    "description": "Report sheet heading."
+  },
+  "reportTitle": "यो लिस्टिङ रिपोर्ट गर्नुहोस्",
+
+  "@reportReasonLabel": {
+    "description": "Reason picker label."
+  },
+  "reportReasonLabel": "कारण",
+
+  "@reportDetailsRequired": {
+    "description": "Details field label when required."
+  },
+  "reportDetailsRequired": "विवरण *",
+
+  "@reportDetailsOptional": {
+    "description": "Details field label when optional."
+  },
+  "reportDetailsOptional": "विवरण (वैकल्पिक)",
+
+  "@reportDetailsError": {
+    "description": "Inline error when required details are blank."
+  },
+  "reportDetailsError": "कृपया समस्या बयान गर्नुहोस्, हाम्रो टोलीले कारबाही लिन सक्नेछ।",
+
+  "@reportSubmit": {
+    "description": "Report submit action."
+  },
+  "reportSubmit": "रिपोर्ट पठाउनुहोस्",
+
+  "@reasonDuplicate": {
+    "description": "Duplicate-listing report reason."
+  },
+  "reasonDuplicate": "डुप्लिकेट लिस्टिङ",
+
+  "@reasonPhotos": {
+    "description": "Misleading-photos report reason."
+  },
+  "reasonPhotos": "फोटोहरू भ्रामक",
+
+  "@reasonPrice": {
+    "description": "Suspicious-price report reason."
+  },
+  "reasonPrice": "मूल्य शंकास्पद",
+
+  "@reasonLocation": {
+    "description": "Wrong-location report reason."
+  },
+  "reasonLocation": "गलत ठेगाना",
+
+  "@reasonSold": {
+    "description": "Already-sold report reason."
+  },
+  "reasonSold": "पहिल्यै बिकाइसक्यो",
+
+  "@reasonOffsite": {
+    "description": "Off-site-dealing report reason."
+  },
+  "reasonOffsite": "विक्रेताले बाहिर कारोबार गर्न भनेको",
+
+  "@reasonFake": {
+    "description": "Fake-listing report reason."
+  },
+  "reasonFake": "नक्कली लिस्टिङ",
+
+  "@reasonOther": {
+    "description": "Other report reason."
+  },
+  "reasonOther": "अन्य",
+
+  "@typeLand": {
+    "description": "Land chip."
+  },
+  "typeLand": "जग्गा",
+
+  "@typeHouse": {
+    "description": "House chip."
+  },
+  "typeHouse": "घर",
+
+  "@typeApartment": {
+    "description": "Apartment chip."
+  },
+  "typeApartment": "अपार्टमेन्ट",
+
+  "@typeVilla": {
+    "description": "Villa chip."
+  },
+  "typeVilla": "भिल्ला",
+
+  "@typeCommercial": {
+    "description": "Commercial chip."
+  },
+  "typeCommercial": "व्यावसायिक",
+
+  "@typeBusiness": {
+    "description": "Business chip."
+  },
+  "typeBusiness": "व्यवसाय",
+
+  "@purposeSale": {
+    "description": "Sale chip."
+  },
+  "purposeSale": "बिक्री",
+
+  "@purposeRent": {
+    "description": "Rent chip."
+  },
+  "purposeRent": "भाडा",
+
+  "@purposeLease": {
+    "description": "Lease chip."
+  },
+  "purposeLease": "लिज"
+}

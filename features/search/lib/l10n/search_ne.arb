@@ -1,0 +1,228 @@
+{
+  "@@locale": "ne",
+  "@@last_modified": "2026-10-06T00:00:00.000",
+
+  "@title": {
+    "description": "Search screen app bar."
+  },
+  "title": "खोज्नुहोस्",
+
+  "@sortTooltip": {
+    "description": "Sort menu button tooltip."
+  },
+  "sortTooltip": "क्रमबद्ध गर्नुहोस्",
+
+  "@filtersTooltip": {
+    "description": "Filter sheet button tooltip."
+  },
+  "filtersTooltip": "फिल्टरहरू",
+
+  "@searchHint": {
+    "description": "Title/location query field hint."
+  },
+  "searchHint": "शीर्षक वा स्थानबाट खोज्नुहोस्",
+
+  "@saveSearchTooltip": {
+    "description": "Save-search button tooltip (HYA-268 C2b)."
+  },
+  "saveSearchTooltip": "यो खोजी सेभ गर्नुहोस्",
+
+  "@signInToSave": {
+    "description": "Prompt when a guest taps save-search."
+  },
+  "signInToSave": "खोजी सेभ गर्न साइन इन गर्नुहोस्।",
+
+  "@savedToast": {
+    "description": "Confirmation naming the stored search.",
+    "placeholders": {
+      "name": {
+        "type": "String",
+        "example": "काठमाडौंमा घरहरू"
+      }
+    }
+  },
+  "savedToast": "\"{name}\" सेभ भयो।",
+
+  "@noMatchTitle": {
+    "description": "Empty feed heading."
+  },
+  "noMatchTitle": "कुनै विज्ञापन मिलेन",
+
+  "@noMatchBody": {
+    "description": "Empty feed explanation."
+  },
+  "noMatchBody": "फिल्टर हटाएर वा मूल्य दायरा फराकिलो पारी प्रयास गर्नुहोस्।",
+
+  "@tryAgain": {
+    "description": "Feed retry action."
+  },
+  "tryAgain": "पुनः प्रयास गर्नुहोस्",
+
+  "@feedRetryHint": {
+    "description": "Hint under a retryable feed failure."
+  },
+  "feedRetryHint": "इन्टरनेट जडान जाँच गरी पुनः प्रयास गर्नुहोस्।",
+
+  "@feedLaterHint": {
+    "description": "Hint under a non-retryable feed failure."
+  },
+  "feedLaterHint": "तान्नुहोस् वा केही बेरपछि प्रयास गर्नुहोस्।",
+
+  "@sheetTitle": {
+    "description": "Filter sheet heading."
+  },
+  "sheetTitle": "फिल्टरहरू",
+
+  "@sheetClear": {
+    "description": "Clear-all action with the active count.",
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "3"
+      }
+    }
+  },
+  "sheetClear": "{count} हटाउनुहोस्",
+
+  "@sheetCancel": {
+    "description": "Sheet cancel action."
+  },
+  "sheetCancel": "रद्द गर्नुहोस्",
+
+  "@sheetApply": {
+    "description": "Sheet apply action."
+  },
+  "sheetApply": "लागू गर्नुहोस्",
+
+  "@labelType": {
+    "description": "Property-type section label."
+  },
+  "labelType": "घरजग्गाको किसिम",
+
+  "@labelPurpose": {
+    "description": "Purpose section label."
+  },
+  "labelPurpose": "उद्देश्य",
+
+  "@labelPrice": {
+    "description": "Price range section label."
+  },
+  "labelPrice": "मूल्य दायरा (रू.)",
+
+  "@labelArea": {
+    "description": "Area section label."
+  },
+  "labelArea": "क्षेत्रफल (व.मि.)",
+
+  "@labelSort": {
+    "description": "Sort section label."
+  },
+  "labelSort": "क्रम",
+
+  "@labelDistrict": {
+    "description": "District section label."
+  },
+  "labelDistrict": "जिल्ला",
+
+  "@fieldMin": {
+    "description": "Range minimum field label."
+  },
+  "fieldMin": "न्यूनतम",
+
+  "@fieldMax": {
+    "description": "Range maximum field label."
+  },
+  "fieldMax": "अधिकतम",
+
+  "@sortNewest": {
+    "description": "Newest-first sort chip."
+  },
+  "sortNewest": "नयाँ पहिले",
+
+  "@sortOldest": {
+    "description": "Oldest-first sort chip."
+  },
+  "sortOldest": "पुरानो पहिले",
+
+  "@sortPriceAsc": {
+    "description": "Cheapest-first sort chip."
+  },
+  "sortPriceAsc": "मूल्य: कमदेखि बढी",
+
+  "@sortPriceDesc": {
+    "description": "Most-expensive-first sort chip."
+  },
+  "sortPriceDesc": "मूल्य: बढीदेखि कम",
+
+  "@typeLand": {
+    "description": "Land type chip and saved-name word."
+  },
+  "typeLand": "जग्गा",
+
+  "@typeHouse": {
+    "description": "House type chip and saved-name word."
+  },
+  "typeHouse": "घरहरू",
+
+  "@typeApartment": {
+    "description": "Apartment type chip and saved-name word."
+  },
+  "typeApartment": "अपार्टमेन्टहरू",
+
+  "@typeVilla": {
+    "description": "Villa type chip and saved-name word."
+  },
+  "typeVilla": "भिल्लाहरू",
+
+  "@typeCommercial": {
+    "description": "Commercial type chip and saved-name word."
+  },
+  "typeCommercial": "व्यावसायिक",
+
+  "@typeBusiness": {
+    "description": "Business type chip and saved-name word."
+  },
+  "typeBusiness": "व्यवसायहरू",
+
+  "@purposeSale": {
+    "description": "Sale purpose chip."
+  },
+  "purposeSale": "बिक्री",
+
+  "@purposeRent": {
+    "description": "Rent purpose chip."
+  },
+  "purposeRent": "भाडा",
+
+  "@purposeLease": {
+    "description": "Lease purpose chip."
+  },
+  "purposeLease": "लिज",
+
+  "@savedNameInDistrict": {
+    "description": "District segment of a generated saved-search name.",
+    "placeholders": {
+      "district": {
+        "type": "String",
+        "example": "Kathmandu"
+      }
+    }
+  },
+  "savedNameInDistrict": "{district}मा",
+
+  "@savedNameUnderPrice": {
+    "description": "Price-cap segment of a generated saved-search name.",
+    "placeholders": {
+      "price": {
+        "type": "String",
+        "example": "NPR 50,00,000"
+      }
+    }
+  },
+  "savedNameUnderPrice": "{price} मुनि",
+
+  "@savedNameFallback": {
+    "description": "Name when the filter has no describable part."
+  },
+  "savedNameFallback": "अनुकूल खोजी"
+}

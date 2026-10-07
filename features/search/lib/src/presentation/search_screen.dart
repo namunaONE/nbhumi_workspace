@@ -4,10 +4,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:models/models.dart';
+import 'package:search/l10n/output/search_localizations.dart'
+    as search_strings;
 import 'package:search/search.dart' show BrowseFeed;
 import 'package:search/src/widgets/browse_feed.dart' show BrowseFeed;
 
 import '../providers/browse_providers.dart';
+import '../utils/search_labels.dart';
 import '../widgets/browse_feed.dart';
 import 'filter_sheet.dart';
 
@@ -24,10 +27,11 @@ class SearchScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final filter = ref.watch(browseFilterProvider);
+    final strings = search_strings.AppLocalizations.of(context);
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Search'),
+        title: Text(strings.title),
         actions: <Widget>[
           _SortButton(filter: filter),
           _FilterButton(activeCount: filter.activeCount),
@@ -41,8 +45,8 @@ class SearchScreen extends ConsumerWidget {
         // cannot reach.
         onListingTap: (id) => context.push('/listing/$id'),
         header: _QueryField(filter: filter),
-        emptyTitle: 'No listings match',
-        emptyBody: 'Try removing a filter or widening the price range.',
+        emptyTitle: strings.noMatchTitle,
+        emptyBody: strings.noMatchBody,
       ),
     );
   }
@@ -74,13 +78,14 @@ class _QueryFieldState extends ConsumerState<_QueryField> {
 
   @override
   Widget build(BuildContext context) {
+    final strings = search_strings.AppLocalizations.of(context);
     return Padding(
       padding: const EdgeInsets.fromLTRB(12, 12, 12, 0),
       child: TextField(
         controller: _controller,
         textInputAction: TextInputAction.search,
         decoration: InputDecoration(
-          hintText: 'Search by title or location',
+          hintText: strings.searchHint,
           prefixIcon: const Icon(Icons.search),
           border: const OutlineInputBorder(),
           isDense: true,
@@ -109,12 +114,13 @@ class _FilterButton extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final strings = search_strings.AppLocalizations.of(context);
     return Badge(
       isLabelVisible: activeCount > 0,
       label: Text('$activeCount'),
       child: IconButton(
         icon: const Icon(Icons.tune),
-        tooltip: 'Filters',
+        tooltip: strings.filtersTooltip,
         onPressed: () => _open(context, ref),
       ),
     );
@@ -140,16 +146,20 @@ class _SortButton extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final strings = search_strings.AppLocalizations.of(context);
     return PopupMenuButton<ListingSort>(
       icon: const Icon(Icons.swap_vert),
-      tooltip: 'Sort',
+      tooltip: strings.sortTooltip,
       initialValue: filter.sort,
       onSelected: (sort) => ref
               .read(browseFilterProvider.notifier)
               .filter = filter.copyWith(sort: sort),
       itemBuilder: (context) => <PopupMenuEntry<ListingSort>>[
         for (final sort in ListingSort.values)
-          PopupMenuItem<ListingSort>(value: sort, child: Text(sort.wireName)),
+          PopupMenuItem<ListingSort>(
+            value: sort,
+            child: Text(searchSortLabel(context, sort)),
+          ),
       ],
     );
   }
@@ -170,18 +180,20 @@ class _SaveSearchButton extends ConsumerWidget {
     if (filter.isEmpty) return const SizedBox.shrink();
     return IconButton(
       icon: const Icon(Icons.bookmark_add_outlined),
-      tooltip: 'Save this search',
+      tooltip:
+          search_strings.AppLocalizations.of(context).saveSearchTooltip,
       onPressed: () => _save(context, ref),
     );
   }
 
   Future<void> _save(BuildContext context, WidgetRef ref) async {
     final messenger = ScaffoldMessenger.of(context);
+    final strings = search_strings.AppLocalizations.of(context);
     final session = ref.read(sessionProvider);
     if (session == null) {
       messenger.showSnackBar(
-        const SnackBar(
-          content: Text('Sign in to save searches.'),
+        SnackBar(
+          content: Text(strings.signInToSave),
         ),
       );
       return;
@@ -190,13 +202,13 @@ class _SaveSearchButton extends ConsumerWidget {
     try {
       await ref.read(savedSearchRepositoryProvider).saveSearch(
             userId: session.user.id,
-            name: _describeFilter(filter),
+            name: _describeFilter(context, filter),
             filter: filter,
           );
       if (!context.mounted) return;
       messenger.showSnackBar(
         SnackBar(
-          content: Text('Saved "${_describeFilter(filter)}".'),
+          content: Text(strings.savedToast(_describeFilter(context, filter))),
         ),
       );
     } on AppException catch (e) {
@@ -218,37 +230,26 @@ class _SaveSearchButton extends ConsumerWidget {
 
 /// Human name for a filter set, for the saved-search row.
 ///
-/// English only for now; HYA-266 owns localization. Built from the same
-/// fields the matcher will compare, so the name always describes what the
-/// alert actually watches.
-String _describeFilter(ListingFilter filter) {
+/// Localized per HYA-266 D2: parts are translated individually and composed
+/// in a fixed [type, district, price] order that reads naturally in both
+/// languages. Built from the same fields the matcher will compare, so the
+/// name always describes what the alert actually watches.
+String _describeFilter(BuildContext context, ListingFilter filter) {
+  final strings = search_strings.AppLocalizations.of(context);
   final parts = <String>[
     if (filter.propertyType case final type?)
-      '${_typeLabel(type)} ${_purposeLabel(filter.listingPurpose)}',
+      '${searchTypeLabel(context, type)} ${searchPurposeLabel(
+        context,
+        filter.listingPurpose,
+      )}',
     if (filter.propertyType == null)
       if (filter.listingPurpose case final purpose?)
-        'Properties ${_purposeLabel(purpose)}',
-    if (filter.district case final district?) 'in $district',
+        'Properties ${searchPurposeLabel(context, purpose)}',
+    if (filter.district case final district?)
+      strings.savedNameInDistrict(district),
     if (filter.maxPriceNpr case final max?)
-      'under ${NepaliCurrency.compact(max)}',
+      strings.savedNameUnderPrice(NepaliCurrency.compact(max)),
   ];
-  if (parts.isEmpty) return 'Custom search';
+  if (parts.isEmpty) return strings.savedNameFallback;
   return parts.join(' ');
 }
-
-/// "for sale" / "for rent" / "for lease" for a purpose, defaulting to sale.
-String _purposeLabel(ListingPurpose? purpose) => switch (purpose) {
-      ListingPurpose.rent => 'for rent',
-      ListingPurpose.lease => 'for lease',
-      _ => 'for sale',
-    };
-
-/// Plural display name for a property type.
-String _typeLabel(PropertyType type) => switch (type) {
-      PropertyType.house => 'Houses',
-      PropertyType.apartment => 'Apartments',
-      PropertyType.land => 'Land',
-      PropertyType.villa => 'Villas',
-      PropertyType.commercial => 'Commercial',
-      PropertyType.business => 'Businesses',
-    };
