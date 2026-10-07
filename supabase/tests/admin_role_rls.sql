@@ -37,7 +37,20 @@ insert into auth.users (
     null, now(), now(), now(),
     '{"provider":"email","providers":["email"]}',
     '{"full_name":"HYA-280 Probe Admin"}'
+  ),
+  (
+    '00000000-0000-0000-0000-000000000000',
+    'd2800000-0000-4000-8000-000000000004',
+    'authenticated', 'authenticated', 'hya280-probe-insert@invalid.local',
+    null, now(), now(), now(),
+    '{"provider":"email","providers":["email"]}',
+    '{"full_name":"HYA-280 Insert Probe"}'
   );
+
+-- Simulate a missing profile before testing the INSERT policy. The auth
+-- trigger normally prevents this; the RLS policy must still fail closed.
+delete from public.profiles
+where id = 'd2800000-0000-4000-8000-000000000004';
 
 update public.profiles set role = 'admin'
 where id = 'd2800000-0000-4000-8000-000000000002';
@@ -108,6 +121,18 @@ begin
     raise exception 'HYA-280: buyer JWT role bypassed profiles.role/RLS';
   end if;
 
+  -- Updating an ordinary profile field must work, not raise the 42P17
+  -- recursion that the former profiles_update_own policy caused.
+  update public.profiles set full_name = 'Edited by buyer'
+  where id = 'd2800000-0000-4000-8000-000000000001';
+  if not found or not exists (
+    select 1 from public.profiles
+    where id = 'd2800000-0000-4000-8000-000000000001'
+      and full_name = 'Edited by buyer'
+  ) then
+    raise exception 'HYA-280: ordinary profile edit failed';
+  end if;
+
   -- An authenticated buyer must not be able to promote their own profile.
   -- RLS may reject the UPDATE with 42501 or filter it to zero changed rows;
   -- either is safe, but a successful update is a privilege escalation.
@@ -126,6 +151,26 @@ begin
   end if;
 
   begin
+    update public.profiles set is_verified = true
+    where id = 'd2800000-0000-4000-8000-000000000001';
+    if found then
+      raise exception 'HYA-280: buyer self-verified';
+    end if;
+  exception when sqlstate '42501' then
+    null;
+  end;
+
+  begin
+    update public.profiles set kyc_tier = 'identity'
+    where id = 'd2800000-0000-4000-8000-000000000001';
+    if found then
+      raise exception 'HYA-280: buyer claimed a KYC tier';
+    end if;
+  exception when sqlstate '42501' then
+    null;
+  end;
+
+  begin
     perform public.v1_admin_get_queue(null, null, null, 1);
     raise exception 'HYA-280: buyer called the admin queue RPC';
   exception when sqlstate '42501' then
@@ -133,6 +178,47 @@ begin
     -- check must deny the buyer. This is the expected result.
     null;
   end;
+end;
+$test$;
+
+-- A missing profile is not a route to admin. Before HYA-280, this INSERT was
+-- allowed and private.is_admin() immediately returned true. An ordinary buyer
+-- profile is still insertable if the signup trigger failed to create one.
+select set_config(
+  'request.jwt.claim.sub', 'd2800000-0000-4000-8000-000000000004', true
+);
+select set_config(
+  'request.jwt.claims',
+  '{"sub":"d2800000-0000-4000-8000-000000000004","role":"authenticated"}',
+  true
+);
+do $test$
+begin
+  begin
+    insert into public.profiles (id, email, full_name, role)
+    values (
+      'd2800000-0000-4000-8000-000000000004',
+      'hya280-probe-insert@invalid.local', 'Insert Probe', 'admin'
+    );
+    raise exception 'HYA-280: missing profile self-inserted as admin';
+  exception when sqlstate '42501' then
+    null;
+  end;
+end;
+$test$;
+insert into public.profiles (id, email, full_name)
+values (
+  'd2800000-0000-4000-8000-000000000004',
+  'hya280-probe-insert@invalid.local', 'Insert Probe'
+);
+do $test$
+begin
+  if (select private.is_admin())
+     or not exists (select 1 from public.profiles
+                    where id = 'd2800000-0000-4000-8000-000000000004'
+                      and role = 'buyer') then
+    raise exception 'HYA-280: safe buyer profile insert failed';
+  end if;
 end;
 $test$;
 

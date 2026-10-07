@@ -17,8 +17,14 @@ The server checks admin rights through `private.is_admin()`, a
 `SECURITY DEFINER` helper with `search_path = ''`. It looks up
 `private.current_uid()` in `public.profiles` and requires `role = 'admin'`.
 `private.current_uid()` reads the subject PostgREST supplies from a **verified**
-JWT; the client cannot self-promote via `profiles_update_own`. The `private`
-schema is not exposed through the Data API. Do not use
+JWT. The `private` schema is not exposed through the Data API. The
+`profiles_update_own` policy invokes a narrowly scoped, private
+`SECURITY DEFINER` helper to compare proposed role/KYC fields with the
+existing row without recursively querying `profiles` through its own RLS.
+`profiles_insert_own` admits only the trigger's buyer/unverified defaults, so a
+missing profile cannot be self-created as admin. Both guards were added under
+HYA-280 after rollback probes found the old UPDATE policy raised `42P17` and
+a missing-profile INSERT could self-promote. Do not use
 `auth.jwt()->>'role' = 'admin'` in a policy or an RPC; it confuses the Postgres
 role with the application role. Do not trust the Flutter role guard as a security
 boundary: it only determines which screen to show.
@@ -39,6 +45,9 @@ checks:
   admin queue RPC;
 - a buyer cannot see the admin's profile or pending listing or call that RPC,
   even if the simulated JWT *claim* says `"role":"admin"`;
+- a buyer can edit ordinary profile fields but cannot promote their own role;
+  a missing profile cannot be inserted with `role='admin'`, though a buyer
+  profile using safe defaults can still be restored;
 - an admin with the normal `"role":"authenticated"` claim sees the pending
   listing and buyer profile, can read the queue, and can approve with an audit
   row;
