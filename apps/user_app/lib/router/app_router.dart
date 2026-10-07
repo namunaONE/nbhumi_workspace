@@ -77,7 +77,14 @@ final appRouterProvider = Provider<GoRouter>((ref) {
       // First run goes through onboarding before anything else. No conflict
       // with the auth rules below: a fresh install is never signed in, and a
       // returning user already has seen=true.
-      if (!gate.seen && location != '/onboarding') return '/onboarding';
+      // A fresh install can receive a confirmation or recovery link before
+      // onboarding has been completed. Let the callback exchange run first;
+      // the normal home redirect returns to onboarding afterwards.
+      if (!gate.seen &&
+          location != '/onboarding' &&
+          location != '/auth/callback') {
+        return '/onboarding';
+      }
 
       // Rule 37: log entries must carry the screen the user was on. Without
       // this every user-side failure logged `screen=unknown`.
@@ -191,15 +198,14 @@ final appRouterProvider = Provider<GoRouter>((ref) {
         builder: (context, state) => const LoginScreen(),
       ),
 
-      // Magic-link (and recovery-link) landing route (HYA-257). Narrates the
-      // exchange the DeepLinkListener already started; see AuthCallbackScreen.
-      // The `type=recovery` query survives the OS handoff, so the screen can
-      // tell a password reset apart from a sign-in.
+      // Only local, sanitized query flags ever reach this route. The raw
+      // one-time PKCE code is handled by app_links, not go_router.
       GoRoute(
         path: '/auth/callback',
         parentNavigatorKey: rootKey,
         builder: (context, state) => AuthCallbackScreen(
           isRecovery: state.uri.queryParameters['type'] == 'recovery',
+          error: state.uri.queryParameters['error'],
         ),
       ),
     ],

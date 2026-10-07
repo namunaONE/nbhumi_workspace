@@ -2,6 +2,7 @@ import 'package:data/data.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:go_router/go_router.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:user_app/main.dart';
@@ -155,6 +156,20 @@ void main() {
       final prefs = await SharedPreferences.getInstance();
       expect(prefs.getBool(OnboardingGate.seenKey), isTrue);
       expect(find.byType(NavigationBar), findsOneWidget);
+    });
+
+    testWidgets('an auth callback bypasses first-run onboarding',
+        (tester) async {
+      final gate = OnboardingGate(seen: false);
+      addTearDown(gate.dispose);
+      await pumpApp(tester, gateOverride: gate);
+
+      GoRouter.of(tester.element(find.byType(OnboardingScreen)))
+          .go('/auth/callback?error=expired');
+      await tester.pumpAndSettle();
+
+      expect(find.text('Sign-in link failed'), findsOneWidget);
+      expect(gate.seen, isFalse);
     });
 
     test('markSeen notifies and writes exactly once', () async {

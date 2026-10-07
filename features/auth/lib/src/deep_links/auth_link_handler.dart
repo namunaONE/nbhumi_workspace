@@ -58,21 +58,26 @@ class AuthLinkHandler {
   /// Creates a handler.
   ///
   /// The auth callback exchanges the link for a session (normally
-  /// `AuthService.exchangeSessionFromUrl`); the app-route callback navigates
-  /// (normally `GoRouter.go`).
+  /// `AuthService.exchangeSessionFromUrl`) and returns true for password
+  /// recovery. [onAuthError] receives mapped errors for a safe error screen.
+  /// The app-route callback navigates (normally `GoRouter.go`).
   AuthLinkHandler({
     required this._getInitialLink,
     required this._linkStream,
     required this._onAuthCallback,
     required this._onAppRoute,
+    required this.onAuthError,
     this.host,
     this.scheme,
   });
 
   final Future<Uri?> Function() _getInitialLink;
   final Stream<Uri> _linkStream;
-  final Future<void> Function(Uri uri) _onAuthCallback;
+  final Future<bool> Function(Uri uri) _onAuthCallback;
   final void Function(String location) _onAppRoute;
+
+  /// Called when a link exchange fails. The error is already safe for the UI.
+  final void Function(AppException error) onAuthError;
 
   /// Host override for link classification. Defaults to the [EnvConfig]
   /// value; tests pass the production-shaped host explicitly.
@@ -82,17 +87,30 @@ class AuthLinkHandler {
   final String? scheme;
 
   StreamSubscription<Uri>? _subscription;
+  Uri? _lastAuthCallback;
 
   /// Whether [start] has been called without a matching [dispose].
   bool get isActive => _subscription != null;
 
-  /// Handles the cold-start link, then subscribes to warm links.
+  /// Subscribes to warm links before reading the cold-start link.
   ///
-  /// Never throws: a platform that cannot provide links (tests, desktop,
-  /// a misbehaving OEM ROM) logs and continues with no deep-link support
-  /// rather than crashing startup.
+  /// The plugin can emit the same cold-start URL from both sources. A callback
+  /// is claimed synchronously before its asynchronous PKCE exchange, so only
+  /// one listener redeems each one-time code. If the initial-link API fails,
+  /// the warm-link subscription remains usable.
   Future<void> start() async {
     if (_subscription != null) return;
+    _subscription = _linkStream.listen(
+      (uri) => unawaited(handleLink(uri)),
+      onError: (Object error, StackTrace stackTrace) {
+        AppLogger.error(
+          'Deep-link stream error',
+          context: logContext(action: 'deepLinkStream'),
+          error: error,
+          stackTrace: stackTrace,
+        );
+      },
+    );
     try {
       final initial = await _getInitialLink();
       if (initial != null) await handleLink(initial);
@@ -104,53 +122,66 @@ class AuthLinkHandler {
         stackTrace: stackTrace,
       );
     }
-    _subscription = _linkStream.listen(
-      handleLink,
-      onError: (Object error, StackTrace stackTrace) {
-        AppLogger.error(
-          'Deep-link stream error',
-          context: logContext(action: 'deepLinkStream'),
-          error: error,
-          stackTrace: stackTrace,
-        );
-      },
-    );
   }
 
   /// Classifies one link and acts on it. Never throws (see [AuthFailed]).
   Future<DeepLinkOutcome> handleLink(Uri uri) {
     final target = classifyDeepLink(uri, host: host, scheme: scheme);
     return switch (target) {
-      AuthCallbackLink(uri: final callbackUri) => _exchange(callbackUri),
+      AuthCallbackLink(uri: final callbackUri) =>
+        _claimAndExchange(callbackUri),
       AppRouteLink(:final location) => Future.value(_route(location)),
       ExternalLink() => Future.value(const LinkIgnored()),
     };
   }
 
+  Future<DeepLinkOutcome> _claimAndExchange(Uri uri) {
+    // getInitialLink and uriLinkStream can deliver the same callback. Claim it
+    // before awaiting the network so a concurrent stream event cannot redeem
+    // the same PKCE code a second time. Never log or route the raw URL.
+    if (_lastAuthCallback == uri) return Future.value(const LinkIgnored());
+    _lastAuthCallback = uri;
+    return _exchange(uri);
+  }
+
   Future<DeepLinkOutcome> _exchange(Uri uri) async {
     try {
-      await _onAuthCallback(uri);
+      final isRecovery = await _onAuthCallback(uri);
+      // Route only a safe, local path; the one-time code stays out of router
+      // state, navigation history, and screen logging.
+      _onAppRoute(
+        isRecovery ? '/auth/callback?type=recovery' : '/',
+      );
       AppLogger.info(
         'Auth callback exchanged',
         context: logContext(
           action: 'deepLinkAuth',
-          // The path proves which callback shape arrived; the query holds the
-          // one-time PKCE code and must never be logged.
           detail: <String, Object?>{'path': uri.path},
         ),
       );
       return const AuthExchanged();
-    } on AppException catch (error, stackTrace) {
+    } on Object catch (error, stackTrace) {
+      final mapped = AppException.unmapped(error);
       AppLogger.error(
         'Auth callback exchange failed',
         context: logContext(
           action: 'deepLinkAuth',
-          detail: <String, Object?>{'code': error.code, 'path': uri.path},
+          detail: <String, Object?>{'code': mapped.code, 'path': uri.path},
         ),
         error: error,
         stackTrace: stackTrace,
       );
-      return AuthFailed(error);
+      try {
+        onAuthError(mapped);
+      } on Object catch (navigationError, navigationStack) {
+        AppLogger.error(
+          'Could not display auth callback failure',
+          context: logContext(action: 'deepLinkAuthErrorRoute'),
+          error: navigationError,
+          stackTrace: navigationStack,
+        );
+      }
+      return AuthFailed(mapped);
     }
   }
 
@@ -163,5 +194,6 @@ class AuthLinkHandler {
   Future<void> dispose() async {
     await _subscription?.cancel();
     _subscription = null;
+    _lastAuthCallback = null;
   }
 }

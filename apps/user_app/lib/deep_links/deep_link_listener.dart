@@ -56,6 +56,11 @@ class _DeepLinkListenerState extends ConsumerState<DeepLinkListener> {
       onAuthCallback: (uri) =>
           ref.read(authServiceProvider).exchangeSessionFromUrl(uri),
       onAppRoute: (location) => ref.read(appRouterProvider).go(location),
+      onAuthError: (error) => ref.read(appRouterProvider).go(
+            error.code == 'auth.linkExpired'
+                ? '/auth/callback?error=expired'
+                : '/auth/callback?error=failed',
+          ),
     );
     unawaited(_handler.start());
   }

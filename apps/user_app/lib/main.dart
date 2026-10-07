@@ -22,6 +22,10 @@ Future<void> main() async {
   await Supabase.initialize(
     url: EnvConfig.supabaseUrl,
     publishableKey: EnvConfig.supabasePublishableKey,
+    // DeepLinkListener owns the PKCE exchange. Supabase Flutter also installs
+    // an app_links listener by default; two listeners would redeem the same
+    // one-time code and make cold/warm magic links fail nondeterministically.
+    authOptions: const FlutterAuthClientOptions(detectSessionInUri: false),
   );
   final seen = await OnboardingGate.loadSeen();
 

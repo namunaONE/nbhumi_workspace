@@ -21,15 +21,24 @@ import '../viewmodels/auth_viewmodel.dart';
 class AuthCallbackScreen extends ConsumerWidget {
   /// Creates the callback screen.
   ///
-  /// [isRecovery] comes from the `type=recovery` query parameter the
-  /// password-reset email carries.
-  const AuthCallbackScreen({this.isRecovery = false, super.key});
+  /// [isRecovery] is set only after GoTrue identifies a recovery exchange.
+  /// [error] is a safe local flag, never a raw callback URL or server message.
+  const AuthCallbackScreen({
+    this.isRecovery = false,
+    this.error,
+    super.key,
+  });
 
   /// Whether this callback carries a password-recovery session.
   final bool isRecovery;
 
+  /// `expired` or `failed` after a callback exchange could not complete.
+  final String? error;
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    if (error != null) return _CallbackError(expired: error == 'expired');
+
     final signedIn = ref.watch(isSignedInProvider);
 
     if (signedIn && isRecovery) return const _SetPasswordForm();
@@ -71,6 +80,49 @@ class AuthCallbackScreen extends ConsumerWidget {
                 child: const Text('Back to login'),
               ),
             ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+/// A safe recovery path for an expired or malformed callback.
+class _CallbackError extends StatelessWidget {
+  const _CallbackError({required this.expired});
+
+  final bool expired;
+
+  @override
+  Widget build(BuildContext context) {
+    final failure = expired
+        ? const AuthFailureException(
+            code: 'auth.linkExpired',
+            messageEn: 'That sign-in link has expired. Request a new one.',
+            messageNe: 'साइन-इन लिङ्कको म्याद सकिएको छ। नयाँ लिङ्क माग्नुहोस्।',
+          )
+        : const AuthFailureException(
+            code: 'auth.failed',
+            messageEn: 'We could not sign you in. Request a new link.',
+            messageNe: 'साइन इन हुन सकेन। कृपया नयाँ लिङ्क माग्नुहोस्।',
+          );
+    return Scaffold(
+      appBar: AppBar(title: const Text('Sign-in link failed')),
+      body: SafeArea(
+        child: Center(
+          child: Padding(
+            padding: const EdgeInsets.all(24),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Text(failure.localizedForContext(context)),
+                const SizedBox(height: 16),
+                FilledButton(
+                  onPressed: () => context.go('/login'),
+                  child: const Text('Request a new link'),
+                ),
+              ],
+            ),
           ),
         ),
       ),

@@ -196,10 +196,15 @@ class AuthService {
   /// persisted by GoTrue and surfaces through `onAuthStateChange` like any
   /// other sign-in, which is what flips the router and the `Auth` notifier.
   ///
+  /// Returns whether this was a password-recovery exchange. GoTrue records
+  /// the intent with the PKCE verifier, so a caller cannot turn an ordinary
+  /// sign-in link into a recovery flow by appending `?type=recovery`.
+  ///
   /// Throws a mapped [AppException], never a raw [AuthException] (Rule 38).
-  Future<void> exchangeSessionFromUrl(Uri url) async {
+  Future<bool> exchangeSessionFromUrl(Uri url) async {
     try {
-      await _client.getSessionFromUrl(url);
+      final response = await _client.getSessionFromUrl(url);
+      return response.redirectType == AuthChangeEvent.passwordRecovery.name;
     } on AuthException catch (e) {
       final mapped = AuthExceptionMapper.map(
         e,
