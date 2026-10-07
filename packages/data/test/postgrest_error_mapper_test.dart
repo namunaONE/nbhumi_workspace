@@ -80,6 +80,25 @@ void main() {
       expect(mapped.code, 'validation.rejected');
     });
 
+    test('22023 submission-guard messages stay mapped, never raw', () {
+      // The HYA-292 trigger raises these exact messages live; the mapper must
+      // keep them inside ValidationException with a safe bilingual message.
+      for (final message in <String>[
+        'VALIDATION_ERROR: at least one photo is required to submit for review',
+        'VALIDATION_ERROR: land listings cannot carry bedroom/bathroom counts',
+        'VALIDATION_ERROR: price must be positive to submit for review',
+      ]) {
+        final mapped = PostgrestErrorMapper.map(
+          postgrestError('22023', message: message),
+          action: 'updateListing',
+        );
+
+        expect(mapped, isA<ValidationException>());
+        expect(mapped.messageEn, isNot(contains('VALIDATION_ERROR')));
+        expect(mapped.messageNe, isNotEmpty);
+      }
+    });
+
     test('P0002 and PGRST116 both become a not-found ServerException', () {
       // v1_get_listing_detail raises P0002 for "missing" and "not visible"
       // alike, so both must read identically to a client.
