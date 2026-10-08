@@ -30,9 +30,9 @@ sealed class FraudSignal with _$FraudSignal {
 
 /// The checks `v1_admin_fraud_signals` can report.
 ///
-/// `citizenshipReuse` is declared but never sent yet: citizenship-number
-/// reuse is deferred to HYA-264/M3 (no citizenship column exists), and
-/// declaring the code now keeps the wire extensible without a model change.
+/// All six codes are live: `citizenshipReuse` fires when another profile
+/// holds a verified citizenship document with the same file (kyc_documents
+/// carries files, not numbers -- see the 3/3 migration header).
 enum FraudSignalCode {
   /// Another listing shares a photo with this one.
   @JsonValue('duplicate_photo')
@@ -54,7 +54,10 @@ enum FraudSignalCode {
   @JsonValue('price_area')
   priceArea('price_area'),
 
-  /// Reserved for HYA-264: same citizenship number across accounts.
+  /// Live since the 3/3 migration: another profile holds a verified
+  /// citizenship document with the same file as this seller. Same verified
+  /// file behind two accounts -- kyc_documents carries files, not numbers,
+  /// so this is the implementable form of number reuse.
   @JsonValue('citizenship_reuse')
   citizenshipReuse('citizenship_reuse');
 

@@ -1019,11 +1019,11 @@ void main() {
       final result = await repo.fraudSignals('l1');
 
       expect(result.listingId, 'l1');
-      expect(result.signals, hasLength(2));
+      expect(result.signals, hasLength(3));
       expect(result.hasWarnings, isTrue);
       expect(
         result.warnings.map((s) => s.code),
-        [FraudSignalCode.duplicatePhoto],
+        [FraudSignalCode.duplicatePhoto, FraudSignalCode.citizenshipReuse],
       );
     });
 
@@ -1088,14 +1088,18 @@ const String _unsuspendedUserBody =
     '"role":"agent","suspended":false,"listings":{"live":2}, '
     '"open_reports_against":0}';
 
-/// A fraud-signals answer as `v1_admin_fraud_signals` returns one: one
-/// warning with evidence, one info context.
+/// A fraud-signals answer as `v1_admin_fraud_signals` returns one: two
+/// warnings with evidence, one info context.
 const String _fraudSignalsBody =
     '{"listing_id":"l1","signals":[ '
     '{"code":"duplicate_photo","severity":"warning", '
     '"message_en":"Same photo appears on another listing.", '
     '"message_ne":"उही फोटो अर्को लिस्टिङमा पनि देखिन्छ।", '
     '"detail":{"other_listing_ids":["l2"]}}, '
+    '{"code":"citizenship_reuse","severity":"warning", '
+    '"message_en":"Same verified citizenship document is used.", '
+    '"message_ne":"उही प्रमाणित नागरिकता कागजात प्रयोग भएको छ।", '
+    '"detail":{"other_account_ids":["u9"]}}, '
     '{"code":"missing_kitta","severity":"info", '
     '"message_en":"No kitta number provided.", '
     '"message_ne":"कित्ता नम्बर दिइएको छैन।","detail":{}}]}';
