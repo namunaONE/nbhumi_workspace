@@ -126,8 +126,12 @@ class _ListingGridState extends State<ListingGrid> {
             crossAxisCount: columns,
             mainAxisSpacing: ListingGrid.crossAxisSpacing,
             crossAxisSpacing: ListingGrid.crossAxisSpacing,
-            // Tuned for the 160dp cover photo plus the text block beneath it.
-            childAspectRatio: 0.72,
+            // Fits the 160dp cover photo plus the five-row text block. Was
+            // 0.72: the HYA-267 goldens proved a 0.72 cell clips ~45px of
+            // card on narrow two-column phones (silently in release via the
+            // card's Clip.antiAlias, so the area row simply vanished). 0.60
+            // holds the tallest test metrics with slack for larger text.
+            childAspectRatio: 0.60,
           ),
           itemBuilder: (context, index) {
             if (index == widget.listings.length) {

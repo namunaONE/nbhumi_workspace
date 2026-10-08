@@ -26,6 +26,7 @@ dependencies:
     path: ../../features/kyc
   listing_detail:
     path: ../../features/listing_detail
+  lottie: ^3.1.2
   models:
     path: ../../packages/models
   notifications:
@@ -38,15 +39,25 @@ dependencies:
   supabase_flutter: ^2.6.0
 
 dev_dependencies:
-  flutter_launcher_icons: ^0.14.4
+  # Golden screenshot tests (HYA-267): alchemist over golden_toolkit because
+  # the latter is abandoned (no release in years) while alchemist is the
+  # maintained successor (VGV/Betterment, 150 pub points, Mar 2026). CI-mode
+  # goldens use the Ahem font so results are platform-independent.
+  alchemist: ^0.14.0
+  flutter_launcher_icons: ^0.13.0
   flutter_native_splash: ^2.4.6
   flutter_test:
     sdk: flutter
+  # Referenced by test/flutter_test_config.dart (font-fetch kill switch).
+  # Test-only use; the app itself gets the typeface through core's theme.
+  google_fonts: ^6.3.3
   very_good_analysis: ^11.0.0
 
 flutter:
   uses-material-design: true
   generate: true
+  assets:
+    - assets/animations/
 
 # Launcher icons from the logo SVG (assets/icon/*.svg are the source of
 # truth; PNGs are rendered from them). flutter_launcher_icons consumes the

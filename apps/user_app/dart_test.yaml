@@ -1,0 +1,8 @@
+# Declares the `golden` tag alchemist puts on every goldenTest (HYA-267).
+#
+# Without this the runner warns `a tag was used that wasn't specified` and
+# fails the run. Selection:
+#   flutter test --tags golden            # only goldens
+#   flutter test --exclude-tags golden     # everything else
+tags:
+  golden:
