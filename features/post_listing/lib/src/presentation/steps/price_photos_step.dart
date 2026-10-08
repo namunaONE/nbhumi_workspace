@@ -143,13 +143,13 @@ class _PhotoTile extends StatelessWidget {
     final failed = photo.error != null;
 
     return SizedBox(
-      width: 96,
-      height: 96,
+      width: 112,
+      height: 112,
       child: Stack(
         fit: StackFit.expand,
         children: <Widget>[
           ClipRRect(
-            borderRadius: BorderRadius.circular(8),
+            borderRadius: AppRadius.radiusSm,
             child: photo.isUploading
                 ? ColoredBox(
                     color: theme.colorScheme.surfaceContainerHighest,
@@ -169,31 +169,32 @@ class _PhotoTile extends StatelessWidget {
                           color: theme.colorScheme.onErrorContainer,
                         ),
                       )
-                    : Image.network(
-                        photo.url,
-                        cacheWidth: 200,
-                        fit: BoxFit.cover,
-                        // A broken URL must not leave a hole in the grid.
-                        errorBuilder: (context, error, stackTrace) =>
-                            ColoredBox(
-                          color: theme.colorScheme.surfaceContainerHighest,
-                          child: Icon(
-                            Icons.broken_image_outlined,
-                            color: theme.colorScheme.outline,
-                          ),
-                        ),
+                    : AppImage(
+                        url: photo.url,
+                        cacheWidth: 224,
                       ),
           ),
           Positioned(
-            top: 0,
-            right: 0,
-            child: IconButton(
-              iconSize: 18,
-              padding: EdgeInsets.zero,
-              constraints: const BoxConstraints(minWidth: 28, minHeight: 28),
-              icon: const Icon(Icons.close),
-              tooltip: post_strings.AppLocalizations.of(context).removePhoto,
-              onPressed: onRemove,
+            top: AppSpacing.xs,
+            right: AppSpacing.xs,
+            child: Container(
+              decoration: BoxDecoration(
+                // M3 scrim role (Rule 43): translucent black over photos.
+                // Content stays white — no onScrim role exists and contrast
+                // on near-black is ~21:1 by construction.
+                color:
+                    Theme.of(context).colorScheme.scrim.withValues(alpha: 0.6),
+                borderRadius: AppRadius.radiusSm,
+              ),
+              child: IconButton(
+                iconSize: 16,
+                padding: EdgeInsets.zero,
+                constraints:
+                    const BoxConstraints(minWidth: 28, minHeight: 28),
+                icon: const Icon(Icons.close, color: Colors.white),
+                tooltip: post_strings.AppLocalizations.of(context).removePhoto,
+                onPressed: onRemove,
+              ),
             ),
           ),
           if (failed)
@@ -232,13 +233,13 @@ class _AddTile extends StatelessWidget {
 
     return InkWell(
       onTap: onTap,
-      borderRadius: BorderRadius.circular(8),
+      borderRadius: AppRadius.radiusSm,
       child: Container(
-        width: 96,
-        height: 96,
+        width: 112,
+        height: 112,
         decoration: BoxDecoration(
           border: Border.all(color: theme.colorScheme.outlineVariant),
-          borderRadius: BorderRadius.circular(8),
+          borderRadius: AppRadius.radiusSm,
         ),
         child: Icon(Icons.add_a_photo_outlined,
             color: theme.colorScheme.outline),

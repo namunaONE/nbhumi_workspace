@@ -1,11 +1,11 @@
 import 'dart:async';
 
-import 'package:admin_queue/admin_queue.dart';
 import 'package:core/core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:models/models.dart';
 
+import '../../providers/admin_queue_providers.dart';
 import 'queue_row.dart';
 
 /// The queue list pane: tabs, SLA summary, rows and pagination.
@@ -308,6 +308,10 @@ class _QueueTabs extends ConsumerWidget {
         // Not offered. Reaching it means a status was added to the enum without
         // a tab, which the exhaustive switch turns into a compile error.
         ListingStatus.draft => 'Drafts',
+        // Unpublished has no tab by design (HYA-262): the queue is a
+        // verification worklist and an unpublished listing awaits nothing.
+        // Reached only if a future tab list includes it.
+        ListingStatus.unpublished => 'Unpublished',
       };
 
   /// Icon for a tab, so the bar is not three identical shapes.
@@ -316,6 +320,7 @@ class _QueueTabs extends ConsumerWidget {
         ListingStatus.live => Icons.check_circle_outline,
         ListingStatus.rejected => Icons.block_outlined,
         ListingStatus.draft => Icons.edit_outlined,
+        ListingStatus.unpublished => Icons.visibility_off_outlined,
       };
 }
 
@@ -408,6 +413,7 @@ class _QueueEmpty extends ConsumerWidget {
         ListingStatus.live => 'No listings have gone live yet.',
         ListingStatus.rejected => 'Nothing has been rejected.',
         ListingStatus.draft => 'Drafts are not shown here.',
+        ListingStatus.unpublished => 'Nothing has been unpublished.',
       };
 
   /// The explanatory second line.
@@ -420,6 +426,8 @@ class _QueueEmpty extends ConsumerWidget {
           'Rejected listings appear here with their reason.',
         ListingStatus.draft =>
           'A draft is private work in progress.',
+        ListingStatus.unpublished =>
+          'Listings an admin pulled stay visible through user lookup.',
       };
 }
 

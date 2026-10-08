@@ -1,10 +1,11 @@
-import 'package:admin_queue/admin_queue.dart';
 import 'package:core/core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:models/models.dart';
 
+import '../providers/admin_queue_providers.dart';
 import 'widgets/audit_trail.dart';
+import 'widgets/fraud_signals_panel.dart';
 import 'widgets/moderation_actions.dart';
 import 'widgets/photo_gallery.dart';
 import 'widgets/review_actions.dart';
@@ -124,6 +125,10 @@ class _DetailBody extends StatelessWidget {
                   fontWeight: FontWeight.w700,
                 ),
               ),
+              // Signals ride above the photos: an admin who sees a warning
+              // reads everything below it more carefully, which is the point.
+              const SizedBox(height: 12),
+              FraudSignalsPanel(listingId: listing.id),
               const SizedBox(height: 16),
               PhotoGallery(urls: listing.photos),
               const SizedBox(height: 16),

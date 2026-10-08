@@ -7,6 +7,7 @@ library;
 
 export 'src/errors/postgrest_error_mapper.dart';
 export 'src/providers/app_provider_observer.dart';
+export 'src/providers/connectivity.dart';
 export 'src/providers/repositories.dart';
 export 'src/providers/session_logging.dart';
 export 'src/providers/session_providers.dart';
@@ -21,5 +22,6 @@ export 'src/repositories/reference_repository.dart';
 export 'src/repositories/saved_search_repository.dart';
 export 'src/repositories/user_repository.dart';
 export 'src/services/auth_service.dart';
+export 'src/services/listing_cache.dart';
 export 'src/services/storage_service.dart';
 export 'src/services/supabase_service.dart';

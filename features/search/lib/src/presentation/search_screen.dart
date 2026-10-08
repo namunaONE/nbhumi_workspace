@@ -6,8 +6,6 @@ import 'package:go_router/go_router.dart';
 import 'package:models/models.dart';
 import 'package:search/l10n/output/search_localizations.dart'
     as search_strings;
-import 'package:search/search.dart' show BrowseFeed;
-import 'package:search/src/widgets/browse_feed.dart' show BrowseFeed;
 
 import '../providers/browse_providers.dart';
 import '../utils/search_labels.dart';
@@ -80,7 +78,12 @@ class _QueryFieldState extends ConsumerState<_QueryField> {
   Widget build(BuildContext context) {
     final strings = search_strings.AppLocalizations.of(context);
     return Padding(
-      padding: const EdgeInsets.fromLTRB(12, 12, 12, 0),
+      padding: const EdgeInsets.fromLTRB(
+        AppSpacing.lg,
+        AppSpacing.md,
+        AppSpacing.lg,
+        0,
+      ),
       child: TextField(
         controller: _controller,
         textInputAction: TextInputAction.search,

@@ -7,6 +7,91 @@ on:
     branches: [main]
 
 jobs:
+  hygiene:
+    name: Hygiene gates (Rules 42-46)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Dead files (Rule 44)
+        # .bak, debug dumps, and golden-failure artifacts are regenerable or
+        # belong in the owning change under its real filename — never loose.
+        # Build outputs and IDE metadata are pruned, not scanned.
+        run: |
+          set -e
+          junk=$(find apps packages features supabase .github \( -path '*/build/*' -o -path '*/.*' \) -prune -o \( -name '*.bak' -o -name 'test_output.txt' -o -type d -path '*test/failures' \) -print 2>/dev/null | grep -v '^$' || true)
+          if [ -n "$junk" ]; then
+            echo "::error::Dead files present (Rule 44):"
+            echo "$junk"
+            exit 1
+          fi
+          echo "No dead files."
+
+      - name: 300-line cap (Rule 42)
+        # Generated files are exempt per Rule 14. Grandfathered violators are
+        # allowlisted with their tracking issue; new files must not join them.
+        run: |
+          set -e
+          allow='profile_screen.dart|reports_list.dart|admin_repository.dart|admin_listing_detail_screen.dart|listing_repository.dart|moderation_actions.dart|queue_list.dart|admin_queue_providers.dart|listing_report.dart|admin_queue_entry.dart|listing_wizard_provider.dart|location_step.dart|listing_card.dart|login_screen.dart|listing_detail_body.dart|listing_wizard_state.dart|filter_sheet.dart'
+          viol=0
+          for f in $(git ls-files 'apps/*/lib/*.dart' 'packages/*/lib/*.dart' 'features/*/lib/*.dart'); do
+            case "$f" in
+              *.g.dart|*.freezed.dart|*/l10n/output/*) continue;;
+            esac
+            if echo "$(basename "$f")" | grep -Eq "^($allow)$"; then continue; fi
+            n=$(wc -l < "$f")
+            if [ "$n" -gt 300 ]; then
+              echo "::error file=$f::exceeds 300-line cap (Rule 42): $n lines"
+              viol=1
+            fi
+          done
+          [ "$viol" -eq 0 ]
+
+      - name: Barrel completeness (Rule 44)
+        # Every src file in packages/* must be exported from the package
+        # barrel in the same change — unexported files are invisible to
+        # dependents and rot (V1 precedent: listing_cache.dart). Feature
+        # barrels are intentionally selective, so features are exempt.
+        run: |
+          set -e
+          fail=0
+          for pair in "packages/core:core.dart" "packages/data:data.dart" "packages/models:models.dart"; do
+            pkg="${pair%%:*}"; bar="${pair##*:}"
+            for src in $(git ls-files "$pkg/lib/src/"'*.dart'); do
+              base=$(basename "$src")
+              case "$base" in
+                *.g.dart|*.freezed.dart) continue;; # codegen parts, never exported
+              esac
+              if ! grep -q "^export '.*$base'" "$pkg/lib/$bar"; then
+                echo "::error file=$pkg/lib/$bar::Rule 44: $src not exported from barrel"
+                fail=1
+              fi
+            done
+          done
+          [ "$fail" -eq 0 ]
+
+      - name: Dependency direction (Rule 10)
+        # apps -> features -> packages, one way. No package may import a
+        # feature/app; no feature may import another feature; no lib/src file
+        # may import its own barrel or deep-link another file via package:.
+        run: |
+          set -e
+          feats='auth|kyc|listing_detail|notifications|post_listing|search|admin_queue'
+          fail=0
+          hit=$(grep -rn --include='*.dart' -E "import 'package:($feats|user_app|admin_panel)/" packages/*/lib/ || true)
+          if [ -n "$hit" ]; then echo "::error::packages import features/apps (Rule 10):"; echo "$hit"; fail=1; fi
+          for feat in auth kyc listing_detail notifications post_listing search admin_queue; do
+            others=$(echo "auth kyc listing_detail notifications post_listing search admin_queue" | tr ' ' '\n' | grep -v "^$feat\$" | paste -sd'|')
+            hit=$(grep -rn --include='*.dart' -E "import 'package:($others)/" "features/$feat/lib/" || true)
+            if [ -n "$hit" ]; then echo "::error::cross-feature import (Rule 10):"; echo "$hit"; fail=1; fi
+            hit=$(grep -rn --include='*.dart' "import 'package:$feat/$feat.dart'" "features/$feat/lib/src/" || true)
+            if [ -n "$hit" ]; then echo "::error::self-barrel import, use relative (Rule 22):"; echo "$hit"; fail=1; fi
+            hit=$(grep -rn --include='*.dart' -E "import 'package:$feat/src/" "features/$feat/lib/" || true)
+            if [ -n "$hit" ]; then echo "::error::deep package self-import, use relative (Rule 22):"; echo "$hit"; fail=1; fi
+          done
+          [ "$fail" -eq 0 ]
+          echo "Dependency direction clean."
+
   analyze:
     name: Analyze
     runs-on: ubuntu-latest

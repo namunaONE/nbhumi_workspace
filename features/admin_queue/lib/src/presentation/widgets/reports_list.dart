@@ -3,11 +3,13 @@ library;
 
 import 'dart:async';
 
-import 'package:admin_queue/admin_queue.dart';
 import 'package:core/core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:models/models.dart';
+
+import '../../providers/reports_controller.dart';
+import '../../providers/reports_providers.dart';
 
 /// Human wording for the values on a report.
 ///
@@ -47,6 +49,7 @@ String listingStatusLabel(ListingStatus status) => switch (status) {
   ListingStatus.pendingReview => 'awaiting review',
   ListingStatus.live => 'live',
   ListingStatus.rejected => 'rejected',
+  ListingStatus.unpublished => 'unpublished',
 };
 
 /// The reports queue: tabs, backlog summary, rows, pagination and the two
@@ -619,7 +622,7 @@ class _ResolutionActionsState extends ConsumerState<_ResolutionActions> {
                 ? 'Report $verb.'
                 : 'Already closed by someone else as $closed.',
           ),
-          duration: const Duration(seconds: 2),
+          duration: AppDurations.snackBarShort,
         ),
       );
     } on AppException catch (e) {

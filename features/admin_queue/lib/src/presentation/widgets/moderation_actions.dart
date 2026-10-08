@@ -1,9 +1,9 @@
-import 'package:admin_queue/admin_queue.dart';
 import 'package:core/core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:models/models.dart';
 
+import '../../providers/moderation_providers.dart';
 import 'review_actions.dart';
 
 /// Unpublish and republish actions for the listing under review (HYA-262).

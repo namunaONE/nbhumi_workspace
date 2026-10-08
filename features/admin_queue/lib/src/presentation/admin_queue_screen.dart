@@ -1,7 +1,9 @@
-import 'package:admin_queue/admin_queue.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../providers/admin_access_providers.dart';
+import '../providers/admin_queue_providers.dart';
+import 'admin_listing_detail_screen.dart';
 import 'widgets/queue_list.dart';
 
 /// The width at which the queue shows both panes.

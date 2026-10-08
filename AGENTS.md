@@ -1,9 +1,9 @@
 # AGENTS.md — nBhumi Agent Rules
 
 > Rules for AI coding agents (OpenCode, etc.) working on the nBhumi monorepo.
-> 41 rules covering security, monorepo hygiene, code standards, Nepal-specific
+> 47 rules covering security, monorepo hygiene, code standards, Nepal-specific
 > logic, Dart 3.13+/Riverpod 3.0/Flutter 3.47 patterns, testing, error handling,
-> and dependency management.
+> dependencies, and codebase hygiene.
 
 ---
 
@@ -129,6 +129,34 @@
 41. **No abandoned packages.** Check pub.dev score ≥ 90%, recent publish
     (<6 months), and null-safety before adding. Prefer packages already used in
     the workspace (Riverpod, Freezed, go_router, supabase_flutter).
+
+## Codebase Hygiene (Rules 42–47)
+
+42. **300-line soft cap on hand-written files.** Generated files (`.g.dart`,
+    `.freezed.dart`, l10n `output/`) are exempt per Rule 14. Above the cap,
+    extract: split widgets (one complex widget per file), hoist builders into
+    helpers, move scheme/token construction into getters. Grandfathered files
+    carry a Linear ID comment until refactored — new files must not join them.
+43. **Tokens, not literals.** Colors come from `ColorScheme` roles or
+    `BrandColors`/`MarketplaceColors`; spacing/radii from `AppSpacing`/
+    `AppRadius`; animation timings/sizes from `AppDurations`/`AppSizes` in
+    `package:core/src/theme/app_tokens.dart`. Photo-overlay scrims use the M3
+    `scrim` role. Test fixtures and framework constants (timer periods,
+    `pump()` durations) are exempt.
+44. **No dead files.** No `*.bak`, no debug dumps (`test_output.txt`,
+    `test/failures/`), no unreferenced assets. Every new `src/*.dart` file is
+    exported from its package barrel in the same change — an unexported file
+    is invisible to the analyzer and rots (V1 precedent: `listing_cache.dart`).
+45. **One task per branch; `git status` before starting.** A dirty tree mixing
+    workstreams is how unrelated hunks end up in the wrong commit. Run
+    `git status --short` first; if foreign changes exist, stash or branch
+    before touching shared files.
+46. **Every test file must load in CI.** A suite that fails at load
+    (`static` on top-levels, missing barrel exports) fails the build — fix or
+    delete, never leave red. Verify with `flutter test <file>` before pushing.
+47. **Rule of Three before abstracting.** Duplicate twice, extract on the third
+    occurrence — and only downward (`features → packages`), never sideways
+    (Rule 10). Premature shared helpers couple unrelated features.
 
 ---
 

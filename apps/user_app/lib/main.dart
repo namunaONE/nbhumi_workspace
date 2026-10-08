@@ -141,7 +141,7 @@ class SplashScreen extends StatefulWidget {
     super.key,
     this.enabled = true,
     this.animationAsset = 'assets/animations/splash.json',
-    this.fallbackTimeout = const Duration(seconds: 3),
+    this.fallbackTimeout = AppDurations.splashFallback,
   });
 
   /// The app content to show after the splash.
@@ -199,8 +199,8 @@ class _SplashScreenState extends State<SplashScreen> {
         Center(
           child: Lottie.asset(
             widget.animationAsset,
-            width: 200,
-            height: 200,
+            width: AppSizes.splashGlyph,
+            height: AppSizes.splashGlyph,
             fit: BoxFit.contain,
             // A corrupt or missing composition degrades to the static
             // wordmark rather than Flutter's red error box — the splash is
@@ -211,7 +211,7 @@ class _SplashScreenState extends State<SplashScreen> {
               // Dismiss shortly after the animation completes; the initState
               // backstop covers the case where this never fires.
               Future.delayed(
-                composition.duration + const Duration(milliseconds: 300),
+                composition.duration + AppDurations.splashBuffer,
                 _dismiss,
               );
             },
@@ -231,6 +231,8 @@ class _StaticWordmark extends StatelessWidget {
     return const Text(
       'nBhumi',
       style: TextStyle(
+        // White on brand blue ≈13:1; kept literal — no onScrim-style role
+        // exists for brand-surface content (Rule 43 exception, documented).
         color: Colors.white,
         fontSize: 48,
         fontWeight: FontWeight.w700,

@@ -1,7 +1,8 @@
-import 'package:admin_queue/admin_queue.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:models/models.dart';
+
+import '../../providers/admin_queue_providers.dart';
 
 /// Admin actions on this listing, newest first (Rule 8).
 ///

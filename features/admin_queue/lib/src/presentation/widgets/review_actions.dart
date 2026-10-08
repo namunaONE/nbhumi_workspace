@@ -1,8 +1,10 @@
-import 'package:admin_queue/admin_queue.dart';
 import 'package:core/core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:models/models.dart';
+
+import '../../providers/admin_queue_providers.dart';
+import '../../providers/admin_review_controller.dart';
 
 /// Approve and reject actions for the listing under review.
 ///
