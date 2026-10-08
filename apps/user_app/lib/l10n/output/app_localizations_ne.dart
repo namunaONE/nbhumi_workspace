@@ -13,10 +13,10 @@ class AppLocalizationsNe extends AppLocalizations {
   String get appTitle => 'नभूमि';
 
   @override
-  String get navHome => 'होम';
+  String get navExplore => 'एक्सप्लोर';
 
   @override
-  String get navSearch => 'खोज्नुहोस्';
+  String get navMyListings => 'मेरा सूचीहरू';
 
   @override
   String get navSaved => 'सेभ';
@@ -69,6 +69,23 @@ class AppLocalizationsNe extends AppLocalizations {
 
   @override
   String get savedTitle => 'सेभ';
+
+  @override
+  String get mineTitle => 'मेरा सूचीहरू';
+
+  @override
+  String get mineGuestPrompt =>
+      'तपाईंले पोस्ट गर्नुभएका घरजग्गा हेर्न साइन इन गर्नुहोस्';
+
+  @override
+  String get mineEmptyTitle => 'अहिलेसम्म कुनै सूची छैन';
+
+  @override
+  String get mineEmptyBody =>
+      'आफ्नो पहिलो घरजग्गा निःशुल्क पोस्ट गर्न तल + थिच्नुहोस्।';
+
+  @override
+  String get postAction => 'घरजग्गा पोस्ट गर्नुहोस्';
 
   @override
   String get savedGuestPrompt => 'घरजग्गा सेभ गर्न साइन इन गर्नुहोस्';

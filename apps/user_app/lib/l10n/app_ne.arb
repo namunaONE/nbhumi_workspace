@@ -7,15 +7,15 @@
   },
   "appTitle": "नभूमि",
 
-  "@navHome": {
-    "description": "Bottom navigation: browse feed tab."
+  "@navExplore": {
+    "description": "Bottom navigation: merged browse-and-search tab."
   },
-  "navHome": "होम",
+  "navExplore": "एक्सप्लोर",
 
-  "@navSearch": {
-    "description": "Bottom navigation: search tab."
+  "@navMyListings": {
+    "description": "Bottom navigation: seller's own listings tab."
   },
-  "navSearch": "खोज्नुहोस्",
+  "navMyListings": "मेरा सूचीहरू",
 
   "@navSaved": {
     "description": "Bottom navigation: saved listings tab."
@@ -101,6 +101,31 @@
     "description": "Saved tab app bar."
   },
   "savedTitle": "सेभ",
+
+  "@mineTitle": {
+    "description": "My Listings tab app bar."
+  },
+  "mineTitle": "मेरा सूचीहरू",
+
+  "@mineGuestPrompt": {
+    "description": "Shown to signed-out visitors of the My Listings tab."
+  },
+  "mineGuestPrompt": "तपाईंले पोस्ट गर्नुभएका घरजग्गा हेर्न साइन इन गर्नुहोस्",
+
+  "@mineEmptyTitle": {
+    "description": "Empty shelf heading when the seller posted nothing."
+  },
+  "mineEmptyTitle": "अहिलेसम्म कुनै सूची छैन",
+
+  "@mineEmptyBody": {
+    "description": "Empty shelf explanation with the post action."
+  },
+  "mineEmptyBody": "आफ्नो पहिलो घरजग्गा निःशुल्क पोस्ट गर्न तल + थिच्नुहोस्।",
+
+  "@postAction": {
+    "description": "Tooltip of the center post-property button."
+  },
+  "postAction": "घरजग्गा पोस्ट गर्नुहोस्",
 
   "@savedGuestPrompt": {
     "description": "Shown to signed-out visitors of the Saved tab."

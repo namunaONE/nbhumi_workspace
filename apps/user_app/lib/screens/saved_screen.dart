@@ -147,7 +147,7 @@ class _SearchesSection extends ConsumerWidget {
                   onTap: () {
                     ref.read(browseFilterProvider.notifier).filter =
                         search.toFilter();
-                    context.go('/search');
+                    context.go('/');
                   },
                   trailing: IconButton(
                     icon: const Icon(Icons.delete_outline),

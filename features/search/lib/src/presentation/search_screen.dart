@@ -20,7 +20,15 @@ import 'filter_sheet.dart';
 /// Search share one feed.
 class SearchScreen extends ConsumerWidget {
   /// Creates the search screen.
-  const SearchScreen({super.key});
+  const SearchScreen({this.title, this.actions, super.key});
+
+  /// Overrides the app-bar title. Null keeps the feature string; the app
+  /// passes its tab title when hosting this screen as Explore.
+  final String? title;
+
+  /// Extra app-bar actions appended after the built-in ones. The app injects
+  /// chrome the feature must not own (e.g. the notification bell) here.
+  final List<Widget>? actions;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -29,11 +37,12 @@ class SearchScreen extends ConsumerWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text(strings.title),
+        title: Text(title ?? strings.title),
         actions: <Widget>[
           _SortButton(filter: filter),
           _FilterButton(activeCount: filter.activeCount),
           _SaveSearchButton(filter: filter),
+          ...?actions,
           const SizedBox(width: 4),
         ],
       ),

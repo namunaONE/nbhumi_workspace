@@ -8,14 +8,16 @@ import 'package:listing_detail/listing_detail.dart';
 import 'package:notifications/notifications.dart';
 import 'package:post_listing/post_listing.dart';
 import 'package:search/search.dart';
+import 'package:user_app/l10n/output/app_localizations.dart';
 import 'package:user_app/onboarding/onboarding_gate.dart';
 import 'package:user_app/screens/activity_screen.dart';
-import 'package:user_app/screens/home_screen.dart';
+import 'package:user_app/screens/my_listings_screen.dart';
 import 'package:user_app/screens/onboarding_screen.dart';
 import 'package:user_app/screens/profile_screen.dart';
 import 'package:user_app/screens/saved_screen.dart';
 import 'package:user_app/screens/settings_screen.dart';
 import 'package:user_app/shell/app_shell.dart';
+import 'package:user_app/widgets/notification_bell.dart';
 
 /// Routes reachable without a session.
 ///
@@ -30,8 +32,8 @@ import 'package:user_app/shell/app_shell.dart';
 const Set<String> kPublicRoutes = <String>{
   '/',
   '/onboarding',
-  '/search',
   '/saved',
+  '/my-listings',
   '/profile',
   '/profile/settings',
   '/profile/activity',
@@ -63,9 +65,9 @@ final appRouterProvider = Provider<GoRouter>((ref) {
   final gate = ref.watch(onboardingGateProvider);
 
   final rootKey = GlobalKey<NavigatorState>(debugLabel: 'root');
-  final homeKey = GlobalKey<NavigatorState>(debugLabel: 'home');
-  final searchKey = GlobalKey<NavigatorState>(debugLabel: 'search');
+  final exploreKey = GlobalKey<NavigatorState>(debugLabel: 'explore');
   final savedKey = GlobalKey<NavigatorState>(debugLabel: 'saved');
+  final mineKey = GlobalKey<NavigatorState>(debugLabel: 'mine');
   final profileKey = GlobalKey<NavigatorState>(debugLabel: 'profile');
 
   return GoRouter(
@@ -77,6 +79,10 @@ final appRouterProvider = Provider<GoRouter>((ref) {
     redirect: (context, state) {
       final location = state.matchedLocation;
       final isLoggedIn = authRefresh.isSignedIn;
+
+      // Legacy `/search` links (shared URLs, saved searches pointing at the
+      // old tab) land on Explore, which is the same screen at `/`.
+      if (location == '/search') return '/';
 
       // First run goes through onboarding before anything else. No conflict
       // with the auth rules below: a fresh install is never signed in, and a
@@ -116,26 +122,21 @@ final appRouterProvider = Provider<GoRouter>((ref) {
 
       // The four-tab shell. StatefulShellRoute.indexedStack keeps each tab's
       // navigation stack and scroll position alive when switching, which is
-      // what users expect from bottom navigation.
+      // what users expect from bottom navigation. Explore hosts the search
+      // screen: one feed, one filter state, no tab switch needed.
       StatefulShellRoute.indexedStack(
         builder: (context, state, navigationShell) =>
             AppShell(navigationShell: navigationShell),
         branches: <StatefulShellBranch>[
           StatefulShellBranch(
-            navigatorKey: homeKey,
+            navigatorKey: exploreKey,
             routes: <RouteBase>[
               GoRoute(
                 path: '/',
-                builder: (context, state) => const HomeScreen(),
-              ),
-            ],
-          ),
-          StatefulShellBranch(
-            navigatorKey: searchKey,
-            routes: <RouteBase>[
-              GoRoute(
-                path: '/search',
-                builder: (context, state) => const SearchScreen(),
+                builder: (context, state) => SearchScreen(
+                  title: AppLocalizations.of(context).navExplore,
+                  actions: const <Widget>[NotificationBell()],
+                ),
               ),
             ],
           ),
@@ -145,6 +146,15 @@ final appRouterProvider = Provider<GoRouter>((ref) {
               GoRoute(
                 path: '/saved',
                 builder: (context, state) => const SavedScreen(),
+              ),
+            ],
+          ),
+          StatefulShellBranch(
+            navigatorKey: mineKey,
+            routes: <RouteBase>[
+              GoRoute(
+                path: '/my-listings',
+                builder: (context, state) => const MyListingsScreen(),
               ),
             ],
           ),

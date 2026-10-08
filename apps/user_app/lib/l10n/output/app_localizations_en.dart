@@ -13,10 +13,10 @@ class AppLocalizationsEn extends AppLocalizations {
   String get appTitle => 'nBhumi';
 
   @override
-  String get navHome => 'Home';
+  String get navExplore => 'Explore';
 
   @override
-  String get navSearch => 'Search';
+  String get navMyListings => 'My Listings';
 
   @override
   String get navSaved => 'Saved';
@@ -69,6 +69,22 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get savedTitle => 'Saved';
+
+  @override
+  String get mineTitle => 'My Listings';
+
+  @override
+  String get mineGuestPrompt => 'Sign in to see the properties you posted';
+
+  @override
+  String get mineEmptyTitle => 'No listings yet';
+
+  @override
+  String get mineEmptyBody =>
+      'Tap + below to post your first property for free.';
+
+  @override
+  String get postAction => 'Post property';
 
   @override
   String get savedGuestPrompt => 'Sign in to save properties';

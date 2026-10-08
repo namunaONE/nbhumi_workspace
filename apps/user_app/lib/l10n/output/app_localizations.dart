@@ -104,17 +104,17 @@ abstract class AppLocalizations {
   /// **'nBhumi'**
   String get appTitle;
 
-  /// Bottom navigation: browse feed tab.
+  /// Bottom navigation: merged browse-and-search tab.
   ///
   /// In en, this message translates to:
-  /// **'Home'**
-  String get navHome;
+  /// **'Explore'**
+  String get navExplore;
 
-  /// Bottom navigation: search tab.
+  /// Bottom navigation: seller's own listings tab.
   ///
   /// In en, this message translates to:
-  /// **'Search'**
-  String get navSearch;
+  /// **'My Listings'**
+  String get navMyListings;
 
   /// Bottom navigation: saved listings tab.
   ///
@@ -217,6 +217,36 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Saved'**
   String get savedTitle;
+
+  /// My Listings tab app bar.
+  ///
+  /// In en, this message translates to:
+  /// **'My Listings'**
+  String get mineTitle;
+
+  /// Shown to signed-out visitors of the My Listings tab.
+  ///
+  /// In en, this message translates to:
+  /// **'Sign in to see the properties you posted'**
+  String get mineGuestPrompt;
+
+  /// Empty shelf heading when the seller posted nothing.
+  ///
+  /// In en, this message translates to:
+  /// **'No listings yet'**
+  String get mineEmptyTitle;
+
+  /// Empty shelf explanation with the post action.
+  ///
+  /// In en, this message translates to:
+  /// **'Tap + below to post your first property for free.'**
+  String get mineEmptyBody;
+
+  /// Tooltip of the center post-property button.
+  ///
+  /// In en, this message translates to:
+  /// **'Post property'**
+  String get postAction;
 
   /// Shown to signed-out visitors of the Saved tab.
   ///

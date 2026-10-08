@@ -1,4 +1,3 @@
-import 'package:data/data.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -8,16 +7,22 @@ import 'package:user_app/l10n/output/app_localizations.dart';
 ///
 /// Fixed count and fixed order: [StatefulShellRoute.indexedStack] maps branches
 /// to indices positionally, so inserting one in the middle would silently
-/// repoint every saved tab index.
+/// repoint every saved tab index. Posting is a center action, not a branch —
+/// a fifth tab for it would waste a saved index on a route that owns no stack.
 enum AppTab {
-  /// Browse the feed.
-  home('/', Icons.home_outlined, Icons.home, 'Home'),
-
-  /// Search and filter.
-  search('/search', Icons.search_outlined, Icons.search, 'Search'),
+  /// Merged browse and search.
+  explore('/', Icons.explore_outlined, Icons.explore, 'Explore'),
 
   /// Saved listings. Locked until M3 implements favourites (HYA-212).
   saved('/saved', Icons.favorite_outline, Icons.favorite, 'Saved'),
+
+  /// The seller's own listings.
+  myListings(
+    '/my-listings',
+    Icons.home_work_outlined,
+    Icons.home_work,
+    'My Listings',
+  ),
 
   /// Account and seller actions.
   profile('/profile', Icons.person_outline, Icons.person, 'Profile');
@@ -41,9 +46,9 @@ enum AppTab {
   /// Kept separate from [label] (which stays English for the tab-order test):
   /// labels render from here everywhere.
   String localize(AppLocalizations strings) => switch (this) {
-        AppTab.home => strings.navHome,
-        AppTab.search => strings.navSearch,
+        AppTab.explore => strings.navExplore,
         AppTab.saved => strings.navSaved,
+        AppTab.myListings => strings.navMyListings,
         AppTab.profile => strings.navProfile,
       };
 }
@@ -59,16 +64,28 @@ abstract final class AppBreakpoints {
 
   /// At or above this, a permanent drawer and master-detail layouts.
   static const double expanded = 840;
+
+  /// At or above this window width, list screens may show the detail side
+  /// pane next to the feed instead of pushing the full route. Higher than
+  /// [expanded] because the pane splits the tab content that remains beside
+  /// the permanent drawer — both panes need room to breathe.
+  static const double twoPane = 1000;
 }
 
 /// Hosts the four tabs and adapts its navigation to the available width.
 ///
-/// Compact (<600) gets a [NavigationBar], medium (600-840) a [NavigationRail],
-/// expanded (>=840) a [NavigationDrawer]. Each branch renders the same
-/// [navigationShell], so tab state survives a rotation or a window resize.
+/// Compact (<600) gets a notched [BottomAppBar] with a center-docked post
+/// button, medium (600-840) a [NavigationRail] with a trailing post action,
+/// expanded (>=840) a [NavigationDrawer] with a post tile. Each branch
+/// renders the same [navigationShell], so tab state survives a rotation or
+/// a window resize.
 ///
-/// Watches the unread badge count: guests read zero rows under RLS, so no
-/// badge renders signed out and no session check is needed here.
+/// Posting is an action, not a destination: it pushes `/post` (which owns
+/// its own chrome and auth gate) instead of occupying a branch index.
+///
+/// The unread inbox badge lives on the notification bell in the Explore app
+/// bar, not on any tab — a fifth badge tab would repoint saved indices, and
+/// repeating a bell on every screen is what the single Explore entry avoids.
 class AppShell extends ConsumerWidget {
   /// Wraps a [StatefulNavigationShell] in the appropriate navigation chrome.
   const AppShell({required this.navigationShell, super.key});
@@ -90,12 +107,6 @@ class AppShell extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    // Guests read zero rows under RLS, so no badge renders signed out and
-    // no session check is needed here.
-    final unread = switch (ref.watch(unreadNotificationCountProvider)) {
-      AsyncData(:final value) => value,
-      _ => 0,
-    };
     final strings = AppLocalizations.of(context);
     // LayoutBuilder, not MediaQuery: the shell sits inside the Scaffold
     // body, so its own constraints are the authoritative width and stay
@@ -112,7 +123,6 @@ class AppShell extends ConsumerWidget {
                 AppDrawer(
                   selectedIndex: navigationShell.currentIndex,
                   onSelected: _onDestinationSelected,
-                  unreadCount: unread,
                   strings: strings,
                 ),
                 const VerticalDivider(width: 1),
@@ -130,19 +140,17 @@ class AppShell extends ConsumerWidget {
                   selectedIndex: navigationShell.currentIndex,
                   onDestinationSelected: _onDestinationSelected,
                   labelType: NavigationRailLabelType.all,
+                  trailing: IconButton(
+                    icon: const Icon(Icons.add),
+                    tooltip: strings.postAction,
+                    onPressed: () =>
+                        GoRouter.of(context).push('/post'),
+                  ),
                   destinations: <NavigationRailDestination>[
                     for (final tab in AppTab.values)
                       NavigationRailDestination(
-                        icon: _BadgedIcon(
-                          tab: tab,
-                          selected: false,
-                          unreadCount: unread,
-                        ),
-                        selectedIcon: _BadgedIcon(
-                          tab: tab,
-                          selected: true,
-                          unreadCount: unread,
-                        ),
+                        icon: Icon(tab.icon),
+                        selectedIcon: Icon(tab.selectedIcon),
                         label: Text(tab.localize(strings)),
                       ),
                   ],
@@ -156,25 +164,38 @@ class AppShell extends ConsumerWidget {
 
         return Scaffold(
           body: navigationShell,
-          bottomNavigationBar: NavigationBar(
-            selectedIndex: navigationShell.currentIndex,
-            onDestinationSelected: _onDestinationSelected,
-            destinations: <NavigationDestination>[
-              for (final tab in AppTab.values)
-                NavigationDestination(
-                  icon: _BadgedIcon(
-                    tab: tab,
-                    selected: false,
-                    unreadCount: unread,
-                  ),
-                  selectedIcon: _BadgedIcon(
-                    tab: tab,
-                    selected: true,
-                    unreadCount: unread,
-                  ),
-                  label: tab.localize(strings),
-                ),
-            ],
+          floatingActionButton: FloatingActionButton(
+            tooltip: strings.postAction,
+            onPressed: () => GoRouter.of(context).push('/post'),
+            child: const Icon(Icons.add),
+          ),
+          floatingActionButtonLocation:
+              FloatingActionButtonLocation.centerDocked,
+          bottomNavigationBar: BottomAppBar(
+            shape: const CircularNotchedRectangle(),
+            notchMargin: 8,
+            child: SizedBox(
+              height: 72,
+              child: Row(
+                children: <Widget>[
+                  for (var i = 0; i < 2; i++)
+                    _BarDestination(
+                      tab: AppTab.values[i],
+                      selected: i == navigationShell.currentIndex,
+                      label: AppTab.values[i].localize(strings),
+                      onTap: () => _onDestinationSelected(i),
+                    ),
+                  const Spacer(),
+                  for (var i = 2; i < AppTab.values.length; i++)
+                    _BarDestination(
+                      tab: AppTab.values[i],
+                      selected: i == navigationShell.currentIndex,
+                      label: AppTab.values[i].localize(strings),
+                      onTap: () => _onDestinationSelected(i),
+                    ),
+                ],
+              ),
+            ),
           ),
         );
       },
@@ -182,34 +203,68 @@ class AppShell extends ConsumerWidget {
   }
 }
 
-/// A tab icon with the unread badge on the profile destination.
+/// One compact-bar destination with the M3 selected pill.
 ///
-/// The inbox lives under profile, so the badge lives there too — a fifth tab
-/// would silently repoint every saved tab index (see [AppTab]), and a bell
-/// in an app bar would need repeating on every screen.
-class _BadgedIcon extends StatelessWidget {
-  const _BadgedIcon({
+/// [NavigationBar] cannot host a center notch, so the compact bar is a
+/// [BottomAppBar] row of these: icon in a pill plus a
+/// small label, matching the bar's visual language without its widget.
+class _BarDestination extends StatelessWidget {
+  const _BarDestination({
     required this.tab,
     required this.selected,
-    required this.unreadCount,
+    required this.label,
+    required this.onTap,
   });
 
-  /// Which destination this icon is for.
   final AppTab tab;
-
-  /// Whether the destination is currently selected.
   final bool selected;
-
-  /// Unread inbox rows. Zero renders a bare icon.
-  final int unreadCount;
+  final String label;
+  final VoidCallback onTap;
 
   @override
   Widget build(BuildContext context) {
-    final icon = Icon(selected ? tab.selectedIcon : tab.icon);
-    if (tab != AppTab.profile || unreadCount <= 0) return icon;
-    return Badge(
-      label: Text(unreadCount > 99 ? '99+' : '$unreadCount'),
-      child: icon,
+    final theme = Theme.of(context);
+    return Expanded(
+      child: InkWell(
+        onTap: onTap,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            AnimatedContainer(
+              duration: const Duration(milliseconds: 200),
+              padding: const EdgeInsets.symmetric(
+                horizontal: 16,
+                vertical: 4,
+              ),
+              decoration: selected
+                  ? BoxDecoration(
+                      color: theme.colorScheme.secondaryContainer,
+                      borderRadius: BorderRadius.circular(16),
+                    )
+                  : null,
+              child: Icon(
+                selected ? tab.selectedIcon : tab.icon,
+                color: selected
+                    ? theme.colorScheme.onSecondaryContainer
+                    : theme.colorScheme.onSurfaceVariant,
+              ),
+            ),
+            const SizedBox(height: 4),
+            Text(
+              label,
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+              style: theme.textTheme.labelSmall?.copyWith(
+                color: selected
+                    ? theme.colorScheme.onSurface
+                    : theme.colorScheme.onSurfaceVariant,
+                fontWeight:
+                    selected ? FontWeight.w700 : FontWeight.w500,
+              ),
+            ),
+          ],
+        ),
+      ),
     );
   }
 }
@@ -221,7 +276,6 @@ class AppDrawer extends StatelessWidget {
     required this.selectedIndex,
     required this.onSelected,
     required this.strings,
-    this.unreadCount = 0,
     super.key,
   });
 
@@ -230,9 +284,6 @@ class AppDrawer extends StatelessWidget {
 
   /// Called with the index of the tab the user tapped.
   final ValueChanged<int> onSelected;
-
-  /// Unread inbox rows. A positive count badges the profile destination.
-  final int unreadCount;
 
   /// Localized strings for labels and the app title.
   final AppLocalizations strings;
@@ -256,6 +307,11 @@ class AppDrawer extends StatelessWidget {
                   style: theme.textTheme.titleLarge,
                 ),
               ),
+              ListTile(
+                leading: const Icon(Icons.add),
+                title: Text(strings.postAction),
+                onTap: () => GoRouter.of(context).push('/post'),
+              ),
               for (var i = 0; i < AppTab.values.length; i++)
                 ListTile(
                   selected: i == selectedIndex,
@@ -266,14 +322,6 @@ class AppDrawer extends StatelessWidget {
                         : AppTab.values[i].icon,
                   ),
                   title: Text(AppTab.values[i].localize(strings)),
-                  trailing:
-                      AppTab.values[i] == AppTab.profile && unreadCount > 0
-                          ? Badge(
-                              label: Text(
-                                unreadCount > 99 ? '99+' : '$unreadCount',
-                              ),
-                            )
-                          : null,
                   onTap: () => onSelected(i),
                 ),
             ],

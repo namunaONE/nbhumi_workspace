@@ -7,15 +7,15 @@
   },
   "appTitle": "nBhumi",
 
-  "@navHome": {
-    "description": "Bottom navigation: browse feed tab."
+  "@navExplore": {
+    "description": "Bottom navigation: merged browse-and-search tab."
   },
-  "navHome": "Home",
+  "navExplore": "Explore",
 
-  "@navSearch": {
-    "description": "Bottom navigation: search tab."
+  "@navMyListings": {
+    "description": "Bottom navigation: seller's own listings tab."
   },
-  "navSearch": "Search",
+  "navMyListings": "My Listings",
 
   "@navSaved": {
     "description": "Bottom navigation: saved listings tab."
@@ -101,6 +101,31 @@
     "description": "Saved tab app bar."
   },
   "savedTitle": "Saved",
+
+  "@mineTitle": {
+    "description": "My Listings tab app bar."
+  },
+  "mineTitle": "My Listings",
+
+  "@mineGuestPrompt": {
+    "description": "Shown to signed-out visitors of the My Listings tab."
+  },
+  "mineGuestPrompt": "Sign in to see the properties you posted",
+
+  "@mineEmptyTitle": {
+    "description": "Empty shelf heading when the seller posted nothing."
+  },
+  "mineEmptyTitle": "No listings yet",
+
+  "@mineEmptyBody": {
+    "description": "Empty shelf explanation with the post action."
+  },
+  "mineEmptyBody": "Tap + below to post your first property for free.",
+
+  "@postAction": {
+    "description": "Tooltip of the center post-property button."
+  },
+  "postAction": "Post property",
 
   "@savedGuestPrompt": {
     "description": "Shown to signed-out visitors of the Saved tab."

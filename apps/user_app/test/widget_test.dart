@@ -61,9 +61,10 @@ void main() {
         overrides: [
           if (gateOverride != null)
             onboardingGateProvider.overrideWithValue(gateOverride),
-          // The shell badges the profile tab from the unread count. Pinned
-          // to zero here so shell tests never touch the network through the
-          // stub Supabase client; inbox tests cover the provider itself.
+          // The bell owns the unread badge now (HYA-299 moved it off the
+          // profile tab). Pinned to zero here so shell tests never touch the
+          // network through the stub Supabase client; inbox tests cover the
+          // provider itself.
           unreadNotificationCountProvider.overrideWith((ref) async => 0),
         ],
         child: const UserApp(),
@@ -77,11 +78,12 @@ void main() {
     test('exposes four tabs in the order the shell indexes them', () {
       // StatefulShellRoute maps branches to indices positionally. Inserting a
       // tab in the middle would silently repoint every saved index, so the
-      // count and order are asserted rather than assumed.
+      // count and order are asserted rather than assumed. Posting is a center
+      // action, not a branch, for the same reason.
       expect(AppTab.values, hasLength(4));
       expect(
         AppTab.values.map((t) => t.label),
-        <String>['Home', 'Search', 'Saved', 'Profile'],
+        <String>['Explore', 'Saved', 'My Listings', 'Profile'],
       );
     });
 
@@ -102,8 +104,8 @@ void main() {
       // Guest browsing is the product's primary use case; gating any of these
       // would make the app useless before sign-up.
       expect(isPublicRoute('/'), isTrue);
-      expect(isPublicRoute('/search'), isTrue);
       expect(isPublicRoute('/saved'), isTrue);
+      expect(isPublicRoute('/my-listings'), isTrue);
       expect(isPublicRoute('/login'), isTrue);
       expect(isPublicRoute('/onboarding'), isTrue);
     });
@@ -141,7 +143,7 @@ void main() {
       await pumpApp(tester, gateOverride: gate);
 
       expect(find.text('Browse listings'), findsOneWidget);
-      expect(find.byType(NavigationBar), findsNothing);
+      expect(find.byType(BottomAppBar), findsNothing);
     });
 
     testWidgets('completing onboarding persists and goes home',
@@ -156,7 +158,7 @@ void main() {
       expect(gate.seen, isTrue);
       final prefs = await SharedPreferences.getInstance();
       expect(prefs.getBool(OnboardingGate.seenKey), isTrue);
-      expect(find.byType(NavigationBar), findsOneWidget);
+      expect(find.byType(BottomAppBar), findsOneWidget);
     });
 
     testWidgets('an auth callback bypasses first-run onboarding',
@@ -188,10 +190,11 @@ void main() {
   });
 
   group('AppShell layout', () {
-    testWidgets('compact shows a bottom NavigationBar', (tester) async {
+    testWidgets('compact shows a notched bottom bar with a post button',
+        (tester) async {
       await pumpApp(tester);
 
-      expect(find.byType(NavigationBar), findsOneWidget);
+      expect(find.byType(BottomAppBar), findsOneWidget);
       expect(find.byType(NavigationRail), findsNothing);
       expect(find.byType(AppDrawer), findsNothing);
     });
@@ -200,7 +203,7 @@ void main() {
       await pumpApp(tester, size: const Size(700, 900));
 
       expect(find.byType(NavigationRail), findsOneWidget);
-      expect(find.byType(NavigationBar), findsNothing);
+      expect(find.byType(BottomAppBar), findsNothing);
     });
 
     testWidgets('expanded shows a permanently visible drawer', (tester) async {
@@ -209,7 +212,7 @@ void main() {
 
       expect(find.byType(AppDrawer), findsOneWidget);
       expect(find.byType(NavigationRail), findsNothing);
-      expect(find.byType(NavigationBar), findsNothing);
+      expect(find.byType(BottomAppBar), findsNothing);
     });
 
     testWidgets('every tab is reachable at compact width', (tester) async {
@@ -249,6 +252,47 @@ void main() {
       expect(find.text('Post a property'), findsNothing);
     });
 
+    testWidgets('the my-listings tab prompts a guest to sign in',
+        (tester) async {
+      await pumpApp(tester);
+
+      await tester.tap(find.text('My Listings'));
+      await tester.pumpAndSettle();
+
+      expect(
+        find.text('Sign in to see the properties you posted'),
+        findsOneWidget,
+      );
+    });
+
+    testWidgets('the center post button sends a guest to login',
+        (tester) async {
+      await pumpApp(tester);
+
+      await tester.tap(find.byTooltip('Post property'));
+      await tester.pumpAndSettle();
+
+      // `/post` is gated, so the redirect lands on the login screen.
+      expect(find.text('Sign in'), findsWidgets);
+    });
+
+    testWidgets('explore shows the notification bell', (tester) async {
+      await pumpApp(tester);
+
+      expect(find.byTooltip('Notifications'), findsOneWidget);
+    });
+
+    testWidgets('a legacy /search link lands on Explore', (tester) async {
+      await pumpApp(tester);
+
+      GoRouter.of(tester.element(find.byType(BottomAppBar))).go('/search');
+      await tester.pumpAndSettle();
+
+      // Same screen SearchScreen renders at `/`: filter entry visible, and
+      // the bell proves this is the Explore branch, not a dead route.
+      expect(find.byTooltip('Notifications'), findsOneWidget);
+    });
+
     testWidgets('onboarding shows the Malpot disclaimer', (tester) async {
       // DATA.md requires the disclaimer to be visible. First run is the only
       // place a user is guaranteed to read it. Rendered directly rather than
@@ -267,6 +311,15 @@ void main() {
             ),
           ),
         ),
+      );
+      await tester.pumpAndSettle();
+
+      // The disclaimer sits below the feature rows in a lazily-built
+      // ListView, so scroll it into view before asserting: the requirement
+      // is that it is reachable on the screen, not buried in terms.
+      await tester.scrollUntilVisible(
+        find.textContaining('Malpot'),
+        200,
       );
       await tester.pumpAndSettle();
 
