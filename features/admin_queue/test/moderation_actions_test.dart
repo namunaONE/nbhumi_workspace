@@ -485,4 +485,11 @@ class FakeModerationRepository implements AdminRepository {
 
   @override
   Future<AdminUser> getUser(String userId) async => servedUser;
+
+  /// Fraud signals are not served by this fake: panel tests override
+  /// `fraudSignalsProvider` directly, so an empty set is the honest
+  /// "not set up here" answer.
+  @override
+  Future<ListingFraudSignals> fraudSignals(String listingId) async =>
+      ListingFraudSignals(listingId: listingId);
 }

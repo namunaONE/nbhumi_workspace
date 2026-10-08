@@ -170,6 +170,14 @@ abstract class AdminRepository {
   /// suspending. Throws [AuthFailureException] for non-admins,
   /// [ValidationException]-mapped not-found when the id is unknown.
   Future<AdminUser> getUser(String userId);
+
+  /// Reads the duplicate/fraud signals on one listing (HYA-261).
+  ///
+  /// Returns what `v1_admin_fraud_signals` reported: possibly an empty set,
+  /// which is a successful answer (nothing suspicious), not an error. Throws
+  /// [AuthFailureException] for non-admins, [ValidationException]-mapped
+  /// not-found when the id is unknown.
+  Future<ListingFraudSignals> fraudSignals(String listingId);
 }
 
 /// Supabase-backed [AdminRepository].
@@ -634,6 +642,28 @@ class SupabaseAdminRepository implements AdminRepository {
     );
 
     return AdminUser.fromJson(response);
+  }
+
+  @override
+  Future<ListingFraudSignals> fraudSignals(String listingId) async {
+    final trimmed = listingId.trim();
+    if (trimmed.isEmpty) {
+      throw const ValidationException(
+        code: 'validation.listingIdRequired',
+        messageEn: 'That listing could not be found. Refresh and try again.',
+        messageNe: 'यो लिस्टिङ फेला परेन। ताजा पारेर पुनः प्रयास गर्नुहोस्।',
+      );
+    }
+
+    final response = await _guard(
+      () => _client.rpc<Map<String, dynamic>>(
+        'v1_admin_fraud_signals',
+        params: <String, Object?>{'p_listing_id': trimmed},
+      ),
+      action: 'fraudSignals',
+    );
+
+    return ListingFraudSignals.fromJson(response);
   }
 
   /// Reads the `status` out of `v1_admin_resolve_report`'s response.

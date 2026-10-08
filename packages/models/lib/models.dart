@@ -24,6 +24,9 @@
 ///                       See `v1_report_listing`.
 /// * `AdminReportEntry` - one row of the admin reports queue. Admin-scoped.
 ///                       See `v1_admin_get_reports`.
+/// * `FraudSignal`      - one duplicate/fraud check on a listing, plus the
+///                       set for a listing. Admin-scoped.
+///                       See `v1_admin_fraud_signals`.
 /// * `AdminUser`        - one account as moderation sees it: suspension
 ///                       state plus per-status listing counts.
 ///                       See `v1_admin_get_user`.
@@ -39,6 +42,7 @@ export 'src/admin_queue_entry.dart';
 export 'src/admin_user.dart';
 export 'src/activity_page.dart';
 export 'src/district.dart';
+export 'src/fraud_signal.dart';
 export 'src/kyc_document.dart';
 export 'src/listing.dart';
 export 'src/listing_detail.dart';

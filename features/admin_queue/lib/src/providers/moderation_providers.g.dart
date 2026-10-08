@@ -121,6 +121,117 @@ final class AdminUserFamily extends $Family
   String toString() => r'adminUserProvider';
 }
 
+/// Duplicate/fraud signals on one listing, keyed by listing id (HYA-261).
+///
+/// A family like [adminUser]: the detail screen reads signals for exactly the
+/// listing open. Retry is disabled for the same reason as the detail pane --
+/// ten attempts with backoff would hold the flags for roughly forty seconds
+/// while the admin waits to decide. The panel offers its own explicit retry.
+
+@ProviderFor(fraudSignals)
+final fraudSignalsProvider = FraudSignalsFamily._();
+
+/// Duplicate/fraud signals on one listing, keyed by listing id (HYA-261).
+///
+/// A family like [adminUser]: the detail screen reads signals for exactly the
+/// listing open. Retry is disabled for the same reason as the detail pane --
+/// ten attempts with backoff would hold the flags for roughly forty seconds
+/// while the admin waits to decide. The panel offers its own explicit retry.
+
+final class FraudSignalsProvider
+    extends
+        $FunctionalProvider<
+          AsyncValue<ListingFraudSignals>,
+          ListingFraudSignals,
+          FutureOr<ListingFraudSignals>
+        >
+    with
+        $FutureModifier<ListingFraudSignals>,
+        $FutureProvider<ListingFraudSignals> {
+  /// Duplicate/fraud signals on one listing, keyed by listing id (HYA-261).
+  ///
+  /// A family like [adminUser]: the detail screen reads signals for exactly the
+  /// listing open. Retry is disabled for the same reason as the detail pane --
+  /// ten attempts with backoff would hold the flags for roughly forty seconds
+  /// while the admin waits to decide. The panel offers its own explicit retry.
+  FraudSignalsProvider._({
+    required FraudSignalsFamily super.from,
+    required String super.argument,
+  }) : super(
+         retry: null,
+         name: r'fraudSignalsProvider',
+         isAutoDispose: true,
+         dependencies: null,
+         $allTransitiveDependencies: null,
+       );
+
+  @override
+  String debugGetCreateSourceHash() => _$fraudSignalsHash();
+
+  @override
+  String toString() {
+    return r'fraudSignalsProvider'
+        ''
+        '($argument)';
+  }
+
+  @$internal
+  @override
+  $FutureProviderElement<ListingFraudSignals> $createElement(
+    $ProviderPointer pointer,
+  ) => $FutureProviderElement(pointer);
+
+  @override
+  FutureOr<ListingFraudSignals> create(Ref ref) {
+    final argument = this.argument as String;
+    return fraudSignals(ref, argument);
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return other is FraudSignalsProvider && other.argument == argument;
+  }
+
+  @override
+  int get hashCode {
+    return argument.hashCode;
+  }
+}
+
+String _$fraudSignalsHash() => r'6ed2f38ef9c56e1b7bdf8259635a6f558be64d42';
+
+/// Duplicate/fraud signals on one listing, keyed by listing id (HYA-261).
+///
+/// A family like [adminUser]: the detail screen reads signals for exactly the
+/// listing open. Retry is disabled for the same reason as the detail pane --
+/// ten attempts with backoff would hold the flags for roughly forty seconds
+/// while the admin waits to decide. The panel offers its own explicit retry.
+
+final class FraudSignalsFamily extends $Family
+    with $FunctionalFamilyOverride<FutureOr<ListingFraudSignals>, String> {
+  FraudSignalsFamily._()
+    : super(
+        retry: null,
+        name: r'fraudSignalsProvider',
+        dependencies: null,
+        $allTransitiveDependencies: null,
+        isAutoDispose: true,
+      );
+
+  /// Duplicate/fraud signals on one listing, keyed by listing id (HYA-261).
+  ///
+  /// A family like [adminUser]: the detail screen reads signals for exactly the
+  /// listing open. Retry is disabled for the same reason as the detail pane --
+  /// ten attempts with backoff would hold the flags for roughly forty seconds
+  /// while the admin waits to decide. The panel offers its own explicit retry.
+
+  FraudSignalsProvider call(String listingId) =>
+      FraudSignalsProvider._(argument: listingId, from: this);
+
+  @override
+  String toString() => r'fraudSignalsProvider';
+}
+
 /// Suspend, unsuspend, unpublish and republish, as mutations rather than reads.
 ///
 /// Same shape and same reasons as [AdminReviewController], which this mirrors

@@ -78,6 +78,12 @@ void main() {
         adminUserProvider('s1').overrideWithValue(
           const AsyncValue.data(adminUser),
         ),
+        // Empty signals so the fraud panel renders "checked" rather than a
+        // load error with a Retry button (which would pollute these tests --
+        // same reasoning as the adminUser override above).
+        fraudSignalsProvider('l1').overrideWithValue(
+          const AsyncValue.data(ListingFraudSignals(listingId: 'l1')),
+        ),
       ],
     );
     addTearDown(container.dispose);
@@ -462,5 +468,14 @@ class FakeAdminRepository implements AdminRepository {
   @override
   Future<AdminUser> getUser(String userId) async => throw UnimplementedError(
         'getUser is not covered by these tests',
+      );
+
+  /// Fraud signals added by HYA-261. Stubbed on the same reasoning as the
+  /// moderation methods above: the signals panel overrides
+  /// `fraudSignalsProvider` directly in its own tests.
+  @override
+  Future<ListingFraudSignals> fraudSignals(String listingId) async =>
+      throw UnimplementedError(
+        'fraudSignals is not covered by these tests',
       );
 }

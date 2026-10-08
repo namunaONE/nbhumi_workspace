@@ -534,4 +534,13 @@ class FakeAdminRepository implements AdminRepository {
   Future<AdminUser> getUser(String userId) async => throw UnimplementedError(
         'getUser is not covered by these tests',
       );
+
+  /// Fraud signals added by HYA-261. Stubbed on the same reasoning as the
+  /// moderation methods above: the signals panel overrides
+  /// `fraudSignalsProvider` directly in its own tests.
+  @override
+  Future<ListingFraudSignals> fraudSignals(String listingId) async =>
+      throw UnimplementedError(
+        'fraudSignals is not covered by these tests',
+      );
 }

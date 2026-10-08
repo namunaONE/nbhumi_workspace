@@ -21,6 +21,17 @@ Future<AdminUser> adminUser(Ref ref, String userId) {
   return ref.watch(adminRepositoryProvider).getUser(userId);
 }
 
+/// Duplicate/fraud signals on one listing, keyed by listing id (HYA-261).
+///
+/// A family like [adminUser]: the detail screen reads signals for exactly the
+/// listing open. Retry is disabled for the same reason as the detail pane --
+/// ten attempts with backoff would hold the flags for roughly forty seconds
+/// while the admin waits to decide. The panel offers its own explicit retry.
+@riverpod
+Future<ListingFraudSignals> fraudSignals(Ref ref, String listingId) {
+  return ref.watch(adminRepositoryProvider).fraudSignals(listingId);
+}
+
 /// What an unpublish or republish did.
 @immutable
 class ListingModerationOutcome {

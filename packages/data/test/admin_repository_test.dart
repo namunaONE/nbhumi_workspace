@@ -1011,6 +1011,69 @@ void main() {
       );
     });
   });
+
+  group('fraud signals (HYA-261)', () {
+    test('parses the envelope with warnings', () async {
+      final repo = succeedingRepo(_fraudSignalsBody);
+
+      final result = await repo.fraudSignals('l1');
+
+      expect(result.listingId, 'l1');
+      expect(result.signals, hasLength(2));
+      expect(result.hasWarnings, isTrue);
+      expect(
+        result.warnings.map((s) => s.code),
+        [FraudSignalCode.duplicatePhoto],
+      );
+    });
+
+    test('an empty signals array is a successful answer', () async {
+      final repo = succeedingRepo(
+        '{"listing_id":"l1","signals":[]}',
+      );
+
+      final result = await repo.fraudSignals('l1');
+
+      expect(result.signals, isEmpty);
+      expect(result.hasWarnings, isFalse);
+    });
+
+    test('a blank listing id fails before a round trip', () {
+      final repo = failingRepo(status: '50000', message: 'must not be called');
+
+      expect(
+        () => repo.fraudSignals('  '),
+        throwsA(
+          isA<ValidationException>().having(
+            (e) => e.code,
+            'code',
+            'validation.listingIdRequired',
+          ),
+        ),
+      );
+    });
+
+    test('42501 from fraudSignals reads as a permission failure', () {
+      final repo = failingRepo(status: '42501', message: 'FORBIDDEN');
+
+      expect(
+        () => repo.fraudSignals('l1'),
+        throwsA(isA<AuthFailureException>()),
+      );
+    });
+
+    test('22023 from fraudSignals is a validation failure', () {
+      final repo = failingRepo(
+        status: '22023',
+        message: 'VALIDATION_ERROR: listing id is required',
+      );
+
+      expect(
+        () => repo.fraudSignals('l1'),
+        throwsA(isA<ValidationException>()),
+      );
+    });
+  });
 }
 
 /// A suspended user as `v1_admin_get_user` returns one.
@@ -1024,6 +1087,18 @@ const String _unsuspendedUserBody =
     '{"id":"u1","email":"seller@example.com","full_name":"Ram Seller", '
     '"role":"agent","suspended":false,"listings":{"live":2}, '
     '"open_reports_against":0}';
+
+/// A fraud-signals answer as `v1_admin_fraud_signals` returns one: one
+/// warning with evidence, one info context.
+const String _fraudSignalsBody =
+    '{"listing_id":"l1","signals":[ '
+    '{"code":"duplicate_photo","severity":"warning", '
+    '"message_en":"Same photo appears on another listing.", '
+    '"message_ne":"उही फोटो अर्को लिस्टिङमा पनि देखिन्छ।", '
+    '"detail":{"other_listing_ids":["l2"]}}, '
+    '{"code":"missing_kitta","severity":"info", '
+    '"message_en":"No kitta number provided.", '
+    '"message_ne":"कित्ता नम्बर दिइएको छैन।","detail":{}}]}';
 
 /// A repository whose every RPC fails with [status] / [message].
 ///

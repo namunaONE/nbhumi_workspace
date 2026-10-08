@@ -616,4 +616,48 @@ class FakeAdminRepository implements AdminRepository {
       throw UnimplementedError(
         'resolveReport is not covered by these tests',
       );
+
+  /// Moderation methods added by HYA-262. Same stub reasoning: the
+  /// unpublish/suspend actions live on the detail screen and are tested in
+  /// `moderation_actions_test.dart`.
+  @override
+  Future<AdminUser> suspendUser(String userId, String reason) async =>
+      throw UnimplementedError(
+        'suspendUser is not covered by these tests',
+      );
+
+  @override
+  Future<AdminUser> unsuspendUser(String userId) async =>
+      throw UnimplementedError(
+        'unsuspendUser is not covered by these tests',
+      );
+
+  @override
+  Future<ListingStatus> unpublishListing(
+    String listingId,
+    String reason,
+  ) async =>
+      throw UnimplementedError(
+        'unpublishListing is not covered by these tests',
+      );
+
+  @override
+  Future<ListingStatus> republishListing(String listingId) async =>
+      throw UnimplementedError(
+        'republishListing is not covered by these tests',
+      );
+
+  @override
+  Future<AdminUser> getUser(String userId) async => throw UnimplementedError(
+        'getUser is not covered by these tests',
+      );
+
+  /// Fraud signals added by HYA-261. Stubbed on the same reasoning as the
+  /// moderation methods above: the signals panel overrides
+  /// `fraudSignalsProvider` directly in its own tests.
+  @override
+  Future<ListingFraudSignals> fraudSignals(String listingId) async =>
+      throw UnimplementedError(
+        'fraudSignals is not covered by these tests',
+      );
 }

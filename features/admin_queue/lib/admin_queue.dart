@@ -10,6 +10,8 @@ library;
 export 'src/presentation/admin_listing_detail_screen.dart';
 export 'src/presentation/admin_queue_screen.dart';
 export 'src/presentation/admin_reports_screen.dart';
+export 'src/presentation/widgets/fraud_signals_panel.dart'
+    show FraudSignalsPanel;
 export 'src/presentation/widgets/reports_list.dart'
     show ReportsList, listingStatusLabel, reasonLabel, reportStatusLabel;
 export 'src/providers/admin_access_providers.dart';

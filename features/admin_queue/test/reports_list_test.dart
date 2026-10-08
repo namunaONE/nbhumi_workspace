@@ -531,6 +531,49 @@ class FakeReportsRepository implements AdminRepository {
     };
   }
 
+  /// Moderation methods added by HYA-262. Not exercised by the reports
+  /// tests; stubbed rather than `noSuchMethod` so a wrong test fails loudly
+  /// instead of passing silently.
+  @override
+  Future<AdminUser> suspendUser(String userId, String reason) async =>
+      throw UnimplementedError(
+        'suspendUser is not covered by these tests',
+      );
+
+  @override
+  Future<AdminUser> unsuspendUser(String userId) async =>
+      throw UnimplementedError(
+        'unsuspendUser is not covered by these tests',
+      );
+
+  @override
+  Future<ListingStatus> unpublishListing(
+    String listingId,
+    String reason,
+  ) async =>
+      throw UnimplementedError(
+        'unpublishListing is not covered by these tests',
+      );
+
+  @override
+  Future<ListingStatus> republishListing(String listingId) async =>
+      throw UnimplementedError(
+        'republishListing is not covered by these tests',
+      );
+
+  @override
+  Future<AdminUser> getUser(String userId) async => throw UnimplementedError(
+        'getUser is not covered by these tests',
+      );
+
+  /// Fraud signals added by HYA-261: not exercised here. The signals panel
+  /// overrides `fraudSignalsProvider` directly in its own tests.
+  @override
+  Future<ListingFraudSignals> fraudSignals(String listingId) async =>
+      throw UnimplementedError(
+        'fraudSignals is not covered by these tests',
+      );
+
   @override
   Future<QueuePage> getQueue({
     ListingStatus status = ListingStatus.pendingReview,

@@ -731,6 +731,14 @@ class FakeReportsRepository implements AdminRepository {
         'getUser is not covered by these tests',
       );
 
+  /// Fraud signals added by HYA-261: not exercised here. The signals panel
+  /// overrides `fraudSignalsProvider` directly in its own tests.
+  @override
+  Future<ListingFraudSignals> fraudSignals(String listingId) async =>
+      throw UnimplementedError(
+        'fraudSignals is not covered by these tests',
+      );
+
   // The verification queue methods are not exercised here. They answer with
   // empty results rather than `noSuchMethod`, which would silently accept a
   // call it cannot handle and turn a wrong test into a passing one.
