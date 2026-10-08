@@ -398,6 +398,16 @@
   },
   "profileRoleAdmin": "Admin",
 
+  "@profileSuspendedTitle": {
+    "description": "Suspension notice heading on the profile."
+  },
+  "profileSuspendedTitle": "Account suspended",
+
+  "@profileSuspendedBody": {
+    "description": "Suspension notice body: what is blocked."
+  },
+  "profileSuspendedBody": "You cannot post or edit listings right now.",
+
   "@profileKycNone": {
     "description": "KYC tier chip label."
   },

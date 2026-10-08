@@ -262,6 +262,13 @@ class AppLocalizationsNe extends AppLocalizations {
   String get profileRoleAdmin => 'प्रशासक';
 
   @override
+  String get profileSuspendedTitle => 'खाता निलम्बित';
+
+  @override
+  String get profileSuspendedBody =>
+      'तपाईं अहिले लिस्टिङ पोस्ट वा सम्पादन गर्न सक्नुहुन्न।';
+
+  @override
   String get profileKycNone => 'अप्रमाणित';
 
   @override

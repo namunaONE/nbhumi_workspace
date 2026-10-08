@@ -262,6 +262,13 @@ class AppLocalizationsEn extends AppLocalizations {
   String get profileRoleAdmin => 'Admin';
 
   @override
+  String get profileSuspendedTitle => 'Account suspended';
+
+  @override
+  String get profileSuspendedBody =>
+      'You cannot post or edit listings right now.';
+
+  @override
   String get profileKycNone => 'Unverified';
 
   @override

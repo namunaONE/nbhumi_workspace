@@ -47,6 +47,12 @@ sealed class Profile with _$Profile {
     @Default(UserRole.buyer) UserRole role,
     @Default(false) bool isVerified,
     @Default(KycTier.none) KycTier kycTier,
+    // Suspension state is READ-only on this model (HYA-301): fromJson parses
+    // it for the profile notice, but toJson omits it so updateProfile can
+    // never write it -- the RLS pin is the backstop, this is the seatbelt.
+    // A round-trip test below guards the omission.
+    @JsonKey(includeToJson: false) @Default(false) bool suspended,
+    @JsonKey(includeToJson: false) String? suspendedReason,
     String? agencyName,
     String? agencyRegNo,
     DateTime? createdAt,

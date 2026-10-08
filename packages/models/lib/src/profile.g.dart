@@ -15,6 +15,8 @@ _Profile _$ProfileFromJson(Map<String, dynamic> json) => _Profile(
   isVerified: json['is_verified'] as bool? ?? false,
   kycTier:
       $enumDecodeNullable(_$KycTierEnumMap, json['kyc_tier']) ?? KycTier.none,
+  suspended: json['suspended'] as bool? ?? false,
+  suspendedReason: json['suspended_reason'] as String?,
   agencyName: json['agency_name'] as String?,
   agencyRegNo: json['agency_reg_no'] as String?,
   createdAt: json['created_at'] == null

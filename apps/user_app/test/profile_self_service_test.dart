@@ -545,4 +545,32 @@ void main() {
       expect(find.text('Download my data'), findsOneWidget);
     });
   });
+
+  group('suspended account (HYA-301)', () {
+    testWidgets('a suspended seller is told so on their profile', (
+      tester,
+    ) async {
+      final repository = _FakeUserRepository()
+        ..profileResult = const Profile(
+          id: 'buyer-1',
+          email: 'buyer@probe.test',
+          fullName: 'Sita Kumari',
+          suspended: true,
+          suspendedReason: 'Fake listings',
+        );
+      await _pump(tester, session: _session(), repository: repository);
+
+      expect(find.text('Account suspended'), findsOneWidget);
+      // The admin's internal reason is not shown: the notice is about the
+      // state, not the case file.
+      expect(find.text('Fake listings'), findsNothing);
+    });
+
+    testWidgets('a clear account sees no suspension notice', (tester) async {
+      final repository = _FakeUserRepository();
+      await _pump(tester, session: _session(), repository: repository);
+
+      expect(find.text('Account suspended'), findsNothing);
+    });
+  });
 }

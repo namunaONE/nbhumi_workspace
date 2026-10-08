@@ -131,6 +131,39 @@ void main() {
       expect(profile.toJson()['agency_reg_no'], 'REG-123');
       expect(profile.toJson()['full_name'], 'Agent User');
     });
+
+    test('parses suspension state from the own-row read', () {
+      final profile = Profile.fromJson({
+        'id': 'user-id',
+        'email': 'test@example.com',
+        'full_name': 'Test User',
+        'suspended': true,
+        'suspended_reason': 'Fake listings',
+      });
+
+      expect(profile.suspended, isTrue);
+      expect(profile.suspendedReason, 'Fake listings');
+    });
+
+    test('toJson omits suspension so edits can never write it', () {
+      // HYA-301 seatbelt: updateProfile sends toJson straight to PostgREST,
+      // and the RLS pin is the backstop. If these keys ever appear here, a
+      // suspended seller could clear their own suspension via edit-profile.
+      const profile = Profile(
+        id: 'user-id',
+        email: 'test@example.com',
+        fullName: 'Test User',
+        suspended: true,
+        suspendedReason: 'Fake listings',
+      );
+
+      final json = profile.toJson();
+
+      expect(json.containsKey('suspended'), isFalse);
+      expect(json.containsKey('suspended_reason'), isFalse);
+      // ... while the read path still parses them (see above).
+      expect(Profile.fromJson(json).suspended, isFalse);
+    });
   });
 
   group('KycDocument', () {

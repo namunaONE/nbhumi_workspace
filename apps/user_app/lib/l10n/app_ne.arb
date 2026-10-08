@@ -398,6 +398,16 @@
   },
   "profileRoleAdmin": "प्रशासक",
 
+  "@profileSuspendedTitle": {
+    "description": "Suspension notice heading on the profile."
+  },
+  "profileSuspendedTitle": "खाता निलम्बित",
+
+  "@profileSuspendedBody": {
+    "description": "Suspension notice body: what is blocked."
+  },
+  "profileSuspendedBody": "तपाईं अहिले लिस्टिङ पोस्ट वा सम्पादन गर्न सक्नुहुन्न।",
+
   "@profileKycNone": {
     "description": "KYC tier chip label."
   },

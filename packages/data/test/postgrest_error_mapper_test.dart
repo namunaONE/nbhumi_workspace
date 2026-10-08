@@ -69,6 +69,41 @@ void main() {
       expect(mapped.code, 'auth.forbidden');
     });
 
+    test('42501 with the suspension marker becomes accountSuspended', () {
+      // The write RPCs raise exactly this for suspended sellers (HYA-262).
+      // It must not read as a generic permission error: the remedy (wait
+      // for unsuspend) differs from the generic one (sign in / ask admin).
+      final mapped = PostgrestErrorMapper.map(
+        postgrestError('42501', message: 'FORBIDDEN: account suspended'),
+        action: 'createListing',
+      );
+
+      expect(mapped, isA<AuthFailureException>());
+      expect(mapped.code, 'auth.accountSuspended');
+      expect(mapped.messageEn, contains('suspended'));
+      expect(mapped.messageNe, isNotEmpty);
+      expect(mapped.isRetryable, isFalse);
+    });
+
+    test('42501 suspension match is case-insensitive but stays narrow', () {
+      // Narrow on purpose: only the RPCs' stable marker maps here, so a
+      // future permission message that merely mentions suspension in passing
+      // keeps the generic wording rather than mislabeling the failure.
+      final mapped = PostgrestErrorMapper.map(
+        postgrestError('42501', message: 'forbidden: ACCOUNT SUSPENDED'),
+        action: 'updateListing',
+      );
+
+      expect(mapped.code, 'auth.accountSuspended');
+
+      final generic = PostgrestErrorMapper.map(
+        postgrestError('42501', message: 'permission denied for table x'),
+        action: 'updateListing',
+      );
+
+      expect(generic.code, 'auth.forbidden');
+    });
+
     test('22023 invalid_parameter_value becomes ValidationException', () {
       // Also what the listings status-transition guard raises.
       final mapped = PostgrestErrorMapper.map(

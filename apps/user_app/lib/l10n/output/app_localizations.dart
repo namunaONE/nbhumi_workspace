@@ -566,6 +566,18 @@ abstract class AppLocalizations {
   /// **'Admin'**
   String get profileRoleAdmin;
 
+  /// Suspension notice heading on the profile.
+  ///
+  /// In en, this message translates to:
+  /// **'Account suspended'**
+  String get profileSuspendedTitle;
+
+  /// Suspension notice body: what is blocked.
+  ///
+  /// In en, this message translates to:
+  /// **'You cannot post or edit listings right now.'**
+  String get profileSuspendedBody;
+
   /// KYC tier chip label.
   ///
   /// In en, this message translates to:

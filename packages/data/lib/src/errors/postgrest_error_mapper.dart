@@ -31,6 +31,22 @@ abstract final class PostgrestErrorMapper {
   /// rendered.
   static AppException map(PostgrestException e, {required String action}) {
     return switch (e.code) {
+      // 42501 with the suspension marker: the write RPCs raise
+      // 'FORBIDDEN: account suspended' for suspended sellers (HYA-262), and
+      // flattening that into the generic permission error below would tell a
+      // suspended seller something misleading. Matched on the stable marker
+      // the RPCs own -- never rendered -- so no Postgres text leaks (Rule 38).
+      // Non-retryable: retrying changes nothing until an admin unsuspends.
+      '42501' when _isSuspended(e) => AuthFailureException(
+          code: 'auth.accountSuspended',
+          messageEn: 'Your account is suspended. '
+              'You cannot post or edit listings right now.',
+          messageNe: 'तपाईंको खाता निलम्बनमा छ। '
+              'तपाईं अहिले लिस्टिङ पोस्ट वा सम्पादन गर्न सक्नुहुन्न।',
+          context: action,
+          cause: e,
+        ),
+
       // 42501 insufficient_privilege - RLS denied, or an admin-only RPC called
       // by a non-admin. Also raised for an anon caller on a revoked function.
       '42501' => AuthFailureException(
@@ -140,6 +156,16 @@ abstract final class PostgrestErrorMapper {
             ),
         },
     };
+  }
+
+  /// Whether the failure is a suspension refusal rather than a denial.
+  ///
+  /// The seller write RPCs raise 'FORBIDDEN: account suspended' with 42501
+  /// for suspended callers. Message text is the only signal (same reasoning
+  /// as [_isConnectivity]): the SQLSTATE is shared with every other
+  /// permission failure.
+  static bool _isSuspended(PostgrestException e) {
+    return e.message.toLowerCase().contains('account suspended');
   }
 
   /// Whether the failure looks like transport rather than a server problem.

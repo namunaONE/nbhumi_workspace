@@ -191,6 +191,56 @@ class _ProfileHeaderCard extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
+              // Suspension notice (HYA-301): the one state that changes what
+              // this whole screen means. Rendered first so a suspended seller
+              // learns it before trying to post and meeting a raw error. The
+              // admin's internal reason is deliberately NOT shown: it may
+              // name an ongoing investigation, and the notice is about the
+              // state, not the case file.
+              if (profile?.suspended ?? false)
+                Padding(
+                  padding: const EdgeInsets.only(bottom: 12),
+                  child: Card(
+                    color: theme.colorScheme.errorContainer,
+                    child: Padding(
+                      padding: const EdgeInsets.all(12),
+                      child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                          Icon(
+                            Icons.block_outlined,
+                            size: 20,
+                            color: theme.colorScheme.onErrorContainer,
+                          ),
+                          const SizedBox(width: 8),
+                          Expanded(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: <Widget>[
+                                Text(
+                                  strings.profileSuspendedTitle,
+                                  style: theme.textTheme.labelLarge?.copyWith(
+                                    color:
+                                        theme.colorScheme.onErrorContainer,
+                                    fontWeight: FontWeight.w700,
+                                  ),
+                                ),
+                                const SizedBox(height: 2),
+                                Text(
+                                  strings.profileSuspendedBody,
+                                  style: theme.textTheme.bodyMedium?.copyWith(
+                                    color:
+                                        theme.colorScheme.onErrorContainer,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
               Row(
                 children: <Widget>[
                   CircleAvatar(
