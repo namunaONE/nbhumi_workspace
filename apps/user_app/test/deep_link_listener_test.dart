@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:auth/auth.dart';
+import 'package:auth/l10n/output/auth_localizations.dart' as auth_strings;
 import 'package:core/core.dart';
 import 'package:data/data.dart';
 import 'package:flutter/material.dart';
@@ -66,7 +67,14 @@ Future<GoRouter> _pump(
       child: DeepLinkListener(
         getInitialLinkOverride: () async => null,
         linkStreamOverride: links,
-        child: MaterialApp.router(routerConfig: router),
+        child: MaterialApp.router(
+          locale: const Locale('en'),
+          localizationsDelegates:
+              auth_strings.AppLocalizations.localizationsDelegates,
+          supportedLocales:
+              auth_strings.AppLocalizations.supportedLocales,
+          routerConfig: router,
+        ),
       ),
     ),
   );

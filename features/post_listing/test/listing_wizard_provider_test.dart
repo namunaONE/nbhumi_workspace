@@ -3,13 +3,12 @@ import 'package:data/data.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:models/models.dart';
-import 'package:post_listing/l10n/output/post_localizations.dart';
-import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:post_listing/l10n/output/post_localizations_en.dart';
 import 'package:post_listing/src/viewmodels/listing_wizard_provider.dart';
 import 'package:post_listing/src/viewmodels/listing_wizard_state.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
-/// Records the exact call sequence so the draft â†’ attach â†’ submit ordering
+/// Records the exact call sequence so the draft → attach → submit ordering
 /// is asserted rather than assumed.
 class _FakeListingRepository implements ListingRepository {
   _FakeListingRepository();
@@ -17,7 +16,6 @@ class _FakeListingRepository implements ListingRepository {
   final List<String> calls = <String>[];
   final List<String> attachedUrls = <String>[];
   String? createdId;
-  ListingStatus? submittedStatus;
   AppException? createFailure;
   AppException? attachFailure;
   AppException? submitFailure;
@@ -43,8 +41,7 @@ class _FakeListingRepository implements ListingRepository {
     calls.add('update:${status?.wireName ?? 'none'}');
     final error = submitFailure;
     if (error != null) throw error;
-    submittedStatus = status ?? ListingStatus.draft;
-    return submittedStatus!;
+    return status ?? ListingStatus.draft;
   }
 
   @override
@@ -67,7 +64,7 @@ final _session = Session(
   accessToken: 'token',
   refreshToken: 'refresh',
   tokenType: 'bearer',
-  user: User(
+  user: const User(
     id: 'seller-1',
     appMetadata: <String, dynamic>{},
     userMetadata: <String, dynamic>{},
@@ -76,17 +73,17 @@ final _session = Session(
   ),
 );
 
-ListingWizardState _state() => ListingWizardState(
+ListingWizardState _state() => const ListingWizardState(
       propertyType: PropertyType.house,
       listingPurpose: ListingPurpose.sale,
       title: 'Test House',
-      district: const District(
+      district: District(
         id: 29,
         name: 'Kathmandu',
         province: 3,
         region: Region.hill,
       ),
-      municipality: const Municipality(
+      municipality: Municipality(
         id: 'm-ktm',
         slug: 'kathmandu-kathmandu',
         district: 'Kathmandu',
@@ -98,7 +95,7 @@ ListingWizardState _state() => ListingWizardState(
       areaAana: '5',
       areaPaisa: '4',
       priceNpr: '25000000',
-      photos: const <WizardPhoto>[
+      photos: <WizardPhoto>[
         WizardPhoto(url: 'https://example.com/photo.jpg'),
       ],
     );
@@ -106,7 +103,7 @@ ListingWizardState _state() => ListingWizardState(
 void main() {
   final strings = AppLocalizationsEn();
 
-  ProviderContainer _container(_FakeListingRepository repository) {
+  ProviderContainer makeContainer(_FakeListingRepository repository) {
     return ProviderContainer(
       overrides: [
         sessionProvider.overrideWithValue(_session),
@@ -115,17 +112,22 @@ void main() {
     );
   }
 
+  /// Seeds a complete wizard state directly.
+  ///
+  /// The submit tests own the create/attach/submit ordering; the provider's
+  /// own setters are covered elsewhere, so they are bypassed here.
+  void seedCompleteState(ListingWizard notifier) {
+    notifier.state = _state();
+  }
+
   group('ListingWizard.submit', () {
     test('creates a draft, attaches photos, then submits in order', () async {
       final repository = _FakeListingRepository();
-      final container = _container(repository);
+      final container = makeContainer(repository);
       addTearDown(container.dispose);
 
       final notifier = container.read(listingWizardProvider.notifier);
-      // Seed the complete state directly; the provider's setters are tested
-      // elsewhere and this test owns the submit ordering.
-      // ignore: invalid_use_of_protected_member
-      notifier.state = _state();
+      seedCompleteState(notifier);
 
       final ok = await notifier.submit(strings);
 
@@ -135,7 +137,10 @@ void main() {
         'attach:1',
         'update:pending_review',
       ]);
-      expect(repository.attachedUrls, <String>['https://example.com/photo.jpg']);
+      expect(
+        repository.attachedUrls,
+        <String>['https://example.com/photo.jpg'],
+      );
       expect(notifier.state.draftListingId, 'draft-1');
       expect(notifier.state.createdListingId, 'draft-1');
       expect(notifier.state.isSubmitted, isTrue);
@@ -147,14 +152,13 @@ void main() {
         ..attachFailure = const NetworkException(
           code: 'network.offline',
           messageEn: 'No connection',
-          messageNe: 'à¤‡à¤¨à¥à¤Ÿà¤°à¤¨à¥‡à¤Ÿ à¤›à¥ˆà¤¨',
+          messageNe: 'इन्टरनेट छैन',
         );
-      final container = _container(repository);
+      final container = makeContainer(repository);
       addTearDown(container.dispose);
 
       final notifier = container.read(listingWizardProvider.notifier);
-      // ignore: invalid_use_of_protected_member
-      notifier.state = _state();
+      seedCompleteState(notifier);
 
       final ok = await notifier.submit(strings);
 
@@ -171,14 +175,13 @@ void main() {
         ..attachFailure = const NetworkException(
           code: 'network.offline',
           messageEn: 'No connection',
-          messageNe: 'à¤‡à¤¨à¥à¤Ÿà¤°à¤¨à¥‡à¤Ÿ à¤›à¥ˆà¤¨',
+          messageNe: 'इन्टरनेट छैन',
         );
-      final container = _container(repository);
+      final container = makeContainer(repository);
       addTearDown(container.dispose);
 
       final notifier = container.read(listingWizardProvider.notifier);
-      // ignore: invalid_use_of_protected_member
-      notifier.state = _state();
+      seedCompleteState(notifier);
 
       // First attempt: create + failed attach.
       expect(await notifier.submit(strings), isFalse);
@@ -206,14 +209,13 @@ void main() {
         ..submitFailure = const ServerException(
           code: 'server.listingNotReady',
           messageEn: 'Listing is not ready for review.',
-          messageNe: 'à¤²à¤¿à¤¸à¥à¤Ÿà¤¿à¤™ à¤¸à¤®à¥€à¤•à¥à¤·à¤¾à¤•à¥‹ à¤²à¤¾à¤—à¤¿ à¤¤à¤¯à¤¾à¤° à¤›à¥ˆà¤¨à¥¤',
+          messageNe: 'लिस्टिङ समीक्षाको लागि तयार छैन।',
         );
-      final container = _container(repository);
+      final container = makeContainer(repository);
       addTearDown(container.dispose);
 
       final notifier = container.read(listingWizardProvider.notifier);
-      // ignore: invalid_use_of_protected_member
-      notifier.state = _state();
+      seedCompleteState(notifier);
 
       final ok = await notifier.submit(strings);
 
@@ -229,12 +231,11 @@ void main() {
 
     test('a second submit after success is a no-op', () async {
       final repository = _FakeListingRepository();
-      final container = _container(repository);
+      final container = makeContainer(repository);
       addTearDown(container.dispose);
 
       final notifier = container.read(listingWizardProvider.notifier);
-      // ignore: invalid_use_of_protected_member
-      notifier.state = _state();
+      seedCompleteState(notifier);
 
       expect(await notifier.submit(strings), isTrue);
       final callsAfterFirst = List<String>.from(repository.calls);

@@ -5,6 +5,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:go_router/go_router.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
+import 'package:user_app/l10n/output/app_localizations.dart';
 import 'package:user_app/main.dart';
 import 'package:user_app/onboarding/onboarding_gate.dart';
 import 'package:user_app/router/app_router.dart';
@@ -252,10 +253,18 @@ void main() {
       // DATA.md requires the disclaimer to be visible. First run is the only
       // place a user is guaranteed to read it. Rendered directly rather than
       // through the router, because onboarding is not the initial location.
+      // Needs the app delegates: the screen reads localized strings, and a
+      // bare MaterialApp leaves AppLocalizations.of(context) null.
       await tester.pumpWidget(
-        MaterialApp(
-          home: Builder(
-            builder: (context) => const OnboardingScreen(),
+        ProviderScope(
+          child: MaterialApp(
+            locale: const Locale('en'),
+            localizationsDelegates:
+                AppLocalizations.localizationsDelegates,
+            supportedLocales: AppLocalizations.supportedLocales,
+            home: Builder(
+              builder: (context) => const OnboardingScreen(),
+            ),
           ),
         ),
       );
