@@ -1,5 +1,6 @@
 // ignore: unused_import
 import 'package:intl/intl.dart' as intl;
+
 import 'detail_localizations.dart';
 
 // ignore_for_file: type=lint
@@ -59,7 +60,8 @@ class AppLocalizationsNe extends AppLocalizations {
   String get notAvailableTitle => 'यो घरजग्गा अब उपलब्ध छैन';
 
   @override
-  String get notAvailableBody => 'यो बिकिसकेको, विक्रेताले फिर्ता लिएको वा लिङ्क गलत हुन सक्छ।';
+  String get notAvailableBody =>
+      'यो बिकिसकेको, विक्रेताले फिर्ता लिएको वा लिङ्क गलत हुन सक्छ।';
 
   @override
   String get browseOthers => 'अन्य घरजग्गा हेर्नुहोस्';
@@ -112,7 +114,8 @@ class AppLocalizationsNe extends AppLocalizations {
   String get reportDetailsOptional => 'विवरण (वैकल्पिक)';
 
   @override
-  String get reportDetailsError => 'कृपया समस्या बयान गर्नुहोस्, हाम्रो टोलीले कारबाही लिन सक्नेछ।';
+  String get reportDetailsError =>
+      'कृपया समस्या बयान गर्नुहोस्, हाम्रो टोलीले कारबाही लिन सक्नेछ।';
 
   @override
   String get reportSubmit => 'रिपोर्ट पठाउनुहोस्';
@@ -167,4 +170,17 @@ class AppLocalizationsNe extends AppLocalizations {
 
   @override
   String get purposeLease => 'लिज';
+
+  @override
+  String get verifiedListing => 'प्रमाणित विज्ञापन';
+
+  @override
+  String get verifiedListingBody =>
+      'हाम्रो प्रशासक टोलीले यस विज्ञापनसँग सम्बन्धित लालपुर्जा जाँचेको छ। यो कागजात जाँच मात्र हो — स्वामित्व वा मोहियानी हकको कानुनी प्रमाणीकरण होइन। स्वामित्व हस्तान्तरण मालपोतमा हुन्छ।';
+
+  @override
+  String get verifiedListingUnderstood => 'बुझें';
+
+  @override
+  String get verifyThisListing => 'यो विज्ञापन प्रमाणित गर्नुहोस्';
 }

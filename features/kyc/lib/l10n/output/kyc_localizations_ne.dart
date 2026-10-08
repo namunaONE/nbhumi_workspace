@@ -1,5 +1,6 @@
 // ignore: unused_import
 import 'package:intl/intl.dart' as intl;
+
 import 'kyc_localizations.dart';
 
 // ignore_for_file: type=lint
@@ -15,13 +16,15 @@ class AppLocalizationsNe extends AppLocalizations {
   String get howItWorks => 'प्रमाणीकरण कसरी हुन्छ';
 
   @override
-  String get howItWorksBody => 'हाम्रो टोलीले तपाईंको कागजातको फोटो पढ्न सकिने र तपाईंको खातासँग मिलेको छ कि छैन भनेर जाँच्छ। यो पहिचान जाँच मात्र हो — कानुनी वा जग्गा-स्वामित्व प्रमाणीकरण कहिल्यै होइन। स्वामित्व हस्तान्तरण मालपोतमा हुन्छ।';
+  String get howItWorksBody =>
+      'हाम्रो टोलीले तपाईंको कागजातको फोटो पढ्न सकिने र तपाईंको खातासँग मिलेको छ कि छैन भनेर जाँच्छ। यो पहिचान जाँच मात्र हो — कानुनी वा जग्गा-स्वामित्व प्रमाणीकरण कहिल्यै होइन। स्वामित्व हस्तान्तरण मालपोतमा हुन्छ।';
 
   @override
   String get submitDocument => 'कागजात पेस गर्नुहोस्';
 
   @override
-  String get emptyBody => 'अहिलेसम्म कागजात छैन। खरीददारले खोज्ने प्रमाणित ब्याजका लागि आफ्नो नागरिकता पेस गर्नुहोस्।';
+  String get emptyBody =>
+      'अहिलेसम्म कागजात छैन। खरीददारले खोज्ने प्रमाणित ब्याजका लागि आफ्नो नागरिकता पेस गर्नुहोस्।';
 
   @override
   String get chooseDocument => 'कागजात छान्नुहोस्';
@@ -58,4 +61,8 @@ class AppLocalizationsNe extends AppLocalizations {
 
   @override
   String get loadFailed => 'तपाईंका कागजात लोड गर्न सकिएन।';
+
+  @override
+  String get tier3Hint =>
+      'यो जाँच तपाईं आएको विज्ञापनमा लालपुर्जा जोड्छ। नागरिकता पहिचानका लागि मात्र हो।';
 }

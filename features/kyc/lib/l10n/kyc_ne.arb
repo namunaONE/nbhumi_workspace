@@ -85,5 +85,10 @@
   "@loadFailed": {
     "description": "Fallback when the failure carries no message."
   },
-  "loadFailed": "तपाईंका कागजात लोड गर्न सकिएन।"
+  "loadFailed": "तपाईंका कागजात लोड गर्न सकिएन।",
+
+  "@tier3Hint": {
+    "description": "Tier-3 submit sheet note (HYA-265)."
+  },
+  "tier3Hint": "यो जाँच तपाईं आएको विज्ञापनमा लालपुर्जा जोड्छ। नागरिकता पहिचानका लागि मात्र हो।"
 }

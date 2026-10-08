@@ -29,6 +29,10 @@ dev_dependencies:
   flutter_test:
     sdk: flutter
   riverpod_generator: ^4.0.0
+  # Session fakes for signed-in widget tests (HYA-265 Tier-3 submit path).
+  # Already in the workspace graph via data/user_app, so no new transitive
+  # weight (Rule 39); version matches data's constraint.
+  supabase_flutter: ^2.6.0
   very_good_analysis: ^11.0.0
 
 flutter:

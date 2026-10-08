@@ -208,7 +208,9 @@ final appRouterProvider = Provider<GoRouter>((ref) {
       GoRoute(
         path: '/kyc',
         parentNavigatorKey: rootKey,
-        builder: (context, state) => const KycScreen(),
+        builder: (context, state) => KycScreen(
+          listingId: state.uri.queryParameters['listingId'],
+        ),
       ),
 
       // Notification inbox. Gated for the same reason: a guest has no inbox.

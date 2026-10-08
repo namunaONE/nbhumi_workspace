@@ -85,5 +85,10 @@
   "@loadFailed": {
     "description": "Fallback when the failure carries no message."
   },
-  "loadFailed": "Could not load your documents."
+  "loadFailed": "Could not load your documents.",
+
+  "@tier3Hint": {
+    "description": "Tier-3 submit sheet note (HYA-265)."
+  },
+  "tier3Hint": "This check attaches lalpurja to the listing you came from. Citizenship stays identity-only."
 }

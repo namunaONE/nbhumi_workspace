@@ -266,5 +266,25 @@
   "@purposeLease": {
     "description": "Lease chip."
   },
-  "purposeLease": "Lease"
+  "purposeLease": "Lease",
+
+  "@verifiedListing": {
+    "description": "Tier-3 verified-listing badge (HYA-265)."
+  },
+  "verifiedListing": "Verified Listing",
+
+  "@verifiedListingBody": {
+    "description": "Badge explainer: doc-check only, never legal verification."
+  },
+  "verifiedListingBody": "Our admin team checked the lalpurja attached to this listing. This is a document check only — never a legal opinion on ownership or title. Ownership transfers are completed at Malpot.",
+
+  "@verifiedListingUnderstood": {
+    "description": "Badge dialog dismiss action."
+  },
+  "verifiedListingUnderstood": "Understood",
+
+  "@verifyThisListing": {
+    "description": "Owner CTA opening the Tier-3 submit flow."
+  },
+  "verifyThisListing": "Verify this listing"
 }

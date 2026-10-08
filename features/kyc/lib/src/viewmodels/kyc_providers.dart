@@ -125,7 +125,12 @@ class KycSubmitController extends _$KycSubmitController {
   /// the user cancels the picker: cancelling is not a failure and must not
   /// leave an error behind. Failures keep both message languages (Rule 36);
   /// the repository has already mapped them, so they render directly.
-  Future<bool> submit(KycDocType docType) async {
+  ///
+  /// Pass [listingId] for Tier-3 per-listing checks (HYA-265: lalpurja /
+  /// Tiro Rasid bound to one listing); omit it for Tier-2 identity checks.
+  /// Citizenship is identity-only and the repository refuses it with a
+  /// listing — the sheet hides that option rather than offering a refusal.
+  Future<bool> submit(KycDocType docType, {String? listingId}) async {
     if (state.submitting) return false;
     state = state.copyWith(submitting: true, clearError: true);
 
@@ -156,6 +161,7 @@ class KycSubmitController extends _$KycSubmitController {
       await repository.submitKyc(
         docType: docType,
         storagePath: path,
+        listingId: (listingId ?? '').trim().isEmpty ? null : listingId!.trim(),
       );
     } on AppException catch (e) {
       state = state.copyWith(

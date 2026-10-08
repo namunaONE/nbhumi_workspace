@@ -19,6 +19,7 @@ class ListingDetailBody extends StatelessWidget {
     required this.listing,
     this.isFavorite = false,
     this.onFavoriteToggle,
+    this.verificationSlot = const SizedBox.shrink(),
     super.key,
   });
 
@@ -36,6 +37,12 @@ class ListingDetailBody extends StatelessWidget {
   /// cannot save, so the screen passes null without a session rather than a
   /// button that only ever errors.
   final VoidCallback? onFavoriteToggle;
+
+  /// Tier-3 verification badge or owner entry, supplied by the pane.
+  ///
+  /// Defaults to nothing so provider-free tests keep pumping this directly:
+  /// the pane owns provider reads and passes the resolved widget in.
+  final Widget verificationSlot;
 
   @override
   Widget build(BuildContext context) {
@@ -105,6 +112,9 @@ class ListingDetailBody extends StatelessWidget {
                     // server-side so cards, search and detail cannot disagree.
                     if (listing.areaDisplay case final area?)
                       _Chip(label: area),
+                    // Tier-3 verification (HYA-265): pane-supplied badge or
+                    // owner entry; nothing by default.
+                    verificationSlot,
                   ],
                 ),
               ],

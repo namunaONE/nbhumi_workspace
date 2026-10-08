@@ -1,5 +1,6 @@
 // ignore: unused_import
 import 'package:intl/intl.dart' as intl;
+
 import 'kyc_localizations.dart';
 
 // ignore_for_file: type=lint
@@ -15,13 +16,15 @@ class AppLocalizationsEn extends AppLocalizations {
   String get howItWorks => 'How verification works';
 
   @override
-  String get howItWorksBody => 'Our team checks that your document photo is readable and matches your account. This is an identity check only — never a legal or land-title verification. Ownership transfers are completed at Malpot.';
+  String get howItWorksBody =>
+      'Our team checks that your document photo is readable and matches your account. This is an identity check only — never a legal or land-title verification. Ownership transfers are completed at Malpot.';
 
   @override
   String get submitDocument => 'Submit a document';
 
   @override
-  String get emptyBody => 'No documents yet. Submit your citizenship to earn the verified badge buyers look for.';
+  String get emptyBody =>
+      'No documents yet. Submit your citizenship to earn the verified badge buyers look for.';
 
   @override
   String get chooseDocument => 'Choose a document';
@@ -58,4 +61,8 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get loadFailed => 'Could not load your documents.';
+
+  @override
+  String get tier3Hint =>
+      'This check attaches lalpurja to the listing you came from. Citizenship stays identity-only.';
 }

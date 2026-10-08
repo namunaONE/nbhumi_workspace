@@ -266,5 +266,25 @@
   "@purposeLease": {
     "description": "Lease chip."
   },
-  "purposeLease": "लिज"
+  "purposeLease": "लिज",
+
+  "@verifiedListing": {
+    "description": "Tier-3 verified-listing badge (HYA-265)."
+  },
+  "verifiedListing": "प्रमाणित विज्ञापन",
+
+  "@verifiedListingBody": {
+    "description": "Badge explainer: doc-check only, never legal verification."
+  },
+  "verifiedListingBody": "हाम्रो प्रशासक टोलीले यस विज्ञापनसँग सम्बन्धित लालपुर्जा जाँचेको छ। यो कागजात जाँच मात्र हो — स्वामित्व वा मोहियानी हकको कानुनी प्रमाणीकरण होइन। स्वामित्व हस्तान्तरण मालपोतमा हुन्छ।",
+
+  "@verifiedListingUnderstood": {
+    "description": "Badge dialog dismiss action."
+  },
+  "verifiedListingUnderstood": "बुझें",
+
+  "@verifyThisListing": {
+    "description": "Owner CTA opening the Tier-3 submit flow."
+  },
+  "verifyThisListing": "यो विज्ञापन प्रमाणित गर्नुहोस्"
 }

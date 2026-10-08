@@ -9,6 +9,7 @@ import 'package:models/models.dart';
 
 import '../providers/listing_detail_providers.dart';
 import 'listing_detail_body.dart';
+import 'listing_verification_slot.dart';
 
 /// A single property, with photos, specifications and the seller card.
 ///
@@ -76,6 +77,7 @@ class _FavoriteBody extends ConsumerWidget {
     return ListingDetailBody(
       listing: listing,
       isFavorite: saved,
+      verificationSlot: ListingVerificationSlot(listing: listing),
       onFavoriteToggle:
           session == null ? null : () => _toggle(context, ref, strings),
     );

@@ -1,5 +1,6 @@
 // ignore: unused_import
 import 'package:intl/intl.dart' as intl;
+
 import 'detail_localizations.dart';
 
 // ignore_for_file: type=lint
@@ -71,7 +72,8 @@ class AppLocalizationsEn extends AppLocalizations {
   String get notAvailableTitle => 'This property is no longer available';
 
   @override
-  String get notAvailableBody => 'It may have been sold, withdrawn by the seller, or the link may be wrong.';
+  String get notAvailableBody =>
+      'It may have been sold, withdrawn by the seller, or the link may be wrong.';
 
   @override
   String get browseOthers => 'Browse other properties';
@@ -124,7 +126,8 @@ class AppLocalizationsEn extends AppLocalizations {
   String get reportDetailsOptional => 'Details (optional)';
 
   @override
-  String get reportDetailsError => 'Please describe the problem so our team can act on it.';
+  String get reportDetailsError =>
+      'Please describe the problem so our team can act on it.';
 
   @override
   String get reportSubmit => 'Submit report';
@@ -179,4 +182,17 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get purposeLease => 'Lease';
+
+  @override
+  String get verifiedListing => 'Verified Listing';
+
+  @override
+  String get verifiedListingBody =>
+      'Our admin team checked the lalpurja attached to this listing. This is a document check only — never a legal opinion on ownership or title. Ownership transfers are completed at Malpot.';
+
+  @override
+  String get verifiedListingUnderstood => 'Understood';
+
+  @override
+  String get verifyThisListing => 'Verify this listing';
 }

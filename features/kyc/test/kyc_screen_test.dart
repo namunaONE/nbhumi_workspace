@@ -8,6 +8,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:kyc/kyc.dart';
 import 'package:kyc/l10n/output/kyc_localizations.dart' as kyc_strings;
 import 'package:models/models.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 /// Pumps [child] with the delegates the real app supplies in main.dart.
 ///
@@ -152,7 +153,88 @@ void main() {
 
       expect(find.textContaining('Sign in before uploading'), findsOneWidget);
     });
+
+    testWidgets('tier-3 sheet binds lalpurja to the listing', (tester) async {
+      final repository = _FakeKycRepository();
+      await tester.pumpWidget(
+        ProviderScope(
+          overrides: [
+            myKycDocumentsProvider.overrideWith(
+              (ref) async => const <KycDocument>[],
+            ),
+            docPickerProvider.overrideWithValue(const _PhotoPicker()),
+            sessionProvider.overrideWithValue(_session()),
+            kycRepositoryProvider.overrideWithValue(repository),
+          ],
+          child: _harness(const KycScreen(listingId: 'listing-1')),
+        ),
+      );
+      await tester.pumpAndSettle();
+
+      await tester.tap(find.text('Submit a document'));
+      await tester.pumpAndSettle();
+
+      // Tier-3 mode: hint shown, lalpurja fixed, citizenship not offered.
+      expect(find.textContaining('listing you came from'), findsOneWidget);
+      expect(find.text('Lalpurja (land ownership)'), findsOneWidget);
+      expect(find.text('Citizenship'), findsNothing);
+
+      await tester.tap(find.text('Pick photo and submit'));
+      await tester.pumpAndSettle();
+
+      expect(repository.lastDocType, KycDocType.lalpurja);
+      expect(repository.lastListingId, 'listing-1');
+      expect(find.textContaining('review within 48 hours'), findsOneWidget);
+    });
   });
+}
+
+/// Signed-in session, hand-built: no network for a session (Rule 33).
+Session _session() => Session(
+      accessToken: 'token',
+      refreshToken: 'refresh',
+      tokenType: 'bearer',
+      user: const User(
+        id: 'seller-1',
+        appMetadata: <String, dynamic>{},
+        userMetadata: <String, dynamic>{},
+        aud: 'authenticated',
+        createdAt: '2026-01-01T00:00:00Z',
+      ),
+    );
+
+/// Records Tier-3 submissions; everything else falls through to noSuchMethod.
+class _FakeKycRepository implements KycRepository {
+  KycDocType? lastDocType;
+  String? lastListingId;
+
+  @override
+  Future<String> uploadKycFile({
+    required String userId,
+    required Uint8List bytes,
+    required String filename,
+    required KycDocType docType,
+  }) async =>
+      '$userId/1_${docType.wireName}.jpg';
+
+  @override
+  Future<KycDocument> submitKyc({
+    required KycDocType docType,
+    required String storagePath,
+    String? listingId,
+  }) async {
+    lastDocType = docType;
+    lastListingId = listingId;
+    return KycDocument(
+      id: 'doc-9',
+      profileId: 'seller-1',
+      docType: docType,
+      storagePath: storagePath,
+    );
+  }
+
+  @override
+  dynamic noSuchMethod(Invocation invocation) => super.noSuchMethod(invocation);
 }
 
 /// Picker that always cancels, for the cancel-is-not-failure test.

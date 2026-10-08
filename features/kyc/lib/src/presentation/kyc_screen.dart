@@ -12,9 +12,16 @@ import '../viewmodels/kyc_providers.dart';
 /// Lists the seller's KYC submissions with their review state and offers a
 /// submit sheet. Reached from the profile screen; gated behind a session by
 /// the router, like `/post`.
+///
+/// Pass [listingId] (via `/kyc?listingId=`) for a Tier-3 per-listing check
+/// (HYA-265): the sheet binds lalpurja to that listing instead of offering
+/// the identity documents.
 class KycScreen extends ConsumerWidget {
   /// Creates the verification screen.
-  const KycScreen({super.key});
+  const KycScreen({this.listingId, super.key});
+
+  /// Listing a Tier-3 submission attaches to. Null means Tier-2 identity.
+  final String? listingId;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -31,7 +38,7 @@ class KycScreen extends ConsumerWidget {
           FilledButton.icon(
             icon: const Icon(Icons.upload_file_outlined),
             label: Text(strings.submitDocument),
-            onPressed: () => _SubmitSheet.show(context),
+            onPressed: () => _SubmitSheet.show(context, listingId: listingId),
           ),
           const SizedBox(height: 16),
           switch (documents) {
@@ -183,15 +190,23 @@ String _docTypeLabel(BuildContext context, KycDocType type) {
 }
 
 /// Bottom sheet that picks a document type and submits one photo.
+///
+/// In Tier-3 mode ([listingId] set) only lalpurja is offered: citizenship
+/// is identity-only and the repository refuses it with a listing, so the
+/// sheet hides that refusal instead of staging it.
 class _SubmitSheet extends ConsumerStatefulWidget {
-  const _SubmitSheet();
+  const _SubmitSheet({this.listingId});
 
-  /// Opens the sheet.
-  static Future<void> show(BuildContext context) => showModalBottomSheet<void>(
+  /// Opens the sheet, optionally bound to one listing (Tier 3, HYA-265).
+  static Future<void> show(BuildContext context, {String? listingId}) =>
+      showModalBottomSheet<void>(
         context: context,
         isScrollControlled: true,
-        builder: (context) => const _SubmitSheet(),
+        builder: (context) => _SubmitSheet(listingId: listingId),
       );
+
+  /// Listing a Tier-3 submission attaches to. Null means Tier-2 identity.
+  final String? listingId;
 
   @override
   ConsumerState<_SubmitSheet> createState() => _SubmitSheetState();
@@ -199,6 +214,11 @@ class _SubmitSheet extends ConsumerStatefulWidget {
 
 class _SubmitSheetState extends ConsumerState<_SubmitSheet> {
   KycDocType _type = KycDocType.citizenship;
+
+  /// Tier-3 binds exactly one document type: per-listing checks need
+  /// lalpurja (the server refuses anything else with a listing), so the
+  /// mode shows a fixed label instead of a one-option segment control.
+  bool get _isTier3 => widget.listingId != null;
 
   @override
   Widget build(BuildContext context) {
@@ -216,23 +236,43 @@ class _SubmitSheetState extends ConsumerState<_SubmitSheet> {
             strings.chooseDocument,
             style: Theme.of(context).textTheme.titleSmall,
           ),
-          SegmentedButton<KycDocType>(
-            segments: <ButtonSegment<KycDocType>>[
-              for (final type in KycDocType.values)
-                ButtonSegment<KycDocType>(
-                  value: type,
-                  label: Text(_docTypeLabel(context, type)),
-                ),
-            ],
-            selected: <KycDocType>{_type},
-            onSelectionChanged: submit.submitting
-                ? null
-                : (selection) => setState(() => _type = selection.first),
-            showSelectedIcon: false,
-            style: const ButtonStyle(
-              visualDensity: VisualDensity.compact,
+          if (widget.listingId != null) ...<Widget>[
+            const SizedBox(height: 8),
+            Text(
+              strings.tier3Hint,
+              style: Theme.of(context).textTheme.bodySmall,
             ),
-          ),
+          ],
+          const SizedBox(height: 12),
+          if (_isTier3)
+            Row(
+              children: <Widget>[
+                const Icon(Icons.description_outlined),
+                const SizedBox(width: 8),
+                Text(
+                  _docTypeLabel(context, KycDocType.lalpurja),
+                  style: Theme.of(context).textTheme.titleSmall,
+                ),
+              ],
+            )
+          else
+            SegmentedButton<KycDocType>(
+              segments: <ButtonSegment<KycDocType>>[
+                for (final type in KycDocType.values)
+                  ButtonSegment<KycDocType>(
+                    value: type,
+                    label: Text(_docTypeLabel(context, type)),
+                  ),
+              ],
+              selected: <KycDocType>{_type},
+              onSelectionChanged: submit.submitting
+                  ? null
+                  : (selection) => setState(() => _type = selection.first),
+              showSelectedIcon: false,
+              style: const ButtonStyle(
+                visualDensity: VisualDensity.compact,
+              ),
+            ),
           if (submit.hasError)
             Padding(
               padding: const EdgeInsets.only(bottom: 8),
@@ -271,9 +311,12 @@ class _SubmitSheetState extends ConsumerState<_SubmitSheet> {
   }
 
   Future<void> _submit() async {
+    // Tier-3 binds lalpurja: the mode shows no picker, so the state field
+    // still holds its citizenship default and must not leak through.
+    final type = _isTier3 ? KycDocType.lalpurja : _type;
     final done = await ref
         .read(kycSubmitControllerProvider.notifier)
-        .submit(_type);
+        .submit(type, listingId: widget.listingId);
     if (!mounted) return;
     if (done) {
       Navigator.of(context).pop();
