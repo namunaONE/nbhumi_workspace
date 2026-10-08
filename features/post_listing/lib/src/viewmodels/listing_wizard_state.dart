@@ -20,6 +20,7 @@ class WizardPhoto {
     required this.url,
     this.isUploading = false,
     this.error,
+    this.storagePath,
   });
 
   /// Public URL in the `listing-photos` bucket.
@@ -30,6 +31,12 @@ class WizardPhoto {
 
   /// Why the upload failed, if it did.
   final AppException? error;
+
+  /// Storage object path behind [url] (HYA-300).
+  ///
+  /// Persisted on attach for the duplicate-photo signal. Null for uploads
+  /// that predate path tracking; those rows stay URL-matched.
+  final String? storagePath;
 }
 
 /// The wizard's five steps, in order.
@@ -121,6 +128,7 @@ class ListingWizardState {
     this.city = '',
     this.ward = '',
     this.roadAccessFt = '',
+    this.kittaNumber = '',
     this.areaRopani = '',
     this.areaAana = '',
     this.areaPaisa = '',
@@ -176,6 +184,12 @@ class ListingWizardState {
 
   /// Road frontage in feet. Optional.
   final String roadAccessFt;
+
+  /// Land parcel (kitta) number as typed. Optional (HYA-300).
+  ///
+  /// Feeds the duplicate/missing-kitta signals. Blank stays blank: the RPC
+  /// stores NULL for blank, and NULL is the "not provided" signal.
+  final String kittaNumber;
 
   /// Hill area units: ropani.
   final String areaRopani;
@@ -294,6 +308,17 @@ class ListingWizardState {
       .map((photo) => photo.url)
       .toList(growable: false);
 
+  /// Photos that finished uploading with their storage paths (HYA-300).
+  ///
+  /// The attach step persists the path alongside the URL for the
+  /// duplicate-photo signal. Same membership rule as [uploadedPhotoUrls].
+  List<PhotoAttachment> get uploadedPhotos => photos
+      .where((photo) => !photo.isUploading && photo.error == null)
+      .map(
+        (photo) => (url: photo.url, storagePath: photo.storagePath),
+      )
+      .toList(growable: false);
+
   /// Whether a submit has already succeeded.
   bool get isSubmitted => createdListingId != null;
 
@@ -313,6 +338,7 @@ class ListingWizardState {
     String? city,
     String? ward,
     String? roadAccessFt,
+    String? kittaNumber,
     String? areaRopani,
     String? areaAana,
     String? areaPaisa,
@@ -345,6 +371,7 @@ class ListingWizardState {
         city: city ?? this.city,
         ward: ward ?? this.ward,
         roadAccessFt: roadAccessFt ?? this.roadAccessFt,
+        kittaNumber: kittaNumber ?? this.kittaNumber,
         areaRopani: areaRopani ?? this.areaRopani,
         areaAana: areaAana ?? this.areaAana,
         areaPaisa: areaPaisa ?? this.areaPaisa,

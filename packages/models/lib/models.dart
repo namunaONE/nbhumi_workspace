@@ -53,6 +53,7 @@ export 'src/listing_summary.dart';
 export 'src/municipality.dart';
 export 'src/my_reveal.dart';
 export 'src/notification.dart';
+export 'src/photo_attachment.dart';
 export 'src/profile.dart';
 export 'src/queue_sla.dart';
 export 'src/saved_search.dart';

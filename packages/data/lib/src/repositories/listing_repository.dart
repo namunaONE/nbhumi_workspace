@@ -178,6 +178,10 @@ class ListingRepository {
       'p_city': json['city'],
       'p_ward': json['ward'],
       'p_road_access_ft': json['road_access_ft'],
+      // HYA-300: parcel number for the duplicate/missing-kitta signals. Null
+      // means "not provided" (the wizard sends null for blank); the RPC
+      // trims and length-caps server-side.
+      'p_kitta_number': json['kitta_number'],
       'p_bedrooms': json['bedrooms'],
       'p_bathrooms': json['bathrooms'],
       'p_status': status.wireName,
@@ -216,6 +220,10 @@ class ListingRepository {
       'p_city': json?['city'],
       'p_ward': json?['ward'],
       'p_road_access_ft': json?['road_access_ft'],
+      // HYA-300: see buildCreateParams. Coalesce server-side means null is
+      // "leave alone", so a cleared wizard field cannot blank a stored kitta
+      // (same limitation as description).
+      'p_kitta_number': json?['kitta_number'],
       'p_bedrooms': json?['bedrooms'],
       'p_bathrooms': json?['bathrooms'],
       'p_status': status?.wireName,
@@ -243,7 +251,7 @@ class ListingRepository {
         'p_details': details,
       };
 
-  /// Uploads one photo for a listing and returns its public URL.
+  /// Uploads one photo for a listing and returns its public URL and path.
   ///
   /// The Storage path is `<userId>/<random>.<ext>`: the leading folder must be
   /// the seller's own id, because `listing_photos_storage_insert` only permits
@@ -252,9 +260,13 @@ class ListingRepository {
   /// and a seller who abandons the wizard leaves an orphaned file rather than a
   /// half-created listing.
   ///
+  /// Both values travel together because the attach step persists the path
+  /// alongside the URL (HYA-300): re-deriving it from the URL later would be
+  /// the fragile regex the signals migration deliberately refused to write.
+  ///
   /// The extension is taken from [filename] because the bucket serves images by
   /// content type, and a key with no extension is served as octet-stream.
-  Future<String> uploadListingPhoto({
+  Future<PhotoAttachment> uploadListingPhoto({
     required String userId,
     required Uint8List bytes,
     required String filename,
@@ -269,7 +281,8 @@ class ListingRepository {
             fileOptions: const FileOptions(contentType: _photoContentType),
           );
 
-      return _client.storage.from(_photoBucket).getPublicUrl(path);
+      final url = _client.storage.from(_photoBucket).getPublicUrl(path);
+      return (url: url, storagePath: path);
     } on StorageException catch (e) {
       final mapped = PostgrestErrorMapper.mapStorage(e, action: 'uploadPhoto');
       _logFailure(mapped, action: 'uploadPhoto', cause: e);
@@ -289,9 +302,9 @@ class ListingRepository {
   /// the same draft (the table has no `(listing_id, url)` unique constraint).
   Future<void> attachListingPhotos(
     String listingId,
-    List<String> urls,
+    List<PhotoAttachment> photos,
   ) async {
-    if (urls.isEmpty) return;
+    if (photos.isEmpty) return;
 
     final rows = await _guard(
       () => _client
@@ -302,17 +315,20 @@ class ListingRepository {
     );
     final attached = rows.map((row) => row['url'] as String).toSet();
 
-    for (var i = 0; i < urls.length; i++) {
-      if (attached.contains(urls[i])) continue;
+    for (var i = 0; i < photos.length; i++) {
+      if (attached.contains(photos[i].url)) continue;
       await _guard(
         () => _client.from('listing_photos').insert(<String, Object?>{
           'listing_id': listingId,
-          'url': urls[i],
+          'url': photos[i].url,
           'sort_order': i,
+          // HYA-300: the duplicate-photo signal groups on this, never on a
+          // regexed URL. Null for pre-path rows, which stay URL-matched.
+          'storage_path': photos[i].storagePath,
         }),
         action: 'attachListingPhotos',
       );
-      attached.add(urls[i]);
+      attached.add(photos[i].url);
     }
   }
 

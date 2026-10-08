@@ -167,6 +167,16 @@
   },
   "fieldRoadAccess": "बाटोको पहुँच",
 
+  "@fieldKitta": {
+    "description": "Land parcel (kitta) number field label."
+  },
+  "fieldKitta": "कित्ता नम्बर",
+
+  "@fieldKittaHint": {
+    "description": "Kitta field hint: where to find it."
+  },
+  "fieldKittaHint": "लालपुर्जामा भएको। छिटो प्रमाणीकरणमा मद्दत गर्छ।",
+
   "@fieldOptional": {
     "description": "Optional-field hint."
   },

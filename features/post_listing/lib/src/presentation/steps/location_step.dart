@@ -1,5 +1,6 @@
 import 'package:data/data.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:models/models.dart';
 import 'package:post_listing/l10n/output/post_localizations.dart'
@@ -31,6 +32,7 @@ class LocationStep extends ConsumerWidget {
     required this.onMunicipalityChanged,
     required this.onWardChanged,
     required this.onRoadAccessChanged,
+    required this.onKittaChanged,
     super.key,
   });
 
@@ -51,6 +53,9 @@ class LocationStep extends ConsumerWidget {
 
   /// Called when the road frontage field changes.
   final void Function(String value) onRoadAccessChanged;
+
+  /// Called when the kitta number field changes. Optional (HYA-300).
+  final void Function(String value) onKittaChanged;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -110,6 +115,19 @@ class LocationStep extends ConsumerWidget {
           keyboardType: TextInputType.number,
           inputFormatters: digitsOnly,
           onChanged: onRoadAccessChanged,
+        ),
+        // Optional parcel number (HYA-300): feeds the duplicate and
+        // missing-kitta signals. Capped at the server's 60 characters by the
+        // input limiter, so the form cannot produce a value the RPC refuses.
+        WizardField(
+          label: strings.fieldKitta,
+          hint: strings.fieldKittaHint,
+          value: state.kittaNumber,
+          error: errors['kittaNumber'],
+          inputFormatters: <TextInputFormatter>[
+            LengthLimitingTextInputFormatter(60),
+          ],
+          onChanged: onKittaChanged,
         ),
         WizardNote(
           icon: Icons.map_outlined,

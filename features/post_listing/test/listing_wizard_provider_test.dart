@@ -15,6 +15,8 @@ class _FakeListingRepository implements ListingRepository {
 
   final List<String> calls = <String>[];
   final List<String> attachedUrls = <String>[];
+  final List<String?> attachedPaths = <String?>[];
+  Listing? createdListing;
   String? createdId;
   AppException? createFailure;
   AppException? attachFailure;
@@ -28,6 +30,7 @@ class _FakeListingRepository implements ListingRepository {
     calls.add('create:${status.wireName}');
     final error = createFailure;
     if (error != null) throw error;
+    createdListing = listing;
     createdId ??= 'draft-1';
     return createdId!;
   }
@@ -47,12 +50,13 @@ class _FakeListingRepository implements ListingRepository {
   @override
   Future<void> attachListingPhotos(
     String listingId,
-    List<String> urls,
+    List<PhotoAttachment> photos,
   ) async {
-    calls.add('attach:${urls.length}');
+    calls.add('attach:${photos.length}');
     final error = attachFailure;
     if (error != null) throw error;
-    attachedUrls.addAll(urls);
+    attachedUrls.addAll(photos.map((photo) => photo.url));
+    attachedPaths.addAll(photos.map((photo) => photo.storagePath));
   }
 
   @override
@@ -96,7 +100,10 @@ ListingWizardState _state() => const ListingWizardState(
       areaPaisa: '4',
       priceNpr: '25000000',
       photos: <WizardPhoto>[
-        WizardPhoto(url: 'https://example.com/photo.jpg'),
+        WizardPhoto(
+          url: 'https://example.com/photo.jpg',
+          storagePath: 'seller-1/123.jpg',
+        ),
       ],
     );
 
@@ -243,6 +250,49 @@ void main() {
       // A second submit is a no-op: returns false, makes no new calls.
       expect(await notifier.submit(strings), isFalse);
       expect(repository.calls, callsAfterFirst);
+    });
+
+    test('attach carries the storage paths for the signals', () async {
+      final repository = _FakeListingRepository();
+      final container = makeContainer(repository);
+      addTearDown(container.dispose);
+
+      final notifier = container.read(listingWizardProvider.notifier);
+      seedCompleteState(notifier);
+
+      expect(await notifier.submit(strings), isTrue);
+      expect(
+        repository.attachedPaths,
+        <String?>['seller-1/123.jpg'],
+      );
+    });
+
+    test('a kitta number flows into the created draft', () async {
+      final repository = _FakeListingRepository();
+      final container = makeContainer(repository);
+      addTearDown(container.dispose);
+
+      final notifier = container.read(listingWizardProvider.notifier);
+      seedCompleteState(notifier);
+      notifier.setKittaNumber('  12-A  ');
+
+      expect(await notifier.submit(strings), isTrue);
+      // Trimmed on the wire path via _toListing's _nullIfBlank; the RPC
+      // trims again server-side (Rule 6). Blank would arrive as null.
+      expect(repository.createdListing?.kittaNumber, '12-A');
+    });
+
+    test('a blank kitta number arrives as null, not empty', () async {
+      final repository = _FakeListingRepository();
+      final container = makeContainer(repository);
+      addTearDown(container.dispose);
+
+      final notifier = container.read(listingWizardProvider.notifier);
+      seedCompleteState(notifier);
+      notifier.setKittaNumber('   ');
+
+      expect(await notifier.submit(strings), isTrue);
+      expect(repository.createdListing?.kittaNumber, isNull);
     });
   });
 }

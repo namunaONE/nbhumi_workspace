@@ -108,6 +108,7 @@ class _StepBody extends StatelessWidget {
           onMunicipalityChanged: notifier.setMunicipality,
           onWardChanged: notifier.setWard,
           onRoadAccessChanged: notifier.setRoadAccessFt,
+          onKittaChanged: notifier.setKittaNumber,
         ),
       WizardStep.specs => SpecsStep(
           state: state,

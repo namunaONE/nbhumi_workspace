@@ -16,7 +16,12 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$Listing {
 
- String get id; String get sellerId; PropertyType get propertyType; ListingPurpose get listingPurpose; String get title; int get priceNpr; String get district; String get city; String? get description; double? get areaSqm; int? get areaRopani; int? get areaAana; int? get areaPaisa; int? get areaDam; int? get areaBigha; int? get areaKattha; int? get areaDhur; String? get ward; int? get roadAccessFt;/// Bedroom count.
+ String get id; String get sellerId; PropertyType get propertyType; ListingPurpose get listingPurpose; String get title; int get priceNpr; String get district; String get city; String? get description; double? get areaSqm; int? get areaRopani; int? get areaAana; int? get areaPaisa; int? get areaDam; int? get areaBigha; int? get areaKattha; int? get areaDhur; String? get ward; int? get roadAccessFt;/// Land parcel (kitta) number as the seller wrote it (HYA-300).
+///
+/// Null means "not provided" and is itself a review signal; duplicates
+/// across listings are a fraud signal. Free text: numbering varies by
+/// district, so the server only trims and length-caps it.
+ String? get kittaNumber;/// Bedroom count.
 ///
 /// Null rather than 0 for land and commercial premises, which have none.
 /// The column carries `CHECK (bedrooms > 0)`, so a stored 0 is impossible
@@ -36,20 +41,20 @@ $ListingCopyWith<Listing> get copyWith => _$ListingCopyWithImpl<Listing>(this as
 @override
 bool operator ==(Object other) {
   final _this = this as Listing;
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is Listing&&(identical(other.id, _this.id) || other.id == _this.id)&&(identical(other.sellerId, _this.sellerId) || other.sellerId == _this.sellerId)&&(identical(other.propertyType, _this.propertyType) || other.propertyType == _this.propertyType)&&(identical(other.listingPurpose, _this.listingPurpose) || other.listingPurpose == _this.listingPurpose)&&(identical(other.title, _this.title) || other.title == _this.title)&&(identical(other.priceNpr, _this.priceNpr) || other.priceNpr == _this.priceNpr)&&(identical(other.district, _this.district) || other.district == _this.district)&&(identical(other.city, _this.city) || other.city == _this.city)&&(identical(other.description, _this.description) || other.description == _this.description)&&(identical(other.areaSqm, _this.areaSqm) || other.areaSqm == _this.areaSqm)&&(identical(other.areaRopani, _this.areaRopani) || other.areaRopani == _this.areaRopani)&&(identical(other.areaAana, _this.areaAana) || other.areaAana == _this.areaAana)&&(identical(other.areaPaisa, _this.areaPaisa) || other.areaPaisa == _this.areaPaisa)&&(identical(other.areaDam, _this.areaDam) || other.areaDam == _this.areaDam)&&(identical(other.areaBigha, _this.areaBigha) || other.areaBigha == _this.areaBigha)&&(identical(other.areaKattha, _this.areaKattha) || other.areaKattha == _this.areaKattha)&&(identical(other.areaDhur, _this.areaDhur) || other.areaDhur == _this.areaDhur)&&(identical(other.ward, _this.ward) || other.ward == _this.ward)&&(identical(other.roadAccessFt, _this.roadAccessFt) || other.roadAccessFt == _this.roadAccessFt)&&(identical(other.bedrooms, _this.bedrooms) || other.bedrooms == _this.bedrooms)&&(identical(other.bathrooms, _this.bathrooms) || other.bathrooms == _this.bathrooms)&&(identical(other.status, _this.status) || other.status == _this.status)&&(identical(other.rejectionReason, _this.rejectionReason) || other.rejectionReason == _this.rejectionReason)&&(identical(other.createdAt, _this.createdAt) || other.createdAt == _this.createdAt)&&(identical(other.updatedAt, _this.updatedAt) || other.updatedAt == _this.updatedAt)&&(identical(other.reviewedBy, _this.reviewedBy) || other.reviewedBy == _this.reviewedBy)&&(identical(other.reviewedAt, _this.reviewedAt) || other.reviewedAt == _this.reviewedAt));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is Listing&&(identical(other.id, _this.id) || other.id == _this.id)&&(identical(other.sellerId, _this.sellerId) || other.sellerId == _this.sellerId)&&(identical(other.propertyType, _this.propertyType) || other.propertyType == _this.propertyType)&&(identical(other.listingPurpose, _this.listingPurpose) || other.listingPurpose == _this.listingPurpose)&&(identical(other.title, _this.title) || other.title == _this.title)&&(identical(other.priceNpr, _this.priceNpr) || other.priceNpr == _this.priceNpr)&&(identical(other.district, _this.district) || other.district == _this.district)&&(identical(other.city, _this.city) || other.city == _this.city)&&(identical(other.description, _this.description) || other.description == _this.description)&&(identical(other.areaSqm, _this.areaSqm) || other.areaSqm == _this.areaSqm)&&(identical(other.areaRopani, _this.areaRopani) || other.areaRopani == _this.areaRopani)&&(identical(other.areaAana, _this.areaAana) || other.areaAana == _this.areaAana)&&(identical(other.areaPaisa, _this.areaPaisa) || other.areaPaisa == _this.areaPaisa)&&(identical(other.areaDam, _this.areaDam) || other.areaDam == _this.areaDam)&&(identical(other.areaBigha, _this.areaBigha) || other.areaBigha == _this.areaBigha)&&(identical(other.areaKattha, _this.areaKattha) || other.areaKattha == _this.areaKattha)&&(identical(other.areaDhur, _this.areaDhur) || other.areaDhur == _this.areaDhur)&&(identical(other.ward, _this.ward) || other.ward == _this.ward)&&(identical(other.roadAccessFt, _this.roadAccessFt) || other.roadAccessFt == _this.roadAccessFt)&&(identical(other.kittaNumber, _this.kittaNumber) || other.kittaNumber == _this.kittaNumber)&&(identical(other.bedrooms, _this.bedrooms) || other.bedrooms == _this.bedrooms)&&(identical(other.bathrooms, _this.bathrooms) || other.bathrooms == _this.bathrooms)&&(identical(other.status, _this.status) || other.status == _this.status)&&(identical(other.rejectionReason, _this.rejectionReason) || other.rejectionReason == _this.rejectionReason)&&(identical(other.createdAt, _this.createdAt) || other.createdAt == _this.createdAt)&&(identical(other.updatedAt, _this.updatedAt) || other.updatedAt == _this.updatedAt)&&(identical(other.reviewedBy, _this.reviewedBy) || other.reviewedBy == _this.reviewedBy)&&(identical(other.reviewedAt, _this.reviewedAt) || other.reviewedAt == _this.reviewedAt));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
 int get hashCode {
   final _this = this as Listing;
-  return Object.hashAll([runtimeType,_this.id,_this.sellerId,_this.propertyType,_this.listingPurpose,_this.title,_this.priceNpr,_this.district,_this.city,_this.description,_this.areaSqm,_this.areaRopani,_this.areaAana,_this.areaPaisa,_this.areaDam,_this.areaBigha,_this.areaKattha,_this.areaDhur,_this.ward,_this.roadAccessFt,_this.bedrooms,_this.bathrooms,_this.status,_this.rejectionReason,_this.createdAt,_this.updatedAt,_this.reviewedBy,_this.reviewedAt]);
+  return Object.hashAll([runtimeType,_this.id,_this.sellerId,_this.propertyType,_this.listingPurpose,_this.title,_this.priceNpr,_this.district,_this.city,_this.description,_this.areaSqm,_this.areaRopani,_this.areaAana,_this.areaPaisa,_this.areaDam,_this.areaBigha,_this.areaKattha,_this.areaDhur,_this.ward,_this.roadAccessFt,_this.kittaNumber,_this.bedrooms,_this.bathrooms,_this.status,_this.rejectionReason,_this.createdAt,_this.updatedAt,_this.reviewedBy,_this.reviewedAt]);
 }
 
 @override
 String toString() {
   final _this = this as Listing;
-  return 'Listing(id: ${_this.id}, sellerId: ${_this.sellerId}, propertyType: ${_this.propertyType}, listingPurpose: ${_this.listingPurpose}, title: ${_this.title}, priceNpr: ${_this.priceNpr}, district: ${_this.district}, city: ${_this.city}, description: ${_this.description}, areaSqm: ${_this.areaSqm}, areaRopani: ${_this.areaRopani}, areaAana: ${_this.areaAana}, areaPaisa: ${_this.areaPaisa}, areaDam: ${_this.areaDam}, areaBigha: ${_this.areaBigha}, areaKattha: ${_this.areaKattha}, areaDhur: ${_this.areaDhur}, ward: ${_this.ward}, roadAccessFt: ${_this.roadAccessFt}, bedrooms: ${_this.bedrooms}, bathrooms: ${_this.bathrooms}, status: ${_this.status}, rejectionReason: ${_this.rejectionReason}, createdAt: ${_this.createdAt}, updatedAt: ${_this.updatedAt}, reviewedBy: ${_this.reviewedBy}, reviewedAt: ${_this.reviewedAt})';
+  return 'Listing(id: ${_this.id}, sellerId: ${_this.sellerId}, propertyType: ${_this.propertyType}, listingPurpose: ${_this.listingPurpose}, title: ${_this.title}, priceNpr: ${_this.priceNpr}, district: ${_this.district}, city: ${_this.city}, description: ${_this.description}, areaSqm: ${_this.areaSqm}, areaRopani: ${_this.areaRopani}, areaAana: ${_this.areaAana}, areaPaisa: ${_this.areaPaisa}, areaDam: ${_this.areaDam}, areaBigha: ${_this.areaBigha}, areaKattha: ${_this.areaKattha}, areaDhur: ${_this.areaDhur}, ward: ${_this.ward}, roadAccessFt: ${_this.roadAccessFt}, kittaNumber: ${_this.kittaNumber}, bedrooms: ${_this.bedrooms}, bathrooms: ${_this.bathrooms}, status: ${_this.status}, rejectionReason: ${_this.rejectionReason}, createdAt: ${_this.createdAt}, updatedAt: ${_this.updatedAt}, reviewedBy: ${_this.reviewedBy}, reviewedAt: ${_this.reviewedAt})';
 }
 
 
@@ -60,7 +65,7 @@ abstract mixin class $ListingCopyWith<$Res>  {
   factory $ListingCopyWith(Listing value, $Res Function(Listing) _then) = _$ListingCopyWithImpl;
 @useResult
 $Res call({
- String id, String sellerId, PropertyType propertyType, ListingPurpose listingPurpose, String title, int priceNpr, String district, String city, String? description, double? areaSqm, int? areaRopani, int? areaAana, int? areaPaisa, int? areaDam, int? areaBigha, int? areaKattha, int? areaDhur, String? ward, int? roadAccessFt, int? bedrooms, int? bathrooms, ListingStatus status, String? rejectionReason, DateTime? createdAt, DateTime? updatedAt, String? reviewedBy, DateTime? reviewedAt
+ String id, String sellerId, PropertyType propertyType, ListingPurpose listingPurpose, String title, int priceNpr, String district, String city, String? description, double? areaSqm, int? areaRopani, int? areaAana, int? areaPaisa, int? areaDam, int? areaBigha, int? areaKattha, int? areaDhur, String? ward, int? roadAccessFt, String? kittaNumber, int? bedrooms, int? bathrooms, ListingStatus status, String? rejectionReason, DateTime? createdAt, DateTime? updatedAt, String? reviewedBy, DateTime? reviewedAt
 });
 
 
@@ -77,7 +82,7 @@ class _$ListingCopyWithImpl<$Res>
 
 /// Create a copy of Listing
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? sellerId = null,Object? propertyType = null,Object? listingPurpose = null,Object? title = null,Object? priceNpr = null,Object? district = null,Object? city = null,Object? description = freezed,Object? areaSqm = freezed,Object? areaRopani = freezed,Object? areaAana = freezed,Object? areaPaisa = freezed,Object? areaDam = freezed,Object? areaBigha = freezed,Object? areaKattha = freezed,Object? areaDhur = freezed,Object? ward = freezed,Object? roadAccessFt = freezed,Object? bedrooms = freezed,Object? bathrooms = freezed,Object? status = null,Object? rejectionReason = freezed,Object? createdAt = freezed,Object? updatedAt = freezed,Object? reviewedBy = freezed,Object? reviewedAt = freezed,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? sellerId = null,Object? propertyType = null,Object? listingPurpose = null,Object? title = null,Object? priceNpr = null,Object? district = null,Object? city = null,Object? description = freezed,Object? areaSqm = freezed,Object? areaRopani = freezed,Object? areaAana = freezed,Object? areaPaisa = freezed,Object? areaDam = freezed,Object? areaBigha = freezed,Object? areaKattha = freezed,Object? areaDhur = freezed,Object? ward = freezed,Object? roadAccessFt = freezed,Object? kittaNumber = freezed,Object? bedrooms = freezed,Object? bathrooms = freezed,Object? status = null,Object? rejectionReason = freezed,Object? createdAt = freezed,Object? updatedAt = freezed,Object? reviewedBy = freezed,Object? reviewedAt = freezed,}) {
   return _then(Listing(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as String,sellerId: null == sellerId ? _self.sellerId : sellerId // ignore: cast_nullable_to_non_nullable
@@ -98,7 +103,8 @@ as int?,areaKattha: freezed == areaKattha ? _self.areaKattha : areaKattha // ign
 as int?,areaDhur: freezed == areaDhur ? _self.areaDhur : areaDhur // ignore: cast_nullable_to_non_nullable
 as int?,ward: freezed == ward ? _self.ward : ward // ignore: cast_nullable_to_non_nullable
 as String?,roadAccessFt: freezed == roadAccessFt ? _self.roadAccessFt : roadAccessFt // ignore: cast_nullable_to_non_nullable
-as int?,bedrooms: freezed == bedrooms ? _self.bedrooms : bedrooms // ignore: cast_nullable_to_non_nullable
+as int?,kittaNumber: freezed == kittaNumber ? _self.kittaNumber : kittaNumber // ignore: cast_nullable_to_non_nullable
+as String?,bedrooms: freezed == bedrooms ? _self.bedrooms : bedrooms // ignore: cast_nullable_to_non_nullable
 as int?,bathrooms: freezed == bathrooms ? _self.bathrooms : bathrooms // ignore: cast_nullable_to_non_nullable
 as int?,status: null == status ? _self.status : status // ignore: cast_nullable_to_non_nullable
 as ListingStatus,rejectionReason: freezed == rejectionReason ? _self.rejectionReason : rejectionReason // ignore: cast_nullable_to_non_nullable
@@ -188,10 +194,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String id,  String sellerId,  PropertyType propertyType,  ListingPurpose listingPurpose,  String title,  int priceNpr,  String district,  String city,  String? description,  double? areaSqm,  int? areaRopani,  int? areaAana,  int? areaPaisa,  int? areaDam,  int? areaBigha,  int? areaKattha,  int? areaDhur,  String? ward,  int? roadAccessFt,  int? bedrooms,  int? bathrooms,  ListingStatus status,  String? rejectionReason,  DateTime? createdAt,  DateTime? updatedAt,  String? reviewedBy,  DateTime? reviewedAt)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String id,  String sellerId,  PropertyType propertyType,  ListingPurpose listingPurpose,  String title,  int priceNpr,  String district,  String city,  String? description,  double? areaSqm,  int? areaRopani,  int? areaAana,  int? areaPaisa,  int? areaDam,  int? areaBigha,  int? areaKattha,  int? areaDhur,  String? ward,  int? roadAccessFt,  String? kittaNumber,  int? bedrooms,  int? bathrooms,  ListingStatus status,  String? rejectionReason,  DateTime? createdAt,  DateTime? updatedAt,  String? reviewedBy,  DateTime? reviewedAt)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _Listing() when $default != null:
-return $default(_that.id,_that.sellerId,_that.propertyType,_that.listingPurpose,_that.title,_that.priceNpr,_that.district,_that.city,_that.description,_that.areaSqm,_that.areaRopani,_that.areaAana,_that.areaPaisa,_that.areaDam,_that.areaBigha,_that.areaKattha,_that.areaDhur,_that.ward,_that.roadAccessFt,_that.bedrooms,_that.bathrooms,_that.status,_that.rejectionReason,_that.createdAt,_that.updatedAt,_that.reviewedBy,_that.reviewedAt);case _:
+return $default(_that.id,_that.sellerId,_that.propertyType,_that.listingPurpose,_that.title,_that.priceNpr,_that.district,_that.city,_that.description,_that.areaSqm,_that.areaRopani,_that.areaAana,_that.areaPaisa,_that.areaDam,_that.areaBigha,_that.areaKattha,_that.areaDhur,_that.ward,_that.roadAccessFt,_that.kittaNumber,_that.bedrooms,_that.bathrooms,_that.status,_that.rejectionReason,_that.createdAt,_that.updatedAt,_that.reviewedBy,_that.reviewedAt);case _:
   return orElse();
 
 }
@@ -209,10 +215,10 @@ return $default(_that.id,_that.sellerId,_that.propertyType,_that.listingPurpose,
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String id,  String sellerId,  PropertyType propertyType,  ListingPurpose listingPurpose,  String title,  int priceNpr,  String district,  String city,  String? description,  double? areaSqm,  int? areaRopani,  int? areaAana,  int? areaPaisa,  int? areaDam,  int? areaBigha,  int? areaKattha,  int? areaDhur,  String? ward,  int? roadAccessFt,  int? bedrooms,  int? bathrooms,  ListingStatus status,  String? rejectionReason,  DateTime? createdAt,  DateTime? updatedAt,  String? reviewedBy,  DateTime? reviewedAt)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String id,  String sellerId,  PropertyType propertyType,  ListingPurpose listingPurpose,  String title,  int priceNpr,  String district,  String city,  String? description,  double? areaSqm,  int? areaRopani,  int? areaAana,  int? areaPaisa,  int? areaDam,  int? areaBigha,  int? areaKattha,  int? areaDhur,  String? ward,  int? roadAccessFt,  String? kittaNumber,  int? bedrooms,  int? bathrooms,  ListingStatus status,  String? rejectionReason,  DateTime? createdAt,  DateTime? updatedAt,  String? reviewedBy,  DateTime? reviewedAt)  $default,) {final _that = this;
 switch (_that) {
 case _Listing():
-return $default(_that.id,_that.sellerId,_that.propertyType,_that.listingPurpose,_that.title,_that.priceNpr,_that.district,_that.city,_that.description,_that.areaSqm,_that.areaRopani,_that.areaAana,_that.areaPaisa,_that.areaDam,_that.areaBigha,_that.areaKattha,_that.areaDhur,_that.ward,_that.roadAccessFt,_that.bedrooms,_that.bathrooms,_that.status,_that.rejectionReason,_that.createdAt,_that.updatedAt,_that.reviewedBy,_that.reviewedAt);}
+return $default(_that.id,_that.sellerId,_that.propertyType,_that.listingPurpose,_that.title,_that.priceNpr,_that.district,_that.city,_that.description,_that.areaSqm,_that.areaRopani,_that.areaAana,_that.areaPaisa,_that.areaDam,_that.areaBigha,_that.areaKattha,_that.areaDhur,_that.ward,_that.roadAccessFt,_that.kittaNumber,_that.bedrooms,_that.bathrooms,_that.status,_that.rejectionReason,_that.createdAt,_that.updatedAt,_that.reviewedBy,_that.reviewedAt);}
 }
 /// A variant of `when` that fallback to returning `null`
 ///
@@ -226,10 +232,10 @@ return $default(_that.id,_that.sellerId,_that.propertyType,_that.listingPurpose,
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String id,  String sellerId,  PropertyType propertyType,  ListingPurpose listingPurpose,  String title,  int priceNpr,  String district,  String city,  String? description,  double? areaSqm,  int? areaRopani,  int? areaAana,  int? areaPaisa,  int? areaDam,  int? areaBigha,  int? areaKattha,  int? areaDhur,  String? ward,  int? roadAccessFt,  int? bedrooms,  int? bathrooms,  ListingStatus status,  String? rejectionReason,  DateTime? createdAt,  DateTime? updatedAt,  String? reviewedBy,  DateTime? reviewedAt)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String id,  String sellerId,  PropertyType propertyType,  ListingPurpose listingPurpose,  String title,  int priceNpr,  String district,  String city,  String? description,  double? areaSqm,  int? areaRopani,  int? areaAana,  int? areaPaisa,  int? areaDam,  int? areaBigha,  int? areaKattha,  int? areaDhur,  String? ward,  int? roadAccessFt,  String? kittaNumber,  int? bedrooms,  int? bathrooms,  ListingStatus status,  String? rejectionReason,  DateTime? createdAt,  DateTime? updatedAt,  String? reviewedBy,  DateTime? reviewedAt)?  $default,) {final _that = this;
 switch (_that) {
 case _Listing() when $default != null:
-return $default(_that.id,_that.sellerId,_that.propertyType,_that.listingPurpose,_that.title,_that.priceNpr,_that.district,_that.city,_that.description,_that.areaSqm,_that.areaRopani,_that.areaAana,_that.areaPaisa,_that.areaDam,_that.areaBigha,_that.areaKattha,_that.areaDhur,_that.ward,_that.roadAccessFt,_that.bedrooms,_that.bathrooms,_that.status,_that.rejectionReason,_that.createdAt,_that.updatedAt,_that.reviewedBy,_that.reviewedAt);case _:
+return $default(_that.id,_that.sellerId,_that.propertyType,_that.listingPurpose,_that.title,_that.priceNpr,_that.district,_that.city,_that.description,_that.areaSqm,_that.areaRopani,_that.areaAana,_that.areaPaisa,_that.areaDam,_that.areaBigha,_that.areaKattha,_that.areaDhur,_that.ward,_that.roadAccessFt,_that.kittaNumber,_that.bedrooms,_that.bathrooms,_that.status,_that.rejectionReason,_that.createdAt,_that.updatedAt,_that.reviewedBy,_that.reviewedAt);case _:
   return null;
 
 }
@@ -241,7 +247,7 @@ return $default(_that.id,_that.sellerId,_that.propertyType,_that.listingPurpose,
 
 @JsonSerializable(fieldRename: FieldRename.snake)
 class _Listing implements Listing {
-  const _Listing({required this.id, required this.sellerId, required this.propertyType, required this.listingPurpose, required this.title, required this.priceNpr, required this.district, required this.city, this.description, this.areaSqm, this.areaRopani, this.areaAana, this.areaPaisa, this.areaDam, this.areaBigha, this.areaKattha, this.areaDhur, this.ward, this.roadAccessFt, this.bedrooms, this.bathrooms, this.status = ListingStatus.draft, this.rejectionReason, this.createdAt, this.updatedAt, this.reviewedBy, this.reviewedAt});
+  const _Listing({required this.id, required this.sellerId, required this.propertyType, required this.listingPurpose, required this.title, required this.priceNpr, required this.district, required this.city, this.description, this.areaSqm, this.areaRopani, this.areaAana, this.areaPaisa, this.areaDam, this.areaBigha, this.areaKattha, this.areaDhur, this.ward, this.roadAccessFt, this.kittaNumber, this.bedrooms, this.bathrooms, this.status = ListingStatus.draft, this.rejectionReason, this.createdAt, this.updatedAt, this.reviewedBy, this.reviewedAt});
   factory _Listing.fromJson(Map<String, dynamic> json) => _$ListingFromJson(json);
 
 @override final  String id;
@@ -263,6 +269,12 @@ class _Listing implements Listing {
 @override final  int? areaDhur;
 @override final  String? ward;
 @override final  int? roadAccessFt;
+/// Land parcel (kitta) number as the seller wrote it (HYA-300).
+///
+/// Null means "not provided" and is itself a review signal; duplicates
+/// across listings are a fraud signal. Free text: numbering varies by
+/// district, so the server only trims and length-caps it.
+@override final  String? kittaNumber;
 /// Bedroom count.
 ///
 /// Null rather than 0 for land and commercial premises, which have none.
@@ -291,18 +303,18 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-    return identical(this, other) || (other.runtimeType == runtimeType&&other is _Listing&&(identical(other.id, id) || other.id == id)&&(identical(other.sellerId, sellerId) || other.sellerId == sellerId)&&(identical(other.propertyType, propertyType) || other.propertyType == propertyType)&&(identical(other.listingPurpose, listingPurpose) || other.listingPurpose == listingPurpose)&&(identical(other.title, title) || other.title == title)&&(identical(other.priceNpr, priceNpr) || other.priceNpr == priceNpr)&&(identical(other.district, district) || other.district == district)&&(identical(other.city, city) || other.city == city)&&(identical(other.description, description) || other.description == description)&&(identical(other.areaSqm, areaSqm) || other.areaSqm == areaSqm)&&(identical(other.areaRopani, areaRopani) || other.areaRopani == areaRopani)&&(identical(other.areaAana, areaAana) || other.areaAana == areaAana)&&(identical(other.areaPaisa, areaPaisa) || other.areaPaisa == areaPaisa)&&(identical(other.areaDam, areaDam) || other.areaDam == areaDam)&&(identical(other.areaBigha, areaBigha) || other.areaBigha == areaBigha)&&(identical(other.areaKattha, areaKattha) || other.areaKattha == areaKattha)&&(identical(other.areaDhur, areaDhur) || other.areaDhur == areaDhur)&&(identical(other.ward, ward) || other.ward == ward)&&(identical(other.roadAccessFt, roadAccessFt) || other.roadAccessFt == roadAccessFt)&&(identical(other.bedrooms, bedrooms) || other.bedrooms == bedrooms)&&(identical(other.bathrooms, bathrooms) || other.bathrooms == bathrooms)&&(identical(other.status, status) || other.status == status)&&(identical(other.rejectionReason, rejectionReason) || other.rejectionReason == rejectionReason)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt)&&(identical(other.updatedAt, updatedAt) || other.updatedAt == updatedAt)&&(identical(other.reviewedBy, reviewedBy) || other.reviewedBy == reviewedBy)&&(identical(other.reviewedAt, reviewedAt) || other.reviewedAt == reviewedAt));
+    return identical(this, other) || (other.runtimeType == runtimeType&&other is _Listing&&(identical(other.id, id) || other.id == id)&&(identical(other.sellerId, sellerId) || other.sellerId == sellerId)&&(identical(other.propertyType, propertyType) || other.propertyType == propertyType)&&(identical(other.listingPurpose, listingPurpose) || other.listingPurpose == listingPurpose)&&(identical(other.title, title) || other.title == title)&&(identical(other.priceNpr, priceNpr) || other.priceNpr == priceNpr)&&(identical(other.district, district) || other.district == district)&&(identical(other.city, city) || other.city == city)&&(identical(other.description, description) || other.description == description)&&(identical(other.areaSqm, areaSqm) || other.areaSqm == areaSqm)&&(identical(other.areaRopani, areaRopani) || other.areaRopani == areaRopani)&&(identical(other.areaAana, areaAana) || other.areaAana == areaAana)&&(identical(other.areaPaisa, areaPaisa) || other.areaPaisa == areaPaisa)&&(identical(other.areaDam, areaDam) || other.areaDam == areaDam)&&(identical(other.areaBigha, areaBigha) || other.areaBigha == areaBigha)&&(identical(other.areaKattha, areaKattha) || other.areaKattha == areaKattha)&&(identical(other.areaDhur, areaDhur) || other.areaDhur == areaDhur)&&(identical(other.ward, ward) || other.ward == ward)&&(identical(other.roadAccessFt, roadAccessFt) || other.roadAccessFt == roadAccessFt)&&(identical(other.kittaNumber, kittaNumber) || other.kittaNumber == kittaNumber)&&(identical(other.bedrooms, bedrooms) || other.bedrooms == bedrooms)&&(identical(other.bathrooms, bathrooms) || other.bathrooms == bathrooms)&&(identical(other.status, status) || other.status == status)&&(identical(other.rejectionReason, rejectionReason) || other.rejectionReason == rejectionReason)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt)&&(identical(other.updatedAt, updatedAt) || other.updatedAt == updatedAt)&&(identical(other.reviewedBy, reviewedBy) || other.reviewedBy == reviewedBy)&&(identical(other.reviewedAt, reviewedAt) || other.reviewedAt == reviewedAt));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
 int get hashCode {
-    return Object.hashAll([runtimeType,id,sellerId,propertyType,listingPurpose,title,priceNpr,district,city,description,areaSqm,areaRopani,areaAana,areaPaisa,areaDam,areaBigha,areaKattha,areaDhur,ward,roadAccessFt,bedrooms,bathrooms,status,rejectionReason,createdAt,updatedAt,reviewedBy,reviewedAt]);
+    return Object.hashAll([runtimeType,id,sellerId,propertyType,listingPurpose,title,priceNpr,district,city,description,areaSqm,areaRopani,areaAana,areaPaisa,areaDam,areaBigha,areaKattha,areaDhur,ward,roadAccessFt,kittaNumber,bedrooms,bathrooms,status,rejectionReason,createdAt,updatedAt,reviewedBy,reviewedAt]);
 }
 
 @override
 String toString() {
-    return 'Listing(id: $id, sellerId: $sellerId, propertyType: $propertyType, listingPurpose: $listingPurpose, title: $title, priceNpr: $priceNpr, district: $district, city: $city, description: $description, areaSqm: $areaSqm, areaRopani: $areaRopani, areaAana: $areaAana, areaPaisa: $areaPaisa, areaDam: $areaDam, areaBigha: $areaBigha, areaKattha: $areaKattha, areaDhur: $areaDhur, ward: $ward, roadAccessFt: $roadAccessFt, bedrooms: $bedrooms, bathrooms: $bathrooms, status: $status, rejectionReason: $rejectionReason, createdAt: $createdAt, updatedAt: $updatedAt, reviewedBy: $reviewedBy, reviewedAt: $reviewedAt)';
+    return 'Listing(id: $id, sellerId: $sellerId, propertyType: $propertyType, listingPurpose: $listingPurpose, title: $title, priceNpr: $priceNpr, district: $district, city: $city, description: $description, areaSqm: $areaSqm, areaRopani: $areaRopani, areaAana: $areaAana, areaPaisa: $areaPaisa, areaDam: $areaDam, areaBigha: $areaBigha, areaKattha: $areaKattha, areaDhur: $areaDhur, ward: $ward, roadAccessFt: $roadAccessFt, kittaNumber: $kittaNumber, bedrooms: $bedrooms, bathrooms: $bathrooms, status: $status, rejectionReason: $rejectionReason, createdAt: $createdAt, updatedAt: $updatedAt, reviewedBy: $reviewedBy, reviewedAt: $reviewedAt)';
 }
 
 
@@ -313,7 +325,7 @@ abstract mixin class _$ListingCopyWith<$Res> implements $ListingCopyWith<$Res> {
   factory _$ListingCopyWith(_Listing value, $Res Function(_Listing) _then) = __$ListingCopyWithImpl;
 @override @useResult
 $Res call({
- String id, String sellerId, PropertyType propertyType, ListingPurpose listingPurpose, String title, int priceNpr, String district, String city, String? description, double? areaSqm, int? areaRopani, int? areaAana, int? areaPaisa, int? areaDam, int? areaBigha, int? areaKattha, int? areaDhur, String? ward, int? roadAccessFt, int? bedrooms, int? bathrooms, ListingStatus status, String? rejectionReason, DateTime? createdAt, DateTime? updatedAt, String? reviewedBy, DateTime? reviewedAt
+ String id, String sellerId, PropertyType propertyType, ListingPurpose listingPurpose, String title, int priceNpr, String district, String city, String? description, double? areaSqm, int? areaRopani, int? areaAana, int? areaPaisa, int? areaDam, int? areaBigha, int? areaKattha, int? areaDhur, String? ward, int? roadAccessFt, String? kittaNumber, int? bedrooms, int? bathrooms, ListingStatus status, String? rejectionReason, DateTime? createdAt, DateTime? updatedAt, String? reviewedBy, DateTime? reviewedAt
 });
 
 
@@ -330,7 +342,7 @@ class __$ListingCopyWithImpl<$Res>
 
 /// Create a copy of Listing
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? sellerId = null,Object? propertyType = null,Object? listingPurpose = null,Object? title = null,Object? priceNpr = null,Object? district = null,Object? city = null,Object? description = freezed,Object? areaSqm = freezed,Object? areaRopani = freezed,Object? areaAana = freezed,Object? areaPaisa = freezed,Object? areaDam = freezed,Object? areaBigha = freezed,Object? areaKattha = freezed,Object? areaDhur = freezed,Object? ward = freezed,Object? roadAccessFt = freezed,Object? bedrooms = freezed,Object? bathrooms = freezed,Object? status = null,Object? rejectionReason = freezed,Object? createdAt = freezed,Object? updatedAt = freezed,Object? reviewedBy = freezed,Object? reviewedAt = freezed,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? sellerId = null,Object? propertyType = null,Object? listingPurpose = null,Object? title = null,Object? priceNpr = null,Object? district = null,Object? city = null,Object? description = freezed,Object? areaSqm = freezed,Object? areaRopani = freezed,Object? areaAana = freezed,Object? areaPaisa = freezed,Object? areaDam = freezed,Object? areaBigha = freezed,Object? areaKattha = freezed,Object? areaDhur = freezed,Object? ward = freezed,Object? roadAccessFt = freezed,Object? kittaNumber = freezed,Object? bedrooms = freezed,Object? bathrooms = freezed,Object? status = null,Object? rejectionReason = freezed,Object? createdAt = freezed,Object? updatedAt = freezed,Object? reviewedBy = freezed,Object? reviewedAt = freezed,}) {
   return _then(_Listing(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as String,sellerId: null == sellerId ? _self.sellerId : sellerId // ignore: cast_nullable_to_non_nullable
@@ -351,7 +363,8 @@ as int?,areaKattha: freezed == areaKattha ? _self.areaKattha : areaKattha // ign
 as int?,areaDhur: freezed == areaDhur ? _self.areaDhur : areaDhur // ignore: cast_nullable_to_non_nullable
 as int?,ward: freezed == ward ? _self.ward : ward // ignore: cast_nullable_to_non_nullable
 as String?,roadAccessFt: freezed == roadAccessFt ? _self.roadAccessFt : roadAccessFt // ignore: cast_nullable_to_non_nullable
-as int?,bedrooms: freezed == bedrooms ? _self.bedrooms : bedrooms // ignore: cast_nullable_to_non_nullable
+as int?,kittaNumber: freezed == kittaNumber ? _self.kittaNumber : kittaNumber // ignore: cast_nullable_to_non_nullable
+as String?,bedrooms: freezed == bedrooms ? _self.bedrooms : bedrooms // ignore: cast_nullable_to_non_nullable
 as int?,bathrooms: freezed == bathrooms ? _self.bathrooms : bathrooms // ignore: cast_nullable_to_non_nullable
 as int?,status: null == status ? _self.status : status // ignore: cast_nullable_to_non_nullable
 as ListingStatus,rejectionReason: freezed == rejectionReason ? _self.rejectionReason : rejectionReason // ignore: cast_nullable_to_non_nullable

@@ -166,6 +166,16 @@
   },
   "fieldRoadAccess": "Road access",
 
+  "@fieldKitta": {
+    "description": "Land parcel (kitta) number field label."
+  },
+  "fieldKitta": "Kitta number",
+
+  "@fieldKittaHint": {
+    "description": "Kitta field hint: where to find it."
+  },
+  "fieldKittaHint": "As on your lalpurja. Helps verify your listing faster.",
+
   "@fieldOptional": {
     "description": "Optional-field hint."
   },

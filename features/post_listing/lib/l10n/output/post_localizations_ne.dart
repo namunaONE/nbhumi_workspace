@@ -1,5 +1,6 @@
 // ignore: unused_import
 import 'package:intl/intl.dart' as intl;
+
 import 'post_localizations.dart';
 
 // ignore_for_file: type=lint
@@ -41,7 +42,8 @@ class AppLocalizationsNe extends AppLocalizations {
   String get districtsUnavailableTitle => 'जिल्ला लोड गर्न सकिएन';
 
   @override
-  String get districtsUnavailableBody => 'इन्टरनेट जडान जाँच गरी पुनः प्रयास गर्नुहोस्।';
+  String get districtsUnavailableBody =>
+      'इन्टरनेट जडान जाँच गरी पुनः प्रयास गर्नुहोस्।';
 
   @override
   String get sentForReview => 'समीक्षाका लागि पठाइयो। स्वीकृत भएपछि देखिनेछ।';
@@ -65,7 +67,8 @@ class AppLocalizationsNe extends AppLocalizations {
   String get locationTitle => 'यो कहाँ छ?';
 
   @override
-  String get locationSubtitle => 'जिल्लाले क्षेत्रफल रोपनी वा बिघामा हाल्ने भन्ने तय गर्छ।';
+  String get locationSubtitle =>
+      'जिल्लाले क्षेत्रफल रोपनी वा बिघामा हाल्ने भन्ने तय गर्छ।';
 
   @override
   String get fieldDistrict => 'जिल्ला';
@@ -85,10 +88,12 @@ class AppLocalizationsNe extends AppLocalizations {
   }
 
   @override
-  String get wardHint => 'वडा नम्बर १ देखि ३३ सम्म हुन्छ। नेपालमा सबैभन्दा धेरै वडा भएको स्थानीय तह पोखरा महानगरपालिका हो, ३३ वटा।';
+  String get wardHint =>
+      'वडा नम्बर १ देखि ३३ सम्म हुन्छ। नेपालमा सबैभन्दा धेरै वडा भएको स्थानीय तह पोखरा महानगरपालिका हो, ३३ वटा।';
 
   @override
-  String get wardNoMunicipality => 'पहिले नगरपालिका छान्नुहोस्, अनि वडा छान्नुहोस्।';
+  String get wardNoMunicipality =>
+      'पहिले नगरपालिका छान्नुहोस्, अनि वडा छान्नुहोस्।';
 
   @override
   String get municipalitiesLoading => 'नगरपालिकाहरू';
@@ -99,13 +104,21 @@ class AppLocalizationsNe extends AppLocalizations {
   }
 
   @override
-  String get municipalitiesError => 'नगरपालिका लोड गर्न सकिएन। इन्टरनेट जडान जाँच गर्नुहोस्।';
+  String get municipalitiesError =>
+      'नगरपालिका लोड गर्न सकिएन। इन्टरनेट जडान जाँच गर्नुहोस्।';
 
   @override
   String get retryAction => 'पुनः प्रयास';
 
   @override
   String get fieldRoadAccess => 'बाटोको पहुँच';
+
+  @override
+  String get fieldKitta => 'कित्ता नम्बर';
+
+  @override
+  String get fieldKittaHint =>
+      'लालपुर्जामा भएको। छिटो प्रमाणीकरणमा मद्दत गर्छ।';
 
   @override
   String get fieldOptional => 'वैकल्पिक';
@@ -145,7 +158,8 @@ class AppLocalizationsNe extends AppLocalizations {
   }
 
   @override
-  String get specsNoDistrict => 'पहिले जिल्ला छान्नुहोस्। पहाडी जिल्लामा रोपनी र तराईमा बिघामा क्षेत्रफल हालिन्छ।';
+  String get specsNoDistrict =>
+      'पहिले जिल्ला छान्नुहोस्। पहाडी जिल्लामा रोपनी र तराईमा बिघामा क्षेत्रफल हालिन्छ।';
 
   @override
   String get specsRooms => 'कोठाहरू';
@@ -176,7 +190,8 @@ class AppLocalizationsNe extends AppLocalizations {
   String get photosTitle => 'फोटोहरू';
 
   @override
-  String get photosSubtitle => 'कम्तीमा एउटा थप्नुहोस्। फोटो भएका विज्ञापनमा धेरै सोधपुछ आउँछ।';
+  String get photosSubtitle =>
+      'कम्तीमा एउटा थप्नुहोस्। फोटो भएका विज्ञापनमा धेरै सोधपुछ आउँछ।';
 
   @override
   String get removePhoto => 'फोटो हटाउनुहोस्';
@@ -223,7 +238,8 @@ class AppLocalizationsNe extends AppLocalizations {
   }
 
   @override
-  String get reviewContactNote => 'खरीददारले साइन इन गरेर अनुरोध गरेपछि मात्र तपाईंको सम्पर्क विवरण देख्छन्, त्यसैले तपाईंको नम्बर विज्ञापनमा कहिल्यै प्रकाशित हुँदैन।';
+  String get reviewContactNote =>
+      'खरीददारले साइन इन गरेर अनुरोध गरेपछि मात्र तपाईंको सम्पर्क विवरण देख्छन्, त्यसैले तपाईंको नम्बर विज्ञापनमा कहिल्यै प्रकाशित हुँदैन।';
 
   @override
   String get reviewSubmit => 'समीक्षाका लागि पेस गर्नुहोस्';
@@ -265,10 +281,12 @@ class AppLocalizationsNe extends AppLocalizations {
   }
 
   @override
-  String get areaWrongHill => 'यो जिल्लामा क्षेत्रफल पहाडी एकाइ (रोपनी, आना, पैसा, दाम) मा हुन्छ, बिघामा होइन';
+  String get areaWrongHill =>
+      'यो जिल्लामा क्षेत्रफल पहाडी एकाइ (रोपनी, आना, पैसा, दाम) मा हुन्छ, बिघामा होइन';
 
   @override
-  String get areaWrongTerai => 'यो जिल्लामा क्षेत्रफल तराई एकाइ (बिघा, कठ्ठा, धुर) मा हुन्छ, रोपनीमा होइन';
+  String get areaWrongTerai =>
+      'यो जिल्लामा क्षेत्रफल तराई एकाइ (बिघा, कठ्ठा, धुर) मा हुन्छ, रोपनीमा होइन';
 
   @override
   String get areaHillEmpty => 'रोपनी, आना, पैसा वा दाममा क्षेत्रफल हाल्नुहोस्';

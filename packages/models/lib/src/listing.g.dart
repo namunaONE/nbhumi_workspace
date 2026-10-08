@@ -26,6 +26,7 @@ _Listing _$ListingFromJson(Map<String, dynamic> json) => _Listing(
   areaDhur: (json['area_dhur'] as num?)?.toInt(),
   ward: json['ward'] as String?,
   roadAccessFt: (json['road_access_ft'] as num?)?.toInt(),
+  kittaNumber: json['kitta_number'] as String?,
   bedrooms: (json['bedrooms'] as num?)?.toInt(),
   bathrooms: (json['bathrooms'] as num?)?.toInt(),
   status:
@@ -64,6 +65,7 @@ Map<String, dynamic> _$ListingToJson(_Listing instance) => <String, dynamic>{
   'area_dhur': instance.areaDhur,
   'ward': instance.ward,
   'road_access_ft': instance.roadAccessFt,
+  'kitta_number': instance.kittaNumber,
   'bedrooms': instance.bedrooms,
   'bathrooms': instance.bathrooms,
   'status': _$ListingStatusEnumMap[instance.status]!,

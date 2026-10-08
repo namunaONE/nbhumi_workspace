@@ -1,5 +1,6 @@
 // ignore: unused_import
 import 'package:intl/intl.dart' as intl;
+
 import 'post_localizations.dart';
 
 // ignore_for_file: type=lint
@@ -65,7 +66,8 @@ class AppLocalizationsEn extends AppLocalizations {
   String get locationTitle => 'Where is it?';
 
   @override
-  String get locationSubtitle => 'The district decides whether area is entered in ropani or in bigha.';
+  String get locationSubtitle =>
+      'The district decides whether area is entered in ropani or in bigha.';
 
   @override
   String get fieldDistrict => 'District';
@@ -85,10 +87,12 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
-  String get wardHint => 'Ward numbers run from 1 to 33. Pokhara Metropolitan City has the most wards of any local body in Nepal, at 33.';
+  String get wardHint =>
+      'Ward numbers run from 1 to 33. Pokhara Metropolitan City has the most wards of any local body in Nepal, at 33.';
 
   @override
-  String get wardNoMunicipality => 'Choose a municipality first, then pick its ward.';
+  String get wardNoMunicipality =>
+      'Choose a municipality first, then pick its ward.';
 
   @override
   String get municipalitiesLoading => 'Municipalities';
@@ -99,13 +103,21 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
-  String get municipalitiesError => 'Could not load municipalities. Check your connection.';
+  String get municipalitiesError =>
+      'Could not load municipalities. Check your connection.';
 
   @override
   String get retryAction => 'Retry';
 
   @override
   String get fieldRoadAccess => 'Road access';
+
+  @override
+  String get fieldKitta => 'Kitta number';
+
+  @override
+  String get fieldKittaHint =>
+      'As on your lalpurja. Helps verify your listing faster.';
 
   @override
   String get fieldOptional => 'Optional';
@@ -145,7 +157,8 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
-  String get specsNoDistrict => 'Choose a district first. Area is entered in ropani for hill districts and in bigha for terai districts.';
+  String get specsNoDistrict =>
+      'Choose a district first. Area is entered in ropani for hill districts and in bigha for terai districts.';
 
   @override
   String get specsRooms => 'Rooms';
@@ -176,7 +189,8 @@ class AppLocalizationsEn extends AppLocalizations {
   String get photosTitle => 'Photos';
 
   @override
-  String get photosSubtitle => 'Add at least one. Listings with photos get far more enquiries.';
+  String get photosSubtitle =>
+      'Add at least one. Listings with photos get far more enquiries.';
 
   @override
   String get removePhoto => 'Remove photo';
@@ -185,7 +199,8 @@ class AppLocalizationsEn extends AppLocalizations {
   String get reviewTitle => 'Check your listing';
 
   @override
-  String get reviewSubtitle => 'It will be reviewed before it appears publicly.';
+  String get reviewSubtitle =>
+      'It will be reviewed before it appears publicly.';
 
   @override
   String get reviewType => 'Type';
@@ -223,7 +238,8 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
-  String get reviewContactNote => 'Buyers see your contact details only after signing in and requesting them, so your number is never published on the listing.';
+  String get reviewContactNote =>
+      'Buyers see your contact details only after signing in and requesting them, so your number is never published on the listing.';
 
   @override
   String get reviewSubmit => 'Submit for review';
@@ -265,10 +281,12 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
-  String get areaWrongHill => 'This district measures area in hill units (ropani, aana, paisa, dam), not bigha';
+  String get areaWrongHill =>
+      'This district measures area in hill units (ropani, aana, paisa, dam), not bigha';
 
   @override
-  String get areaWrongTerai => 'This district measures area in terai units (bigha, kattha, dhur), not ropani';
+  String get areaWrongTerai =>
+      'This district measures area in terai units (bigha, kattha, dhur), not ropani';
 
   @override
   String get areaHillEmpty => 'Enter the area in ropani, aana, paisa or dam';

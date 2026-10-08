@@ -182,6 +182,10 @@ class ListingWizard extends _$ListingWizard {
   void setRoadAccessFt(String value) =>
       state = state.copyWith(roadAccessFt: value);
 
+  /// Records the land parcel (kitta) number. Optional (HYA-300).
+  void setKittaNumber(String value) =>
+      state = state.copyWith(kittaNumber: value);
+
   /// Records a hill or terai area unit by field name.
   ///
   /// One method rather than seven, because the steps pass a field name from a
@@ -259,12 +263,14 @@ class ListingWizard extends _$ListingWizard {
 
     for (final photo in picked) {
       try {
-        final url = await repository.uploadListingPhoto(
+        final upload = await repository.uploadListingPhoto(
           userId: userId,
           bytes: photo.bytes,
           filename: photo.filename,
         );
-        settled.add(WizardPhoto(url: url));
+        settled.add(
+          WizardPhoto(url: upload.url, storagePath: upload.storagePath),
+        );
       } on AppException catch (e) {
         settled.add(WizardPhoto(url: '', error: e));
       }
@@ -309,7 +315,7 @@ class ListingWizard extends _$ListingWizard {
         );
       }
 
-      await repository.attachListingPhotos(draftId, state.uploadedPhotoUrls);
+      await repository.attachListingPhotos(draftId, state.uploadedPhotos);
       await repository.updateListing(
         listingId: draftId,
         status: ListingStatus.pendingReview,
@@ -349,6 +355,7 @@ class ListingWizard extends _$ListingWizard {
       city: state.city.trim(),
       ward: state.ward.trim().isEmpty ? null : state.ward.trim(),
       roadAccessFt: int.tryParse(state.roadAccessFt.trim()),
+      kittaNumber: _nullIfBlank(state.kittaNumber),
       areaSqm: sqm,
       areaRopani: state.usesHillUnits ? _intOrNull(state.areaRopani) : null,
       areaAana: state.usesHillUnits ? _intOrNull(state.areaAana) : null,

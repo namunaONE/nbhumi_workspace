@@ -116,6 +116,13 @@ sealed class Listing with _$Listing {
     String? ward,
     int? roadAccessFt,
 
+    /// Land parcel (kitta) number as the seller wrote it (HYA-300).
+    ///
+    /// Null means "not provided" and is itself a review signal; duplicates
+    /// across listings are a fraud signal. Free text: numbering varies by
+    /// district, so the server only trims and length-caps it.
+    String? kittaNumber,
+
     /// Bedroom count.
     ///
     /// Null rather than 0 for land and commercial premises, which have none.

@@ -8,6 +8,7 @@ Listing _listing({
   int? areaAana = 5,
   int? areaPaisa = 4,
   int? areaBigha,
+  String? kittaNumber,
 }) =>
     Listing(
       id: 'l1',
@@ -23,6 +24,7 @@ Listing _listing({
       areaBigha: areaBigha,
       bedrooms: bedrooms,
       bathrooms: bathrooms,
+      kittaNumber: kittaNumber,
     );
 
 void main() {
@@ -81,6 +83,44 @@ void main() {
       );
     });
 
+    test('sends the kitta number when present, null when absent', () {
+      // HYA-300: feeds the duplicate/missing-kitta signals. Absent is null,
+      // never '', so the server reads it as "not provided".
+      expect(
+        ListingRepository.buildCreateParams(
+          _listing(kittaNumber: '12-A'),
+          ListingStatus.draft,
+        )['p_kitta_number'],
+        '12-A',
+      );
+      expect(
+        ListingRepository.buildCreateParams(
+          _listing(),
+          ListingStatus.draft,
+        )['p_kitta_number'],
+        isNull,
+      );
+    });
+
+    test('sends the kitta number when present, null when absent', () {
+      // HYA-300: feeds the duplicate/missing-kitta signals. Absent is null,
+      // never '', so the server reads it as "not provided".
+      expect(
+        ListingRepository.buildCreateParams(
+          _listing(kittaNumber: '12-A'),
+          ListingStatus.draft,
+        )['p_kitta_number'],
+        '12-A',
+      );
+      expect(
+        ListingRepository.buildCreateParams(
+          _listing(),
+          ListingStatus.draft,
+        )['p_kitta_number'],
+        isNull,
+      );
+    });
+
     test('covers every writable column on the table', () {
       // The regression guard. G-12 and G-13 both survived for months because a
       // column existed with no matching parameter, and nothing failed loudly:
@@ -110,6 +150,7 @@ void main() {
           'p_city',
           'p_ward',
           'p_road_access_ft',
+          'p_kitta_number',
           'p_bedrooms',
           'p_bathrooms',
           'p_status',
@@ -171,6 +212,36 @@ void main() {
       expect(params['p_status'], isNull);
     });
 
+    test('sends the kitta number when present, null when absent', () {
+      final params = ListingRepository.buildUpdateParams(
+        'l1',
+        _listing(kittaNumber: '12-A'),
+        null,
+      );
+
+      expect(params['p_kitta_number'], '12-A');
+      expect(
+        ListingRepository.buildUpdateParams('l1', _listing(), null)[
+            'p_kitta_number'],
+        isNull,
+      );
+    });
+
+    test('sends the kitta number when present, null when absent', () {
+      final params = ListingRepository.buildUpdateParams(
+        'l1',
+        _listing(kittaNumber: '12-A'),
+        null,
+      );
+
+      expect(params['p_kitta_number'], '12-A');
+      expect(
+        ListingRepository.buildUpdateParams('l1', _listing(), null)[
+            'p_kitta_number'],
+        isNull,
+      );
+    });
+
     test('sends exactly the fields the update RPC can change, plus the id', () {
       // Not the same as create: v1_update_listing has no p_property_type or
       // p_listing_purpose, because a listing's type and purpose are fixed once
@@ -201,6 +272,7 @@ void main() {
           'p_city',
           'p_ward',
           'p_road_access_ft',
+          'p_kitta_number',
           'p_bedrooms',
           'p_bathrooms',
           'p_status',
