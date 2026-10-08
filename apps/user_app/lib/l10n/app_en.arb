@@ -466,5 +466,158 @@
   "@settingsThemeDark": {
     "description": "Dark theme option."
   },
-  "settingsThemeDark": "Dark"
+  "settingsThemeDark": "Dark",
+
+  "@activityTitle": {
+    "description": "Activity screen app bar and profile entry tile."
+  },
+  "activityTitle": "Activity",
+
+  "@activityEntrySubtitle": {
+    "description": "Activity entry tile subtitle."
+  },
+  "activityEntrySubtitle": "Listings, interest, reveals and updates",
+
+  "@activityGuestPrompt": {
+    "description": "Shown to signed-out visitors of the Activity screen."
+  },
+  "activityGuestPrompt": "Sign in to see your activity",
+
+  "@activityListings": {
+    "description": "Own-listings section heading."
+  },
+  "activityListings": "My listings",
+
+  "@activityListingsEmpty": {
+    "description": "Empty own-listings copy for sellers."
+  },
+  "activityListingsEmpty": "No listings yet. Post your first property.",
+
+  "@activityListingsEmptyBuyer": {
+    "description": "Empty own-listings copy for buyers."
+  },
+  "activityListingsEmptyBuyer": "Nothing posted yet.",
+
+  "@activityPostCta": {
+    "description": "Post-property CTA in empty states."
+  },
+  "activityPostCta": "Post a property",
+
+  "@activityInterest": {
+    "description": "Per-listing interest section heading."
+  },
+  "activityInterest": "Interest in my listings",
+
+  "@activityReveals": {
+    "description": "Own-reveals section heading."
+  },
+  "activityReveals": "My inquiries",
+
+  "@activityRevealsEmpty": {
+    "description": "Empty own-reveals copy."
+  },
+  "activityRevealsEmpty": "No contacts viewed yet.",
+
+  "@activityValidUntil": {
+    "description": "Reveal validity subtitle.",
+    "placeholders": {
+      "date": {
+        "type": "String",
+        "example": "12 Oct 2026"
+      }
+    }
+  },
+  "activityValidUntil": "Valid until {date}",
+
+  "@activityExpired": {
+    "description": "Expired reveal subtitle."
+  },
+  "activityExpired": "Expired — tap to refresh",
+
+  "@activityDocs": {
+    "description": "KYC documents section heading."
+  },
+  "activityDocs": "Verifications",
+
+  "@activityDocsEmpty": {
+    "description": "Empty documents copy."
+  },
+  "activityDocsEmpty": "No documents submitted yet.",
+
+  "@activityUpdates": {
+    "description": "Inbox updates section heading."
+  },
+  "activityUpdates": "Updates",
+
+  "@activityUpdatesEmpty": {
+    "description": "Empty updates copy."
+  },
+  "activityUpdatesEmpty": "No updates yet.",
+
+  "@activityRefresh": {
+    "description": "Activity refresh tooltip."
+  },
+  "activityRefresh": "Refresh activity",
+
+  "@activityUnknownListing": {
+    "description": "Fallback when a revealed listing is no longer visible."
+  },
+  "activityUnknownListing": "Listing no longer available",
+
+  "@activityViews": {
+    "description": "Reveal count fragment.",
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "3"
+      }
+    }
+  },
+  "activityViews": "{count} views",
+
+  "@activityLastViewed": {
+    "description": "Latest-view fragment.",
+    "placeholders": {
+      "date": {
+        "type": "String",
+        "example": "12 Oct 2026"
+      }
+    }
+  },
+  "activityLastViewed": "last viewed {date}",
+
+  "@activityViewAll": {
+    "description": "See-all-updates action."
+  },
+  "activityViewAll": "View all updates",
+
+  "@activityLoadFailed": {
+    "description": "Fallback when every activity source fails."
+  },
+  "activityLoadFailed": "Could not load your activity.",
+
+  "@activityStatusDraft": {
+    "description": "Draft status chip."
+  },
+  "activityStatusDraft": "Draft",
+
+  "@activityStatusPending": {
+    "description": "Pending-review status chip."
+  },
+  "activityStatusPending": "Pending review",
+
+  "@activityStatusLive": {
+    "description": "Live status chip."
+  },
+  "activityStatusLive": "Live",
+
+  "@activityStatusRejected": {
+    "description": "Rejected status chip."
+  },
+  "activityStatusRejected": "Rejected",
+
+  "@activityStatusUnpublished": {
+    "description": "Unpublished status chip."
+  },
+  "activityStatusUnpublished": "Unpublished"
 }

@@ -301,4 +301,92 @@ class AppLocalizationsNe extends AppLocalizations {
 
   @override
   String get settingsThemeDark => 'अँध्यारो';
+
+  @override
+  String get activityTitle => 'गतिविधि';
+
+  @override
+  String get activityEntrySubtitle => 'विज्ञापन, चासो, अवलोकन र अपडेटहरू';
+
+  @override
+  String get activityGuestPrompt => 'तपाईंको गतिविधि हेर्न साइन इन गर्नुहोस्';
+
+  @override
+  String get activityListings => 'मेरा विज्ञापनहरू';
+
+  @override
+  String get activityListingsEmpty =>
+      'अहिलेसम्म कुनै विज्ञापन छैन। पहिलो घरजग्गा पोस्ट गर्नुहोस्।';
+
+  @override
+  String get activityListingsEmptyBuyer => 'अहिलेसम्म केही पोस्ट छैन।';
+
+  @override
+  String get activityPostCta => 'घरजग्गा पोस्ट गर्नुहोस्';
+
+  @override
+  String get activityInterest => 'मेरा विज्ञापनमा चासो';
+
+  @override
+  String get activityReveals => 'मेरा सोधपुछहरू';
+
+  @override
+  String get activityRevealsEmpty => 'अहिलेसम्म कुनै सम्पर्क हेरिएको छैन।';
+
+  @override
+  String activityValidUntil(String date) {
+    return '$date सम्म मान्य';
+  }
+
+  @override
+  String get activityExpired => 'म्याद सकियो — नवीकरण गर्न थिच्नुहोस्';
+
+  @override
+  String get activityDocs => 'प्रमाणीकरणहरू';
+
+  @override
+  String get activityDocsEmpty => 'अहिलेसम्म कुनै कागजात पेस छैन।';
+
+  @override
+  String get activityUpdates => 'अपडेटहरू';
+
+  @override
+  String get activityUpdatesEmpty => 'अहिलेसम्म कुनै अपडेट छैन।';
+
+  @override
+  String get activityRefresh => 'गतिविधि ताजा गर्नुहोस्';
+
+  @override
+  String get activityUnknownListing => 'विज्ञापन अब उपलब्ध छैन';
+
+  @override
+  String activityViews(int count) {
+    return '$count अवलोकन';
+  }
+
+  @override
+  String activityLastViewed(String date) {
+    return 'अन्तिम अवलोकन $date';
+  }
+
+  @override
+  String get activityViewAll => 'सबै अपडेट हेर्नुहोस्';
+
+  @override
+  String get activityLoadFailed => 'तपाईंको गतिविधि लोड हुन सकेन।';
+
+  @override
+  String get activityStatusDraft => 'मस्यौदा';
+
+  @override
+  String get activityStatusPending => 'समीक्षामा';
+
+  @override
+  String get activityStatusLive => 'प्रकाशित';
+
+  @override
+  String get activityStatusRejected => 'अस्वीकृत';
+
+  @override
+  String get activityStatusUnpublished => 'अप्रकाशित';
 }

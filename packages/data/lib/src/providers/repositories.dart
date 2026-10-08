@@ -1,6 +1,8 @@
+import 'package:core/core.dart';
 import 'package:models/models.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
+import '../repositories/activity_repository.dart';
 import '../repositories/admin_repository.dart';
 import '../repositories/auth_repository.dart';
 import '../repositories/favorites_repository.dart';
@@ -62,6 +64,97 @@ AuthService authService(Ref ref) {
 @riverpod
 UserRepository userRepository(Ref ref) {
   return UserRepository(ref.watch(supabaseClientProvider));
+}
+
+/// Activity repository (HYA-297): read-only assembly for the profile
+/// Activity page — own listings, own reveals, per-listing reveal stats.
+///
+/// Separate from [listingRepository] (browse + seller writes) and from
+/// [userRepository] (profile + Privacy Act) because activity is reads across
+/// several tables with no writes at all.
+@riverpod
+ActivityRepository activityRepository(Ref ref) {
+  return ActivityRepository(ref.watch(supabaseClientProvider));
+}
+
+/// The caller's own listings, newest first, any status.
+///
+/// Drafts and rejected rows the public feed never shows still return here:
+/// RLS admits the seller on every status.
+@riverpod
+Future<List<ListingSummary>> myListings(Ref ref) {
+  return ref.watch(activityRepositoryProvider).myListings();
+}
+
+/// Seller-contact reveals the caller made, newest first.
+///
+/// Carries listing ids, titles and validity windows — no phone or email
+/// (see [MyReveal]).
+@riverpod
+Future<List<MyReveal>> myReveals(Ref ref) {
+  return ref.watch(activityRepositoryProvider).myReveals();
+}
+
+/// Per-listing reveal interest in the caller's own listings.
+///
+/// Aggregates only (count + latest timestamp, no buyer identity) via
+/// `v1_my_listing_reveals`. Empty when nothing has been viewed yet.
+@riverpod
+Future<List<ListingRevealStat>> listingRevealStats(Ref ref) {
+  return ref.watch(activityRepositoryProvider).listingRevealStats();
+}
+
+/// Everything the Activity page renders, assembled from owner-scoped reads.
+///
+/// Sources fail independently: each fallback records its [AppException]
+/// and answers an empty list, so a KYC outage never blanks the seller's
+/// listings. Only when *every* source fails does the provider rethrow the
+/// first error, and the screen answers with a retryable error state
+/// (Rule 36). An empty list from a healthy source means nothing there yet
+/// — a successful answer, not an error — so no nulls flow into the screen.
+@riverpod
+Future<ActivityPage> activityPage(Ref ref) async {
+  final errors = <AppException>[];
+  final (listings, reveals, stats, documents, updates) = await (
+    _quiet(ref.watch(myListingsProvider.future), <ListingSummary>[], errors),
+    _quiet(ref.watch(myRevealsProvider.future), <MyReveal>[], errors),
+    _quiet(
+      ref.watch(listingRevealStatsProvider.future),
+      <ListingRevealStat>[],
+      errors,
+    ),
+    _quiet(ref.watch(myKycDocumentsProvider.future), <KycDocument>[], errors),
+    _quiet(
+      ref.watch(notificationsProvider().future),
+      <AppNotification>[],
+      errors,
+    ),
+  ).wait;
+  if (errors.length == 5) throw errors.first;
+  return ActivityPage(
+    listings: listings,
+    reveals: reveals,
+    revealStats: stats,
+    documents: documents,
+    updates: updates,
+  );
+}
+
+/// Awaits [source], recording its [AppException] and answering [fallback].
+///
+/// Non-application errors propagate: the screen renders its generic failure
+/// copy for those rather than this function inventing a message.
+Future<T> _quiet<T>(
+  Future<T> source,
+  T fallback,
+  List<AppException> errors,
+) async {
+  try {
+    return await source;
+  } on AppException catch (e) {
+    errors.add(e);
+    return fallback;
+  }
 }
 
 /// Seller KYC repository (HYA-264 Tier 2, HYA-265 Tier 3).

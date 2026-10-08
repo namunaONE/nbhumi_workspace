@@ -9,6 +9,7 @@ import 'package:notifications/notifications.dart';
 import 'package:post_listing/post_listing.dart';
 import 'package:search/search.dart';
 import 'package:user_app/onboarding/onboarding_gate.dart';
+import 'package:user_app/screens/activity_screen.dart';
 import 'package:user_app/screens/home_screen.dart';
 import 'package:user_app/screens/onboarding_screen.dart';
 import 'package:user_app/screens/profile_screen.dart';
@@ -33,6 +34,7 @@ const Set<String> kPublicRoutes = <String>{
   '/saved',
   '/profile',
   '/profile/settings',
+  '/profile/activity',
   '/login',
   // The auth callback arrives while signed out by definition: the session it
   // carries does not exist yet. Gating it would bounce the user to /login
@@ -157,6 +159,11 @@ final appRouterProvider = Provider<GoRouter>((ref) {
                     path: 'settings',
                     parentNavigatorKey: rootKey,
                     builder: (context, state) => const SettingsScreen(),
+                  ),
+                  GoRoute(
+                    path: 'activity',
+                    parentNavigatorKey: rootKey,
+                    builder: (context, state) => const ActivityScreen(),
                   ),
                 ],
               ),

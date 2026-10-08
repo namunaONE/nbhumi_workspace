@@ -302,6 +302,303 @@ final class UserRepositoryProvider
 
 String _$userRepositoryHash() => r'a6928f0216eec406ea121d36fba16beec4fc6f57';
 
+/// Activity repository (HYA-297): read-only assembly for the profile
+/// Activity page — own listings, own reveals, per-listing reveal stats.
+///
+/// Separate from [listingRepository] (browse + seller writes) and from
+/// [userRepository] (profile + Privacy Act) because activity is reads across
+/// several tables with no writes at all.
+
+@ProviderFor(activityRepository)
+final activityRepositoryProvider = ActivityRepositoryProvider._();
+
+/// Activity repository (HYA-297): read-only assembly for the profile
+/// Activity page — own listings, own reveals, per-listing reveal stats.
+///
+/// Separate from [listingRepository] (browse + seller writes) and from
+/// [userRepository] (profile + Privacy Act) because activity is reads across
+/// several tables with no writes at all.
+
+final class ActivityRepositoryProvider
+    extends
+        $FunctionalProvider<
+          ActivityRepository,
+          ActivityRepository,
+          ActivityRepository
+        >
+    with $Provider<ActivityRepository> {
+  /// Activity repository (HYA-297): read-only assembly for the profile
+  /// Activity page — own listings, own reveals, per-listing reveal stats.
+  ///
+  /// Separate from [listingRepository] (browse + seller writes) and from
+  /// [userRepository] (profile + Privacy Act) because activity is reads across
+  /// several tables with no writes at all.
+  ActivityRepositoryProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'activityRepositoryProvider',
+        isAutoDispose: true,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$activityRepositoryHash();
+
+  @$internal
+  @override
+  $ProviderElement<ActivityRepository> $createElement(
+    $ProviderPointer pointer,
+  ) => $ProviderElement(pointer);
+
+  @override
+  ActivityRepository create(Ref ref) {
+    return activityRepository(ref);
+  }
+
+  /// {@macro riverpod.override_with_value}
+  Override overrideWithValue(ActivityRepository value) {
+    return $ProviderOverride(
+      origin: this,
+      providerOverride: $SyncValueProvider<ActivityRepository>(value),
+    );
+  }
+}
+
+String _$activityRepositoryHash() =>
+    r'58fe6f423c832949ae0ec71dcb3ecff22a3eed7e';
+
+/// The caller's own listings, newest first, any status.
+///
+/// Drafts and rejected rows the public feed never shows still return here:
+/// RLS admits the seller on every status.
+
+@ProviderFor(myListings)
+final myListingsProvider = MyListingsProvider._();
+
+/// The caller's own listings, newest first, any status.
+///
+/// Drafts and rejected rows the public feed never shows still return here:
+/// RLS admits the seller on every status.
+
+final class MyListingsProvider
+    extends
+        $FunctionalProvider<
+          AsyncValue<List<ListingSummary>>,
+          List<ListingSummary>,
+          FutureOr<List<ListingSummary>>
+        >
+    with
+        $FutureModifier<List<ListingSummary>>,
+        $FutureProvider<List<ListingSummary>> {
+  /// The caller's own listings, newest first, any status.
+  ///
+  /// Drafts and rejected rows the public feed never shows still return here:
+  /// RLS admits the seller on every status.
+  MyListingsProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'myListingsProvider',
+        isAutoDispose: true,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$myListingsHash();
+
+  @$internal
+  @override
+  $FutureProviderElement<List<ListingSummary>> $createElement(
+    $ProviderPointer pointer,
+  ) => $FutureProviderElement(pointer);
+
+  @override
+  FutureOr<List<ListingSummary>> create(Ref ref) {
+    return myListings(ref);
+  }
+}
+
+String _$myListingsHash() => r'd3e1802a0f02c831aca9dda4721d304fb4c52050';
+
+/// Seller-contact reveals the caller made, newest first.
+///
+/// Carries listing ids, titles and validity windows — no phone or email
+/// (see [MyReveal]).
+
+@ProviderFor(myReveals)
+final myRevealsProvider = MyRevealsProvider._();
+
+/// Seller-contact reveals the caller made, newest first.
+///
+/// Carries listing ids, titles and validity windows — no phone or email
+/// (see [MyReveal]).
+
+final class MyRevealsProvider
+    extends
+        $FunctionalProvider<
+          AsyncValue<List<MyReveal>>,
+          List<MyReveal>,
+          FutureOr<List<MyReveal>>
+        >
+    with $FutureModifier<List<MyReveal>>, $FutureProvider<List<MyReveal>> {
+  /// Seller-contact reveals the caller made, newest first.
+  ///
+  /// Carries listing ids, titles and validity windows — no phone or email
+  /// (see [MyReveal]).
+  MyRevealsProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'myRevealsProvider',
+        isAutoDispose: true,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$myRevealsHash();
+
+  @$internal
+  @override
+  $FutureProviderElement<List<MyReveal>> $createElement(
+    $ProviderPointer pointer,
+  ) => $FutureProviderElement(pointer);
+
+  @override
+  FutureOr<List<MyReveal>> create(Ref ref) {
+    return myReveals(ref);
+  }
+}
+
+String _$myRevealsHash() => r'0f84d6dffe9eb8c5b6fa587257a991ec44c3515e';
+
+/// Per-listing reveal interest in the caller's own listings.
+///
+/// Aggregates only (count + latest timestamp, no buyer identity) via
+/// `v1_my_listing_reveals`. Empty when nothing has been viewed yet.
+
+@ProviderFor(listingRevealStats)
+final listingRevealStatsProvider = ListingRevealStatsProvider._();
+
+/// Per-listing reveal interest in the caller's own listings.
+///
+/// Aggregates only (count + latest timestamp, no buyer identity) via
+/// `v1_my_listing_reveals`. Empty when nothing has been viewed yet.
+
+final class ListingRevealStatsProvider
+    extends
+        $FunctionalProvider<
+          AsyncValue<List<ListingRevealStat>>,
+          List<ListingRevealStat>,
+          FutureOr<List<ListingRevealStat>>
+        >
+    with
+        $FutureModifier<List<ListingRevealStat>>,
+        $FutureProvider<List<ListingRevealStat>> {
+  /// Per-listing reveal interest in the caller's own listings.
+  ///
+  /// Aggregates only (count + latest timestamp, no buyer identity) via
+  /// `v1_my_listing_reveals`. Empty when nothing has been viewed yet.
+  ListingRevealStatsProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'listingRevealStatsProvider',
+        isAutoDispose: true,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$listingRevealStatsHash();
+
+  @$internal
+  @override
+  $FutureProviderElement<List<ListingRevealStat>> $createElement(
+    $ProviderPointer pointer,
+  ) => $FutureProviderElement(pointer);
+
+  @override
+  FutureOr<List<ListingRevealStat>> create(Ref ref) {
+    return listingRevealStats(ref);
+  }
+}
+
+String _$listingRevealStatsHash() =>
+    r'a2127de8c44bdc5cf3500fd292e4ed8829f2a760';
+
+/// Everything the Activity page renders, assembled from owner-scoped reads.
+///
+/// Sources fail independently: each fallback records its [AppException]
+/// and answers an empty list, so a KYC outage never blanks the seller's
+/// listings. Only when *every* source fails does the provider rethrow the
+/// first error, and the screen answers with a retryable error state
+/// (Rule 36). An empty list from a healthy source means nothing there yet
+/// — a successful answer, not an error — so no nulls flow into the screen.
+
+@ProviderFor(activityPage)
+final activityPageProvider = ActivityPageProvider._();
+
+/// Everything the Activity page renders, assembled from owner-scoped reads.
+///
+/// Sources fail independently: each fallback records its [AppException]
+/// and answers an empty list, so a KYC outage never blanks the seller's
+/// listings. Only when *every* source fails does the provider rethrow the
+/// first error, and the screen answers with a retryable error state
+/// (Rule 36). An empty list from a healthy source means nothing there yet
+/// — a successful answer, not an error — so no nulls flow into the screen.
+
+final class ActivityPageProvider
+    extends
+        $FunctionalProvider<
+          AsyncValue<ActivityPage>,
+          ActivityPage,
+          FutureOr<ActivityPage>
+        >
+    with $FutureModifier<ActivityPage>, $FutureProvider<ActivityPage> {
+  /// Everything the Activity page renders, assembled from owner-scoped reads.
+  ///
+  /// Sources fail independently: each fallback records its [AppException]
+  /// and answers an empty list, so a KYC outage never blanks the seller's
+  /// listings. Only when *every* source fails does the provider rethrow the
+  /// first error, and the screen answers with a retryable error state
+  /// (Rule 36). An empty list from a healthy source means nothing there yet
+  /// — a successful answer, not an error — so no nulls flow into the screen.
+  ActivityPageProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'activityPageProvider',
+        isAutoDispose: true,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$activityPageHash();
+
+  @$internal
+  @override
+  $FutureProviderElement<ActivityPage> $createElement(
+    $ProviderPointer pointer,
+  ) => $FutureProviderElement(pointer);
+
+  @override
+  FutureOr<ActivityPage> create(Ref ref) {
+    return activityPage(ref);
+  }
+}
+
+String _$activityPageHash() => r'51edcbd708101710327d0ba578878b70adfba412';
+
 /// Seller KYC repository (HYA-264 Tier 2, HYA-265 Tier 3).
 ///
 /// Separate from [userRepository] because KYC is file upload + RPC submit,

@@ -649,6 +649,168 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Dark'**
   String get settingsThemeDark;
+
+  /// Activity screen app bar and profile entry tile.
+  ///
+  /// In en, this message translates to:
+  /// **'Activity'**
+  String get activityTitle;
+
+  /// Activity entry tile subtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Listings, interest, reveals and updates'**
+  String get activityEntrySubtitle;
+
+  /// Shown to signed-out visitors of the Activity screen.
+  ///
+  /// In en, this message translates to:
+  /// **'Sign in to see your activity'**
+  String get activityGuestPrompt;
+
+  /// Own-listings section heading.
+  ///
+  /// In en, this message translates to:
+  /// **'My listings'**
+  String get activityListings;
+
+  /// Empty own-listings copy for sellers.
+  ///
+  /// In en, this message translates to:
+  /// **'No listings yet. Post your first property.'**
+  String get activityListingsEmpty;
+
+  /// Empty own-listings copy for buyers.
+  ///
+  /// In en, this message translates to:
+  /// **'Nothing posted yet.'**
+  String get activityListingsEmptyBuyer;
+
+  /// Post-property CTA in empty states.
+  ///
+  /// In en, this message translates to:
+  /// **'Post a property'**
+  String get activityPostCta;
+
+  /// Per-listing interest section heading.
+  ///
+  /// In en, this message translates to:
+  /// **'Interest in my listings'**
+  String get activityInterest;
+
+  /// Own-reveals section heading.
+  ///
+  /// In en, this message translates to:
+  /// **'My inquiries'**
+  String get activityReveals;
+
+  /// Empty own-reveals copy.
+  ///
+  /// In en, this message translates to:
+  /// **'No contacts viewed yet.'**
+  String get activityRevealsEmpty;
+
+  /// Reveal validity subtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Valid until {date}'**
+  String activityValidUntil(String date);
+
+  /// Expired reveal subtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Expired — tap to refresh'**
+  String get activityExpired;
+
+  /// KYC documents section heading.
+  ///
+  /// In en, this message translates to:
+  /// **'Verifications'**
+  String get activityDocs;
+
+  /// Empty documents copy.
+  ///
+  /// In en, this message translates to:
+  /// **'No documents submitted yet.'**
+  String get activityDocsEmpty;
+
+  /// Inbox updates section heading.
+  ///
+  /// In en, this message translates to:
+  /// **'Updates'**
+  String get activityUpdates;
+
+  /// Empty updates copy.
+  ///
+  /// In en, this message translates to:
+  /// **'No updates yet.'**
+  String get activityUpdatesEmpty;
+
+  /// Activity refresh tooltip.
+  ///
+  /// In en, this message translates to:
+  /// **'Refresh activity'**
+  String get activityRefresh;
+
+  /// Fallback when a revealed listing is no longer visible.
+  ///
+  /// In en, this message translates to:
+  /// **'Listing no longer available'**
+  String get activityUnknownListing;
+
+  /// Reveal count fragment.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} views'**
+  String activityViews(int count);
+
+  /// Latest-view fragment.
+  ///
+  /// In en, this message translates to:
+  /// **'last viewed {date}'**
+  String activityLastViewed(String date);
+
+  /// See-all-updates action.
+  ///
+  /// In en, this message translates to:
+  /// **'View all updates'**
+  String get activityViewAll;
+
+  /// Fallback when every activity source fails.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not load your activity.'**
+  String get activityLoadFailed;
+
+  /// Draft status chip.
+  ///
+  /// In en, this message translates to:
+  /// **'Draft'**
+  String get activityStatusDraft;
+
+  /// Pending-review status chip.
+  ///
+  /// In en, this message translates to:
+  /// **'Pending review'**
+  String get activityStatusPending;
+
+  /// Live status chip.
+  ///
+  /// In en, this message translates to:
+  /// **'Live'**
+  String get activityStatusLive;
+
+  /// Rejected status chip.
+  ///
+  /// In en, this message translates to:
+  /// **'Rejected'**
+  String get activityStatusRejected;
+
+  /// Unpublished status chip.
+  ///
+  /// In en, this message translates to:
+  /// **'Unpublished'**
+  String get activityStatusUnpublished;
 }
 
 class _AppLocalizationsDelegate

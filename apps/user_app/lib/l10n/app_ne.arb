@@ -466,5 +466,158 @@
   "@settingsThemeDark": {
     "description": "Dark theme option."
   },
-  "settingsThemeDark": "अँध्यारो"
+  "settingsThemeDark": "अँध्यारो",
+
+  "@activityTitle": {
+    "description": "Activity screen app bar and profile entry tile."
+  },
+  "activityTitle": "गतिविधि",
+
+  "@activityEntrySubtitle": {
+    "description": "Activity entry tile subtitle."
+  },
+  "activityEntrySubtitle": "विज्ञापन, चासो, अवलोकन र अपडेटहरू",
+
+  "@activityGuestPrompt": {
+    "description": "Shown to signed-out visitors of the Activity screen."
+  },
+  "activityGuestPrompt": "तपाईंको गतिविधि हेर्न साइन इन गर्नुहोस्",
+
+  "@activityListings": {
+    "description": "Own-listings section heading."
+  },
+  "activityListings": "मेरा विज्ञापनहरू",
+
+  "@activityListingsEmpty": {
+    "description": "Empty own-listings copy for sellers."
+  },
+  "activityListingsEmpty": "अहिलेसम्म कुनै विज्ञापन छैन। पहिलो घरजग्गा पोस्ट गर्नुहोस्।",
+
+  "@activityListingsEmptyBuyer": {
+    "description": "Empty own-listings copy for buyers."
+  },
+  "activityListingsEmptyBuyer": "अहिलेसम्म केही पोस्ट छैन।",
+
+  "@activityPostCta": {
+    "description": "Post-property CTA in empty states."
+  },
+  "activityPostCta": "घरजग्गा पोस्ट गर्नुहोस्",
+
+  "@activityInterest": {
+    "description": "Per-listing interest section heading."
+  },
+  "activityInterest": "मेरा विज्ञापनमा चासो",
+
+  "@activityReveals": {
+    "description": "Own-reveals section heading."
+  },
+  "activityReveals": "मेरा सोधपुछहरू",
+
+  "@activityRevealsEmpty": {
+    "description": "Empty own-reveals copy."
+  },
+  "activityRevealsEmpty": "अहिलेसम्म कुनै सम्पर्क हेरिएको छैन।",
+
+  "@activityValidUntil": {
+    "description": "Reveal validity subtitle.",
+    "placeholders": {
+      "date": {
+        "type": "String",
+        "example": "12 Oct 2026"
+      }
+    }
+  },
+  "activityValidUntil": "{date} सम्म मान्य",
+
+  "@activityExpired": {
+    "description": "Expired reveal subtitle."
+  },
+  "activityExpired": "म्याद सकियो — नवीकरण गर्न थिच्नुहोस्",
+
+  "@activityDocs": {
+    "description": "KYC documents section heading."
+  },
+  "activityDocs": "प्रमाणीकरणहरू",
+
+  "@activityDocsEmpty": {
+    "description": "Empty documents copy."
+  },
+  "activityDocsEmpty": "अहिलेसम्म कुनै कागजात पेस छैन।",
+
+  "@activityUpdates": {
+    "description": "Inbox updates section heading."
+  },
+  "activityUpdates": "अपडेटहरू",
+
+  "@activityUpdatesEmpty": {
+    "description": "Empty updates copy."
+  },
+  "activityUpdatesEmpty": "अहिलेसम्म कुनै अपडेट छैन।",
+
+  "@activityRefresh": {
+    "description": "Activity refresh tooltip."
+  },
+  "activityRefresh": "गतिविधि ताजा गर्नुहोस्",
+
+  "@activityUnknownListing": {
+    "description": "Fallback when a revealed listing is no longer visible."
+  },
+  "activityUnknownListing": "विज्ञापन अब उपलब्ध छैन",
+
+  "@activityViews": {
+    "description": "Reveal count fragment.",
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "3"
+      }
+    }
+  },
+  "activityViews": "{count} अवलोकन",
+
+  "@activityLastViewed": {
+    "description": "Latest-view fragment.",
+    "placeholders": {
+      "date": {
+        "type": "String",
+        "example": "12 Oct 2026"
+      }
+    }
+  },
+  "activityLastViewed": "अन्तिम अवलोकन {date}",
+
+  "@activityViewAll": {
+    "description": "See-all-updates action."
+  },
+  "activityViewAll": "सबै अपडेट हेर्नुहोस्",
+
+  "@activityLoadFailed": {
+    "description": "Fallback when every activity source fails."
+  },
+  "activityLoadFailed": "तपाईंको गतिविधि लोड हुन सकेन।",
+
+  "@activityStatusDraft": {
+    "description": "Draft status chip."
+  },
+  "activityStatusDraft": "मस्यौदा",
+
+  "@activityStatusPending": {
+    "description": "Pending-review status chip."
+  },
+  "activityStatusPending": "समीक्षामा",
+
+  "@activityStatusLive": {
+    "description": "Live status chip."
+  },
+  "activityStatusLive": "प्रकाशित",
+
+  "@activityStatusRejected": {
+    "description": "Rejected status chip."
+  },
+  "activityStatusRejected": "अस्वीकृत",
+
+  "@activityStatusUnpublished": {
+    "description": "Unpublished status chip."
+  },
+  "activityStatusUnpublished": "अप्रकाशित"
 }

@@ -70,6 +70,12 @@ class ProfileScreen extends ConsumerWidget {
               subtitle: Text(strings.profileNotifSubtitle),
               onTap: () => context.push('/notifications'),
             ),
+            ListTile(
+              leading: const Icon(Icons.timeline_outlined),
+              title: Text(strings.activityTitle),
+              subtitle: Text(strings.activityEntrySubtitle),
+              onTap: () => context.push('/profile/activity'),
+            ),
             _AgencySection(userId: session.user.id),
             ListTile(
               leading: const Icon(Icons.settings_outlined),

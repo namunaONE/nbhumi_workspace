@@ -302,4 +302,92 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get settingsThemeDark => 'Dark';
+
+  @override
+  String get activityTitle => 'Activity';
+
+  @override
+  String get activityEntrySubtitle => 'Listings, interest, reveals and updates';
+
+  @override
+  String get activityGuestPrompt => 'Sign in to see your activity';
+
+  @override
+  String get activityListings => 'My listings';
+
+  @override
+  String get activityListingsEmpty =>
+      'No listings yet. Post your first property.';
+
+  @override
+  String get activityListingsEmptyBuyer => 'Nothing posted yet.';
+
+  @override
+  String get activityPostCta => 'Post a property';
+
+  @override
+  String get activityInterest => 'Interest in my listings';
+
+  @override
+  String get activityReveals => 'My inquiries';
+
+  @override
+  String get activityRevealsEmpty => 'No contacts viewed yet.';
+
+  @override
+  String activityValidUntil(String date) {
+    return 'Valid until $date';
+  }
+
+  @override
+  String get activityExpired => 'Expired — tap to refresh';
+
+  @override
+  String get activityDocs => 'Verifications';
+
+  @override
+  String get activityDocsEmpty => 'No documents submitted yet.';
+
+  @override
+  String get activityUpdates => 'Updates';
+
+  @override
+  String get activityUpdatesEmpty => 'No updates yet.';
+
+  @override
+  String get activityRefresh => 'Refresh activity';
+
+  @override
+  String get activityUnknownListing => 'Listing no longer available';
+
+  @override
+  String activityViews(int count) {
+    return '$count views';
+  }
+
+  @override
+  String activityLastViewed(String date) {
+    return 'last viewed $date';
+  }
+
+  @override
+  String get activityViewAll => 'View all updates';
+
+  @override
+  String get activityLoadFailed => 'Could not load your activity.';
+
+  @override
+  String get activityStatusDraft => 'Draft';
+
+  @override
+  String get activityStatusPending => 'Pending review';
+
+  @override
+  String get activityStatusLive => 'Live';
+
+  @override
+  String get activityStatusRejected => 'Rejected';
+
+  @override
+  String get activityStatusUnpublished => 'Unpublished';
 }
