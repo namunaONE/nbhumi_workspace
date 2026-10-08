@@ -712,6 +712,116 @@ final class MyKycDocumentsProvider
 
 String _$myKycDocumentsHash() => r'48ba6168f28d97979e1d96cbf2db1a1756921d02';
 
+/// Per-listing Tier-3 verification for the detail badge (HYA-265).
+///
+/// A family so each detail screen caches its own answer. False (with no
+/// date) covers missing, hidden and never-verified alike: the RPC answers
+/// identically for all three, so the client cannot oracle hidden state.
+
+@ProviderFor(listingVerification)
+final listingVerificationProvider = ListingVerificationFamily._();
+
+/// Per-listing Tier-3 verification for the detail badge (HYA-265).
+///
+/// A family so each detail screen caches its own answer. False (with no
+/// date) covers missing, hidden and never-verified alike: the RPC answers
+/// identically for all three, so the client cannot oracle hidden state.
+
+final class ListingVerificationProvider
+    extends
+        $FunctionalProvider<
+          AsyncValue<({DateTime? reviewedAt, bool verified})>,
+          ({DateTime? reviewedAt, bool verified}),
+          FutureOr<({DateTime? reviewedAt, bool verified})>
+        >
+    with
+        $FutureModifier<({DateTime? reviewedAt, bool verified})>,
+        $FutureProvider<({DateTime? reviewedAt, bool verified})> {
+  /// Per-listing Tier-3 verification for the detail badge (HYA-265).
+  ///
+  /// A family so each detail screen caches its own answer. False (with no
+  /// date) covers missing, hidden and never-verified alike: the RPC answers
+  /// identically for all three, so the client cannot oracle hidden state.
+  ListingVerificationProvider._({
+    required ListingVerificationFamily super.from,
+    required String super.argument,
+  }) : super(
+         retry: null,
+         name: r'listingVerificationProvider',
+         isAutoDispose: true,
+         dependencies: null,
+         $allTransitiveDependencies: null,
+       );
+
+  @override
+  String debugGetCreateSourceHash() => _$listingVerificationHash();
+
+  @override
+  String toString() {
+    return r'listingVerificationProvider'
+        ''
+        '($argument)';
+  }
+
+  @$internal
+  @override
+  $FutureProviderElement<({DateTime? reviewedAt, bool verified})>
+  $createElement($ProviderPointer pointer) => $FutureProviderElement(pointer);
+
+  @override
+  FutureOr<({DateTime? reviewedAt, bool verified})> create(Ref ref) {
+    final argument = this.argument as String;
+    return listingVerification(ref, listingId: argument);
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return other is ListingVerificationProvider && other.argument == argument;
+  }
+
+  @override
+  int get hashCode {
+    return argument.hashCode;
+  }
+}
+
+String _$listingVerificationHash() =>
+    r'e8cc0ba4531a5ccf890497b46700923aa672b2c9';
+
+/// Per-listing Tier-3 verification for the detail badge (HYA-265).
+///
+/// A family so each detail screen caches its own answer. False (with no
+/// date) covers missing, hidden and never-verified alike: the RPC answers
+/// identically for all three, so the client cannot oracle hidden state.
+
+final class ListingVerificationFamily extends $Family
+    with
+        $FunctionalFamilyOverride<
+          FutureOr<({DateTime? reviewedAt, bool verified})>,
+          String
+        > {
+  ListingVerificationFamily._()
+    : super(
+        retry: null,
+        name: r'listingVerificationProvider',
+        dependencies: null,
+        $allTransitiveDependencies: null,
+        isAutoDispose: true,
+      );
+
+  /// Per-listing Tier-3 verification for the detail badge (HYA-265).
+  ///
+  /// A family so each detail screen caches its own answer. False (with no
+  /// date) covers missing, hidden and never-verified alike: the RPC answers
+  /// identically for all three, so the client cannot oracle hidden state.
+
+  ListingVerificationProvider call({required String listingId}) =>
+      ListingVerificationProvider._(argument: listingId, from: this);
+
+  @override
+  String toString() => r'listingVerificationProvider';
+}
+
 /// Buyer bookmarks repository (HYA-268).
 ///
 /// State lives in the `favorites` table, never in the `is_favorite` wire

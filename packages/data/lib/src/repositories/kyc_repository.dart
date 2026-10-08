@@ -202,6 +202,39 @@ class KycRepository {
         .toList(growable: false);
   }
 
+  /// Whether a listing carries a verified Tier-3 document (HYA-265).
+  ///
+  /// Public trust signal via `v1_listing_verification_status`: answers
+  /// `{verified, reviewed_at}` for listings the caller may see, false
+  /// otherwise. Returned as a record — a whole model for two scalars would
+  /// be ceremony (the delete-account summary stays a Map for the same
+  /// reason).
+  Future<({bool verified, DateTime? reviewedAt})> listingVerified(
+    String listingId,
+  ) async {
+    final trimmed = listingId.trim();
+    if (trimmed.isEmpty) {
+      throw const ValidationException(
+        code: 'validation.listingIdRequired',
+        messageEn: 'That listing could not be found.',
+        messageNe: 'यो विज्ञापन फेला परेन।',
+      );
+    }
+    final response = await _guard(
+      () => _client.rpc<Map<String, dynamic>>(
+        'v1_listing_verification_status',
+        params: <String, Object?>{'p_listing_id': trimmed},
+      ),
+      action: 'listingVerified',
+    );
+    final reviewedRaw = response['reviewed_at'];
+    return (
+      verified: response['verified'] == true,
+      reviewedAt:
+          reviewedRaw == null ? null : DateTime.parse(reviewedRaw as String),
+    );
+  }
+
   /// Mints a time-boxed signed URL for one private KYC file (Rule 5).
   ///
   /// [expiresIn] is seconds, clamped to 1..3600 so the client can never mint

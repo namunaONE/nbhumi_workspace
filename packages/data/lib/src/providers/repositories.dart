@@ -176,6 +176,19 @@ Future<List<KycDocument>> myKycDocuments(Ref ref) {
   return ref.watch(kycRepositoryProvider).myDocuments();
 }
 
+/// Per-listing Tier-3 verification for the detail badge (HYA-265).
+///
+/// A family so each detail screen caches its own answer. False (with no
+/// date) covers missing, hidden and never-verified alike: the RPC answers
+/// identically for all three, so the client cannot oracle hidden state.
+@riverpod
+Future<({bool verified, DateTime? reviewedAt})> listingVerification(
+  Ref ref, {
+  required String listingId,
+}) {
+  return ref.watch(kycRepositoryProvider).listingVerified(listingId);
+}
+
 /// Buyer bookmarks repository (HYA-268).
 ///
 /// State lives in the `favorites` table, never in the `is_favorite` wire
