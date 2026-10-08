@@ -12,7 +12,9 @@ import 'package:models/models.dart';
 /// the double-submit guard — without a network or a real Supabase client
 /// (Rule 31).
 void main() {
-  final now = DateTime.utc(2026, 10, 6, 12);
+  // See admin_queue_screen_test.dart: anchor to run time, not a fixed date,
+  // or the 1-day threshold test rots as the calendar moves past the fixture.
+  final now = DateTime.now().toUtc();
 
   AdminReportEntry report(
     String id, {
@@ -693,6 +695,41 @@ class FakeReportsRepository implements AdminRepository {
       ReportResolution.dismissed => resolutionStatus ?? ReportStatus.dismissed,
     };
   }
+
+  /// Moderation methods added by HYA-262. Not exercised by the reports
+  /// tests; stubbed rather than `noSuchMethod` so a wrong test fails loudly
+  /// instead of passing silently.
+  @override
+  Future<AdminUser> suspendUser(String userId, String reason) async =>
+      throw UnimplementedError(
+        'suspendUser is not covered by these tests',
+      );
+
+  @override
+  Future<AdminUser> unsuspendUser(String userId) async =>
+      throw UnimplementedError(
+        'unsuspendUser is not covered by these tests',
+      );
+
+  @override
+  Future<ListingStatus> unpublishListing(
+    String listingId,
+    String reason,
+  ) async =>
+      throw UnimplementedError(
+        'unpublishListing is not covered by these tests',
+      );
+
+  @override
+  Future<ListingStatus> republishListing(String listingId) async =>
+      throw UnimplementedError(
+        'republishListing is not covered by these tests',
+      );
+
+  @override
+  Future<AdminUser> getUser(String userId) async => throw UnimplementedError(
+        'getUser is not covered by these tests',
+      );
 
   // The verification queue methods are not exercised here. They answer with
   // empty results rather than `noSuchMethod`, which would silently accept a

@@ -13,7 +13,10 @@ import 'package:models/models.dart';
 /// would cost a real listing its review: a state that *reads* as "nothing to
 /// review" when the truth is that the load failed.
 void main() {
-  final now = DateTime.utc(2026, 10, 5, 12);
+  // Captured once at load so exact-equality assertions (e.g. oldestWait)
+  // stay exact, while SLA thresholds stay relative to the real clock.
+  // A fixed 2026-10-05 date rotted: by 10-08 every fixture read as breached.
+  final now = DateTime.now().toUtc();
 
   AdminQueueEntry entry(
     String id, {
@@ -495,5 +498,40 @@ class FakeAdminRepository implements AdminRepository {
   ) async =>
       throw UnimplementedError(
         'resolveReport is not covered by these tests',
+      );
+
+  /// Moderation methods added by HYA-262. Same stub reasoning: the
+  /// unpublish/suspend actions live on the detail screen and are tested in
+  /// `moderation_actions_test.dart`.
+  @override
+  Future<AdminUser> suspendUser(String userId, String reason) async =>
+      throw UnimplementedError(
+        'suspendUser is not covered by these tests',
+      );
+
+  @override
+  Future<AdminUser> unsuspendUser(String userId) async =>
+      throw UnimplementedError(
+        'unsuspendUser is not covered by these tests',
+      );
+
+  @override
+  Future<ListingStatus> unpublishListing(
+    String listingId,
+    String reason,
+  ) async =>
+      throw UnimplementedError(
+        'unpublishListing is not covered by these tests',
+      );
+
+  @override
+  Future<ListingStatus> republishListing(String listingId) async =>
+      throw UnimplementedError(
+        'republishListing is not covered by these tests',
+      );
+
+  @override
+  Future<AdminUser> getUser(String userId) async => throw UnimplementedError(
+        'getUser is not covered by these tests',
       );
 }
