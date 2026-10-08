@@ -129,6 +129,47 @@ abstract class AdminRepository {
     String reportId,
     ReportResolution resolution,
   );
+
+  /// Suspends an account (HYA-262).
+  ///
+  /// A suspended seller keeps their role and history but cannot insert or
+  /// update listings — enforced both in the write RPCs (readable 42501) and
+  /// in the RLS backstop (unbypassable). Existing live listings stay live:
+  /// hiding inventory is a separate per-listing decision via
+  /// [unpublishListing]. Writes an `audit_log` row server-side (Rule 8).
+  ///
+  /// [reason] must be non-blank (Rule 6, validated here and in the RPC).
+  /// Throws [ValidationException] when the account is already suspended, is
+  /// the caller's own, or is another admin.
+  Future<AdminUser> suspendUser(String userId, String reason);
+
+  /// Lifts a suspension, restoring write access. Audited like every other
+  /// admin action. Throws [ValidationException] when the account is not
+  /// currently suspended.
+  Future<AdminUser> unsuspendUser(String userId);
+
+  /// Pulls a live listing (HYA-262).
+  ///
+  /// Returns the status the server reports, for the same reason
+  /// [approveListing] returns rather than void. Distinct from a rejection:
+  /// the seller sees an unpublish reason, not a failed review, and the audit
+  /// trail records `unpublish` rather than `reject`.
+  ///
+  /// Throws [ValidationException] when the listing is not live — most often
+  /// because another admin already unpublished it.
+  Future<ListingStatus> unpublishListing(String listingId, String reason);
+
+  /// Returns an unpublished listing to live. Audited. Throws
+  /// [ValidationException] when the listing is not unpublished.
+  Future<ListingStatus> republishListing(String listingId);
+
+  /// Reads one account for moderation (HYA-262).
+  ///
+  /// Returns suspension state, per-status listing counts, and how many open
+  /// reports name this seller — the three facts an admin needs before
+  /// suspending. Throws [AuthFailureException] for non-admins,
+  /// [ValidationException]-mapped not-found when the id is unknown.
+  Future<AdminUser> getUser(String userId);
 }
 
 /// Supabase-backed [AdminRepository].
@@ -449,6 +490,152 @@ class SupabaseAdminRepository implements AdminRepository {
     return _readReportStatus(response, action: 'resolveReport');
   }
 
+  @override
+  Future<AdminUser> suspendUser(String userId, String reason) async {
+    final trimmedId = userId.trim();
+    if (trimmedId.isEmpty) {
+      throw const ValidationException(
+        code: 'validation.userIdRequired',
+        messageEn: 'That account could not be found. Refresh and try again.',
+        messageNe: 'यो खाता फेला परेन। ताजा पारेर पुनः प्रयास गर्नुहोस्।',
+      );
+    }
+
+    final trimmedReason = reason.trim();
+
+    // Same Rule 6 ordering as rejectListing: the RPC refuses a blank reason
+    // with 22023, but the complaint belongs against the field the admin typed
+    // into, not in a toast after a round trip.
+    if (trimmedReason.isEmpty) {
+      throw const ValidationException(
+        code: 'validation.suspensionReasonRequired',
+        messageEn: 'Please give a reason. Suspensions without one cannot '
+            'be appealed against.',
+        messageNe: 'कृपया कारण दिनुहोस्। कारणबिना निलम्बनमाथि पुनरावेदन '
+            'गर्न सकिँदैन।',
+      );
+    }
+
+    await _guard(
+      () => _client.rpc<Map<String, dynamic>>(
+        'v1_admin_suspend_user',
+        params: buildSuspendUserParams(
+          userId: trimmedId,
+          reason: trimmedReason,
+        ),
+      ),
+      action: 'suspendUser',
+    );
+
+    // Re-read rather than echo: the row is the source of truth for what the
+    // database stored (timestamps, actor), the same reason verifyKyc re-reads
+    // the document instead of trusting the RPC summary.
+    return await getUser(trimmedId);
+  }
+
+  @override
+  Future<AdminUser> unsuspendUser(String userId) async {
+    final trimmed = userId.trim();
+    if (trimmed.isEmpty) {
+      throw const ValidationException(
+        code: 'validation.userIdRequired',
+        messageEn: 'That account could not be found. Refresh and try again.',
+        messageNe: 'यो खाता फेला परेन। ताजा पारेर पुनः प्रयास गर्नुहोस्।',
+      );
+    }
+
+    await _guard(
+      () => _client.rpc<Map<String, dynamic>>(
+        'v1_admin_unsuspend_user',
+        params: <String, Object?>{'p_user_id': trimmed},
+      ),
+      action: 'unsuspendUser',
+    );
+
+    return await getUser(trimmed);
+  }
+
+  @override
+  Future<ListingStatus> unpublishListing(
+    String listingId,
+    String reason,
+  ) async {
+    final trimmedId = listingId.trim();
+    if (trimmedId.isEmpty) {
+      throw const ValidationException(
+        code: 'validation.listingIdRequired',
+        messageEn: 'That listing could not be found. Refresh and try again.',
+        messageNe: 'यो लिस्टिङ फेला परेन। ताजा पारेर पुनः प्रयास गर्नुहोस्।',
+      );
+    }
+
+    final trimmedReason = reason.trim();
+    if (trimmedReason.isEmpty) {
+      throw const ValidationException(
+        code: 'validation.unpublishReasonRequired',
+        messageEn: 'Please give a reason so the seller knows what to fix.',
+        messageNe: 'विक्रेतालाई के मिलाउने भन्ने जानकारी दिनुहोस्।',
+      );
+    }
+
+    final response = await _guard(
+      () => _client.rpc<Map<String, dynamic>>(
+        'v1_admin_unpublish_listing',
+        params: <String, Object?>{
+          'p_listing_id': trimmedId,
+          'p_reason': trimmedReason,
+        },
+      ),
+      action: 'unpublishListing',
+    );
+
+    return _readStatus(response, action: 'unpublishListing');
+  }
+
+  @override
+  Future<ListingStatus> republishListing(String listingId) async {
+    final trimmed = listingId.trim();
+    if (trimmed.isEmpty) {
+      throw const ValidationException(
+        code: 'validation.listingIdRequired',
+        messageEn: 'That listing could not be found. Refresh and try again.',
+        messageNe: 'यो लिस्टिङ फेला परेन। ताजा पारेर पुनः प्रयास गर्नुहोस्।',
+      );
+    }
+
+    final response = await _guard(
+      () => _client.rpc<Map<String, dynamic>>(
+        'v1_admin_republish_listing',
+        params: <String, Object?>{'p_listing_id': trimmed},
+      ),
+      action: 'republishListing',
+    );
+
+    return _readStatus(response, action: 'republishListing');
+  }
+
+  @override
+  Future<AdminUser> getUser(String userId) async {
+    final trimmed = userId.trim();
+    if (trimmed.isEmpty) {
+      throw const ValidationException(
+        code: 'validation.userIdRequired',
+        messageEn: 'That account could not be found. Refresh and try again.',
+        messageNe: 'यो खाता फेला परेन। ताजा पारेर पुनः प्रयास गर्नुहोस्।',
+      );
+    }
+
+    final response = await _guard(
+      () => _client.rpc<Map<String, dynamic>>(
+        'v1_admin_get_user',
+        params: <String, Object?>{'p_user_id': trimmed},
+      ),
+      action: 'getUser',
+    );
+
+    return AdminUser.fromJson(response);
+  }
+
   /// Reads the `status` out of `v1_admin_resolve_report`'s response.
   ///
   /// Throws rather than defaulting, for the same reason [_readStatus] does and
@@ -638,5 +825,20 @@ class SupabaseAdminRepository implements AdminRepository {
       <String, Object?>{
         'p_report_id': reportId,
         'p_resolution': resolution.name,
+      };
+
+  /// RPC parameters for [suspendUser], exposed for tests.
+  ///
+  /// Takes the already-trimmed reason: trimming is the caller's job
+  /// ([suspendUser]), and asserting here pins that the wire carries no stray
+  /// whitespace into the audit row a future appeal will be judged against.
+  @visibleForTesting
+  static Map<String, Object?> buildSuspendUserParams({
+    required String userId,
+    required String reason,
+  }) =>
+      <String, Object?>{
+        'p_user_id': userId,
+        'p_reason': reason,
       };
 }

@@ -142,6 +142,10 @@ sealed class QueueCounts with _$QueueCounts {
     @Default(0) int pendingReview,
     @Default(0) int live,
     @Default(0) int rejected,
+    // No unpublished tab exists: the queue is a verification worklist and an
+    // unpublished listing awaits nothing. The count is tracked (the RPC sends
+    // it) so a future tab can reuse it, but nothing reads it today.
+    @Default(0) int unpublished,
   }) = _QueueCounts;
 
   factory QueueCounts.fromJson(Map<String, dynamic> json) {
@@ -154,6 +158,7 @@ sealed class QueueCounts with _$QueueCounts {
       pendingReview: read('pending_review'),
       live: read('live'),
       rejected: read('rejected'),
+      unpublished: read('unpublished'),
     );
   }
 
@@ -327,6 +332,10 @@ extension QueueCountsX on QueueCounts {
         ListingStatus.rejected => rejected,
         // A draft is never in the queue, so it has no tab.
         ListingStatus.draft => 0,
+        // Unpublished has no tab either (see the field comment): 0 here means
+        // "not tracked by the tab bar", and unpublished listings are reached
+        // through user lookup and direct links instead.
+        ListingStatus.unpublished => 0,
       };
 }
 

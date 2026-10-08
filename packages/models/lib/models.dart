@@ -24,17 +24,30 @@
 ///                       See `v1_report_listing`.
 /// * `AdminReportEntry` - one row of the admin reports queue. Admin-scoped.
 ///                       See `v1_admin_get_reports`.
+/// * `AdminUser`        - one account as moderation sees it: suspension
+///                       state plus per-status listing counts.
+///                       See `v1_admin_get_user`.
+/// * `ActivityPage`     - the profile Activity screen: own listings, own
+///                       reveals, per-listing reveal stats, own KYC docs and
+///                       inbox updates. Read-only assembly, no writes.
+/// * `MyReveal`         - one contact the caller revealed (no phone/email).
+/// * `ListingRevealStat`- per-own-listing reveal aggregates from
+///                       `v1_my_listing_reveals`. No buyer identity.
 library;
 
 export 'src/admin_queue_entry.dart';
+export 'src/admin_user.dart';
+export 'src/activity_page.dart';
 export 'src/district.dart';
 export 'src/kyc_document.dart';
 export 'src/listing.dart';
 export 'src/listing_detail.dart';
 export 'src/listing_query.dart';
 export 'src/listing_report.dart';
+export 'src/listing_reveal_stat.dart';
 export 'src/listing_summary.dart';
 export 'src/municipality.dart';
+export 'src/my_reveal.dart';
 export 'src/notification.dart';
 export 'src/profile.dart';
 export 'src/queue_sla.dart';

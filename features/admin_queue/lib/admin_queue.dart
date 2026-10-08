@@ -15,5 +15,6 @@ export 'src/presentation/widgets/reports_list.dart'
 export 'src/providers/admin_access_providers.dart';
 export 'src/providers/admin_queue_providers.dart';
 export 'src/providers/admin_review_controller.dart';
+export 'src/providers/moderation_providers.dart';
 export 'src/providers/reports_controller.dart';
 export 'src/providers/reports_providers.dart';

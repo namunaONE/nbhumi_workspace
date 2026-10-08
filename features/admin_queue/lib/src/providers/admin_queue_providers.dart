@@ -305,6 +305,9 @@ class AdminQueueTab extends _$AdminQueueTab {
   /// Exhaustive by construction, so adding a status to [ListingStatus] surfaces
   /// as a compile error here rather than as a tab nobody can reach. Drafts are
   /// excluded: a draft is private work in progress and has no RPC page.
+  /// Unpublished is excluded too (HYA-262): the queue is a verification
+  /// worklist and a pulled listing awaits nothing. Reach it through user lookup
+  /// (`v1_admin_get_user`) and direct links instead.
   static List<ListingStatus> get tabs => const <ListingStatus>[
         ListingStatus.pendingReview,
         ListingStatus.live,

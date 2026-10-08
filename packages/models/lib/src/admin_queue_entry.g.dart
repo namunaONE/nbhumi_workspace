@@ -112,6 +112,7 @@ const _$ListingStatusEnumMap = {
   ListingStatus.pendingReview: 'pending_review',
   ListingStatus.live: 'live',
   ListingStatus.rejected: 'rejected',
+  ListingStatus.unpublished: 'unpublished',
 };
 
 _AuditLogEntry _$AuditLogEntryFromJson(Map<String, dynamic> json) =>

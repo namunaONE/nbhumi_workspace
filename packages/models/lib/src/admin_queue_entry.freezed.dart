@@ -658,7 +658,7 @@ $QueueSellerCopyWith<$Res> get seller {
 /// @nodoc
 mixin _$QueueCounts {
 
- int get pendingReview; int get live; int get rejected;
+ int get pendingReview; int get live; int get rejected; int get unpublished;
 /// Create a copy of QueueCounts
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -670,20 +670,20 @@ $QueueCountsCopyWith<QueueCounts> get copyWith => _$QueueCountsCopyWithImpl<Queu
 @override
 bool operator ==(Object other) {
   final _this = this as QueueCounts;
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is QueueCounts&&(identical(other.pendingReview, _this.pendingReview) || other.pendingReview == _this.pendingReview)&&(identical(other.live, _this.live) || other.live == _this.live)&&(identical(other.rejected, _this.rejected) || other.rejected == _this.rejected));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is QueueCounts&&(identical(other.pendingReview, _this.pendingReview) || other.pendingReview == _this.pendingReview)&&(identical(other.live, _this.live) || other.live == _this.live)&&(identical(other.rejected, _this.rejected) || other.rejected == _this.rejected)&&(identical(other.unpublished, _this.unpublished) || other.unpublished == _this.unpublished));
 }
 
 
 @override
 int get hashCode {
   final _this = this as QueueCounts;
-  return Object.hash(runtimeType,_this.pendingReview,_this.live,_this.rejected);
+  return Object.hash(runtimeType,_this.pendingReview,_this.live,_this.rejected,_this.unpublished);
 }
 
 @override
 String toString() {
   final _this = this as QueueCounts;
-  return 'QueueCounts(pendingReview: ${_this.pendingReview}, live: ${_this.live}, rejected: ${_this.rejected})';
+  return 'QueueCounts(pendingReview: ${_this.pendingReview}, live: ${_this.live}, rejected: ${_this.rejected}, unpublished: ${_this.unpublished})';
 }
 
 
@@ -694,7 +694,7 @@ abstract mixin class $QueueCountsCopyWith<$Res>  {
   factory $QueueCountsCopyWith(QueueCounts value, $Res Function(QueueCounts) _then) = _$QueueCountsCopyWithImpl;
 @useResult
 $Res call({
- int pendingReview, int live, int rejected
+ int pendingReview, int live, int rejected, int unpublished
 });
 
 
@@ -711,11 +711,12 @@ class _$QueueCountsCopyWithImpl<$Res>
 
 /// Create a copy of QueueCounts
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? pendingReview = null,Object? live = null,Object? rejected = null,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? pendingReview = null,Object? live = null,Object? rejected = null,Object? unpublished = null,}) {
   return _then(QueueCounts(
 pendingReview: null == pendingReview ? _self.pendingReview : pendingReview // ignore: cast_nullable_to_non_nullable
 as int,live: null == live ? _self.live : live // ignore: cast_nullable_to_non_nullable
 as int,rejected: null == rejected ? _self.rejected : rejected // ignore: cast_nullable_to_non_nullable
+as int,unpublished: null == unpublished ? _self.unpublished : unpublished // ignore: cast_nullable_to_non_nullable
 as int,
   ));
 }
@@ -798,10 +799,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( int pendingReview,  int live,  int rejected)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( int pendingReview,  int live,  int rejected,  int unpublished)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _QueueCounts() when $default != null:
-return $default(_that.pendingReview,_that.live,_that.rejected);case _:
+return $default(_that.pendingReview,_that.live,_that.rejected,_that.unpublished);case _:
   return orElse();
 
 }
@@ -819,10 +820,10 @@ return $default(_that.pendingReview,_that.live,_that.rejected);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( int pendingReview,  int live,  int rejected)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( int pendingReview,  int live,  int rejected,  int unpublished)  $default,) {final _that = this;
 switch (_that) {
 case _QueueCounts():
-return $default(_that.pendingReview,_that.live,_that.rejected);}
+return $default(_that.pendingReview,_that.live,_that.rejected,_that.unpublished);}
 }
 /// A variant of `when` that fallback to returning `null`
 ///
@@ -836,10 +837,10 @@ return $default(_that.pendingReview,_that.live,_that.rejected);}
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( int pendingReview,  int live,  int rejected)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( int pendingReview,  int live,  int rejected,  int unpublished)?  $default,) {final _that = this;
 switch (_that) {
 case _QueueCounts() when $default != null:
-return $default(_that.pendingReview,_that.live,_that.rejected);case _:
+return $default(_that.pendingReview,_that.live,_that.rejected,_that.unpublished);case _:
   return null;
 
 }
@@ -851,12 +852,13 @@ return $default(_that.pendingReview,_that.live,_that.rejected);case _:
 
 
 class _QueueCounts implements QueueCounts {
-  const _QueueCounts({this.pendingReview = 0, this.live = 0, this.rejected = 0});
+  const _QueueCounts({this.pendingReview = 0, this.live = 0, this.rejected = 0, this.unpublished = 0});
   
 
 @override@JsonKey() final  int pendingReview;
 @override@JsonKey() final  int live;
 @override@JsonKey() final  int rejected;
+@override@JsonKey() final  int unpublished;
 
 /// Create a copy of QueueCounts
 /// with the given fields replaced by the non-null parameter values.
@@ -868,18 +870,18 @@ _$QueueCountsCopyWith<_QueueCounts> get copyWith => __$QueueCountsCopyWithImpl<_
 
 @override
 bool operator ==(Object other) {
-    return identical(this, other) || (other.runtimeType == runtimeType&&other is _QueueCounts&&(identical(other.pendingReview, pendingReview) || other.pendingReview == pendingReview)&&(identical(other.live, live) || other.live == live)&&(identical(other.rejected, rejected) || other.rejected == rejected));
+    return identical(this, other) || (other.runtimeType == runtimeType&&other is _QueueCounts&&(identical(other.pendingReview, pendingReview) || other.pendingReview == pendingReview)&&(identical(other.live, live) || other.live == live)&&(identical(other.rejected, rejected) || other.rejected == rejected)&&(identical(other.unpublished, unpublished) || other.unpublished == unpublished));
 }
 
 
 @override
 int get hashCode {
-    return Object.hash(runtimeType,pendingReview,live,rejected);
+    return Object.hash(runtimeType,pendingReview,live,rejected,unpublished);
 }
 
 @override
 String toString() {
-    return 'QueueCounts(pendingReview: $pendingReview, live: $live, rejected: $rejected)';
+    return 'QueueCounts(pendingReview: $pendingReview, live: $live, rejected: $rejected, unpublished: $unpublished)';
 }
 
 
@@ -890,7 +892,7 @@ abstract mixin class _$QueueCountsCopyWith<$Res> implements $QueueCountsCopyWith
   factory _$QueueCountsCopyWith(_QueueCounts value, $Res Function(_QueueCounts) _then) = __$QueueCountsCopyWithImpl;
 @override @useResult
 $Res call({
- int pendingReview, int live, int rejected
+ int pendingReview, int live, int rejected, int unpublished
 });
 
 
@@ -907,11 +909,12 @@ class __$QueueCountsCopyWithImpl<$Res>
 
 /// Create a copy of QueueCounts
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? pendingReview = null,Object? live = null,Object? rejected = null,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? pendingReview = null,Object? live = null,Object? rejected = null,Object? unpublished = null,}) {
   return _then(_QueueCounts(
 pendingReview: null == pendingReview ? _self.pendingReview : pendingReview // ignore: cast_nullable_to_non_nullable
 as int,live: null == live ? _self.live : live // ignore: cast_nullable_to_non_nullable
 as int,rejected: null == rejected ? _self.rejected : rejected // ignore: cast_nullable_to_non_nullable
+as int,unpublished: null == unpublished ? _self.unpublished : unpublished // ignore: cast_nullable_to_non_nullable
 as int,
   ));
 }

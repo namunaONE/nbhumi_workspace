@@ -5,6 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:models/models.dart';
 
 import 'widgets/audit_trail.dart';
+import 'widgets/moderation_actions.dart';
 import 'widgets/photo_gallery.dart';
 import 'widgets/review_actions.dart';
 import 'widgets/sla_chip.dart';
@@ -137,10 +138,15 @@ class _DetailBody extends StatelessWidget {
               if (listing.rejectionReason case final reason?
                   when reason.trim().isNotEmpty) ...<Widget>[
                 const SizedBox(height: 16),
-                _RejectionNotice(reason: reason),
+                _RejectionNotice(reason: reason, status: listing.status),
               ],
               const SizedBox(height: 16),
               _SellerCard(seller: listing.seller),
+              const SizedBox(height: 12),
+              // Suspension sits next to the identity it acts on. The listing
+              // detail RPC's seller card carries no suspension state (it is
+              // the buyer-facing shape), so this reads it separately.
+              SellerModeration(sellerId: listing.sellerId),
               const SizedBox(height: 16),
               AuditTrailPanel(listingId: listing.id),
             ],
@@ -179,7 +185,8 @@ class _StatusChip extends StatelessWidget {
 
     // Colour follows the queue tabs so a status means the same thing in both
     // places: pending is the neutral surface, live is the verified green,
-    // rejected is the error colour.
+    // rejected is the error colour, unpublished is the warning surface --
+    // pulled, not failed, so it must not read as red.
     final (background, foreground) = switch (status) {
       ListingStatus.live => colors == null
           ? (theme.colorScheme.primary, theme.colorScheme.onPrimary)
@@ -197,6 +204,10 @@ class _StatusChip extends StatelessWidget {
       ListingStatus.draft => (
           theme.colorScheme.surfaceContainerHighest,
           theme.colorScheme.onSurfaceVariant,
+        ),
+      ListingStatus.unpublished => (
+          theme.colorScheme.tertiaryContainer,
+          theme.colorScheme.onTertiaryContainer,
         ),
     };
 
@@ -223,28 +234,41 @@ class _StatusChip extends StatelessWidget {
 ///
 /// Reached when an admin opens a rejected listing, or a resubmission whose
 /// previous reason is still on the record. The seller is waiting on this text,
-/// so
-/// it is the most consequential thing on the screen after the listing itself.
+/// so it is the most consequential thing on the screen after the listing
+/// itself.
+///
+/// The heading follows the status: an unpublished listing carries its unpublish
+/// reason in the same column, and calling that "Rejected" would mislabel an
+/// admin pull as a failed review (HYA-262).
 class _RejectionNotice extends StatelessWidget {
-  const _RejectionNotice({required this.reason});
+  const _RejectionNotice({required this.reason, required this.status});
 
   final String reason;
+  final ListingStatus status;
 
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final unpublished = status == ListingStatus.unpublished;
+    final onContainer = unpublished
+        ? theme.colorScheme.onTertiaryContainer
+        : theme.colorScheme.onErrorContainer;
 
     return Card(
-      color: theme.colorScheme.errorContainer,
+      color: unpublished
+          ? theme.colorScheme.tertiaryContainer
+          : theme.colorScheme.errorContainer,
       child: Padding(
         padding: const EdgeInsets.all(12),
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             Icon(
-              Icons.report_gmailerrorred_outlined,
+              unpublished
+                  ? Icons.visibility_off_outlined
+                  : Icons.report_gmailerrorred_outlined,
               size: 20,
-              color: theme.colorScheme.onErrorContainer,
+              color: onContainer,
             ),
             const SizedBox(width: 8),
             Expanded(
@@ -252,9 +276,9 @@ class _RejectionNotice extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
                   Text(
-                    'Rejected',
+                    unpublished ? 'Unpublished' : 'Rejected',
                     style: theme.textTheme.labelLarge?.copyWith(
-                      color: theme.colorScheme.onErrorContainer,
+                      color: onContainer,
                       fontWeight: FontWeight.w700,
                     ),
                   ),
@@ -262,7 +286,7 @@ class _RejectionNotice extends StatelessWidget {
                   Text(
                     reason,
                     style: theme.textTheme.bodyMedium?.copyWith(
-                      color: theme.colorScheme.onErrorContainer,
+                      color: onContainer,
                     ),
                   ),
                 ],
@@ -383,9 +407,10 @@ class _ActionBar extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
 
-    // Only a pending listing can be actioned. Showing live buttons on a listing
-    // that is already live would produce exactly the 22023 the RPC raises for a
-    // listing that is not pending — and waste an admin's click finding out.
+    // Only a pending listing can be approved or rejected, and only a live
+    // one unpublished: showing live buttons on any other status would produce
+    // exactly the 22023 the RPC raises — and waste an admin's click finding
+    // out. Unpublished keeps its own action (republish) for the same reason.
     final isPending = listing.status == ListingStatus.pendingReview;
 
     return Material(
@@ -394,28 +419,31 @@ class _ActionBar extends StatelessWidget {
         padding: const EdgeInsets.all(12),
         child: isPending
             ? ReviewActions(listingId: listing.id)
-            : Row(
-                children: <Widget>[
-                  Icon(
-                    listing.status == ListingStatus.live
-                        ? Icons.check_circle_outline
-                        : Icons.block_outlined,
-                    size: 18,
-                    color: theme.colorScheme.onSurfaceVariant,
-                  ),
-                  const SizedBox(width: 8),
-                  Expanded(
-                    child: Text(
-                      listing.status == ListingStatus.live
-                          ? 'This listing is live.'
-                          : 'This listing is ${listing.status.wireName}.',
-                      style: theme.textTheme.bodyMedium?.copyWith(
+            : listing.status == ListingStatus.live ||
+                    listing.status == ListingStatus.unpublished
+                ? UnpublishActions(listing: listing)
+                : Row(
+                    children: <Widget>[
+                      Icon(
+                        listing.status == ListingStatus.live
+                            ? Icons.check_circle_outline
+                            : Icons.block_outlined,
+                        size: 18,
                         color: theme.colorScheme.onSurfaceVariant,
                       ),
-                    ),
+                      const SizedBox(width: 8),
+                      Expanded(
+                        child: Text(
+                          listing.status == ListingStatus.live
+                              ? 'This listing is live.'
+                              : 'This listing is ${listing.status.wireName}.',
+                          style: theme.textTheme.bodyMedium?.copyWith(
+                            color: theme.colorScheme.onSurfaceVariant,
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
-                ],
-              ),
       ),
     );
   }

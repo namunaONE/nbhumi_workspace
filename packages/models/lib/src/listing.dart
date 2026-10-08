@@ -61,7 +61,15 @@ enum ListingStatus {
   live('live'),
 
   /// Rejected by admin.
-  rejected('rejected');
+  rejected('rejected'),
+
+  /// Pulled by an admin after going live (HYA-262).
+  ///
+  /// Distinct from [rejected]: rejected means "submitted and failed review",
+  /// unpublished means "was live and got pulled". Reusing rejected would tell
+  /// a seller their live listing failed review, a lie the audit trail then
+  /// enshrines. Hidden from browse exactly like every other non-live status.
+  unpublished('unpublished');
 
   ListingStatus(this.wireName);
 
