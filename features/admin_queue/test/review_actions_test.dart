@@ -55,6 +55,17 @@ void main() {
     tester.view.devicePixelRatio = 1;
     addTearDown(tester.view.reset);
 
+    // Provide a valid admin user for the seller so SellerModeration doesn't
+    // show a load error with a Retry button (which would pollute the test).
+    const adminUser = AdminUser(
+      id: 's1',
+      email: 'seller@example.com',
+      fullName: 'Ram Bahadur',
+      role: UserRole.agent,
+      kycTier: KycTier.identity,
+      isVerified: true,
+    );
+
     final container = ProviderContainer(
       overrides: [
         adminRepositoryProvider.overrideWithValue(repository),
@@ -64,6 +75,9 @@ void main() {
         adminAuditTrailProvider.overrideWith((ref, listingId) async {
           return const <AuditLogEntry>[];
         }),
+        adminUserProvider('s1').overrideWithValue(
+          const AsyncValue.data(adminUser),
+        ),
       ],
     );
     addTearDown(container.dispose);
@@ -87,18 +101,19 @@ void main() {
       expect(find.widgetWithText(OutlinedButton, 'Reject'), findsOneWidget);
     });
 
-    testWidgets('a live listing offers neither', (tester) async {
+    testWidgets('a live listing offers unpublish instead', (tester) async {
       await pumpDetail(
         tester,
         repository: repository(),
         status: ListingStatus.live,
       );
 
-      // Showing live buttons on a listing that is already live would produce
-      // exactly the 22023 the RPC raises, after a wasted click.
+      // Approve/reject would produce exactly the 22023 the RPC raises for a
+      // listing that is not pending. Unpublish is the moderation action that
+      // belongs here instead (HYA-262).
       expect(find.widgetWithText(FilledButton, 'Approve'), findsNothing);
       expect(find.widgetWithText(OutlinedButton, 'Reject'), findsNothing);
-      expect(find.text('This listing is live.'), findsOneWidget);
+      expect(find.widgetWithText(OutlinedButton, 'Unpublish'), findsOneWidget);
     });
 
     testWidgets('a rejected listing says so instead of offering buttons', (
@@ -188,7 +203,7 @@ void main() {
       await tester.pumpAndSettle();
 
       expect(find.text('Timed out. Check your connection.'), findsOneWidget);
-      expect(find.text('Retry'), findsOneWidget);
+      expect(find.byType(SnackBarAction), findsOneWidget);
     });
   });
 
@@ -412,5 +427,40 @@ class FakeAdminRepository implements AdminRepository {
   ) async =>
       throw UnimplementedError(
         'resolveReport is not covered by these tests',
+      );
+
+  /// Moderation methods added by HYA-262. Same stub reasoning: the
+  /// unpublish/suspend actions live on the detail screen and are tested in
+  /// `moderation_actions_test.dart`.
+  @override
+  Future<AdminUser> suspendUser(String userId, String reason) async =>
+      throw UnimplementedError(
+        'suspendUser is not covered by these tests',
+      );
+
+  @override
+  Future<AdminUser> unsuspendUser(String userId) async =>
+      throw UnimplementedError(
+        'unsuspendUser is not covered by these tests',
+      );
+
+  @override
+  Future<ListingStatus> unpublishListing(
+    String listingId,
+    String reason,
+  ) async =>
+      throw UnimplementedError(
+        'unpublishListing is not covered by these tests',
+      );
+
+  @override
+  Future<ListingStatus> republishListing(String listingId) async =>
+      throw UnimplementedError(
+        'republishListing is not covered by these tests',
+      );
+
+  @override
+  Future<AdminUser> getUser(String userId) async => throw UnimplementedError(
+        'getUser is not covered by these tests',
       );
 }

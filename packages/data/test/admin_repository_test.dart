@@ -797,7 +797,233 @@ void main() {
       );
     });
   });
+
+  group('moderation (HYA-262)', () {
+    test('buildSuspendUserParams pins both keys', () {
+      expect(
+        SupabaseAdminRepository.buildSuspendUserParams(
+          userId: 'u1',
+          reason: 'Fake listings',
+        ),
+        <String, Object?>{'p_user_id': 'u1', 'p_reason': 'Fake listings'},
+      );
+    });
+
+    test('a blank user id fails before a round trip', () {
+      // failingRepo would answer 500; a ValidationException proves no call
+      // went out at all.
+      final repo = failingRepo(status: '50000', message: 'must not be called');
+
+      expect(
+        () => repo.suspendUser('  ', 'Spam'),
+        throwsA(
+          isA<ValidationException>().having(
+            (e) => e.code,
+            'code',
+            'validation.userIdRequired',
+          ),
+        ),
+      );
+      expect(
+        () => repo.unsuspendUser(''),
+        throwsA(isA<ValidationException>()),
+      );
+      expect(
+        () => repo.getUser('  '),
+        throwsA(isA<ValidationException>()),
+      );
+    });
+
+    test('a blank suspension reason fails before a round trip', () {
+      final repo = failingRepo(status: '50000', message: 'must not be called');
+
+      expect(
+        () => repo.suspendUser('u1', '   '),
+        throwsA(
+          isA<ValidationException>().having(
+            (e) => e.code,
+            'code',
+            'validation.suspensionReasonRequired',
+          ),
+        ),
+      );
+    });
+
+    test('the suspension reason is trimmed on the wire', () async {
+      // suspendUser makes two calls (suspend, then the getUser re-read); the
+      // assertion is on the first body, which carries the reason.
+      final transport = RecordingHttpClient(body: _adminUserBody);
+      final repo = SupabaseAdminRepository(
+        SupabaseClient(
+          'https://project.supabase.co',
+          'test-key',
+          httpClient: transport,
+        ),
+      );
+
+      await repo.suspendUser('u1', '  Fake listings  ');
+
+      expect(transport.requestBodies, hasLength(2));
+      expect(
+        transport.requestBodies.first,
+        contains('"p_reason":"Fake listings"'),
+      );
+    });
+
+    test('suspend returns the re-read user, not an echo', () async {
+      final repo = succeedingRepo(_adminUserBody);
+
+      final user = await repo.suspendUser('u1', 'Fake listings');
+
+      expect(user.id, 'u1');
+      expect(user.suspended, isTrue);
+      expect(user.suspendedReason, 'Fake listings');
+      expect(user.listingsIn('live'), 2);
+      expect(user.openReportsAgainst, 1);
+    });
+
+    test('unsuspend returns the re-read user', () async {
+      final repo = succeedingRepo(_unsuspendedUserBody);
+
+      final user = await repo.unsuspendUser('u1');
+
+      expect(user.suspended, isFalse);
+      expect(user.suspendedAt, isNull);
+    });
+
+    test('42501 from suspend reads as a permission failure', () {
+      final repo = failingRepo(status: '42501', message: 'FORBIDDEN');
+
+      expect(
+        () => repo.suspendUser('u1', 'Spam'),
+        throwsA(isA<AuthFailureException>()),
+      );
+    });
+
+    test('22023 from a double suspend is a validation failure', () {
+      // Most often another admin suspending first, or a double tap that beat
+      // the in-flight guard.
+      final repo = failingRepo(
+        status: '22023',
+        message: 'VALIDATION_ERROR: this account is already suspended',
+      );
+
+      expect(
+        () => repo.suspendUser('u1', 'Spam'),
+        throwsA(isA<ValidationException>()),
+      );
+    });
+
+    test('22023 from suspending yourself is a validation failure', () {
+      final repo = failingRepo(
+        status: '22023',
+        message: 'VALIDATION_ERROR: you cannot suspend your own account',
+      );
+
+      expect(
+        () => repo.suspendUser('u1', 'Spam'),
+        throwsA(isA<ValidationException>()),
+      );
+    });
+
+    test('unpublish returns the status the server stored', () async {
+      final repo = succeedingRepo('{"id":"l1","status":"unpublished"}');
+
+      expect(
+        await repo.unpublishListing('l1', 'Sold elsewhere'),
+        ListingStatus.unpublished,
+      );
+    });
+
+    test('a blank unpublish reason fails before a round trip', () {
+      final repo = failingRepo(status: '50000', message: 'must not be called');
+
+      expect(
+        () => repo.unpublishListing('l1', '  '),
+        throwsA(
+          isA<ValidationException>().having(
+            (e) => e.code,
+            'code',
+            'validation.unpublishReasonRequired',
+          ),
+        ),
+      );
+    });
+
+    test('22023 from unpublishing a non-live listing is validation', () {
+      final repo = failingRepo(
+        status: '22023',
+        message: 'VALIDATION_ERROR: only a live listing can be unpublished',
+      );
+
+      expect(
+        () => repo.unpublishListing('l1', 'Sold elsewhere'),
+        throwsA(isA<ValidationException>()),
+      );
+    });
+
+    test('an unrecognised status after unpublish throws', () {
+      final repo = succeedingRepo('{"id":"l1","status":"archived"}');
+
+      expect(
+        () => repo.unpublishListing('l1', 'Sold elsewhere'),
+        throwsA(isA<ServerException>()),
+      );
+    });
+
+    test('republish returns live', () async {
+      final repo = succeedingRepo('{"id":"l1","status":"live"}');
+
+      expect(await repo.republishListing('l1'), ListingStatus.live);
+    });
+
+    test('22023 from republishing a live listing is validation', () {
+      final repo = failingRepo(
+        status: '22023',
+        message: 'VALIDATION_ERROR: only an unpublished listing can be '
+            'republished',
+      );
+
+      expect(
+        () => repo.republishListing('l1'),
+        throwsA(isA<ValidationException>()),
+      );
+    });
+
+    test('getUser parses suspension, counts and open reports', () async {
+      final repo = succeedingRepo(_adminUserBody);
+
+      final user = await repo.getUser('u1');
+
+      expect(user.email, 'seller@example.com');
+      expect(user.role, UserRole.agent);
+      expect(user.totalListings, 3);
+      expect(user.listingsIn('pending_review'), 1);
+      expect(user.listingsIn('rejected'), 0);
+    });
+
+    test('42501 from getUser reads as a permission failure', () {
+      final repo = failingRepo(status: '42501', message: 'FORBIDDEN');
+
+      expect(
+        () => repo.getUser('u1'),
+        throwsA(isA<AuthFailureException>()),
+      );
+    });
+  });
 }
+
+/// A suspended user as `v1_admin_get_user` returns one.
+const String _adminUserBody =
+    '{"id":"u1","email":"seller@example.com","full_name":"Ram Seller", '
+    '"role":"agent","suspended":true,"suspended_reason":"Fake listings", '
+    '"listings":{"live":2,"pending_review":1},"open_reports_against":1}';
+
+/// The same user after unsuspending.
+const String _unsuspendedUserBody =
+    '{"id":"u1","email":"seller@example.com","full_name":"Ram Seller", '
+    '"role":"agent","suspended":false,"listings":{"live":2}, '
+    '"open_reports_against":0}';
 
 /// A repository whose every RPC fails with [status] / [message].
 ///
