@@ -336,5 +336,135 @@
   "@onboardingBrowse": {
     "description": "Onboarding primary action."
   },
-  "onboardingBrowse": "Browse listings"
+  "onboardingBrowse": "Browse listings",
+
+  "@profileContactTitle": {
+    "description": "Profile identity section heading."
+  },
+  "profileContactTitle": "Contact details",
+
+  "@profileContactEmailLocked": {
+    "description": "Email row helper: email is auth-owned and read-only."
+  },
+  "profileContactEmailLocked": "Managed by sign-in · cannot be changed here",
+
+  "@profileContactPhoneMissing": {
+    "description": "Phone row when no phone is set."
+  },
+  "profileContactPhoneMissing": "Add phone",
+
+  "@profileContactAddPhoneHint": {
+    "description": "Phone row helper with the Nepali mobile rule."
+  },
+  "profileContactAddPhoneHint": "10-digit mobile starting 97 or 98",
+
+  "@profileRoleBuyer": {
+    "description": "Role chip label."
+  },
+  "profileRoleBuyer": "Buyer",
+
+  "@profileRoleAgent": {
+    "description": "Role chip label."
+  },
+  "profileRoleAgent": "Agent",
+
+  "@profileRoleAdmin": {
+    "description": "Role chip label."
+  },
+  "profileRoleAdmin": "Admin",
+
+  "@profileKycNone": {
+    "description": "KYC tier chip label."
+  },
+  "profileKycNone": "Unverified",
+
+  "@profileKycAccount": {
+    "description": "KYC tier chip label."
+  },
+  "profileKycAccount": "Account",
+
+  "@profileKycIdentity": {
+    "description": "KYC tier chip label."
+  },
+  "profileKycIdentity": "Identity verified",
+
+  "@profileKycProperty": {
+    "description": "KYC tier chip label."
+  },
+  "profileKycProperty": "Property verified",
+
+  "@profileAgencyTitle": {
+    "description": "Agency section heading."
+  },
+  "profileAgencyTitle": "Agency",
+
+  "@profileAgencySubtitle": {
+    "description": "Agency section subtitle when no agency is set."
+  },
+  "profileAgencySubtitle": "Optional · shown on your listings",
+
+  "@profileAgencyExplainer": {
+    "description": "What agency fields mean and what they do not prove."
+  },
+  "profileAgencyExplainer": "Your agency name appears on listings you post. Filling this in does not verify you — upload your registration certificate in Verify identity to earn the agency badge.",
+
+  "@profileAgencyVerifyCta": {
+    "description": "CTA from the agency card to the KYC screen."
+  },
+  "profileAgencyVerifyCta": "Verify agency documents",
+
+  "@profileAgencyUnverifiedHint": {
+    "description": "Hint when agency text exists but no agency_reg doc is verified."
+  },
+  "profileAgencyUnverifiedHint": "Not yet verified",
+
+  "@profileSettingsTitle": {
+    "description": "Entry tile to the settings screen."
+  },
+  "profileSettingsTitle": "Settings",
+
+  "@profileSettingsSubtitle": {
+    "description": "Settings entry subtitle."
+  },
+  "profileSettingsSubtitle": "Language, theme and about",
+
+  "@settingsTitle": {
+    "description": "Settings screen app bar."
+  },
+  "settingsTitle": "Settings",
+
+  "@settingsLanguageTitle": {
+    "description": "Language section heading."
+  },
+  "settingsLanguageTitle": "Language",
+
+  "@settingsLanguageEn": {
+    "description": "English option."
+  },
+  "settingsLanguageEn": "English",
+
+  "@settingsLanguageNe": {
+    "description": "Nepali option."
+  },
+  "settingsLanguageNe": "नेपाली",
+
+  "@settingsThemeTitle": {
+    "description": "Theme section heading."
+  },
+  "settingsThemeTitle": "Appearance",
+
+  "@settingsThemeSystem": {
+    "description": "Follow-system theme option."
+  },
+  "settingsThemeSystem": "System",
+
+  "@settingsThemeLight": {
+    "description": "Light theme option."
+  },
+  "settingsThemeLight": "Light",
+
+  "@settingsThemeDark": {
+    "description": "Dark theme option."
+  },
+  "settingsThemeDark": "Dark"
 }

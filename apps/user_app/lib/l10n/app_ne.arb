@@ -336,5 +336,135 @@
   "@onboardingBrowse": {
     "description": "Onboarding primary action."
   },
-  "onboardingBrowse": "विज्ञापन हेर्नुहोस्"
+  "onboardingBrowse": "विज्ञापन हेर्नुहोस्",
+
+  "@profileContactTitle": {
+    "description": "Profile identity section heading."
+  },
+  "profileContactTitle": "सम्पर्क विवरण",
+
+  "@profileContactEmailLocked": {
+    "description": "Email row helper: email is auth-owned and read-only."
+  },
+  "profileContactEmailLocked": "साइन-इनद्वारा व्यवस्थित · यहाँ परिवर्तन हुँदैन",
+
+  "@profileContactPhoneMissing": {
+    "description": "Phone row when no phone is set."
+  },
+  "profileContactPhoneMissing": "फोन थप्नुहोस्",
+
+  "@profileContactAddPhoneHint": {
+    "description": "Phone row helper with the Nepali mobile rule."
+  },
+  "profileContactAddPhoneHint": "९७ वा ९८ बाट सुरु हुने १० अंकको मोबाइल",
+
+  "@profileRoleBuyer": {
+    "description": "Role chip label."
+  },
+  "profileRoleBuyer": "क्रेता",
+
+  "@profileRoleAgent": {
+    "description": "Role chip label."
+  },
+  "profileRoleAgent": "एजेन्ट",
+
+  "@profileRoleAdmin": {
+    "description": "Role chip label."
+  },
+  "profileRoleAdmin": "प्रशासक",
+
+  "@profileKycNone": {
+    "description": "KYC tier chip label."
+  },
+  "profileKycNone": "अप्रमाणित",
+
+  "@profileKycAccount": {
+    "description": "KYC tier chip label."
+  },
+  "profileKycAccount": "खाता",
+
+  "@profileKycIdentity": {
+    "description": "KYC tier chip label."
+  },
+  "profileKycIdentity": "पहिचान प्रमाणित",
+
+  "@profileKycProperty": {
+    "description": "KYC tier chip label."
+  },
+  "profileKycProperty": "सम्पत्ति प्रमाणित",
+
+  "@profileAgencyTitle": {
+    "description": "Agency section heading."
+  },
+  "profileAgencyTitle": "एजेन्सी",
+
+  "@profileAgencySubtitle": {
+    "description": "Agency section subtitle when no agency is set."
+  },
+  "profileAgencySubtitle": "वैकल्पिक · तपाईंका विज्ञापनमा देखिन्छ",
+
+  "@profileAgencyExplainer": {
+    "description": "What agency fields mean and what they do not prove."
+  },
+  "profileAgencyExplainer": "तपाईंले पोस्ट गर्ने विज्ञापनमा एजेन्सीको नाम देखिन्छ। यो भर्दैमा प्रमाणित हुँदैन — एजेन्सी ब्याजका लागि पहिचान प्रमाणितमा दर्ता प्रमाणपत्र अपलोड गर्नुहोस्।",
+
+  "@profileAgencyVerifyCta": {
+    "description": "CTA from the agency card to the KYC screen."
+  },
+  "profileAgencyVerifyCta": "एजेन्सी कागजात प्रमाणित गर्नुहोस्",
+
+  "@profileAgencyUnverifiedHint": {
+    "description": "Hint when agency text exists but no agency_reg doc is verified."
+  },
+  "profileAgencyUnverifiedHint": "अझै प्रमाणित छैन",
+
+  "@profileSettingsTitle": {
+    "description": "Entry tile to the settings screen."
+  },
+  "profileSettingsTitle": "सेटिङ",
+
+  "@profileSettingsSubtitle": {
+    "description": "Settings entry subtitle."
+  },
+  "profileSettingsSubtitle": "भाषा, थिम र बारेमा",
+
+  "@settingsTitle": {
+    "description": "Settings screen app bar."
+  },
+  "settingsTitle": "सेटिङ",
+
+  "@settingsLanguageTitle": {
+    "description": "Language section heading."
+  },
+  "settingsLanguageTitle": "भाषा",
+
+  "@settingsLanguageEn": {
+    "description": "English option."
+  },
+  "settingsLanguageEn": "English",
+
+  "@settingsLanguageNe": {
+    "description": "Nepali option."
+  },
+  "settingsLanguageNe": "नेपाली",
+
+  "@settingsThemeTitle": {
+    "description": "Theme section heading."
+  },
+  "settingsThemeTitle": "देखावट",
+
+  "@settingsThemeSystem": {
+    "description": "Follow-system theme option."
+  },
+  "settingsThemeSystem": "सिस्टम",
+
+  "@settingsThemeLight": {
+    "description": "Light theme option."
+  },
+  "settingsThemeLight": "उज्यालो",
+
+  "@settingsThemeDark": {
+    "description": "Dark theme option."
+  },
+  "settingsThemeDark": "अँध्यारो"
 }

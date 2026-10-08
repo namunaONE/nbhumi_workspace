@@ -62,7 +62,8 @@ import 'app_localizations_ne.dart';
 /// be consistent with the languages listed in the AppLocalizations.supportedLocales
 /// property.
 abstract class AppLocalizations {
-  AppLocalizations(String locale) : localeName = intl.Intl.canonicalizedLocale(locale.toString());
+  AppLocalizations(String locale)
+    : localeName = intl.Intl.canonicalizedLocale(locale.toString());
 
   final String localeName;
 
@@ -70,7 +71,8 @@ abstract class AppLocalizations {
     return Localizations.of<AppLocalizations>(context, AppLocalizations)!;
   }
 
-  static const LocalizationsDelegate<AppLocalizations> delegate = _AppLocalizationsDelegate();
+  static const LocalizationsDelegate<AppLocalizations> delegate =
+      _AppLocalizationsDelegate();
 
   /// A list of this localizations delegate along with the default localizations
   /// delegates.
@@ -82,17 +84,18 @@ abstract class AppLocalizations {
   /// Additional delegates can be added by appending to this list in
   /// MaterialApp. This list does not have to be used at all if a custom list
   /// of delegates is preferred or required.
-  static const List<LocalizationsDelegate<dynamic>> localizationsDelegates = <LocalizationsDelegate<dynamic>>[
-    delegate,
-    GlobalMaterialLocalizations.delegate,
-    GlobalCupertinoLocalizations.delegate,
-    GlobalWidgetsLocalizations.delegate,
-  ];
+  static const List<LocalizationsDelegate<dynamic>> localizationsDelegates =
+      <LocalizationsDelegate<dynamic>>[
+        delegate,
+        GlobalMaterialLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+      ];
 
   /// A list of this localizations delegate's supported locales.
   static const List<Locale> supportedLocales = <Locale>[
     Locale('en'),
-    Locale('ne')
+    Locale('ne'),
   ];
 
   /// App name shown in the expanded drawer header.
@@ -490,9 +493,166 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Browse listings'**
   String get onboardingBrowse;
+
+  /// Profile identity section heading.
+  ///
+  /// In en, this message translates to:
+  /// **'Contact details'**
+  String get profileContactTitle;
+
+  /// Email row helper: email is auth-owned and read-only.
+  ///
+  /// In en, this message translates to:
+  /// **'Managed by sign-in · cannot be changed here'**
+  String get profileContactEmailLocked;
+
+  /// Phone row when no phone is set.
+  ///
+  /// In en, this message translates to:
+  /// **'Add phone'**
+  String get profileContactPhoneMissing;
+
+  /// Phone row helper with the Nepali mobile rule.
+  ///
+  /// In en, this message translates to:
+  /// **'10-digit mobile starting 97 or 98'**
+  String get profileContactAddPhoneHint;
+
+  /// Role chip label.
+  ///
+  /// In en, this message translates to:
+  /// **'Buyer'**
+  String get profileRoleBuyer;
+
+  /// Role chip label.
+  ///
+  /// In en, this message translates to:
+  /// **'Agent'**
+  String get profileRoleAgent;
+
+  /// Role chip label.
+  ///
+  /// In en, this message translates to:
+  /// **'Admin'**
+  String get profileRoleAdmin;
+
+  /// KYC tier chip label.
+  ///
+  /// In en, this message translates to:
+  /// **'Unverified'**
+  String get profileKycNone;
+
+  /// KYC tier chip label.
+  ///
+  /// In en, this message translates to:
+  /// **'Account'**
+  String get profileKycAccount;
+
+  /// KYC tier chip label.
+  ///
+  /// In en, this message translates to:
+  /// **'Identity verified'**
+  String get profileKycIdentity;
+
+  /// KYC tier chip label.
+  ///
+  /// In en, this message translates to:
+  /// **'Property verified'**
+  String get profileKycProperty;
+
+  /// Agency section heading.
+  ///
+  /// In en, this message translates to:
+  /// **'Agency'**
+  String get profileAgencyTitle;
+
+  /// Agency section subtitle when no agency is set.
+  ///
+  /// In en, this message translates to:
+  /// **'Optional · shown on your listings'**
+  String get profileAgencySubtitle;
+
+  /// What agency fields mean and what they do not prove.
+  ///
+  /// In en, this message translates to:
+  /// **'Your agency name appears on listings you post. Filling this in does not verify you — upload your registration certificate in Verify identity to earn the agency badge.'**
+  String get profileAgencyExplainer;
+
+  /// CTA from the agency card to the KYC screen.
+  ///
+  /// In en, this message translates to:
+  /// **'Verify agency documents'**
+  String get profileAgencyVerifyCta;
+
+  /// Hint when agency text exists but no agency_reg doc is verified.
+  ///
+  /// In en, this message translates to:
+  /// **'Not yet verified'**
+  String get profileAgencyUnverifiedHint;
+
+  /// Entry tile to the settings screen.
+  ///
+  /// In en, this message translates to:
+  /// **'Settings'**
+  String get profileSettingsTitle;
+
+  /// Settings entry subtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Language, theme and about'**
+  String get profileSettingsSubtitle;
+
+  /// Settings screen app bar.
+  ///
+  /// In en, this message translates to:
+  /// **'Settings'**
+  String get settingsTitle;
+
+  /// Language section heading.
+  ///
+  /// In en, this message translates to:
+  /// **'Language'**
+  String get settingsLanguageTitle;
+
+  /// English option.
+  ///
+  /// In en, this message translates to:
+  /// **'English'**
+  String get settingsLanguageEn;
+
+  /// Nepali option.
+  ///
+  /// In en, this message translates to:
+  /// **'नेपाली'**
+  String get settingsLanguageNe;
+
+  /// Theme section heading.
+  ///
+  /// In en, this message translates to:
+  /// **'Appearance'**
+  String get settingsThemeTitle;
+
+  /// Follow-system theme option.
+  ///
+  /// In en, this message translates to:
+  /// **'System'**
+  String get settingsThemeSystem;
+
+  /// Light theme option.
+  ///
+  /// In en, this message translates to:
+  /// **'Light'**
+  String get settingsThemeLight;
+
+  /// Dark theme option.
+  ///
+  /// In en, this message translates to:
+  /// **'Dark'**
+  String get settingsThemeDark;
 }
 
-class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {
+class _AppLocalizationsDelegate
+    extends LocalizationsDelegate<AppLocalizations> {
   const _AppLocalizationsDelegate();
 
   @override
@@ -501,25 +661,26 @@ class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> 
   }
 
   @override
-  bool isSupported(Locale locale) => <String>['en', 'ne'].contains(locale.languageCode);
+  bool isSupported(Locale locale) =>
+      <String>['en', 'ne'].contains(locale.languageCode);
 
   @override
   bool shouldReload(_AppLocalizationsDelegate old) => false;
 }
 
 AppLocalizations lookupAppLocalizations(Locale locale) {
-
-
   // Lookup logic when only language code is specified.
   switch (locale.languageCode) {
-    case 'en': return AppLocalizationsEn();
-    case 'ne': return AppLocalizationsNe();
+    case 'en':
+      return AppLocalizationsEn();
+    case 'ne':
+      return AppLocalizationsNe();
   }
 
   throw FlutterError(
     'AppLocalizations.delegate failed to load unsupported locale "$locale". This is likely '
     'an issue with the localizations generation tool. Please file an issue '
     'on GitHub with a reproducible sample app and the gen-l10n configuration '
-    'that was used.'
+    'that was used.',
   );
 }

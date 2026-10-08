@@ -22,21 +22,34 @@ class ProfileScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final session = ref.watch(sessionProvider);
-    final theme = Theme.of(context);
     final strings = AppLocalizations.of(context);
 
     return Scaffold(
-      appBar: AppBar(title: Text(strings.profileTitle)),
+      appBar: AppBar(
+        title: Text(strings.profileTitle),
+        actions: <Widget>[
+          if (session != null)
+            IconButton(
+              icon: const Icon(Icons.settings_outlined),
+              tooltip: strings.profileSettingsTitle,
+              onPressed: () => context.push('/profile/settings'),
+            ),
+        ],
+      ),
       body: ListView(
         padding: const EdgeInsets.symmetric(vertical: 8),
         children: <Widget>[
-          ListTile(
-            leading: const Icon(Icons.person_outline),
-            title: Text(session?.user.email ?? strings.profileSignedOut),
-            subtitle: session == null
-                ? Text(strings.profileSignedOutHint)
-                : Text(strings.profileSignedIn),
-          ),
+          if (session == null)
+            ListTile(
+              leading: const Icon(Icons.person_outline),
+              title: Text(strings.profileSignedOut),
+              subtitle: Text(strings.profileSignedOutHint),
+            )
+          else
+            _ProfileHeaderSection(
+              userId: session.user.id,
+              fallbackEmail: session.user.email,
+            ),
           const Divider(),
           if (session != null) ...<Widget>[
             ListTile(
@@ -57,6 +70,13 @@ class ProfileScreen extends ConsumerWidget {
               subtitle: Text(strings.profileNotifSubtitle),
               onTap: () => context.push('/notifications'),
             ),
+            _AgencySection(userId: session.user.id),
+            ListTile(
+              leading: const Icon(Icons.settings_outlined),
+              title: Text(strings.profileSettingsTitle),
+              subtitle: Text(strings.profileSettingsSubtitle),
+              onTap: () => context.push('/profile/settings'),
+            ),
             _AccountSection(userId: session.user.id),
           ] else
             ListTile(
@@ -75,10 +95,311 @@ class ProfileScreen extends ConsumerWidget {
             padding: const EdgeInsets.symmetric(horizontal: 16),
             child: Text(
               strings.profilePrivacyNote,
-              style: theme.textTheme.bodySmall,
+              style: Theme.of(context).textTheme.bodySmall,
             ),
           ),
         ],
+      ),
+    );
+  }
+}
+
+/// Identity header: full name, email (auth-owned, read-only), phone.
+///
+/// Rendered only for a signed-in session. Email comes from the session with
+/// the profile as fallback: the session owns the address, the profile row
+/// mirrors it via `handle_new_user`, so the session is authoritative when
+/// the two disagree.
+class _ProfileHeaderSection extends ConsumerWidget {
+  /// Creates the header section.
+  const _ProfileHeaderSection({
+    required this.userId,
+    required this.fallbackEmail,
+  });
+
+  /// Profile row id (== auth user id).
+  final String userId;
+
+  /// Session email, authoritative over `profile.email`.
+  final String? fallbackEmail;
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final profile = ref.watch(userProfileProvider(userId: userId));
+    final strings = AppLocalizations.of(context);
+
+    return switch (profile) {
+      AsyncLoading() => ListTile(
+          leading: const SizedBox(
+            height: 20,
+            width: 20,
+            child: CircularProgressIndicator(strokeWidth: 2),
+          ),
+          title: Text(strings.profileLoading),
+        ),
+      // A missing profile must not hide identity: fall back to the session
+      // email so a fresh magic-link session still sees who it is.
+      AsyncError() => _ProfileHeaderCard(profile: null, email: fallbackEmail),
+      AsyncData(:final value) =>
+        _ProfileHeaderCard(profile: value, email: fallbackEmail),
+    };
+  }
+}
+
+/// Identity card with avatar initials, contact rows and status chips.
+///
+/// Role, verification and KYC tier are display-only here: RLS pins them
+/// server-side (`profiles_update_own`), so this card never offers to edit
+/// them.
+class _ProfileHeaderCard extends StatelessWidget {
+  /// Creates the header card.
+  const _ProfileHeaderCard({required this.profile, required this.email});
+
+  /// Profile row, null when unloadable.
+  final Profile? profile;
+
+  /// Session email fallback.
+  final String? email;
+
+  @override
+  Widget build(BuildContext context) {
+    final strings = AppLocalizations.of(context);
+    final theme = Theme.of(context);
+    final name = profile?.fullName.trim() ?? '';
+    final displayEmail = (email ?? profile?.email ?? '').trim();
+    final phone = (profile?.phone ?? '').trim();
+    final initials = name.isEmpty
+        ? '?'
+        : name
+            .split(RegExp(r'\s+'))
+            .where((part) => part.isNotEmpty)
+            .take(2)
+            .map((part) => part[0].toUpperCase())
+            .join();
+
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(16, 8, 16, 4),
+      child: Card(
+        child: Padding(
+          padding: const EdgeInsets.all(16),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              Row(
+                children: <Widget>[
+                  CircleAvatar(
+                    radius: 24,
+                    child: Text(
+                      initials,
+                      style: theme.textTheme.titleLarge,
+                    ),
+                  ),
+                  const SizedBox(width: 12),
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        Text(
+                          name.isEmpty ? displayEmail : name,
+                          style: theme.textTheme.titleMedium,
+                        ),
+                        // Email lives in its own row below, so the subtitle
+                        // states the session instead of repeating the address
+                        // (duplicate text breaks `findsOne` and readers).
+                        if (name.isNotEmpty)
+                          Text(
+                            strings.profileSignedIn,
+                            style: theme.textTheme.bodySmall,
+                          ),
+                      ],
+                    ),
+                  ),
+                  if (profile != null && profile!.isVerified)
+                    const TrustBadge(compact: true, showInfoOnTap: false),
+                ],
+              ),
+              const SizedBox(height: 12),
+              Text(
+                strings.profileContactTitle,
+                style: theme.textTheme.titleSmall,
+              ),
+              const SizedBox(height: 4),
+              Row(
+                children: <Widget>[
+                  const Icon(Icons.email_outlined, size: 18),
+                  const SizedBox(width: 8),
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        Text(displayEmail, style: theme.textTheme.bodyMedium),
+                        Text(
+                          strings.profileContactEmailLocked,
+                          style: theme.textTheme.bodySmall,
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 8),
+              Row(
+                children: <Widget>[
+                  const Icon(Icons.phone_outlined, size: 18),
+                  const SizedBox(width: 8),
+                  Expanded(
+                    child: phone.isEmpty
+                        ? Text(
+                            strings.profileContactPhoneMissing,
+                            style: theme.textTheme.bodyMedium,
+                          )
+                        : Text(phone, style: theme.textTheme.bodyMedium),
+                  ),
+                ],
+              ),
+              if (phone.isEmpty)
+                Padding(
+                  padding: const EdgeInsets.only(top: 2, left: 26),
+                  child: Text(
+                    strings.profileContactAddPhoneHint,
+                    style: theme.textTheme.bodySmall,
+                  ),
+                ),
+              const SizedBox(height: 12),
+              if (profile != null)
+                Wrap(
+                  spacing: 8,
+                  runSpacing: 8,
+                  children: <Widget>[
+                    Chip(
+                      label: Text(switch (profile!.role) {
+                        UserRole.agent => strings.profileRoleAgent,
+                        UserRole.admin => strings.profileRoleAdmin,
+                        UserRole.buyer => strings.profileRoleBuyer,
+                      }),
+                      visualDensity: VisualDensity.compact,
+                    ),
+                    Chip(
+                      label: Text(switch (profile!.kycTier) {
+                        KycTier.account => strings.profileKycAccount,
+                        KycTier.identity => strings.profileKycIdentity,
+                        KycTier.property => strings.profileKycProperty,
+                        KycTier.none => strings.profileKycNone,
+                      }),
+                      visualDensity: VisualDensity.compact,
+                    ),
+                  ],
+                ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+/// Agency section: optional display identity with a verification upsell.
+///
+/// `agencyName` / `agencyRegNo` are free text shown on listings; they prove
+/// nothing on their own. The `agency_reg` KYC document
+/// (`KycDocType.agencyReg`) is the proof, reviewed in `/kyc`. This card
+/// states both so filling the fields is never mistaken for verification.
+class _AgencySection extends ConsumerWidget {
+  /// Creates the agency section.
+  const _AgencySection({required this.userId});
+
+  /// Profile row id.
+  final String userId;
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final profile = ref.watch(userProfileProvider(userId: userId));
+
+    return switch (profile) {
+      AsyncLoading() => const SizedBox.shrink(),
+      AsyncError() => const SizedBox.shrink(),
+      AsyncData(:final value) => _AgencyCard(profile: value),
+    };
+  }
+}
+
+/// Agency card body.
+class _AgencyCard extends StatelessWidget {
+  /// Creates the agency card.
+  const _AgencyCard({required this.profile});
+
+  /// Profile row, null when unloadable.
+  final Profile? profile;
+
+  @override
+  Widget build(BuildContext context) {
+    final strings = AppLocalizations.of(context);
+    final theme = Theme.of(context);
+    final agencyName = (profile?.agencyName ?? '').trim();
+    final agencyRegNo = (profile?.agencyRegNo ?? '').trim();
+
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(16, 8, 16, 4),
+      child: Card(
+        child: Padding(
+          padding: const EdgeInsets.all(16),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              Row(
+                children: <Widget>[
+                  const Icon(Icons.business_outlined),
+                  const SizedBox(width: 8),
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        Text(
+                          strings.profileAgencyTitle,
+                          style: theme.textTheme.titleSmall,
+                        ),
+                        Text(
+                          agencyName.isEmpty
+                              ? strings.profileAgencySubtitle
+                              : agencyName,
+                          style: theme.textTheme.bodyMedium,
+                        ),
+                      ],
+                    ),
+                  ),
+                  if (agencyName.isNotEmpty)
+                    Chip(
+                      label: Text(strings.profileAgencyUnverifiedHint),
+                      visualDensity: VisualDensity.compact,
+                    ),
+                ],
+              ),
+              if (agencyRegNo.isNotEmpty) ...<Widget>[
+                const SizedBox(height: 4),
+                Padding(
+                  padding: const EdgeInsets.only(left: 32),
+                  child: Text(
+                    agencyRegNo,
+                    style: theme.textTheme.bodySmall,
+                  ),
+                ),
+              ],
+              const SizedBox(height: 8),
+              Text(
+                strings.profileAgencyExplainer,
+                style: theme.textTheme.bodySmall,
+              ),
+              const SizedBox(height: 8),
+              // Editing lives in the Edit profile tile below: a second
+              // same-labelled button here doubled `find.text` matches and
+              // split the edit entry point for no benefit.
+              FilledButton.tonal(
+                onPressed: () => context.push('/kyc'),
+                child: Text(strings.profileAgencyVerifyCta),
+              ),
+            ],
+          ),
+        ),
       ),
     );
   }
@@ -123,8 +444,11 @@ class _SelfServiceTiles extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final name = profile?.fullName;
     final strings = AppLocalizations.of(context);
+    // The header card owns the name; this tile summarizes what editing
+    // covers so the two never render duplicate text (widget-test `findsOne`
+    // and screen-reader) output.
+    final phone = profile?.phone?.trim() ?? '';
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: <Widget>[
@@ -132,7 +456,7 @@ class _SelfServiceTiles extends ConsumerWidget {
           leading: const Icon(Icons.edit_outlined),
           title: Text(strings.profileEditTitle),
           subtitle: Text(
-            name == null || name.isEmpty ? 'Name, phone, agency' : name,
+            phone.isEmpty ? 'Name, phone, agency' : phone,
           ),
           onTap: () => _EditProfileDialog.show(context, profile),
         ),

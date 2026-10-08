@@ -13,6 +13,7 @@ import 'package:user_app/screens/home_screen.dart';
 import 'package:user_app/screens/onboarding_screen.dart';
 import 'package:user_app/screens/profile_screen.dart';
 import 'package:user_app/screens/saved_screen.dart';
+import 'package:user_app/screens/settings_screen.dart';
 import 'package:user_app/shell/app_shell.dart';
 
 /// Routes reachable without a session.
@@ -31,6 +32,7 @@ const Set<String> kPublicRoutes = <String>{
   '/search',
   '/saved',
   '/profile',
+  '/profile/settings',
   '/login',
   // The auth callback arrives while signed out by definition: the session it
   // carries does not exist yet. Gating it would bounce the user to /login
@@ -150,6 +152,13 @@ final appRouterProvider = Provider<GoRouter>((ref) {
               GoRoute(
                 path: '/profile',
                 builder: (context, state) => const ProfileScreen(),
+                routes: <RouteBase>[
+                  GoRoute(
+                    path: 'settings',
+                    parentNavigatorKey: rootKey,
+                    builder: (context, state) => const SettingsScreen(),
+                  ),
+                ],
               ),
             ],
           ),

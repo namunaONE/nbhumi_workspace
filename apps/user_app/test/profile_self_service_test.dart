@@ -10,6 +10,7 @@ import 'package:models/models.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:user_app/l10n/output/app_localizations.dart';
 import 'package:user_app/screens/profile_screen.dart';
+import 'package:user_app/screens/settings_screen.dart';
 
 const Profile _profile = Profile(
   id: 'buyer-1',
@@ -111,11 +112,12 @@ Future<ProviderContainer> _pump(
   _FakeAuthService? authService,
   Locale locale = const Locale('en'),
 }) async {
-  // Tall portrait surface: the profile lists verification and notification
-  // entries above account deletion, and the default 800x600 surface leaves
-  // the delete tile below the fold. Same precedent as widget_test's pumpApp,
-  // which sets its size explicitly for the same reason.
-  tester.view.physicalSize = const Size(400, 1000);
+  // Tall portrait surface: the profile now stacks the identity header,
+  // agency card and settings entry above the self-service tiles, so the
+  // default 800x600 surface (and the previous 1000px height) leaves delete
+  // below the fold. Same precedent as widget_test's pumpApp, which sets its
+  // size explicitly for the same reason.
+  tester.view.physicalSize = const Size(400, 2200);
   tester.view.devicePixelRatio = 1.0;
   addTearDown(tester.view.reset);
 
@@ -138,6 +140,12 @@ Future<ProviderContainer> _pump(
       GoRoute(
         path: '/profile',
         builder: (context, state) => const ProfileScreen(),
+        routes: [
+          GoRoute(
+            path: 'settings',
+            builder: (context, state) => const SettingsScreen(),
+          ),
+        ],
       ),
       GoRoute(
         path: '/login',
@@ -207,10 +215,48 @@ void main() {
       expect(find.text('मेरो खाता मेट्नुहोस्'), findsOneWidget);
     });
 
-    testWidgets('shows the profile name on the edit tile', (tester) async {
+    testWidgets('shows the profile name in the header', (tester) async {
       await _pump(tester, session: _session());
 
       expect(find.text('Sita Kumari'), findsOneWidget);
+    });
+
+    testWidgets('header shows email, phone, role and KYC chips',
+        (tester) async {
+      await _pump(tester, session: _session());
+
+      // Email is auth-owned and read-only; the fixture profile mirrors it.
+      expect(find.text('buyer@probe.test'), findsOneWidget);
+      expect(find.text('+9779841234567'), findsWidgets);
+      expect(find.text('Buyer'), findsOneWidget);
+      expect(find.text('Unverified'), findsOneWidget);
+      expect(
+        find.text('Managed by sign-in · cannot be changed here'),
+        findsOneWidget,
+      );
+    });
+
+    testWidgets('agency card explains verification and links to KYC',
+        (tester) async {
+      await _pump(tester, session: _session());
+
+      expect(find.text('Agency'), findsOneWidget);
+      expect(
+        find.text('Optional · shown on your listings'),
+        findsOneWidget,
+      );
+      expect(find.text('Verify agency documents'), findsOneWidget);
+    });
+
+    testWidgets('settings entry navigates to the settings screen',
+        (tester) async {
+      await _pump(tester, session: _session());
+
+      await tester.tap(find.text('Settings'));
+      await tester.pumpAndSettle();
+
+      expect(find.text('Language'), findsOneWidget);
+      expect(find.text('Appearance'), findsOneWidget);
     });
   });
 
@@ -304,7 +350,9 @@ void main() {
       await tester.pumpAndSettle();
 
       expect(find.text('Your data'), findsOneWidget);
-      expect(find.textContaining('buyer@probe.test'), findsOneWidget);
+      // The header also renders the profile email, so assert on JSON-only
+      // content rather than the address.
+      expect(find.textContaining('contact_reveals'), findsOneWidget);
 
       await tester.tap(find.text('Copy'));
       await tester.pumpAndSettle();

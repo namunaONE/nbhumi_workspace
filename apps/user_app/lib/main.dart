@@ -18,6 +18,7 @@ import 'package:user_app/deep_links/deep_link_listener.dart';
 import 'package:user_app/l10n/output/app_localizations.dart';
 import 'package:user_app/onboarding/onboarding_gate.dart';
 import 'package:user_app/router/app_router.dart';
+import 'package:user_app/settings/app_settings.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -31,6 +32,8 @@ Future<void> main() async {
     authOptions: const FlutterAuthClientOptions(detectSessionInUri: false),
   );
   final seen = await OnboardingGate.loadSeen();
+  final initialLocale = await AppLocaleNotifier.loadLocale();
+  final initialThemeMode = await AppThemeNotifier.loadThemeMode();
 
   runApp(
     ProviderScope(
@@ -40,6 +43,8 @@ Future<void> main() async {
           ref.onDispose(gate.dispose);
           return gate;
         }),
+        initialLocaleProvider.overrideWithValue(initialLocale),
+        initialThemeModeProvider.overrideWithValue(initialThemeMode),
       ],
       // AppProviderObserver records provider failures into AppLogger.
       // Session attribution is a provider rather than a second observer,
@@ -65,12 +70,16 @@ class UserApp extends ConsumerWidget {
     // very first frame, rather than only after something first reads a session.
     ref.watch(sessionLoggingBridgeProvider);
     final router = ref.watch(appRouterProvider);
+    final locale = ref.watch(appLocaleProvider);
+    final themeMode = ref.watch(appThemeProvider);
 
     return DeepLinkListener(
       child: MaterialApp.router(
         title: 'nBhumi',
         theme: AppTheme.light,
         darkTheme: AppTheme.dark,
+        themeMode: themeMode,
+        locale: locale,
         routerConfig: router,
         // Wired now so M3's Nepali localisation only has to add .arb files
         // rather than also reworking every app entry point.
