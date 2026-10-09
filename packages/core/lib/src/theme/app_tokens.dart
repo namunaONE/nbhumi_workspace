@@ -147,6 +147,11 @@ abstract final class AppSizes {
 
   /// Display size of the splash-screen brand glyph (HYA-294).
   static const double splashGlyph = 200;
+
+  /// Maximum feed content width on wide windows. Beyond this the grid would
+  /// stretch three cards across the whole screen, so the content centers
+  /// instead. Phones never reach it.
+  static const double contentMaxWidth = 960;
 }
 
 /// Animation and timing tokens.
