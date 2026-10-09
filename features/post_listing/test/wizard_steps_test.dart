@@ -95,6 +95,54 @@ Widget _scopedApp(Widget child) => ProviderScope(
     );
 
 void main() {
+  group('TypeStep title and description', () {
+    testWidgets('typing reaches the callbacks', (tester) async {
+      var title = '';
+      var description = '';
+      await tester.pumpWidget(
+        _app(
+          TypeStep(
+            state: _state(),
+            onTypeSelected: (_) {},
+            onPurposeSelected: (_) {},
+            onTitleChanged: (value) => title = value,
+            onDescriptionChanged: (value) => description = value,
+          ),
+        ),
+      );
+
+      await tester.enterText(
+        find.widgetWithText(TextFormField, 'Title'),
+        'Sunny 3BHK house',
+      );
+      await tester.enterText(
+        find.widgetWithText(TextFormField, 'Description (optional)'),
+        'Near the ring road',
+      );
+      await tester.pump();
+
+      expect(title, 'Sunny 3BHK house');
+      expect(description, 'Near the ring road');
+    });
+
+    testWidgets('a blank title shows the inline error', (tester) async {
+      await tester.pumpWidget(
+        _app(
+          TypeStep(
+            state: _state().copyWith(title: ''),
+            onTypeSelected: (_) {},
+            onPurposeSelected: (_) {},
+            onTitleChanged: (_) {},
+            onDescriptionChanged: (_) {},
+          ),
+        ),
+      );
+      await tester.pump();
+
+      expect(find.text('Title is required'), findsOneWidget);
+    });
+  });
+
   group('SpecsStep area units follow the district', () {
     testWidgets('a hill district shows ropani, aana, paisa, dam',
         (tester) async {
@@ -236,6 +284,7 @@ void main() {
           onMunicipalityChanged: (_) {},
           onWardChanged: (_) {},
           onRoadAccessChanged: (_) {},
+          onKittaChanged: (_) {},
         );
 
     testWidgets('lists the municipalities of the chosen district',

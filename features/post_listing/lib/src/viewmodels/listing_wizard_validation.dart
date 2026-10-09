@@ -59,6 +59,11 @@ extension ListingWizardValidation on ListingWizardState {
     if (listingPurpose == null) {
       errors['listingPurpose'] = s.requiredField(s.fieldPurpose);
     }
+    // The server refuses a blank title on submit (HYA-292 trigger), so the
+    // form requires it up front rather than failing at review.
+    if (title.trim().isEmpty) {
+      errors['title'] = s.requiredField(s.fieldTitle);
+    }
     return StepValidation(errors);
   }
 

@@ -100,6 +100,8 @@ class _StepBody extends StatelessWidget {
           state: state,
           onTypeSelected: notifier.setPropertyType,
           onPurposeSelected: notifier.setPurpose,
+          onTitleChanged: notifier.setTitle,
+          onDescriptionChanged: notifier.setDescription,
         ),
       WizardStep.location => LocationStep(
           state: state,

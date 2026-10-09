@@ -504,5 +504,25 @@
   "@chipBusiness": {
     "description": "Business type chip."
   },
-  "chipBusiness": "Business"
+  "chipBusiness": "Business",
+
+  "@fieldTitle": {
+    "description": "Listing title field label and required-field name."
+  },
+  "fieldTitle": "Title",
+
+  "@fieldTitleHint": {
+    "description": "Listing title placeholder."
+  },
+  "fieldTitleHint": "e.g. Sunny 3BHK house in Sitapaila",
+
+  "@fieldDescription": {
+    "description": "Listing description field label."
+  },
+  "fieldDescription": "Description (optional)",
+
+  "@fieldDescriptionHint": {
+    "description": "Listing description placeholder."
+  },
+  "fieldDescriptionHint": "Land, road, water and surroundings"
 }
