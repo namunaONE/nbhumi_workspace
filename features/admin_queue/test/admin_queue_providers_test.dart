@@ -425,6 +425,77 @@ void main() {
     });
   });
 
+  group('fraud warning counts (HYA-303)', () {
+    test('warningsFor defaults missing ids to 0', () {
+      const state = QueueViewState(
+        warningCounts: <String, int>{'a': 2},
+      );
+
+      expect(state.warningsFor('a'), 2);
+      expect(state.warningsFor('b'), 0);
+    });
+
+    test('the first page lands counts with the rows', () async {
+      final repo = FakeAdminRepository([page([entry('a'), entry('b')])])
+        ..warningCounts = const <String, int>{'a': 3};
+      final container = containerWith(repo);
+
+      final state = await container.read(adminQueueProvider.future);
+
+      expect(state.warningsFor('a'), 3);
+      expect(state.warningsFor('b'), 0);
+    });
+
+    test('loadMore merges the next page counts', () async {
+      final repo = FakeAdminRepository([
+        page(
+          [entry('a')],
+          nextCursor: QueueCursor(submittedAt: now, id: 'a'),
+        ),
+        page([entry('b')]),
+      ])..warningCounts = const <String, int>{'a': 1, 'b': 2};
+      final container = containerWith(repo);
+      await container.read(adminQueueProvider.future);
+
+      await container.read(adminQueueProvider.notifier).loadMore();
+      final state = container.read(adminQueueProvider).value!;
+
+      expect(state.warningsFor('a'), 1);
+      expect(state.warningsFor('b'), 2);
+    });
+
+    test('a counts failure keeps the rows with no flags', () async {
+      // Counts are enhancement, rows are payload: the page must survive a
+      // counts failure with zeros, not become an error state.
+      final repo = FakeAdminRepository([page([entry('a')])])
+        ..countsFailure = const NetworkException(
+          code: 'network.timeout',
+          messageEn: 'x',
+          messageNe: 'x',
+        );
+      final container = containerWith(repo);
+
+      final state = await container.read(adminQueueProvider.future);
+
+      expect(state.entries, hasLength(1));
+      expect(state.loadError, isNull);
+      expect(state.warningsFor('a'), 0);
+    });
+
+    test('removeRow drops the id from the counts map', () async {
+      final repo = FakeAdminRepository([page([entry('a'), entry('b')])])
+        ..warningCounts = const <String, int>{'a': 2, 'b': 1};
+      final container = containerWith(repo);
+      await container.read(adminQueueProvider.future);
+
+      container.read(adminQueueProvider.notifier).removeRow('a');
+      final state = container.read(adminQueueProvider).value!;
+
+      expect(state.warningsFor('a'), 0);
+      expect(state.warningsFor('b'), 1);
+    });
+  });
+
   group('withClearedError', () {
     test('drops the error and keeps everything else', () {
       final state = QueueViewState(
@@ -660,4 +731,25 @@ class FakeAdminRepository implements AdminRepository {
       throw UnimplementedError(
         'fraudSignals is not covered by these tests',
       );
+
+  /// Warning counts added by HYA-303. Served from [warningCounts] so the
+  /// queue tests can script flags per row; [countsFailure] makes the next
+  /// call throw instead, proving a counts failure never fails the page.
+  Map<String, int> warningCounts = const <String, int>{};
+  AppException? countsFailure;
+
+  @override
+  Future<Map<String, int>> fraudWarningCounts(
+    List<String> listingIds,
+  ) async {
+    final failure = countsFailure;
+    if (failure != null) {
+      countsFailure = null;
+      throw failure;
+    }
+    return <String, int>{
+      for (final id in listingIds)
+        if (warningCounts.containsKey(id)) id: warningCounts[id]!,
+    };
+  }
 }

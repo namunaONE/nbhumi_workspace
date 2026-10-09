@@ -19,6 +19,8 @@ import 'sla_chip.dart';
 /// * the SLA, which determines the work order
 /// * a photo count below the wizard's floor, the single most common reason a
 ///   listing gets rejected
+/// * fraud-warning flags from the batch counts call: a row with warnings
+///   deserves a closer look first, and the flag is what says so
 ///
 /// Anything subtler than that belongs in the detail pane.
 class QueueRow extends StatelessWidget {
@@ -28,6 +30,7 @@ class QueueRow extends StatelessWidget {
     required this.selected,
     required this.onTap,
     required this.asOf,
+    this.warningCount = 0,
     super.key,
   });
 
@@ -45,6 +48,12 @@ class QueueRow extends StatelessWidget {
   /// Passed in rather than read from the clock, so the chips across a list
   /// cannot disagree with each other mid-frame.
   final DateTime asOf;
+
+  /// Fraud warnings on this listing (HYA-303).
+  ///
+  /// 0 renders no flag: most rows are clean, and a permanently visible
+  /// "0 warnings" chip would be noise the eye learns to skip.
+  final int warningCount;
 
   @override
   Widget build(BuildContext context) {
@@ -112,6 +121,8 @@ class QueueRow extends StatelessWidget {
                         _PriceLabel(priceNpr: entry.priceNpr),
                         if (entry.isUnderPhotoMinimum)
                           _PhotoWarning(count: entry.photoCount),
+                        if (warningCount > 0)
+                          _FraudFlag(count: warningCount),
                         if (entry.seller.isVerified)
                           _VerifiedBadge(seller: entry.seller),
                       ],
@@ -217,6 +228,46 @@ class _PhotoWarning extends StatelessWidget {
           const SizedBox(width: 2),
           Text(
             '$count photos',
+            style: theme.textTheme.labelSmall?.copyWith(
+              color: theme.colorScheme.error,
+              fontWeight: FontWeight.w600,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+/// Fraud-warning flag: this listing tripped automated checks.
+///
+/// The count, not the checks: detail lives in the pane this row opens. A
+/// tooltip names the number so a reviewer can tell "one weak signal" from
+/// "five overlapping ones" before clicking.
+class _FraudFlag extends StatelessWidget {
+  const _FraudFlag({required this.count});
+
+  final int count;
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+
+    return Tooltip(
+      message: count == 1
+          ? '1 fraud warning. Open for details.'
+          : '$count fraud warnings. Open for details.',
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: <Widget>[
+          Icon(
+            Icons.flag_outlined,
+            size: 14,
+            color: theme.colorScheme.error,
+          ),
+          const SizedBox(width: 2),
+          Text(
+            '$count',
             style: theme.textTheme.labelSmall?.copyWith(
               color: theme.colorScheme.error,
               fontWeight: FontWeight.w600,

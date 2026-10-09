@@ -574,6 +574,16 @@ class FakeReportsRepository implements AdminRepository {
         'fraudSignals is not covered by these tests',
       );
 
+  /// Warning counts added by HYA-303: not exercised here. The queue tests
+  /// override at the provider seam instead.
+  @override
+  Future<Map<String, int>> fraudWarningCounts(
+    List<String> listingIds,
+  ) async =>
+      throw UnimplementedError(
+        'fraudWarningCounts is not covered by these tests',
+      );
+
   @override
   Future<QueuePage> getQueue({
     ListingStatus status = ListingStatus.pendingReview,

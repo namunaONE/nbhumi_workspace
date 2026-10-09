@@ -160,6 +160,9 @@ class _QueueBody extends ConsumerWidget {
                   entry: entry,
                   selected: entry.id == selectedId,
                   asOf: asOf,
+                  // Missing keys read as 0: rows whose counts never arrived
+                  // (failed batch call, actioned mid-page) show no flag.
+                  warningCount: state.warningsFor(entry.id),
                   onTap: () => ref
                       .read(adminSelectedListingProvider.notifier)
                       .listingId = entry.id,

@@ -51,7 +51,7 @@ final class AdminQueueProvider
   AdminQueue create() => AdminQueue();
 }
 
-String _$adminQueueHash() => r'76b533154376bd0828b6bd20241684a5ad3b0503';
+String _$adminQueueHash() => r'a79f7e8687aa2d62dbe849b243a663c994028148';
 
 /// The queue, paginated with a keyset cursor.
 ///

@@ -478,4 +478,14 @@ class FakeAdminRepository implements AdminRepository {
       throw UnimplementedError(
         'fraudSignals is not covered by these tests',
       );
+
+  /// Warning counts added by HYA-303. Same stub reasoning: queue tests that
+  /// need counts override at the provider seam instead.
+  @override
+  Future<Map<String, int>> fraudWarningCounts(
+    List<String> listingIds,
+  ) async =>
+      throw UnimplementedError(
+        'fraudWarningCounts is not covered by these tests',
+      );
 }

@@ -39,6 +39,14 @@ sealed class QueueViewState with _$QueueViewState {
     /// Cursor for the next page, or null once exhausted.
     QueueCursor? cursor,
 
+    /// Fraud-warning counts by listing id (HYA-303).
+    ///
+    /// Fetched after each page via the batch counts RPC, keyed by the ids on
+    /// screen. Missing keys read as 0 through [QueueViewStateX.warningsFor]:
+    /// a listing actioned between the page load and the counts call simply
+    /// shows no flag rather than failing the page.
+    @Default(<String, int>{}) Map<String, int> warningCounts,
+
     /// Whether a further page is in flight.
     ///
     /// Separate from the provider's loading state so a scroll can show a footer
@@ -54,6 +62,13 @@ sealed class QueueViewState with _$QueueViewState {
 extension QueueViewStateX on QueueViewState {
   /// Whether another page exists.
   bool get hasMore => cursor != null;
+
+  /// How many fraud warnings the row for [listingId] carries.
+  ///
+  /// 0 for listings with none and for ids the counts call never saw: no flag
+  /// is the safe default in both cases, and a failed counts fetch must never
+  /// read as "checked and clear" anywhere stricter than the row.
+  int warningsFor(String listingId) => warningCounts[listingId] ?? 0;
 
   /// Returns a copy with the given fields replaced, and no error.
   ///
@@ -72,12 +87,14 @@ extension QueueViewStateX on QueueViewState {
     required QueueCursor? cursor,
     List<AdminQueueEntry>? entries,
     QueueCounts? counts,
+    Map<String, int>? warningCounts,
     bool? isLoadingMore,
   }) =>
       QueueViewState(
         entries: entries ?? this.entries,
         counts: counts ?? this.counts,
         cursor: cursor,
+        warningCounts: warningCounts ?? this.warningCounts,
         isLoadingMore: isLoadingMore ?? this.isLoadingMore,
       );
 
@@ -160,6 +177,7 @@ class AdminQueue extends _$AdminQueue {
         entries: page.entries,
         counts: page.counts,
         cursor: page.nextCursor,
+        warningCounts: await _warningCounts(page.entries),
       );
     } on AppException catch (e) {
       // State rather than a thrown error, so the screen shows an inline
@@ -205,6 +223,10 @@ class AdminQueue extends _$AdminQueue {
           entries: <AdminQueueEntry>[...current.entries, ...page.entries],
           counts: page.counts,
           cursor: page.nextCursor,
+          warningCounts: <String, int>{
+            ...current.warningCounts,
+            ...await _warningCounts(page.entries),
+          },
           isLoadingMore: false,
         ),
       );
@@ -212,6 +234,26 @@ class AdminQueue extends _$AdminQueue {
       // Keeps the rows already on screen. Blanking a loaded queue because page
       // two failed would be worse than a retry line under the existing rows.
       state = AsyncData(current.copyWith(isLoadingMore: false, loadError: e));
+    }
+  }
+
+  /// Fraud-warning counts for [entries], best-effort.
+  ///
+  /// A failed counts call answers empty rather than throwing: the rows are
+  /// the payload and the flags are enhancement, so a counts failure must
+  /// never fail the page. Catches everything, not just [AppException: a
+  /// programming error here must blank no queue either (the panel's own
+  /// read still surfaces real failures where they matter).
+  Future<Map<String, int>> _warningCounts(
+    List<AdminQueueEntry> entries,
+  ) async {
+    if (entries.isEmpty) return const <String, int>{};
+    try {
+      return await ref
+          .read(adminRepositoryProvider)
+          .fraudWarningCounts(entries.map((e) => e.id).toList());
+    } on Object {
+      return const <String, int>{};
     }
   }
 
@@ -235,7 +277,13 @@ class AdminQueue extends _$AdminQueue {
         current.entries.where((e) => e.id != listingId).toList(growable: false);
     if (remaining.length == current.entries.length) return;
 
-    state = AsyncData(current.copyWith(entries: remaining));
+    // The counts map drops the id with the row: a removed listing has no row
+    // to flag, and a stale key would only confuse a future same-id lookup.
+    final warnings = Map<String, int>.from(current.warningCounts)
+      ..remove(listingId);
+    state = AsyncData(
+      current.copyWith(entries: remaining, warningCounts: warnings),
+    );
   }
 
   /// Applies the result of an admin decision to the loaded queue.

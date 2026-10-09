@@ -492,4 +492,13 @@ class FakeModerationRepository implements AdminRepository {
   @override
   Future<ListingFraudSignals> fraudSignals(String listingId) async =>
       ListingFraudSignals(listingId: listingId);
+
+  /// Warning counts are not served by this fake: panel tests override
+  /// `fraudSignalsProvider` directly, so an empty map is the honest
+  /// "not set up here" answer.
+  @override
+  Future<Map<String, int>> fraudWarningCounts(
+    List<String> listingIds,
+  ) async =>
+      <String, int>{};
 }

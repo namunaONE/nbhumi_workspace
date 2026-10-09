@@ -178,6 +178,15 @@ abstract class AdminRepository {
   /// [AuthFailureException] for non-admins, [ValidationException]-mapped
   /// not-found when the id is unknown.
   Future<ListingFraudSignals> fraudSignals(String listingId);
+
+  /// Warning counts for a page of listings (HYA-303).
+  ///
+  /// One round trip for the whole page via `v1_admin_fraud_signal_counts`,
+  /// which reuses the single-listing checks per id: a row flag can never
+  /// disagree with the pane it opens. Unknown ids are skipped server-side
+  /// (actioned between page load and this call); missing keys read as 0.
+  /// An empty [listingIds] answers `{}` without a round trip.
+  Future<Map<String, int>> fraudWarningCounts(List<String> listingIds);
 }
 
 /// Supabase-backed [AdminRepository].
@@ -664,6 +673,25 @@ class SupabaseAdminRepository implements AdminRepository {
     );
 
     return ListingFraudSignals.fromJson(response);
+  }
+
+  @override
+  Future<Map<String, int>> fraudWarningCounts(List<String> listingIds) async {
+    if (listingIds.isEmpty) return <String, int>{};
+
+    final response = await _guard(
+      () => _client.rpc<Map<String, dynamic>>(
+        'v1_admin_fraud_signal_counts',
+        params: <String, Object?>{'p_listing_ids': listingIds},
+      ),
+      action: 'fraudWarningCounts',
+    );
+
+    // Values decode as int; a defensive num cast keeps a shape change from
+    // throwing a cast error inside the queue load instead of mapping it.
+    return response.map(
+      (key, value) => MapEntry(key, (value as num).toInt()),
+    );
   }
 
   /// Reads the `status` out of `v1_admin_resolve_report`'s response.

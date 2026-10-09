@@ -1073,6 +1073,41 @@ void main() {
         throwsA(isA<ValidationException>()),
       );
     });
+
+    test('fraudWarningCounts parses per-id counts', () async {
+      final repo = succeedingRepo('{"l1":2,"l2":0}');
+
+      final counts = await repo.fraudWarningCounts(['l1', 'l2']);
+
+      expect(counts, {'l1': 2, 'l2': 0});
+    });
+
+    test('fraudWarningCounts answers empty without a round trip', () async {
+      final repo = failingRepo(status: '50000', message: 'must not be called');
+
+      expect(await repo.fraudWarningCounts(const []), isEmpty);
+    });
+
+    test('42501 from fraudWarningCounts reads as a permission failure', () {
+      final repo = failingRepo(status: '42501', message: 'FORBIDDEN');
+
+      expect(
+        () => repo.fraudWarningCounts(['l1']),
+        throwsA(isA<AuthFailureException>()),
+      );
+    });
+
+    test('22023 from overlong fraudWarningCounts is validation', () {
+      final repo = failingRepo(
+        status: '22023',
+        message: 'VALIDATION_ERROR: at most 100 listings per call',
+      );
+
+      expect(
+        () => repo.fraudWarningCounts(['l1']),
+        throwsA(isA<ValidationException>()),
+      );
+    });
   });
 }
 

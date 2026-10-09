@@ -211,6 +211,38 @@ void main() {
     });
   });
 
+  group('fraud flags (HYA-303)', () {
+    Future<void> pumpRow(WidgetTester tester, {int warnings = 0}) async {
+      await tester.pumpWidget(
+        MaterialApp(
+          home: Scaffold(
+            body: QueueRow(
+              entry: entry('a'),
+              selected: false,
+              asOf: DateTime.now().toUtc(),
+              warningCount: warnings,
+              onTap: () {},
+            ),
+          ),
+        ),
+      );
+      await tester.pumpAndSettle();
+    }
+
+    testWidgets('a row with warnings shows the flag count', (tester) async {
+      await pumpRow(tester, warnings: 2);
+
+      expect(find.byIcon(Icons.flag_outlined), findsOneWidget);
+      expect(find.text('2'), findsOneWidget);
+    });
+
+    testWidgets('a clean row shows no flag', (tester) async {
+      await pumpRow(tester);
+
+      expect(find.byIcon(Icons.flag_outlined), findsNothing);
+    });
+  });
+
   group('the SLA summary', () {
     testWidgets('counts the overdue rows above the list', (tester) async {
       final container = containerWith(
@@ -542,5 +574,15 @@ class FakeAdminRepository implements AdminRepository {
   Future<ListingFraudSignals> fraudSignals(String listingId) async =>
       throw UnimplementedError(
         'fraudSignals is not covered by these tests',
+      );
+
+  /// Warning counts added by HYA-303. Same stub reasoning: queue tests that
+  /// need counts override at the provider seam instead.
+  @override
+  Future<Map<String, int>> fraudWarningCounts(
+    List<String> listingIds,
+  ) async =>
+      throw UnimplementedError(
+        'fraudWarningCounts is not covered by these tests',
       );
 }

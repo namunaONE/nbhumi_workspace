@@ -25,7 +25,13 @@ mixin _$QueueViewState {
 /// Authoritative from the server on every response, so they stay fresh
 /// across pages without a second round trip.
  QueueCounts get counts;/// Cursor for the next page, or null once exhausted.
- QueueCursor? get cursor;/// Whether a further page is in flight.
+ QueueCursor? get cursor;/// Fraud-warning counts by listing id (HYA-303).
+///
+/// Fetched after each page via the batch counts RPC, keyed by the ids on
+/// screen. Missing keys read as 0 through [QueueViewStateX.warningsFor]:
+/// a listing actioned between the page load and the counts call simply
+/// shows no flag rather than failing the page.
+ Map<String, int> get warningCounts;/// Whether a further page is in flight.
 ///
 /// Separate from the provider's loading state so a scroll can show a footer
 /// spinner while existing rows stay on screen.
@@ -42,20 +48,20 @@ $QueueViewStateCopyWith<QueueViewState> get copyWith => _$QueueViewStateCopyWith
 @override
 bool operator ==(Object other) {
   final _this = this as QueueViewState;
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is QueueViewState&&const DeepCollectionEquality().equals(other.entries, _this.entries)&&(identical(other.counts, _this.counts) || other.counts == _this.counts)&&(identical(other.cursor, _this.cursor) || other.cursor == _this.cursor)&&(identical(other.isLoadingMore, _this.isLoadingMore) || other.isLoadingMore == _this.isLoadingMore)&&(identical(other.loadError, _this.loadError) || other.loadError == _this.loadError));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is QueueViewState&&const DeepCollectionEquality().equals(other.entries, _this.entries)&&(identical(other.counts, _this.counts) || other.counts == _this.counts)&&(identical(other.cursor, _this.cursor) || other.cursor == _this.cursor)&&const DeepCollectionEquality().equals(other.warningCounts, _this.warningCounts)&&(identical(other.isLoadingMore, _this.isLoadingMore) || other.isLoadingMore == _this.isLoadingMore)&&(identical(other.loadError, _this.loadError) || other.loadError == _this.loadError));
 }
 
 
 @override
 int get hashCode {
   final _this = this as QueueViewState;
-  return Object.hash(runtimeType,const DeepCollectionEquality().hash(_this.entries),_this.counts,_this.cursor,_this.isLoadingMore,_this.loadError);
+  return Object.hash(runtimeType,const DeepCollectionEquality().hash(_this.entries),_this.counts,_this.cursor,const DeepCollectionEquality().hash(_this.warningCounts),_this.isLoadingMore,_this.loadError);
 }
 
 @override
 String toString() {
   final _this = this as QueueViewState;
-  return 'QueueViewState(entries: ${_this.entries}, counts: ${_this.counts}, cursor: ${_this.cursor}, isLoadingMore: ${_this.isLoadingMore}, loadError: ${_this.loadError})';
+  return 'QueueViewState(entries: ${_this.entries}, counts: ${_this.counts}, cursor: ${_this.cursor}, warningCounts: ${_this.warningCounts}, isLoadingMore: ${_this.isLoadingMore}, loadError: ${_this.loadError})';
 }
 
 
@@ -66,7 +72,7 @@ abstract mixin class $QueueViewStateCopyWith<$Res>  {
   factory $QueueViewStateCopyWith(QueueViewState value, $Res Function(QueueViewState) _then) = _$QueueViewStateCopyWithImpl;
 @useResult
 $Res call({
- List<AdminQueueEntry> entries, QueueCounts counts, QueueCursor? cursor, bool isLoadingMore, AppException? loadError
+ List<AdminQueueEntry> entries, QueueCounts counts, QueueCursor? cursor, Map<String, int> warningCounts, bool isLoadingMore, AppException? loadError
 });
 
 
@@ -83,12 +89,13 @@ class _$QueueViewStateCopyWithImpl<$Res>
 
 /// Create a copy of QueueViewState
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? entries = null,Object? counts = null,Object? cursor = freezed,Object? isLoadingMore = null,Object? loadError = freezed,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? entries = null,Object? counts = null,Object? cursor = freezed,Object? warningCounts = null,Object? isLoadingMore = null,Object? loadError = freezed,}) {
   return _then(QueueViewState(
 entries: null == entries ? _self.entries : entries // ignore: cast_nullable_to_non_nullable
 as List<AdminQueueEntry>,counts: null == counts ? _self.counts : counts // ignore: cast_nullable_to_non_nullable
 as QueueCounts,cursor: freezed == cursor ? _self.cursor : cursor // ignore: cast_nullable_to_non_nullable
-as QueueCursor?,isLoadingMore: null == isLoadingMore ? _self.isLoadingMore : isLoadingMore // ignore: cast_nullable_to_non_nullable
+as QueueCursor?,warningCounts: null == warningCounts ? _self.warningCounts : warningCounts // ignore: cast_nullable_to_non_nullable
+as Map<String, int>,isLoadingMore: null == isLoadingMore ? _self.isLoadingMore : isLoadingMore // ignore: cast_nullable_to_non_nullable
 as bool,loadError: freezed == loadError ? _self.loadError : loadError // ignore: cast_nullable_to_non_nullable
 as AppException?,
   ));
@@ -181,10 +188,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( List<AdminQueueEntry> entries,  QueueCounts counts,  QueueCursor? cursor,  bool isLoadingMore,  AppException? loadError)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( List<AdminQueueEntry> entries,  QueueCounts counts,  QueueCursor? cursor,  Map<String, int> warningCounts,  bool isLoadingMore,  AppException? loadError)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _QueueViewState() when $default != null:
-return $default(_that.entries,_that.counts,_that.cursor,_that.isLoadingMore,_that.loadError);case _:
+return $default(_that.entries,_that.counts,_that.cursor,_that.warningCounts,_that.isLoadingMore,_that.loadError);case _:
   return orElse();
 
 }
@@ -202,10 +209,10 @@ return $default(_that.entries,_that.counts,_that.cursor,_that.isLoadingMore,_tha
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( List<AdminQueueEntry> entries,  QueueCounts counts,  QueueCursor? cursor,  bool isLoadingMore,  AppException? loadError)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( List<AdminQueueEntry> entries,  QueueCounts counts,  QueueCursor? cursor,  Map<String, int> warningCounts,  bool isLoadingMore,  AppException? loadError)  $default,) {final _that = this;
 switch (_that) {
 case _QueueViewState():
-return $default(_that.entries,_that.counts,_that.cursor,_that.isLoadingMore,_that.loadError);}
+return $default(_that.entries,_that.counts,_that.cursor,_that.warningCounts,_that.isLoadingMore,_that.loadError);}
 }
 /// A variant of `when` that fallback to returning `null`
 ///
@@ -219,10 +226,10 @@ return $default(_that.entries,_that.counts,_that.cursor,_that.isLoadingMore,_tha
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( List<AdminQueueEntry> entries,  QueueCounts counts,  QueueCursor? cursor,  bool isLoadingMore,  AppException? loadError)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( List<AdminQueueEntry> entries,  QueueCounts counts,  QueueCursor? cursor,  Map<String, int> warningCounts,  bool isLoadingMore,  AppException? loadError)?  $default,) {final _that = this;
 switch (_that) {
 case _QueueViewState() when $default != null:
-return $default(_that.entries,_that.counts,_that.cursor,_that.isLoadingMore,_that.loadError);case _:
+return $default(_that.entries,_that.counts,_that.cursor,_that.warningCounts,_that.isLoadingMore,_that.loadError);case _:
   return null;
 
 }
@@ -234,7 +241,7 @@ return $default(_that.entries,_that.counts,_that.cursor,_that.isLoadingMore,_tha
 
 
 class _QueueViewState implements QueueViewState {
-  const _QueueViewState({ List<AdminQueueEntry> entries = const <AdminQueueEntry>[], this.counts = const QueueCounts(), this.cursor, this.isLoadingMore = false, this.loadError}): _entries = entries;
+  const _QueueViewState({ List<AdminQueueEntry> entries = const <AdminQueueEntry>[], this.counts = const QueueCounts(), this.cursor,  Map<String, int> warningCounts = const <String, int>{}, this.isLoadingMore = false, this.loadError}): _entries = entries,_warningCounts = warningCounts;
   
 
 /// Rows loaded so far, oldest submission first.
@@ -261,6 +268,25 @@ class _QueueViewState implements QueueViewState {
 @override@JsonKey() final  QueueCounts counts;
 /// Cursor for the next page, or null once exhausted.
 @override final  QueueCursor? cursor;
+/// Fraud-warning counts by listing id (HYA-303).
+///
+/// Fetched after each page via the batch counts RPC, keyed by the ids on
+/// screen. Missing keys read as 0 through [QueueViewStateX.warningsFor]:
+/// a listing actioned between the page load and the counts call simply
+/// shows no flag rather than failing the page.
+ final  Map<String, int> _warningCounts;
+/// Fraud-warning counts by listing id (HYA-303).
+///
+/// Fetched after each page via the batch counts RPC, keyed by the ids on
+/// screen. Missing keys read as 0 through [QueueViewStateX.warningsFor]:
+/// a listing actioned between the page load and the counts call simply
+/// shows no flag rather than failing the page.
+@override@JsonKey() Map<String, int> get warningCounts {
+  if (_warningCounts is EqualUnmodifiableMapView) return _warningCounts;
+  // ignore: implicit_dynamic_type
+  return EqualUnmodifiableMapView(_warningCounts);
+}
+
 /// Whether a further page is in flight.
 ///
 /// Separate from the provider's loading state so a scroll can show a footer
@@ -279,18 +305,18 @@ _$QueueViewStateCopyWith<_QueueViewState> get copyWith => __$QueueViewStateCopyW
 
 @override
 bool operator ==(Object other) {
-    return identical(this, other) || (other.runtimeType == runtimeType&&other is _QueueViewState&&const DeepCollectionEquality().equals(other.entries, _entries)&&(identical(other.counts, counts) || other.counts == counts)&&(identical(other.cursor, cursor) || other.cursor == cursor)&&(identical(other.isLoadingMore, isLoadingMore) || other.isLoadingMore == isLoadingMore)&&(identical(other.loadError, loadError) || other.loadError == loadError));
+    return identical(this, other) || (other.runtimeType == runtimeType&&other is _QueueViewState&&const DeepCollectionEquality().equals(other.entries, _entries)&&(identical(other.counts, counts) || other.counts == counts)&&(identical(other.cursor, cursor) || other.cursor == cursor)&&const DeepCollectionEquality().equals(other.warningCounts, _warningCounts)&&(identical(other.isLoadingMore, isLoadingMore) || other.isLoadingMore == isLoadingMore)&&(identical(other.loadError, loadError) || other.loadError == loadError));
 }
 
 
 @override
 int get hashCode {
-    return Object.hash(runtimeType,const DeepCollectionEquality().hash(_entries),counts,cursor,isLoadingMore,loadError);
+    return Object.hash(runtimeType,const DeepCollectionEquality().hash(_entries),counts,cursor,const DeepCollectionEquality().hash(_warningCounts),isLoadingMore,loadError);
 }
 
 @override
 String toString() {
-    return 'QueueViewState(entries: $entries, counts: $counts, cursor: $cursor, isLoadingMore: $isLoadingMore, loadError: $loadError)';
+    return 'QueueViewState(entries: $entries, counts: $counts, cursor: $cursor, warningCounts: $warningCounts, isLoadingMore: $isLoadingMore, loadError: $loadError)';
 }
 
 
@@ -301,7 +327,7 @@ abstract mixin class _$QueueViewStateCopyWith<$Res> implements $QueueViewStateCo
   factory _$QueueViewStateCopyWith(_QueueViewState value, $Res Function(_QueueViewState) _then) = __$QueueViewStateCopyWithImpl;
 @override @useResult
 $Res call({
- List<AdminQueueEntry> entries, QueueCounts counts, QueueCursor? cursor, bool isLoadingMore, AppException? loadError
+ List<AdminQueueEntry> entries, QueueCounts counts, QueueCursor? cursor, Map<String, int> warningCounts, bool isLoadingMore, AppException? loadError
 });
 
 
@@ -318,12 +344,13 @@ class __$QueueViewStateCopyWithImpl<$Res>
 
 /// Create a copy of QueueViewState
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? entries = null,Object? counts = null,Object? cursor = freezed,Object? isLoadingMore = null,Object? loadError = freezed,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? entries = null,Object? counts = null,Object? cursor = freezed,Object? warningCounts = null,Object? isLoadingMore = null,Object? loadError = freezed,}) {
   return _then(_QueueViewState(
 entries: null == entries ? _self._entries : entries // ignore: cast_nullable_to_non_nullable
 as List<AdminQueueEntry>,counts: null == counts ? _self.counts : counts // ignore: cast_nullable_to_non_nullable
 as QueueCounts,cursor: freezed == cursor ? _self.cursor : cursor // ignore: cast_nullable_to_non_nullable
-as QueueCursor?,isLoadingMore: null == isLoadingMore ? _self.isLoadingMore : isLoadingMore // ignore: cast_nullable_to_non_nullable
+as QueueCursor?,warningCounts: null == warningCounts ? _self._warningCounts : warningCounts // ignore: cast_nullable_to_non_nullable
+as Map<String, int>,isLoadingMore: null == isLoadingMore ? _self.isLoadingMore : isLoadingMore // ignore: cast_nullable_to_non_nullable
 as bool,loadError: freezed == loadError ? _self.loadError : loadError // ignore: cast_nullable_to_non_nullable
 as AppException?,
   ));
