@@ -37,7 +37,8 @@ Future<void> main() async {
     publishableKey: EnvConfig.supabasePublishableKey,
     // DeepLinkListener owns the PKCE exchange. Supabase Flutter also installs
     // an app_links listener by default; two listeners would redeem the same
-    // one-time code and make cold/warm magic links fail nondeterministically.
+    // one-time code and make cold/warm confirmation links fail
+    // nondeterministically.
     authOptions: const FlutterAuthClientOptions(detectSessionInUri: false),
   );
   final seen = await OnboardingGate.loadSeen();

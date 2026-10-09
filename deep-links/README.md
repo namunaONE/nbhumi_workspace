@@ -1,7 +1,7 @@
 # Deep links (HYA-257) — setup checklist
 
-App-side wiring is done and committed. Magic-link sign-in works with **no
-domain at all** via the `nbhumi://` custom scheme (the default until
+App-side wiring is done and committed. Email-confirmation sign-in works with
+**no domain at all** via the `nbhumi://` custom scheme (the default until
 `DEEP_LINK_HOST` is set) — the only requirement is one Supabase allowlist
 entry (step 4). Universal links and `.well-known` hosting wait for the real
 domain.
@@ -47,15 +47,16 @@ files below.
      redirect error, add the wildcard form `nbhumi://auth/callback/*` too.
    - `https://<domain>/auth/callback` (later, once the domain is live —
      the app switches to it automatically when `DEEP_LINK_HOST` is set)
-5. **Email template**: set the magic-link template's redirect to
+5. **Email template**: set the confirmation template's redirect to
    `https://<domain>/auth/callback` (Supabase substitutes the PKCE `?code=`).
-6. **Test**: kill the app, tap a real magic link (cold start), then tap one
-   with the app open (warm). Confirm session + home redirect. Then tap a
-   shared `https://<domain>/listing/<id>` link and confirm in-app routing.
+6. **Test**: kill the app, tap a real confirmation link (cold start), then
+   tap one with the app open (warm). Confirm session + home redirect. Then
+   tap a shared `https://<domain>/listing/<id>` link and confirm in-app
+   routing.
 
 ## Files
 
 - `.well-known/assetlinks.json` — Android Digital Asset Links (see step 2).
 - `.well-known/apple-app-site-association` — Apple applinks (see step 3).
-  Paths covered: `/auth/callback*` (magic-link sign-in), `/listing/*`
-  (shared listings open in-app).
+  Paths covered: `/auth/callback*` (confirmation + recovery sign-in),
+  `/listing/*` (shared listings open in-app).

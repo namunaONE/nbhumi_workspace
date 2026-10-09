@@ -1,8 +1,7 @@
 ﻿/// Authentication feature for nBhumi.
 ///
-/// Magic link first, email + password as the alternative: the login screen
-/// offers both and neither is forced (DATA.md's password ban was lifted by
-/// owner decision — see `AuthService`).
+/// Email + password only: the login screen offers sign-in, account creation
+/// and recovery, with email confirmation before the first session.
 library;
 
 export 'src/deep_links/auth_link_handler.dart';

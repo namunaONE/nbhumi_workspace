@@ -7,8 +7,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 /// ### Why this screen exists at all
 ///
 /// Supabase signup is enabled on the hosted project, so anyone can create an
-/// account with a magic link and then navigate to the panel's URL. They will
-/// hold a valid session and `profiles.role = 'buyer'`.
+/// account with email and password and then navigate to the panel's URL. They
+/// will hold a valid session and `profiles.role = 'buyer'`.
 ///
 /// The obvious alternative, bouncing non-admins straight to `/login`, traps
 /// them in a loop: `/login` redirects to `/queue` for anyone signed in, `/queue`

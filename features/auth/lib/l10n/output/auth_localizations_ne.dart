@@ -13,24 +13,11 @@ class AppLocalizationsNe extends AppLocalizations {
   String get title => 'साइन इन';
 
   @override
-  String get paneLink => 'म्याजिक लिङ्क';
-
-  @override
-  String get panePassword => 'पासवर्ड';
-
-  @override
-  String get linkTitle => 'म्याजिक लिङ्कबाट साइन इन गर्नुहोस्';
-
-  @override
-  String get linkSubtitle =>
-      'हामी साइन-इन लिङ्क इमेल गर्छौं। पासवर्ड सम्झनु पर्दैन।';
-
-  @override
   String get passwordSignInTitle => 'आफ्नो पासवर्डबाट साइन इन गर्नुहोस्';
 
   @override
   String get passwordSignInSubtitle =>
-      'पासवर्ड चाहनुहुन्न? लिङ्क ट्याबलाई इमेल मात्र चाहिन्छ।';
+      'तपाईंको खाताको इमेल र पासवर्ड प्रयोग गर्नुहोस्।';
 
   @override
   String get signUpTitle => 'आफ्नो खाता बनाउनुहोस्';
@@ -74,12 +61,6 @@ class AppLocalizationsNe extends AppLocalizations {
   }
 
   @override
-  String get sendLink => 'साइन-इन लिङ्क पठाउनुहोस्';
-
-  @override
-  String get resendLink => 'लिङ्क पुनः पठाउनुहोस्';
-
-  @override
   String get signInAction => 'साइन इन';
 
   @override
@@ -102,11 +83,6 @@ class AppLocalizationsNe extends AppLocalizations {
 
   @override
   String get backToSignIn => 'साइन इनमा फर्कनुहोस्';
-
-  @override
-  String sentLink(String email) {
-    return 'इनबक्स जाँच गर्नुहोस् — $email मा साइन-इन लिङ्क जाँदैछ।';
-  }
 
   @override
   String accountCreated(String email) {

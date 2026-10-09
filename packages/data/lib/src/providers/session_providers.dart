@@ -33,6 +33,31 @@ final isSignedInProvider = Provider<bool>((ref) {
   return ref.watch(sessionProvider) != null;
 });
 
+/// Whether the current install's first session came from a fresh signup.
+///
+/// Set by the auth viewmodel when `signUpWithPassword` succeeds. The router
+/// sends such a session through onboarding once, so a new account meets the
+/// first-run screens after confirming email instead of landing cold on the
+/// feed. Memory-only by design: if the app is killed before the first session,
+/// the ordinary first-run gate still shows onboarding to the guest, so the
+/// legal disclaimer is never skipped — the post-signup pass is a welcome, not
+/// a requirement.
+class FreshSignupNotifier extends Notifier<bool> {
+  /// Starts unmarked; the auth viewmodel marks it on signup success.
+  @override
+  bool build() => false;
+
+  /// Marks the install for one post-signup onboarding pass.
+  void markFresh() => state = true;
+
+  /// Clears the mark once onboarding has been shown.
+  void clear() => state = false;
+}
+
+/// Fresh-signup mark for post-signup onboarding. See [FreshSignupNotifier].
+final freshSignupProvider =
+    NotifierProvider<FreshSignupNotifier, bool>(FreshSignupNotifier.new);
+
 /// Mirrors the session into `sessionContext` so log entries are attributed.
 ///
 /// Listening here rather than inside `AppLogger` keeps logging synchronous and

@@ -13,24 +13,11 @@ class AppLocalizationsEn extends AppLocalizations {
   String get title => 'Sign in';
 
   @override
-  String get paneLink => 'Magic link';
-
-  @override
-  String get panePassword => 'Password';
-
-  @override
-  String get linkTitle => 'Sign in with a magic link';
-
-  @override
-  String get linkSubtitle =>
-      'We email you a sign-in link. No password to remember.';
-
-  @override
   String get passwordSignInTitle => 'Sign in with your password';
 
   @override
   String get passwordSignInSubtitle =>
-      'Prefer no password? The link tab needs only email.';
+      'Use the email and password for your account.';
 
   @override
   String get signUpTitle => 'Create your account';
@@ -74,12 +61,6 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
-  String get sendLink => 'Send sign-in link';
-
-  @override
-  String get resendLink => 'Resend link';
-
-  @override
   String get signInAction => 'Sign in';
 
   @override
@@ -102,11 +83,6 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get backToSignIn => 'Back to sign in';
-
-  @override
-  String sentLink(String email) {
-    return 'Check your inbox — a sign-in link is on its way to $email.';
-  }
 
   @override
   String accountCreated(String email) {

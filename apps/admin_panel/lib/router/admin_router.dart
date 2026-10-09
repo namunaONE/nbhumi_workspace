@@ -80,7 +80,7 @@ class AdminAccessRefreshNotifier extends ChangeNotifier {
 /// read authoritatively. So the panel resolves it once per session and sends
 /// anyone who is not an admin to `/forbidden`, a designed screen rather than a
 /// redirect loop: `enable_signup = true` means any member of the public who
-/// signs up with a magic link can reach this point.
+/// signs up with email and password can reach this point.
 ///
 /// ### Why this is built once
 ///

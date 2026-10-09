@@ -43,8 +43,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get profileSignedOut => 'Not signed in';
 
   @override
-  String get profileSignedOutHint =>
-      'Sign in with a magic link to post a property';
+  String get profileSignedOutHint => 'Sign in to post a property';
 
   @override
   String get profileSignedIn => 'Signed in';
@@ -166,8 +165,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get profileSignOutTitle => 'Sign out';
 
   @override
-  String get profileSignOutSubtitle =>
-      'You can sign back in with a magic link any time';
+  String get profileSignOutSubtitle => 'You can sign back in any time';
 
   @override
   String get profileDeleteTitle => 'Delete my account';

@@ -6,26 +6,23 @@ import '../providers/session_logging.dart';
 
 /// Authentication service — wraps Supabase Auth.
 ///
-/// ### Three sign-in methods
+/// ### Email + password only
 ///
-/// [sendMagicLink] is the **user app default**: frictionless on a phone, no
-/// password to forget. [signUpWithPassword] and the password half of
-/// [signInWithPassword] exist because some users distrust link emails; the
-/// login screen offers both and neither is forced.
+/// The user app signs up and signs in with email and password; there is no
+/// magic-link path. [signUpWithPassword] creates the account (email
+/// confirmation enforced server-side), [signInWithPassword] opens sessions,
+/// [resetPasswordForEmail] + [updatePassword] cover recovery through the same
+/// `/auth/callback` exchange. The login screen offers sign-in, account
+/// creation and recovery; nothing else is accepted.
 ///
-/// [signInWithPassword] is shared with the **admin panel** (HYA-259), whose
-/// only method it used to be. One shared credential with a rotating password
-/// is easier to reason about than a link that may expire unopened, and it
-/// leaves TOTP MFA as a straightforward next step.
+/// [signInWithPassword] is shared with the **admin panel** (HYA-259). One
+/// shared credential with a rotating password is easier to reason about than
+/// a link that may expire unopened, and it leaves TOTP MFA as a
+/// straightforward next step.
 ///
-/// Two deliberate constraints survive the password addition:
-///
-/// * Supabase magic links use the PKCE flow, so a link only validates if
-///   opened in the same browser that requested it — acceptable for a buyer on
-///   a phone, which is why the custom-scheme callback exists.
-/// * There is no app-side sign-up *form* logic beyond validation: accounts are
-///   created by [signUpWithPassword] and confirmed through the same
-///   `/auth/callback` exchange as magic links.
+/// There is no app-side sign-up *form* logic beyond validation: accounts are
+/// created by [signUpWithPassword] and confirmed through the `/auth/callback`
+/// exchange before the first session exists.
 ///
 /// Enabling signup on the hosted project means any member of the public can
 /// create an account. That is fine for the marketplace and irrelevant to the
@@ -34,50 +31,20 @@ import '../providers/session_logging.dart';
 ///
 /// Password hygiene notes for the operator: enable leaked-password protection
 /// in the Supabase dashboard, and keep the recovery email template
-/// (`supabase/email-templates/recovery.html`) in sync with the magic-link one.
+/// (`supabase/email-templates/recovery.html`) in sync with the confirmation
+/// one.
 class AuthService {
   /// Wraps a GoTrue client.
   AuthService(this._client);
 
   final GoTrueClient _client;
 
-  /// Send magic link to email.
-  ///
-  /// User app only. The redirect is derived from [EnvConfig] (`https://host`
-  /// + `/auth/callback`), so this must not be reused by the admin panel, which
-  /// authenticates with [signInWithPassword] and never touches the redirect
-  /// allowlist.
-  ///
-  /// The Supabase project must allowlist the redirect (plus the mobile
-  /// deep-link URIs from HYA-257) before this works end to end.
-  Future<void> sendMagicLink(String email) async {
-    try {
-      await _client.signInWithOtp(
-        email: email,
-        emailRedirectTo: EnvConfig.authRedirectUri.toString(),
-      );
-    } on AuthException catch (e) {
-      // Same mapping as every other auth call (Rule 38): rate limits and a
-      // raw GoTrue message must never reach the UI unmapped.
-      final mapped = AuthExceptionMapper.map(e, action: 'sendMagicLink');
-      AppLogger.error(
-        'Failed in sendMagicLink',
-        context: logContext(
-          action: 'sendMagicLink',
-          detail: <String, Object?>{'code': mapped.code},
-        ),
-        error: e,
-      );
-      throw mapped;
-    }
-  }
-
   /// Signs up with an email and password.
   ///
   /// User app (and any future surface that wants it). Confirmation goes
-  /// through the same `/auth/callback` exchange as magic links when the
-  /// project requires email confirmation; the redirect is [EnvConfig]'s, so
-  /// the same allowlist covers both flows.
+  /// through the `/auth/callback` exchange when the project requires email
+  /// confirmation; the redirect is [EnvConfig]'s, so the allowlist covers
+  /// both signup confirmation and recovery.
   Future<void> signUpWithPassword({
     required String email,
     required String password,
@@ -106,8 +73,9 @@ class AuthService {
   ///
   /// The redirect carries `?type=recovery` so the callback screen knows to
   /// show the set-new-password form instead of the signed-in hop. Same
-  /// allowlist as magic links, plus the query string — if Supabase ever
-  /// rejects it, its wildcard form covers it (see `deep-links/README.md`).
+  /// allowlist as signup confirmation, plus the query string — if Supabase
+  /// ever rejects it, its wildcard form covers it (see
+  /// `deep-links/README.md`).
   Future<void> resetPasswordForEmail(String email) async {
     try {
       await _client.resetPasswordForEmail(
@@ -189,7 +157,7 @@ class AuthService {
     }
   }
 
-  /// Exchanges a magic-link callback URL for a session (HYA-257).
+  /// Exchanges an email-confirmation or recovery callback URL for a session.
   ///
   /// Called by the deep-link handler when an incoming link classifies as an
   /// auth callback. PKCE code exchange happens here; the resulting session is
