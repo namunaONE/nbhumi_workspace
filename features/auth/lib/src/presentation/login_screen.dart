@@ -277,7 +277,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                             },
                   isLoading: _busy,
                   onPressed:
-                      _busy || _cooldownSeconds > 0 ? null : () => _submit(),
+                      _busy || _cooldownSeconds > 0 ? null : _submit,
                 ),
                 if (_pane == _Pane.password &&
                     _mode != _PasswordMode.reset)

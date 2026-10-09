@@ -219,7 +219,15 @@ void main() {
       await pumpApp(tester);
 
       for (final tab in AppTab.values) {
-        await tester.tap(find.text(tab.label));
+        // Scoped to the bar: tab labels repeat as screen titles (Explore
+        // hosts SearchScreen titled Explore), so a bare text tap is
+        // ambiguous.
+        await tester.tap(
+          find.descendant(
+            of: find.byType(BottomAppBar),
+            matching: find.text(tab.label),
+          ),
+        );
         await tester.pumpAndSettle();
       }
 
