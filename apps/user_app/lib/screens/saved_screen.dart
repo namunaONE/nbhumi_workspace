@@ -180,15 +180,20 @@ class _SearchesSection extends ConsumerWidget {
 }
 
 /// One saved listing. Tapping opens the detail page.
+///
+/// Horizontal rows: the shelf is a single-column list, so dense rows scan
+/// faster than full grid cards stacked end to end.
 class _SavedCard extends ConsumerWidget {
+  /// Creates a saved row.
   const _SavedCard({required this.listing});
 
+  /// The listing to render.
   final ListingSummary listing;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) => Padding(
-        padding: const EdgeInsets.only(bottom: 12),
-        child: ListingCard(
+        padding: const EdgeInsets.only(bottom: AppSpacing.sm),
+        child: HorizontalListingCard(
           listing: listing,
           onTap: () => context.push('/listing/${listing.id}'),
         ),

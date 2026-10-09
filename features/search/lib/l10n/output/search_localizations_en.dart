@@ -1,5 +1,6 @@
 // ignore: unused_import
 import 'package:intl/intl.dart' as intl;
+
 import 'search_localizations.dart';
 
 // ignore_for_file: type=lint
@@ -16,6 +17,12 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get filtersTooltip => 'Filters';
+
+  @override
+  String get viewListTooltip => 'List view';
+
+  @override
+  String get viewGridTooltip => 'Grid view';
 
   @override
   String get searchHint => 'Search by title or location';
@@ -35,7 +42,8 @@ class AppLocalizationsEn extends AppLocalizations {
   String get noMatchTitle => 'No listings match';
 
   @override
-  String get noMatchBody => 'Try removing a filter or widening the price range.';
+  String get noMatchBody =>
+      'Try removing a filter or widening the price range.';
 
   @override
   String get tryAgain => 'Try again';
