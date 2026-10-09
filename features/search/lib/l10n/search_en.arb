@@ -17,6 +17,16 @@
   },
   "filtersTooltip": "Filters",
 
+  "@viewListTooltip": {
+    "description": "Results layout toggle tooltip when showing the grid."
+  },
+  "viewListTooltip": "List view",
+
+  "@viewGridTooltip": {
+    "description": "Results layout toggle tooltip when showing the list."
+  },
+  "viewGridTooltip": "Grid view",
+
   "@searchHint": {
     "description": "Title/location query field hint."
   },

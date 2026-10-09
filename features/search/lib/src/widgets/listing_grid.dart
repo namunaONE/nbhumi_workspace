@@ -4,6 +4,18 @@ import 'package:core/core.dart';
 import 'package:flutter/material.dart';
 import 'package:models/models.dart';
 
+/// Results presentation for [ListingGrid].
+///
+/// Grid is the default browse surface: vertical cards in adaptive columns.
+/// List renders the same rows as dense horizontal cards for fast scanning.
+enum ListingLayout {
+  /// Vertical cards in adaptive columns.
+  grid,
+
+  /// Dense horizontal rows in a single scrolling list.
+  list,
+}
+
 /// A paginated grid of listing cards that loads more as the user scrolls.
 ///
 /// Takes plain data and callbacks rather than reading providers, so Home and
@@ -17,7 +29,13 @@ class ListingGrid extends StatefulWidget {
     this.onListingTap,
     this.isLoadingMore = false,
     this.hasMore = false,
-    this.padding = const EdgeInsets.all(12),
+    this.layout = ListingLayout.grid,
+    this.padding = const EdgeInsets.fromLTRB(
+      AppSpacing.lg,
+      AppSpacing.md,
+      AppSpacing.lg,
+      AppSpacing.lg,
+    ),
     super.key,
   });
 
@@ -38,6 +56,9 @@ class ListingGrid extends StatefulWidget {
 
   /// Whether another page exists.
   final bool hasMore;
+
+  /// Grid or list presentation. List uses horizontal row cards.
+  final ListingLayout layout;
 
   /// Padding around the grid.
   final EdgeInsets padding;
@@ -107,49 +128,108 @@ class _ListingGridState extends State<ListingGrid> {
     }
   }
 
-  @override
-  Widget build(BuildContext context) {
-    final grid = LayoutBuilder(
-      builder: (context, constraints) {
-        final columns = ListingGrid.columnsFor(
-          constraints.maxWidth - widget.padding.horizontal,
-        );
-
-        return GridView.builder(
-          controller: _controller,
-          padding: widget.padding,
-          // AlwaysScrollable so pull-to-refresh works even when the grid is
-          // shorter than the viewport.
-          physics: const AlwaysScrollableScrollPhysics(),
-          itemCount: widget.listings.length + (widget.isLoadingMore ? 1 : 0),
-          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-            crossAxisCount: columns,
-            mainAxisSpacing: ListingGrid.crossAxisSpacing,
-            crossAxisSpacing: ListingGrid.crossAxisSpacing,
-            // Fits the 160dp cover photo plus the five-row text block. Was
-            // 0.72: the HYA-267 goldens proved a 0.72 cell clips ~45px of
-            // card on narrow two-column phones (silently in release via the
-            // card's Clip.antiAlias, so the area row simply vanished). 0.60
-            // holds the tallest test metrics with slack for larger text.
-            childAspectRatio: 0.60,
+  /// Single-column list of horizontal row cards with the same pagination.
+  Widget _buildList() {
+    return ListView.builder(
+      controller: _controller,
+      padding: widget.padding,
+      // AlwaysScrollable so pull-to-refresh works even when the list is
+      // shorter than the viewport.
+      physics: const AlwaysScrollableScrollPhysics(),
+      itemCount: widget.listings.length + (widget.isLoadingMore ? 1 : 0),
+      itemBuilder: (context, index) {
+        if (index == widget.listings.length) {
+          return const SizedBox(
+            height: AppSizes.loadingRowHeight,
+            child: Center(child: CircularProgressIndicator()),
+          );
+        }
+        final listing = widget.listings[index];
+        return Padding(
+          padding: const EdgeInsets.only(bottom: AppSpacing.md),
+          child: HorizontalListingCard(
+            listing: listing,
+            onTap: widget.onListingTap == null
+                ? null
+                : () => widget.onListingTap!(listing.id),
           ),
-          itemBuilder: (context, index) {
-            if (index == widget.listings.length) {
-              return const Center(child: CircularProgressIndicator());
-            }
-            final listing = widget.listings[index];
-            return ListingCard(
-              listing: listing,
-              onTap: widget.onListingTap == null
-                  ? null
-                  : () => widget.onListingTap!(listing.id),
-            );
-          },
         );
       },
     );
+  }
 
-    if (widget.onRefresh == null) return grid;
+  @override
+  Widget build(BuildContext context) {
+    final grid = widget.layout == ListingLayout.list
+        ? _buildList()
+        : LayoutBuilder(
+            builder: (context, constraints) {
+              final columns = ListingGrid.columnsFor(
+                constraints.maxWidth - widget.padding.horizontal,
+              );
+              // Per-card density: narrow columns get the compact card so
+              // text stays legible on phones, tablets, and expanded
+              // layouts alike.
+              final cardWidth = (constraints.maxWidth -
+                      widget.padding.horizontal -
+                      (columns - 1) * ListingGrid.crossAxisSpacing) /
+                  columns;
+              final compact = cardWidth < AppSizes.compactCardThreshold;
+
+              return GridView.builder(
+                controller: _controller,
+                padding: widget.padding,
+                // AlwaysScrollable so pull-to-refresh works even when the
+                // grid is shorter than the viewport.
+                physics: const AlwaysScrollableScrollPhysics(),
+                itemCount:
+                    widget.listings.length + (widget.isLoadingMore ? 1 : 0),
+                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: columns,
+                  mainAxisSpacing: ListingGrid.crossAxisSpacing,
+                  crossAxisSpacing: ListingGrid.crossAxisSpacing,
+                  // Fits the 4:3 cover photo plus the four-row text block
+                  // (title, location+area, price, type chip). Was 0.72:
+                  // the HYA-267 goldens proved a 0.72 cell clips ~45px of
+                  // card on narrow two-column phones (silently in release
+                  // via the card's Clip.antiAlias, so the area row simply
+                  // vanished). 0.60 held the old five-row card; the rework
+                  // merges area into location and drops the duplicate
+                  // purpose row, so 0.64 holds the shorter card with slack
+                  // left for larger text.
+                  childAspectRatio: 0.64,
+                ),
+                itemBuilder: (context, index) {
+                  if (index == widget.listings.length) {
+                    return const Center(child: CircularProgressIndicator());
+                  }
+                  final listing = widget.listings[index];
+                  return ListingCard(
+                    listing: listing,
+                    compact: compact,
+                    onTap: widget.onListingTap == null
+                        ? null
+                        : () => widget.onListingTap!(listing.id),
+                  );
+                },
+              );
+            },
+          );
+
+    // Wide windows would otherwise stretch the content edge to edge: cap
+    // the width and center it, keeping phone layouts untouched. The cap
+    // sits outside the scrollable so pull-to-refresh keeps full width.
+    final capped = Align(
+      alignment: Alignment.topCenter,
+      child: ConstrainedBox(
+        constraints: const BoxConstraints(
+          maxWidth: AppSizes.contentMaxWidth,
+        ),
+        child: grid,
+      ),
+    );
+
+    if (widget.onRefresh == null) return capped;
 
     // Wrapped so a synchronous `retry` still satisfies RefreshCallback, which
     // needs a Future to keep the spinner up.
@@ -157,7 +237,7 @@ class _ListingGridState extends State<ListingGrid> {
       onRefresh: () async {
         await widget.onRefresh!();
       },
-      child: grid,
+      child: capped,
     );
   }
 }

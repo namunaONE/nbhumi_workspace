@@ -10,6 +10,7 @@ import 'package:search/l10n/output/search_localizations.dart'
 import '../providers/browse_providers.dart';
 import '../utils/search_labels.dart';
 import '../widgets/browse_feed.dart';
+import '../widgets/listing_grid.dart';
 import 'filter_sheet.dart';
 
 /// Search listings.
@@ -18,7 +19,7 @@ import 'filter_sheet.dart';
 /// errors behave identically to the Home feed. Filtering state lives in
 /// `BrowseFilter` rather than in widget state, which is what lets Home and
 /// Search share one feed.
-class SearchScreen extends ConsumerWidget {
+class SearchScreen extends ConsumerStatefulWidget {
   /// Creates the search screen.
   const SearchScreen({this.title, this.actions, super.key});
 
@@ -31,18 +32,39 @@ class SearchScreen extends ConsumerWidget {
   final List<Widget>? actions;
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<SearchScreen> createState() => _SearchScreenState();
+}
+
+class _SearchScreenState extends ConsumerState<SearchScreen> {
+  /// Grid or list results. Local UI state: unlike the filter, the layout
+  /// choice is presentation-only and must not leak into the shared browse
+  /// session that Home reads.
+  ListingLayout _layout = ListingLayout.grid;
+
+  @override
+  Widget build(BuildContext context) {
     final filter = ref.watch(browseFilterProvider);
     final strings = search_strings.AppLocalizations.of(context);
+    final showingList = _layout == ListingLayout.list;
 
     return Scaffold(
       appBar: AppBar(
-        title: Text(title ?? strings.title),
+        title: Text(widget.title ?? strings.title),
         actions: <Widget>[
           _SortButton(filter: filter),
           _FilterButton(activeCount: filter.activeCount),
+          IconButton(
+            icon: Icon(showingList ? Icons.grid_view : Icons.view_list),
+            tooltip: showingList
+                ? strings.viewGridTooltip
+                : strings.viewListTooltip,
+            onPressed: () => setState(() {
+              _layout =
+                  showingList ? ListingLayout.grid : ListingLayout.list;
+            }),
+          ),
           _SaveSearchButton(filter: filter),
-          ...?actions,
+          ...?widget.actions,
           const SizedBox(width: 4),
         ],
       ),
@@ -52,6 +74,7 @@ class SearchScreen extends ConsumerWidget {
         // cannot reach.
         onListingTap: (id) => context.push('/listing/$id'),
         header: _QueryField(filter: filter),
+        layout: _layout,
         emptyTitle: strings.noMatchTitle,
         emptyBody: strings.noMatchBody,
       ),

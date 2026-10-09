@@ -17,6 +17,16 @@
   },
   "filtersTooltip": "फिल्टरहरू",
 
+  "@viewListTooltip": {
+    "description": "Results layout toggle tooltip when showing the grid."
+  },
+  "viewListTooltip": "सूची दृश्य",
+
+  "@viewGridTooltip": {
+    "description": "Results layout toggle tooltip when showing the list."
+  },
+  "viewGridTooltip": "ग्रिड दृश्य",
+
   "@searchHint": {
     "description": "Title/location query field hint."
   },

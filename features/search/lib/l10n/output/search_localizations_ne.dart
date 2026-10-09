@@ -1,5 +1,6 @@
 // ignore: unused_import
 import 'package:intl/intl.dart' as intl;
+
 import 'search_localizations.dart';
 
 // ignore_for_file: type=lint
@@ -16,6 +17,12 @@ class AppLocalizationsNe extends AppLocalizations {
 
   @override
   String get filtersTooltip => 'फिल्टरहरू';
+
+  @override
+  String get viewListTooltip => 'सूची दृश्य';
+
+  @override
+  String get viewGridTooltip => 'ग्रिड दृश्य';
 
   @override
   String get searchHint => 'शीर्षक वा स्थानबाट खोज्नुहोस्';
@@ -35,7 +42,8 @@ class AppLocalizationsNe extends AppLocalizations {
   String get noMatchTitle => 'कुनै विज्ञापन मिलेन';
 
   @override
-  String get noMatchBody => 'फिल्टर हटाएर वा मूल्य दायरा फराकिलो पारी प्रयास गर्नुहोस्।';
+  String get noMatchBody =>
+      'फिल्टर हटाएर वा मूल्य दायरा फराकिलो पारी प्रयास गर्नुहोस्।';
 
   @override
   String get tryAgain => 'पुनः प्रयास गर्नुहोस्';

@@ -19,6 +19,7 @@ class BrowseFeed extends ConsumerWidget {
   const BrowseFeed({
     this.onListingTap,
     this.header,
+    this.layout = ListingLayout.grid,
     this.emptyTitle = 'No listings found',
     this.emptyBody =
         'Try widening your search or clearing some filters.',
@@ -30,6 +31,9 @@ class BrowseFeed extends ConsumerWidget {
 
   /// Pinned above the grid, e.g. the search field on Search.
   final Widget? header;
+
+  /// Grid or list presentation, forwarded to [ListingGrid].
+  final ListingLayout layout;
 
   /// Title for the empty state.
   final String emptyTitle;
@@ -58,6 +62,7 @@ class BrowseFeed extends ConsumerWidget {
           emptyBody: emptyBody,
           onListingTap: onListingTap,
           header: header,
+          layout: layout,
         ),
     };
   }
@@ -83,6 +88,7 @@ class _FeedBody extends ConsumerWidget {
     required this.emptyBody,
     this.onListingTap,
     this.header,
+    this.layout = ListingLayout.grid,
   });
 
   final BrowseState state;
@@ -90,6 +96,7 @@ class _FeedBody extends ConsumerWidget {
   final Widget? header;
   final String emptyTitle;
   final String emptyBody;
+  final ListingLayout layout;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -112,6 +119,7 @@ class _FeedBody extends ConsumerWidget {
       listings: state.listings,
       hasMore: state.hasMore,
       isLoadingMore: state.isLoadingMore,
+      layout: layout,
       onLoadMore: notifier.loadMore,
       onRefresh: notifier.retry,
       onListingTap: onListingTap,
