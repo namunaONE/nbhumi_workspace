@@ -1,4 +1,4 @@
-{
+﻿{
   "@@locale": "ne",
   "@@last_modified": "2026-10-06T00:00:00.000",
 
@@ -505,5 +505,21 @@
   "@chipBusiness": {
     "description": "Business type chip."
   },
-  "chipBusiness": "व्यवसाय"
+  "chipBusiness": "व्यवसाय",
+  "@fieldTitle": {
+    "description": "Listing title field label and required-field name."
+  },
+  "fieldTitle": "शीर्षक",
+  "@fieldTitleHint": {
+    "description": "Listing title placeholder."
+  },
+  "fieldTitleHint": "जस्तै: सीतापाइलामा घाम लाग्ने घर",
+  "@fieldDescription": {
+    "description": "Listing description field label."
+  },
+  "fieldDescription": "विवरण (वैकल्पिक)",
+  "@fieldDescriptionHint": {
+    "description": "Listing description placeholder."
+  },
+  "fieldDescriptionHint": "जग्गा, बाटो, पानी र वरपर"
 }

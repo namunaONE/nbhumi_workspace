@@ -323,4 +323,16 @@ class AppLocalizationsNe extends AppLocalizations {
 
   @override
   String get chipBusiness => 'व्यवसाय';
+
+  @override
+  String get fieldTitle => 'शीर्षक';
+
+  @override
+  String get fieldTitleHint => 'जस्तै: सीतापाइलामा घाम लाग्ने घर';
+
+  @override
+  String get fieldDescription => 'विवरण (वैकल्पिक)';
+
+  @override
+  String get fieldDescriptionHint => 'जग्गा, बाटो, पानी र वरपर';
 }
