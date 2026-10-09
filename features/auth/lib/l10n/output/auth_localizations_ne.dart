@@ -1,5 +1,6 @@
 // ignore: unused_import
 import 'package:intl/intl.dart' as intl;
+
 import 'auth_localizations.dart';
 
 // ignore_for_file: type=lint
@@ -21,19 +22,22 @@ class AppLocalizationsNe extends AppLocalizations {
   String get linkTitle => 'म्याजिक लिङ्कबाट साइन इन गर्नुहोस्';
 
   @override
-  String get linkSubtitle => 'हामी साइन-इन लिङ्क इमेल गर्छौं। पासवर्ड सम्झनु पर्दैन।';
+  String get linkSubtitle =>
+      'हामी साइन-इन लिङ्क इमेल गर्छौं। पासवर्ड सम्झनु पर्दैन।';
 
   @override
   String get passwordSignInTitle => 'आफ्नो पासवर्डबाट साइन इन गर्नुहोस्';
 
   @override
-  String get passwordSignInSubtitle => 'पासवर्ड चाहनुहुन्न? लिङ्क ट्याबलाई इमेल मात्र चाहिन्छ।';
+  String get passwordSignInSubtitle =>
+      'पासवर्ड चाहनुहुन्न? लिङ्क ट्याबलाई इमेल मात्र चाहिन्छ।';
 
   @override
   String get signUpTitle => 'आफ्नो खाता बनाउनुहोस्';
 
   @override
-  String get signUpSubtitle => 'पोस्ट गर्न र विक्रेतालाई सम्पर्क गर्न एउटै खाता।';
+  String get signUpSubtitle =>
+      'पोस्ट गर्न र विक्रेतालाई सम्पर्क गर्न एउटै खाता।';
 
   @override
   String get resetTitle => 'आफ्नो पासवर्ड रिसेट गर्नुहोस्';
@@ -127,7 +131,8 @@ class AppLocalizationsNe extends AppLocalizations {
   String get callbackWorking => 'साइन इन गर्दैछ…';
 
   @override
-  String get callbackSlowHint => 'केही सेकेन्डभन्दा बढी लागे लिङ्कको म्याद सकिएको वा प्रयोग भइसकेको हुन सक्छ। लगइन स्क्रिनबाट नयाँ माग्नुहोस्।';
+  String get callbackSlowHint =>
+      'केही सेकेन्डभन्दा बढी लागे लिङ्कको म्याद सकिएको वा प्रयोग भइसकेको हुन सक्छ। लगइन स्क्रिनबाट नयाँ माग्नुहोस्।';
 
   @override
   String get callbackBackToLogin => 'लगइनमा फर्कनुहोस्';

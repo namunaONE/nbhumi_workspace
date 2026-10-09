@@ -1,5 +1,6 @@
 // ignore: unused_import
 import 'package:intl/intl.dart' as intl;
+
 import 'auth_localizations.dart';
 
 // ignore_for_file: type=lint
@@ -21,19 +22,22 @@ class AppLocalizationsEn extends AppLocalizations {
   String get linkTitle => 'Sign in with a magic link';
 
   @override
-  String get linkSubtitle => 'We email you a sign-in link. No password to remember.';
+  String get linkSubtitle =>
+      'We email you a sign-in link. No password to remember.';
 
   @override
   String get passwordSignInTitle => 'Sign in with your password';
 
   @override
-  String get passwordSignInSubtitle => 'Prefer no password? The link tab needs only email.';
+  String get passwordSignInSubtitle =>
+      'Prefer no password? The link tab needs only email.';
 
   @override
   String get signUpTitle => 'Create your account';
 
   @override
-  String get signUpSubtitle => 'One account for posting and contacting sellers.';
+  String get signUpSubtitle =>
+      'One account for posting and contacting sellers.';
 
   @override
   String get resetTitle => 'Reset your password';
@@ -127,7 +131,8 @@ class AppLocalizationsEn extends AppLocalizations {
   String get callbackWorking => 'Signing you in…';
 
   @override
-  String get callbackSlowHint => 'If this takes more than a few seconds, the link may have expired or been used already. Request a fresh one from the login screen.';
+  String get callbackSlowHint =>
+      'If this takes more than a few seconds, the link may have expired or been used already. Request a fresh one from the login screen.';
 
   @override
   String get callbackBackToLogin => 'Back to login';
