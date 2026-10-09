@@ -27,6 +27,11 @@
   },
   "emptyBody": "No documents yet. Submit your citizenship to earn the verified badge buyers look for.",
 
+  "@emptyTitle": {
+    "description": "Empty document list heading."
+  },
+  "emptyTitle": "Nothing submitted",
+
   "@chooseDocument": {
     "description": "Submit sheet heading."
   },

@@ -42,21 +42,27 @@ class KycScreen extends ConsumerWidget {
           ),
           const SizedBox(height: 16),
           switch (documents) {
-            AsyncLoading() => const Center(
-                child: Padding(
-                  padding: EdgeInsets.all(24),
-                  child: CircularProgressIndicator(),
-                ),
+            AsyncLoading() => const LoadingState(),
+            AsyncError(:final error) => Builder(
+                builder: (context) {
+                  final failure =
+                      error is AppException ? error : null;
+                  final retryable =
+                      failure == null || failure.isRetryable;
+                  return ErrorState(
+                    message: failure?.localizedForContext(context) ??
+                        strings.loadFailed,
+                    retryLabel: retryable ? strings.retry : null,
+                    onRetry: retryable
+                        ? () => ref.invalidate(myKycDocumentsProvider)
+                        : null,
+                  );
+                },
               ),
-            AsyncError(:final error) => _DocumentsError(
-                error: error,
-                onRetry: () => ref.invalidate(myKycDocumentsProvider),
-              ),
-            AsyncData(:final value) when value.isEmpty => Card(
-                child: Padding(
-                  padding: const EdgeInsets.all(16),
-                  child: Text(strings.emptyBody),
-                ),
+            AsyncData(:final value) when value.isEmpty => EmptyState(
+                title: strings.emptyTitle,
+                body: strings.emptyBody,
+                icon: Icons.folder_open_outlined,
               ),
             AsyncData(:final value) => Column(
                 children: <Widget>[
@@ -139,41 +145,6 @@ class _DocumentTile extends StatelessWidget {
         leading: Icon(icon),
         title: Text(_docTypeLabel(context, document.docType)),
         subtitle: Text(label),
-      ),
-    );
-  }
-}
-
-/// Failure loading the document list, with a retry for recoverable errors.
-class _DocumentsError extends StatelessWidget {
-  const _DocumentsError({required this.error, required this.onRetry});
-
-  final Object error;
-  final VoidCallback onRetry;
-
-  @override
-  Widget build(BuildContext context) {
-    final failure =
-        error is AppException ? error as AppException : null;
-    final strings = kyc_strings.AppLocalizations.of(context);
-    return Card(
-      child: Padding(
-        padding: const EdgeInsets.all(16),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            Text(
-              failure?.localizedForContext(context) ?? strings.loadFailed,
-            ),
-            const SizedBox(height: 8),
-            if (failure == null || failure.isRetryable)
-              TextButton.icon(
-                icon: const Icon(Icons.refresh),
-                label: Text(strings.retry),
-                onPressed: onRetry,
-              ),
-          ],
-        ),
       ),
     );
   }
@@ -283,17 +254,11 @@ class _SubmitSheetState extends ConsumerState<_SubmitSheet> {
                 ),
               ),
             ),
-          FilledButton.icon(
-            icon: submit.submitting
-                ? const SizedBox(
-                    height: 18,
-                    width: 18,
-                    child: CircularProgressIndicator(strokeWidth: 2),
-                  )
-                : const Icon(Icons.photo_library_outlined),
-            label: Text(
-              submit.submitting ? strings.uploading : strings.pickAndSubmit,
-            ),
+          PrimaryCTA(
+            label:
+                submit.submitting ? strings.uploading : strings.pickAndSubmit,
+            icon: Icons.photo_library_outlined,
+            isLoading: submit.submitting,
             onPressed: submit.submitting ? null : _submit,
           ),
         ],

@@ -12,6 +12,11 @@
   },
   "markAllRead": "Mark all read",
 
+  "@emptyTitle": {
+    "description": "Empty inbox heading."
+  },
+  "emptyTitle": "No notifications yet",
+
   "@emptyBody": {
     "description": "Shown when the inbox has no rows yet."
   },

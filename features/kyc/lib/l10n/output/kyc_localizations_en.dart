@@ -27,6 +27,9 @@ class AppLocalizationsEn extends AppLocalizations {
       'No documents yet. Submit your citizenship to earn the verified badge buyers look for.';
 
   @override
+  String get emptyTitle => 'Nothing submitted';
+
+  @override
   String get chooseDocument => 'Choose a document';
 
   @override

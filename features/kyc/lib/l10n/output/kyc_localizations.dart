@@ -128,6 +128,12 @@ abstract class AppLocalizations {
   /// **'No documents yet. Submit your citizenship to earn the verified badge buyers look for.'**
   String get emptyBody;
 
+  /// Empty document list heading.
+  ///
+  /// In en, this message translates to:
+  /// **'Nothing submitted'**
+  String get emptyTitle;
+
   /// Submit sheet heading.
   ///
   /// In en, this message translates to:

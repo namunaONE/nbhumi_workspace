@@ -210,7 +210,6 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                   enabled: !_busy,
                   decoration: InputDecoration(
                     labelText: strings.emailLabel,
-                    border: const OutlineInputBorder(),
                   ),
                   validator: _emailError,
                   onFieldSubmitted: (_) => _submit(),
@@ -224,7 +223,6 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                     enabled: !_busy,
                     decoration: InputDecoration(
                       labelText: strings.passwordLabel,
-                      border: const OutlineInputBorder(),
                       suffixIcon: IconButton(
                         icon: Icon(
                           _obscure
@@ -248,7 +246,6 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                     enabled: !_busy,
                     decoration: InputDecoration(
                       labelText: strings.confirmLabel,
-                      border: const OutlineInputBorder(),
                     ),
                     validator: (value) => value == _password.text
                         ? null

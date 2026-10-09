@@ -192,7 +192,7 @@ class _Navigation extends StatelessWidget {
     final isValid = state.canLeave(state.step, strings);
 
     return Padding(
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.all(AppSpacing.lg),
       child: Row(
         children: <Widget>[
           if (state.step.previous != null) ...<Widget>[
@@ -202,13 +202,13 @@ class _Navigation extends StatelessWidget {
                 child: Text(strings.navBack),
               ),
             ),
-            const SizedBox(width: 12),
+            const SizedBox(width: AppSpacing.md),
           ],
           Expanded(
             flex: 2,
-            child: FilledButton(
+            child: PrimaryCTA(
+              label: isLast ? strings.navSubmit : strings.navNext,
               onPressed: isValid ? onNext : null,
-              child: Text(isLast ? strings.navSubmit : strings.navNext),
             ),
           ),
         ],

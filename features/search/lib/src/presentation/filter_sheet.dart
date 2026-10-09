@@ -1,3 +1,4 @@
+import 'package:core/core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -90,7 +91,12 @@ class _FilterSheetState extends ConsumerState<FilterSheet> {
             Flexible(
               child: ListView(
                 shrinkWrap: true,
-                padding: const EdgeInsets.fromLTRB(20, 16, 20, 16),
+                padding: const EdgeInsets.fromLTRB(
+                  AppSpacing.xl,
+                  AppSpacing.lg,
+                  AppSpacing.xl,
+                  AppSpacing.lg,
+                ),
                 children: <Widget>[
                   _Label(strings.labelType),
                   _Wrap(
@@ -107,7 +113,7 @@ class _FilterSheetState extends ConsumerState<FilterSheet> {
                         ),
                     ],
                   ),
-                  const SizedBox(height: 20),
+                  const SizedBox(height: AppSpacing.xl),
                   _Label(strings.labelPurpose),
                   _Wrap(
                     children: <Widget>[
@@ -123,7 +129,7 @@ class _FilterSheetState extends ConsumerState<FilterSheet> {
                         ),
                     ],
                   ),
-                  const SizedBox(height: 20),
+                  const SizedBox(height: AppSpacing.xl),
                   _Label(strings.labelPrice),
                   Row(
                     children: <Widget>[
@@ -146,7 +152,7 @@ class _FilterSheetState extends ConsumerState<FilterSheet> {
                       ),
                     ],
                   ),
-                  const SizedBox(height: 20),
+                  const SizedBox(height: AppSpacing.xl),
                   _Label(strings.labelArea),
                   Row(
                     children: <Widget>[
@@ -171,7 +177,7 @@ class _FilterSheetState extends ConsumerState<FilterSheet> {
                       ),
                     ],
                   ),
-                  const SizedBox(height: 20),
+                  const SizedBox(height: AppSpacing.xl),
                   _Label(strings.labelSort),
                   _Wrap(
                     children: <Widget>[
@@ -185,7 +191,7 @@ class _FilterSheetState extends ConsumerState<FilterSheet> {
                     ],
                   ),
                   if (widget.districts.isNotEmpty) ...<Widget>[
-                    const SizedBox(height: 20),
+                    const SizedBox(height: AppSpacing.xl),
                     _Label(strings.labelDistrict),
                     _Wrap(
                       children: <Widget>[
@@ -242,10 +248,12 @@ class _Label extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.only(bottom: 8),
+      padding: const EdgeInsets.only(bottom: AppSpacing.sm),
       child: Text(
         text,
-        style: Theme.of(context).textTheme.titleSmall,
+        style: Theme.of(context).textTheme.titleSmall?.copyWith(
+              fontWeight: FontWeight.w600,
+            ),
       ),
     );
   }
@@ -260,7 +268,11 @@ class _Wrap extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Wrap(spacing: 8, runSpacing: 8, children: children);
+    return Wrap(
+      spacing: AppSpacing.sm,
+      runSpacing: AppSpacing.sm,
+      children: children,
+    );
   }
 }
 

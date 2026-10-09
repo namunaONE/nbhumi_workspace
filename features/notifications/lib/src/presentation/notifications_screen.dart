@@ -37,16 +37,28 @@ class NotificationsScreen extends ConsumerWidget {
         ],
       ),
       body: switch (inbox) {
-        AsyncLoading() => const Center(child: CircularProgressIndicator()),
-        AsyncError(:final error) => _InboxError(
-            error: error,
-            onRetry: () => ref.invalidate(notificationsProvider()),
+        AsyncLoading() => const LoadingState(),
+        AsyncError(:final error) => Builder(
+            builder: (context) {
+              // Retry only surfaces for recoverable failures, matching the
+              // previous inline error: a dead-end error shows the message
+              // with no action that could never succeed.
+              final failure = error is AppException ? error : null;
+              final retryable = failure == null || failure.isRetryable;
+              return ErrorState(
+                message: failure?.localizedForContext(context) ??
+                    strings.loadFailed,
+                retryLabel: retryable ? strings.retry : null,
+                onRetry: retryable
+                    ? () => ref.invalidate(notificationsProvider())
+                    : null,
+              );
+            },
           ),
-        AsyncData(:final value) when value.isEmpty => Center(
-            child: Padding(
-              padding: const EdgeInsets.all(24),
-              child: Text(strings.emptyBody),
-            ),
+        AsyncData(:final value) when value.isEmpty => EmptyState(
+            title: strings.emptyTitle,
+            body: strings.emptyBody,
+            icon: Icons.notifications_off_outlined,
           ),
         AsyncData(:final value) => ListView.builder(
             itemCount: value.length,
@@ -157,40 +169,6 @@ class _NotificationTile extends ConsumerWidget {
         SnackBar(content: Text(e.localizedForContext(context))),
       );
     }
-  }
-}
-
-/// Failure loading the inbox, with a retry for recoverable errors.
-class _InboxError extends StatelessWidget {
-  const _InboxError({required this.error, required this.onRetry});
-
-  final Object error;
-  final VoidCallback onRetry;
-
-  @override
-  Widget build(BuildContext context) {
-    final failure = error is AppException ? error as AppException : null;
-    final strings = notif_strings.AppLocalizations.of(context);
-    return Center(
-      child: Padding(
-        padding: const EdgeInsets.all(24),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: <Widget>[
-            Text(
-              failure?.localizedForContext(context) ?? strings.loadFailed,
-            ),
-            const SizedBox(height: 8),
-            if (failure == null || failure.isRetryable)
-              TextButton.icon(
-                icon: const Icon(Icons.refresh),
-                label: Text(strings.retry),
-                onPressed: onRetry,
-              ),
-          ],
-        ),
-      ),
-    );
   }
 }
 

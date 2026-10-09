@@ -27,6 +27,9 @@ class AppLocalizationsNe extends AppLocalizations {
       'अहिलेसम्म कागजात छैन। खरीददारले खोज्ने प्रमाणित ब्याजका लागि आफ्नो नागरिकता पेस गर्नुहोस्।';
 
   @override
+  String get emptyTitle => 'केही पेस गरिएको छैन';
+
+  @override
   String get chooseDocument => 'कागजात छान्नुहोस्';
 
   @override

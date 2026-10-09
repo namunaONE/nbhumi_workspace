@@ -1,5 +1,6 @@
 // ignore: unused_import
 import 'package:intl/intl.dart' as intl;
+
 import 'notifications_localizations.dart';
 
 // ignore_for_file: type=lint
@@ -15,7 +16,11 @@ class AppLocalizationsEn extends AppLocalizations {
   String get markAllRead => 'Mark all read';
 
   @override
-  String get emptyBody => 'Nothing yet. Approvals, rejections and contact views appear here.';
+  String get emptyTitle => 'No notifications yet';
+
+  @override
+  String get emptyBody =>
+      'Nothing yet. Approvals, rejections and contact views appear here.';
 
   @override
   String get loadFailed => 'Could not load notifications.';

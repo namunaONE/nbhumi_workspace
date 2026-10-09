@@ -22,23 +22,12 @@ class MyListingsScreen extends ConsumerWidget {
     if (session == null) {
       return Scaffold(
         appBar: AppBar(title: Text(strings.mineTitle)),
-        body: Center(
-          child: Padding(
-            padding: const EdgeInsets.all(32),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: <Widget>[
-                const Icon(Icons.home_work_outlined, size: 48),
-                const SizedBox(height: 16),
-                Text(strings.mineGuestPrompt),
-                const SizedBox(height: 24),
-                FilledButton(
-                  onPressed: () => context.push('/login'),
-                  child: Text(strings.commonSignIn),
-                ),
-              ],
-            ),
-          ),
+        body: EmptyState(
+          title: strings.mineGuestPrompt,
+          body: strings.mineEmptyBody,
+          icon: Icons.home_work_outlined,
+          actionLabel: strings.commonSignIn,
+          onAction: () => context.push('/login'),
         ),
       );
     }
@@ -64,33 +53,20 @@ class _MineList extends ConsumerWidget {
     final mine = ref.watch(myListingsProvider);
 
     return switch (mine) {
-      AsyncLoading() => const Center(child: CircularProgressIndicator()),
-      AsyncError(:final error) => _MineError(
-          error: error,
+      AsyncLoading() => const LoadingState(),
+      AsyncError(:final error) => ErrorState(
+          message: error is AppException
+              ? error.localizedForContext(context)
+              : 'Could not load your listings.',
+          retryLabel: AppLocalizations.of(context).commonRetry,
           onRetry: () => ref.invalidate(myListingsProvider),
         ),
-      AsyncData(:final value) when value.isEmpty => ListView(
-          padding: const EdgeInsets.all(32),
-          children: <Widget>[
-            const Icon(Icons.home_work_outlined, size: 48),
-            const SizedBox(height: 16),
-            Text(
-              AppLocalizations.of(context).mineEmptyTitle,
-              style: const TextStyle(fontSize: 18),
-              textAlign: TextAlign.center,
-            ),
-            const SizedBox(height: 8),
-            Text(
-              AppLocalizations.of(context).mineEmptyBody,
-              textAlign: TextAlign.center,
-            ),
-            const SizedBox(height: 24),
-            FilledButton(
-              onPressed: () => context.push('/post'),
-              child:
-                  Text(AppLocalizations.of(context).profilePostTitle),
-            ),
-          ],
+      AsyncData(:final value) when value.isEmpty => EmptyState(
+          title: AppLocalizations.of(context).mineEmptyTitle,
+          body: AppLocalizations.of(context).mineEmptyBody,
+          icon: Icons.home_work_outlined,
+          actionLabel: AppLocalizations.of(context).profilePostTitle,
+          onAction: () => context.push('/post'),
         ),
       AsyncData(:final value) => ListView.builder(
           padding: const EdgeInsets.all(AppSpacing.md),
@@ -107,39 +83,5 @@ class _MineList extends ConsumerWidget {
           },
         ),
     };
-  }
-}
-
-/// Failure loading the shelf, with a retry for recoverable errors.
-class _MineError extends StatelessWidget {
-  const _MineError({required this.error, required this.onRetry});
-
-  final Object error;
-  final VoidCallback onRetry;
-
-  @override
-  Widget build(BuildContext context) {
-    final failure = error is AppException ? error as AppException : null;
-    return Center(
-      child: Padding(
-        padding: const EdgeInsets.all(32),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: <Widget>[
-            Text(
-              failure?.localizedForContext(context) ??
-                  'Could not load your listings.',
-            ),
-            const SizedBox(height: 8),
-            if (failure == null || failure.isRetryable)
-              TextButton.icon(
-                icon: const Icon(Icons.refresh),
-                label: Text(AppLocalizations.of(context).commonRetry),
-                onPressed: onRetry,
-              ),
-          ],
-        ),
-      ),
-    );
   }
 }

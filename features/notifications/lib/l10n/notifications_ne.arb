@@ -12,6 +12,11 @@
   },
   "markAllRead": "सबै पढियो",
 
+  "@emptyTitle": {
+    "description": "Empty inbox heading."
+  },
+  "emptyTitle": "अहिलेसम्म कुनै सूचना छैन",
+
   "@emptyBody": {
     "description": "Shown when the inbox has no rows yet."
   },

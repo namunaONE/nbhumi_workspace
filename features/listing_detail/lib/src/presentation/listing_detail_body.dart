@@ -53,6 +53,7 @@ class ListingDetailBody extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final strings = detail_strings.AppLocalizations.of(context);
+    final purposeColors = _purposeColors(context, listing.listingPurpose);
     return Scaffold(
       appBar: AppBar(
         leading: leading,
@@ -74,7 +75,10 @@ class ListingDetailBody extends StatelessWidget {
       ),
       body: ListView(
         children: <Widget>[
-          _PhotoHero(photos: listing.photos, title: listing.title),
+          AppImageGallery(
+            photos: listing.photos,
+            title: listing.title,
+          ),
           Padding(
             padding: const EdgeInsets.fromLTRB(16, 16, 16, 8),
             child: Column(
@@ -99,17 +103,15 @@ class ListingDetailBody extends StatelessWidget {
                   spacing: 8,
                   runSpacing: 8,
                   children: <Widget>[
-                    _Chip(
+                    StatusChip(
                       label: _purposeLabel(
                         context,
                         listing.listingPurpose,
                       ),
-                      colors: _purposeColors(
-                        context,
-                        listing.listingPurpose,
-                      ),
+                      background: purposeColors?.background,
+                      foreground: purposeColors?.foreground,
                     ),
-                    _Chip(
+                    StatusChip(
                       label: _typeLabel(
                         context,
                         listing.propertyType,
@@ -118,7 +120,7 @@ class ListingDetailBody extends StatelessWidget {
                     // Rule 25: the seller's own units, pre-formatted
                     // server-side so cards, search and detail cannot disagree.
                     if (listing.areaDisplay case final area?)
-                      _Chip(label: area),
+                      StatusChip(label: area),
                     // Tier-3 verification (HYA-265): pane-supplied badge or
                     // owner entry; nothing by default.
                     verificationSlot,
@@ -240,49 +242,6 @@ class ListingDetailBody extends StatelessWidget {
   };
 }
 
-/// Swipeable photo strip.
-///
-/// A `PageView` rather than a fixed hero because sellers upload up to ten
-/// photos and a single image would hide the rest. Falls back to a placeholder
-/// when a listing has none, so the layout does not collapse.
-class _PhotoHero extends StatelessWidget {
-  const _PhotoHero({required this.photos, required this.title});
-
-  final List<String> photos;
-  final String title;
-
-  @override
-  Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-    final placeholder = ColoredBox(
-      color: theme.colorScheme.surfaceContainerHighest,
-      child: Center(
-        child: Icon(Icons.home, size: 64, color: theme.colorScheme.outline),
-      ),
-    );
-
-    if (photos.isEmpty) {
-      return SizedBox(height: 220, width: double.infinity, child: placeholder);
-    }
-
-    return SizedBox(
-      height: 260,
-      child: PageView.builder(
-        itemCount: photos.length,
-        itemBuilder: (context, index) => Image.network(
-          photos[index],
-          // Decode near display size rather than at camera resolution.
-          cacheWidth: 1000,
-          fit: BoxFit.cover,
-          errorBuilder: (context, error, stackTrace) => placeholder,
-          loadingBuilder: (context, child, progress) =>
-              progress == null ? child : placeholder,
-        ),
-      ),
-    );
-  }
-}
-
 class _Section extends StatelessWidget {
   const _Section({required this.title, required this.children});
 
@@ -338,37 +297,6 @@ class _Spec extends StatelessWidget {
             ),
           ),
         ],
-      ),
-    );
-  }
-}
-
-class _Chip extends StatelessWidget {
-  const _Chip({required this.label, this.colors});
-
-  final String label;
-  final ({Color background, Color foreground})? colors;
-
-  @override
-  Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-    final pair = colors ??
-        (
-          background: theme.colorScheme.surfaceContainerHighest,
-          foreground: theme.colorScheme.onSurfaceVariant,
-        );
-
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-      decoration: BoxDecoration(
-        color: pair.background,
-        borderRadius: BorderRadius.circular(8),
-      ),
-      child: Text(
-        label,
-        style: theme.textTheme.labelMedium?.copyWith(
-          color: pair.foreground,
-        ),
       ),
     );
   }

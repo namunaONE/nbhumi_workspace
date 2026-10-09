@@ -69,7 +69,6 @@ class WizardField extends StatelessWidget {
           labelText: label,
           hintText: hint,
           suffixText: suffixText,
-          border: const OutlineInputBorder(),
           errorText: error,
         ),
       ),

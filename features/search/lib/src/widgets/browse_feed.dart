@@ -50,7 +50,7 @@ class BrowseFeed extends ConsumerWidget {
       // The bindings are typed explicitly; without them the compiler infers
       // `dynamic` from the sealed hierarchy and every field access below is
       // unchecked.
-      AsyncLoading() => const _LoadingState(),
+      AsyncLoading() => const LoadingState(),
       // Normally unreachable: `Browse` catches every AppException and
       // returns it as state. Reached only when something that is not an
       // AppException escapes the repository, which is worth showing
@@ -112,7 +112,7 @@ class _FeedBody extends ConsumerWidget {
     }
 
     if (state.isEmpty) {
-      return _EmptyState(title: emptyTitle, body: emptyBody);
+      return EmptyState(title: emptyTitle, body: emptyBody);
     }
 
     final grid = ListingGrid(
@@ -150,15 +150,6 @@ class _FeedBody extends ConsumerWidget {
   }
 }
 
-class _LoadingState extends StatelessWidget {
-  const _LoadingState();
-
-  @override
-  Widget build(BuildContext context) {
-    return const Center(child: CircularProgressIndicator());
-  }
-}
-
 class _ErrorState extends ConsumerWidget {
   const _ErrorState({required this.error});
 
@@ -167,63 +158,16 @@ class _ErrorState extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final strings = search_strings.AppLocalizations.of(context);
-    return _EmptyState(
+    return EmptyState(
       title: error.localizedForContext(context),
       body: error.isRetryable ? strings.feedRetryHint : strings.feedLaterHint,
       icon: error is AuthFailureException
           ? Icons.lock_outline
           : Icons.error_outline,
-      action: FilledButton(
-        onPressed: () => ref.read(browseProvider.notifier).retry(),
-        child: Text(strings.tryAgain),
-      ),
-    );
-  }
-}
-
-class _EmptyState extends StatelessWidget {
-  const _EmptyState({
-    required this.title,
-    required this.body,
-    this.icon = Icons.search_off,
-    this.action,
-  });
-
-  final String title;
-  final String body;
-  final IconData icon;
-  final Widget? action;
-
-  @override
-  Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-
-    return Center(
-      child: Padding(
-        padding: const EdgeInsets.all(32),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: <Widget>[
-            Icon(icon, size: 48, color: theme.colorScheme.outline),
-            const SizedBox(height: 16),
-            Text(
-              title,
-              style: theme.textTheme.titleMedium,
-              textAlign: TextAlign.center,
-            ),
-            const SizedBox(height: 8),
-            Text(
-              body,
-              style: theme.textTheme.bodySmall,
-              textAlign: TextAlign.center,
-            ),
-            if (action case final widget?) ...<Widget>[
-              const SizedBox(height: 24),
-              widget,
-            ],
-          ],
-        ),
-      ),
+      actionLabel: error.isRetryable ? strings.tryAgain : null,
+      onAction: error.isRetryable
+          ? () => ref.read(browseProvider.notifier).retry()
+          : null,
     );
   }
 }
