@@ -24,7 +24,6 @@ class TypeStep extends StatelessWidget {
     required this.onPurposeSelected,
     required this.onTitleChanged,
     required this.onDescriptionChanged,
-    this.titleError,
     super.key,
   });
 

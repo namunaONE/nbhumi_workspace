@@ -86,7 +86,7 @@ void main() {
 
       expect(
         errors.keys,
-        containsAll(<String>['propertyType', 'listingPurpose']),
+        containsAll(<String>['propertyType', 'listingPurpose', 'title']),
       );
     });
 
@@ -95,6 +95,18 @@ void main() {
         _complete().validate(WizardStep.type, en).isValid,
         isTrue,
       );
+    });
+
+    test('rejects a blank title', () {
+      // The server refuses a blank title on submit (HYA-292 trigger), so the
+      // form requires it on step one rather than failing at review.
+      final errors = _complete()
+          .copyWith(title: '   ')
+          .validate(WizardStep.type, en)
+          .errors;
+
+      expect(errors.keys, contains('title'));
+      expect(errors['title'], contains('Title'));
     });
   });
 
