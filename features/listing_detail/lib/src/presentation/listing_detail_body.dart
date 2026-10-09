@@ -20,6 +20,7 @@ class ListingDetailBody extends StatelessWidget {
     this.isFavorite = false,
     this.onFavoriteToggle,
     this.verificationSlot = const SizedBox.shrink(),
+    this.leading,
     super.key,
   });
 
@@ -44,11 +45,17 @@ class ListingDetailBody extends StatelessWidget {
   /// the pane owns provider reads and passes the resolved widget in.
   final Widget verificationSlot;
 
+  /// App-bar leading widget. Null keeps the automatic back button used by
+  /// the full route; the embedded side pane supplies a close button instead,
+  /// since popping the tab route would be wrong there.
+  final Widget? leading;
+
   @override
   Widget build(BuildContext context) {
     final strings = detail_strings.AppLocalizations.of(context);
     return Scaffold(
       appBar: AppBar(
+        leading: leading,
         title: Text(listing.title, overflow: TextOverflow.ellipsis),
         actions: <Widget>[
           if (onFavoriteToggle != null)

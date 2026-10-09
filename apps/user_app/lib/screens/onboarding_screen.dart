@@ -1,3 +1,4 @@
+import 'package:core/core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -98,15 +99,12 @@ class OnboardingScreen extends ConsumerWidget {
             ),
             Padding(
               padding: const EdgeInsets.all(24),
-              child: SizedBox(
-                width: double.infinity,
-                child: FilledButton(
-                  onPressed: () async {
-                    await ref.read(onboardingGateProvider).markSeen();
-                    if (context.mounted) context.go('/');
-                  },
-                  child: Text(strings.onboardingBrowse),
-                ),
+              child: PrimaryCTA(
+                label: strings.onboardingBrowse,
+                onPressed: () async {
+                  await ref.read(onboardingGateProvider).markSeen();
+                  if (context.mounted) context.go('/');
+                },
               ),
             ),
           ],

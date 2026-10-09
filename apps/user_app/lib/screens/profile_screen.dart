@@ -9,6 +9,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:models/models.dart';
 import 'package:user_app/l10n/output/app_localizations.dart';
+import 'package:user_app/settings/app_settings.dart';
 
 /// Account and seller actions.
 ///
@@ -91,6 +92,7 @@ class ProfileScreen extends ConsumerWidget {
               subtitle: const Text('We email you a link, no password needed'),
               onTap: () => context.push('/login'),
             ),
+          const _AppearanceSection(),
           ListTile(
             leading: const Icon(Icons.help_outline),
             title: Text(strings.profileAboutTitle),
@@ -106,6 +108,63 @@ class ProfileScreen extends ConsumerWidget {
           ),
         ],
       ),
+    );
+  }
+}
+
+/// Appearance preference: system / light / dark.
+///
+/// Surfaced here as well as in Settings because theme is device-level, not
+/// account-level — guests never see the settings gear, but everyone sees
+/// Profile. Same notifier and strings as the settings control, so the two
+/// cannot disagree.
+class _AppearanceSection extends ConsumerWidget {
+  /// Creates the appearance section.
+  const _AppearanceSection();
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final strings = AppLocalizations.of(context);
+    final themeMode = ref.watch(appThemeProvider);
+    final theme = Theme.of(context);
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: <Widget>[
+        Padding(
+          padding: const EdgeInsets.fromLTRB(16, 8, 16, 4),
+          child: Text(
+            strings.settingsThemeTitle,
+            style: theme.textTheme.titleSmall,
+          ),
+        ),
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 16),
+          child: SegmentedButton<ThemeMode>(
+            segments: <ButtonSegment<ThemeMode>>[
+              ButtonSegment<ThemeMode>(
+                value: ThemeMode.system,
+                label: Text(strings.settingsThemeSystem),
+              ),
+              ButtonSegment<ThemeMode>(
+                value: ThemeMode.light,
+                label: Text(strings.settingsThemeLight),
+              ),
+              ButtonSegment<ThemeMode>(
+                value: ThemeMode.dark,
+                label: Text(strings.settingsThemeDark),
+              ),
+            ],
+            selected: <ThemeMode>{themeMode},
+            onSelectionChanged: (selection) {
+              unawaited(
+                ref.read(appThemeProvider.notifier).setMode(selection.first),
+              );
+            },
+          ),
+        ),
+        const SizedBox(height: 12),
+      ],
     );
   }
 }
@@ -241,38 +300,67 @@ class _ProfileHeaderCard extends StatelessWidget {
                     ),
                   ),
                 ),
-              Row(
-                children: <Widget>[
-                  CircleAvatar(
-                    radius: 24,
-                    child: Text(
-                      initials,
-                      style: theme.textTheme.titleLarge,
-                    ),
+              // WhatsApp-style entry: tapping the identity row opens the
+              // same edit dialog as the Edit profile tile below.
+              InkWell(
+                borderRadius: AppRadius.radiusMd,
+                onTap: () => _EditProfileDialog.show(context, profile),
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(
+                    vertical: AppSpacing.xs,
                   ),
-                  const SizedBox(width: 12),
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        Text(
-                          name.isEmpty ? displayEmail : name,
-                          style: theme.textTheme.titleMedium,
-                        ),
-                        // Email lives in its own row below, so the subtitle
-                        // states the session instead of repeating the address
-                        // (duplicate text breaks `findsOne` and readers).
-                        if (name.isNotEmpty)
-                          Text(
-                            strings.profileSignedIn,
-                            style: theme.textTheme.bodySmall,
+                  child: Row(
+                    children: <Widget>[
+                      CircleAvatar(
+                        radius: 32,
+                        backgroundColor:
+                            theme.colorScheme.primaryContainer,
+                        child: Text(
+                          initials,
+                          style: theme.textTheme.headlineSmall?.copyWith(
+                            color: theme.colorScheme.onPrimaryContainer,
                           ),
-                      ],
-                    ),
+                        ),
+                      ),
+                      const SizedBox(width: AppSpacing.md),
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: <Widget>[
+                            Text(
+                              name.isEmpty ? displayEmail : name,
+                              style: theme.textTheme.titleLarge?.copyWith(
+                                fontWeight: FontWeight.w700,
+                              ),
+                            ),
+                            // WhatsApp-style second line: the phone number
+                            // (or its missing hint) under the name. Email
+                            // stays in the contact section below so it
+                            // renders exactly once on the screen.
+                            Text(
+                              phone.isEmpty
+                                  ? strings.profileContactPhoneMissing
+                                  : phone,
+                              style: theme.textTheme.bodySmall?.copyWith(
+                                color:
+                                    theme.colorScheme.onSurfaceVariant,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      if (profile != null && profile!.isVerified)
+                        const TrustBadge(
+                          compact: true,
+                          showInfoOnTap: false,
+                        ),
+                      Icon(
+                        Icons.chevron_right,
+                        color: theme.colorScheme.onSurfaceVariant,
+                      ),
+                    ],
                   ),
-                  if (profile != null && profile!.isVerified)
-                    const TrustBadge(compact: true, showInfoOnTap: false),
-                ],
+                ),
               ),
               const SizedBox(height: 12),
               Text(

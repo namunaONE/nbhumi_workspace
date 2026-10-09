@@ -25,6 +25,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get viewGridTooltip => 'Grid view';
 
   @override
+  String get featuredTitle => 'Latest listings';
+
+  @override
   String get searchHint => 'Search by title or location';
 
   @override

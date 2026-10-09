@@ -136,6 +136,13 @@ final appRouterProvider = Provider<GoRouter>((ref) {
                 builder: (context, state) => SearchScreen(
                   title: AppLocalizations.of(context).navExplore,
                   actions: const <Widget>[NotificationBell()],
+                  // The side pane lives in `listing_detail`, which `search`
+                  // may not import (Rule 10) — so the app supplies it here.
+                  detailPaneBuilder: (listingId, onClose) =>
+                      ListingDetailPane(
+                    listingId: listingId,
+                    leading: CloseButton(onPressed: onClose),
+                  ),
                 ),
               ),
             ],

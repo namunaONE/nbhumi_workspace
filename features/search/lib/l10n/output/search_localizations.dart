@@ -128,6 +128,12 @@ abstract class AppLocalizations {
   /// **'Grid view'**
   String get viewGridTooltip;
 
+  /// Featured newest-listings row heading on Explore.
+  ///
+  /// In en, this message translates to:
+  /// **'Latest listings'**
+  String get featuredTitle;
+
   /// Title/location query field hint.
   ///
   /// In en, this message translates to:

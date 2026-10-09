@@ -149,8 +149,9 @@ class ActivityDocRow extends StatelessWidget {
     final kyc = kyc_strings.AppLocalizations.of(context);
     final label = switch (document.docType) {
       KycDocType.citizenship => kyc.docCitizenship,
+      // Tiro Rasid folded into lalpurja; the enum member is gone, so the
+      // arm goes with it (ports the sibling fold fix to unbreak the build).
       KycDocType.lalpurja => kyc.docLalpurja,
-      KycDocType.tiroRasid => kyc.docTiroRasid,
       KycDocType.agencyReg => kyc.docAgencyReg,
     };
     final status = switch (document.status) {
