@@ -150,7 +150,6 @@ class ActivityDocRow extends StatelessWidget {
     final label = switch (document.docType) {
       KycDocType.citizenship => kyc.docCitizenship,
       KycDocType.lalpurja => kyc.docLalpurja,
-      KycDocType.tiroRasid => kyc.docTiroRasid,
       KycDocType.agencyReg => kyc.docAgencyReg,
     };
     final status = switch (document.status) {

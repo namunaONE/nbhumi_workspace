@@ -195,32 +195,29 @@ final class AdminRepositoryProvider
 
 String _$adminRepositoryHash() => r'c9f5225539e3b4de62557a4c70ad98e063e521c5';
 
-/// Auth service, for the admin panel's password sign-in.
+/// Auth service, for email + password sign-in.
 ///
 /// Takes the auth client rather than the whole `SupabaseClient` because that is
 /// what it wraps, and because `signInWithPassword` has no business reaching for
-/// storage or realtime. See `AuthService` for why the user app's magic link and
-/// the admin panel's password are deliberately different methods.
+/// storage or realtime. See `AuthService` for the full method list.
 
 @ProviderFor(authService)
 final authServiceProvider = AuthServiceProvider._();
 
-/// Auth service, for the admin panel's password sign-in.
+/// Auth service, for email + password sign-in.
 ///
 /// Takes the auth client rather than the whole `SupabaseClient` because that is
 /// what it wraps, and because `signInWithPassword` has no business reaching for
-/// storage or realtime. See `AuthService` for why the user app's magic link and
-/// the admin panel's password are deliberately different methods.
+/// storage or realtime. See `AuthService` for the full method list.
 
 final class AuthServiceProvider
     extends $FunctionalProvider<AuthService, AuthService, AuthService>
     with $Provider<AuthService> {
-  /// Auth service, for the admin panel's password sign-in.
+  /// Auth service, for email + password sign-in.
   ///
   /// Takes the auth client rather than the whole `SupabaseClient` because that is
   /// what it wraps, and because `signInWithPassword` has no business reaching for
-  /// storage or realtime. See `AuthService` for why the user app's magic link and
-  /// the admin panel's password are deliberately different methods.
+  /// storage or realtime. See `AuthService` for the full method list.
   AuthServiceProvider._()
     : super(
         from: null,
@@ -1411,7 +1408,7 @@ String _$savedSearchesHash() => r'74cd5e81cdee2d9c7b8d295c22f43cda0ecc3e79';
 ///
 /// A family so the profile screen and any future seller preview read different
 /// users without one clobbering the other. Null when no profile row exists
-/// yet, which is a real state for a fresh magic-link session whose trigger has
+/// yet, which is a real state for a fresh signup whose trigger has
 /// not run.
 
 @ProviderFor(userProfile)
@@ -1421,7 +1418,7 @@ final userProfileProvider = UserProfileFamily._();
 ///
 /// A family so the profile screen and any future seller preview read different
 /// users without one clobbering the other. Null when no profile row exists
-/// yet, which is a real state for a fresh magic-link session whose trigger has
+/// yet, which is a real state for a fresh signup whose trigger has
 /// not run.
 
 final class UserProfileProvider
@@ -1432,7 +1429,7 @@ final class UserProfileProvider
   ///
   /// A family so the profile screen and any future seller preview read different
   /// users without one clobbering the other. Null when no profile row exists
-  /// yet, which is a real state for a fresh magic-link session whose trigger has
+  /// yet, which is a real state for a fresh signup whose trigger has
   /// not run.
   UserProfileProvider._({
     required UserProfileFamily super.from,
@@ -1483,7 +1480,7 @@ String _$userProfileHash() => r'2943899f5f80e54d3302f680220d69c632631708';
 ///
 /// A family so the profile screen and any future seller preview read different
 /// users without one clobbering the other. Null when no profile row exists
-/// yet, which is a real state for a fresh magic-link session whose trigger has
+/// yet, which is a real state for a fresh signup whose trigger has
 /// not run.
 
 final class UserProfileFamily extends $Family
@@ -1501,7 +1498,7 @@ final class UserProfileFamily extends $Family
   ///
   /// A family so the profile screen and any future seller preview read different
   /// users without one clobbering the other. Null when no profile row exists
-  /// yet, which is a real state for a fresh magic-link session whose trigger has
+  /// yet, which is a real state for a fresh signup whose trigger has
   /// not run.
 
   UserProfileProvider call({required String userId}) =>

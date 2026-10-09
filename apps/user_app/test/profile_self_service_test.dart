@@ -7,6 +7,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:go_router/go_router.dart';
 import 'package:models/models.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:user_app/l10n/output/app_localizations.dart';
 import 'package:user_app/screens/profile_screen.dart';
@@ -189,6 +190,47 @@ void main() {
       expect(find.text('Edit profile'), findsNothing);
       expect(find.text('Download my data'), findsNothing);
       expect(find.text('Delete my account'), findsNothing);
+    });
+  });
+
+  group('profile appearance', () {
+    testWidgets('guests get the theme switcher too', (tester) async {
+      // Theme is device-level, not account-level: the settings gear only
+      // renders signed in, so Profile carries the switcher for everyone.
+      // No session argument: the default is signed out.
+      await _pump(tester);
+
+      expect(find.text('Appearance'), findsOneWidget);
+      expect(find.text('System'), findsOneWidget);
+      expect(find.text('Light'), findsOneWidget);
+      expect(find.text('Dark'), findsOneWidget);
+    });
+
+    testWidgets('switching theme updates the controller', (tester) async {
+      // The mode persists via shared_preferences; the plugin needs mock
+      // values under test or the tap throws MissingPluginException.
+      SharedPreferences.setMockInitialValues(const <String, Object>{});
+      await _pump(tester, session: _session());
+
+      await tester.tap(find.text('Dark'));
+      await tester.pumpAndSettle();
+
+      final segmented = tester.widget<SegmentedButton<ThemeMode>>(
+        find.widgetWithText(SegmentedButton<ThemeMode>, 'System'),
+      );
+      expect(segmented.selected, <ThemeMode>{ThemeMode.dark});
+    });
+
+    testWidgets('tapping the identity row opens the edit dialog',
+        (tester) async {
+      // WhatsApp-style entry: the header itself edits, mirroring the Edit
+      // profile tile below.
+      await _pump(tester, session: _session());
+
+      await tester.tap(find.byIcon(Icons.chevron_right));
+      await tester.pumpAndSettle();
+
+      expect(find.byType(AlertDialog), findsOneWidget);
     });
   });
 

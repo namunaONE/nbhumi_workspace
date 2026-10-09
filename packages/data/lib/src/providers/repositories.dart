@@ -49,12 +49,11 @@ AdminRepository adminRepository(Ref ref) {
   return SupabaseAdminRepository(ref.watch(supabaseClientProvider));
 }
 
-/// Auth service, for the admin panel's password sign-in.
+/// Auth service, for email + password sign-in.
 ///
 /// Takes the auth client rather than the whole `SupabaseClient` because that is
 /// what it wraps, and because `signInWithPassword` has no business reaching for
-/// storage or realtime. See `AuthService` for why the user app's magic link and
-/// the admin panel's password are deliberately different methods.
+/// storage or realtime. See `AuthService` for the full method list.
 @riverpod
 AuthService authService(Ref ref) {
   return AuthService(ref.watch(supabaseAuthProvider));
@@ -275,7 +274,7 @@ Future<List<SavedSearch>> savedSearches(Ref ref) {
 ///
 /// A family so the profile screen and any future seller preview read different
 /// users without one clobbering the other. Null when no profile row exists
-/// yet, which is a real state for a fresh magic-link session whose trigger has
+/// yet, which is a real state for a fresh signup whose trigger has
 /// not run.
 @riverpod
 Future<Profile?> userProfile(Ref ref, {required String userId}) {

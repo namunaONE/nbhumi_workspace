@@ -81,17 +81,13 @@ class _ActivityBody extends ConsumerWidget {
     };
 
     return switch (page) {
-      AsyncLoading() => LoadingState(message: strings.profileLoading),
-      AsyncError(:final error) => ErrorState(
-          message: error is AppException
-              ? error.localizedForContext(context)
-              : strings.activityLoadFailed,
-          retryLabel: strings.commonRetry,
+      AsyncLoading() => const Center(child: CircularProgressIndicator()),
+      AsyncError(:final error) => _ActivityError(
+          error: error,
           onRetry: () => ref.invalidate(activityPageProvider),
         ),
       AsyncData(:final value) => ListView(
-          padding:
-              const EdgeInsets.symmetric(vertical: AppSpacing.sm),
+          padding: const EdgeInsets.symmetric(vertical: AppSpacing.sm),
           children: <Widget>[
             _Section(
               title: strings.activityListings,
@@ -171,6 +167,41 @@ class _ActivityBody extends ConsumerWidget {
           ],
         ),
     };
+  }
+}
+
+/// Failure loading the activity page, with a retry for recoverable errors.
+class _ActivityError extends StatelessWidget {
+  const _ActivityError({required this.error, required this.onRetry});
+
+  final Object error;
+  final VoidCallback onRetry;
+
+  @override
+  Widget build(BuildContext context) {
+    final strings = AppLocalizations.of(context);
+    final failure = error is AppException ? error as AppException : null;
+    return Center(
+      child: Padding(
+        padding: const EdgeInsets.all(32),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: <Widget>[
+            Text(
+              failure?.localizedForContext(context) ??
+                  strings.activityLoadFailed,
+            ),
+            const SizedBox(height: 8),
+            if (failure == null || failure.isRetryable)
+              TextButton.icon(
+                icon: const Icon(Icons.refresh),
+                label: Text(strings.commonRetry),
+                onPressed: onRetry,
+              ),
+          ],
+        ),
+      ),
+    );
   }
 }
 

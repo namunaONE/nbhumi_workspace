@@ -8,29 +8,32 @@ part of 'auth_viewmodel.dart';
 
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // ignore_for_file: type=lint, type=warning
-/// Session state for the magic-link flow.
+/// Session state for email + password auth.
 ///
 /// Mirrors `isSignedInProvider` rather than owning its own session copy so the
 /// router's [AuthRefreshNotifier], the profile screen and this notifier can
-/// never disagree. The notifier's real job is the side-effects (send link,
-/// sign out) plus the validation gate (Rule 6) that belongs above the service.
+/// never disagree. The notifier's real job is the side-effects (sign up,
+/// sign in, recovery, sign out) plus the validation gate (Rule 6) that belongs
+/// above the service.
 
 @ProviderFor(Auth)
 final authProvider = AuthProvider._();
 
-/// Session state for the magic-link flow.
+/// Session state for email + password auth.
 ///
 /// Mirrors `isSignedInProvider` rather than owning its own session copy so the
 /// router's [AuthRefreshNotifier], the profile screen and this notifier can
-/// never disagree. The notifier's real job is the side-effects (send link,
-/// sign out) plus the validation gate (Rule 6) that belongs above the service.
+/// never disagree. The notifier's real job is the side-effects (sign up,
+/// sign in, recovery, sign out) plus the validation gate (Rule 6) that belongs
+/// above the service.
 final class AuthProvider extends $NotifierProvider<Auth, bool> {
-  /// Session state for the magic-link flow.
+  /// Session state for email + password auth.
   ///
   /// Mirrors `isSignedInProvider` rather than owning its own session copy so the
   /// router's [AuthRefreshNotifier], the profile screen and this notifier can
-  /// never disagree. The notifier's real job is the side-effects (send link,
-  /// sign out) plus the validation gate (Rule 6) that belongs above the service.
+  /// never disagree. The notifier's real job is the side-effects (sign up,
+  /// sign in, recovery, sign out) plus the validation gate (Rule 6) that belongs
+  /// above the service.
   AuthProvider._()
     : super(
         from: null,
@@ -58,14 +61,15 @@ final class AuthProvider extends $NotifierProvider<Auth, bool> {
   }
 }
 
-String _$authHash() => r'ca1c892f6c1258d6f94a48cff3ca39869b096f6a';
+String _$authHash() => r'9734b1e8672b02f69765f96b9ea2f8632fbe0576';
 
-/// Session state for the magic-link flow.
+/// Session state for email + password auth.
 ///
 /// Mirrors `isSignedInProvider` rather than owning its own session copy so the
 /// router's [AuthRefreshNotifier], the profile screen and this notifier can
-/// never disagree. The notifier's real job is the side-effects (send link,
-/// sign out) plus the validation gate (Rule 6) that belongs above the service.
+/// never disagree. The notifier's real job is the side-effects (sign up,
+/// sign in, recovery, sign out) plus the validation gate (Rule 6) that belongs
+/// above the service.
 
 abstract class _$Auth extends $Notifier<bool> {
   bool build();
