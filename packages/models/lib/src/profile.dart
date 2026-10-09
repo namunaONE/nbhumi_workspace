@@ -22,10 +22,10 @@ enum UserRole {
 ///
 /// Doc-check only — nBhumi never claims legal verification of a document.
 enum KycTier {
-  /// Nothing verified beyond the magic link.
+  /// Nothing verified beyond confirmed email.
   none,
 
-  /// Email confirmed via magic link. Every account reaches this.
+  /// Email confirmed via signup confirmation. Every account reaches this.
   account,
 
   /// Citizenship document checked by an admin. Grants the verified badge.

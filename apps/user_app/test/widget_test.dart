@@ -51,6 +51,8 @@ void main() {
     WidgetTester tester, {
     Size size = const Size(400, 800),
     OnboardingGate? gateOverride,
+    Session? session,
+    bool freshSignup = false,
   }) async {
     tester.view.physicalSize = size;
     tester.view.devicePixelRatio = 1.0;
@@ -61,6 +63,10 @@ void main() {
         overrides: [
           if (gateOverride != null)
             onboardingGateProvider.overrideWithValue(gateOverride),
+          if (session != null) sessionProvider.overrideWithValue(session),
+          freshSignupProvider.overrideWith(
+            () => FreshSignupNotifier(initial: freshSignup),
+          ),
           // The bell owns the unread badge now (HYA-299 moved it off the
           // profile tab). Pinned to zero here so shell tests never touch the
           // network through the stub Supabase client; inbox tests cover the
@@ -173,6 +179,66 @@ void main() {
 
       expect(find.text('Sign-in link failed'), findsOneWidget);
       expect(gate.seen, isFalse);
+    });
+
+    testWidgets('a fresh signup routes through onboarding once',
+        (tester) async {
+      // Install already seen: the only reason to land on onboarding now is
+      // the fresh-signup mark set by Auth.signUpWithPassword.
+      final gate = OnboardingGate(seen: true);
+      addTearDown(gate.dispose);
+
+      await pumpApp(
+        tester,
+        gateOverride: gate,
+        session: Session(
+          accessToken: 'token',
+          refreshToken: 'refresh',
+          tokenType: 'bearer',
+          user: const User(
+            id: 'seller-1',
+            appMetadata: <String, dynamic>{},
+            userMetadata: <String, dynamic>{},
+            aud: 'authenticated',
+            createdAt: '2026-01-01T00:00:00Z',
+          ),
+        ),
+        freshSignup: true,
+      );
+
+      expect(find.text('Browse listings'), findsOneWidget);
+      expect(find.byType(BottomAppBar), findsNothing);
+    });
+
+    testWidgets('completing post-signup onboarding lands home, not back',
+        (tester) async {
+      final gate = OnboardingGate(seen: true);
+      addTearDown(gate.dispose);
+
+      await pumpApp(
+        tester,
+        gateOverride: gate,
+        session: Session(
+          accessToken: 'token',
+          refreshToken: 'refresh',
+          tokenType: 'bearer',
+          user: const User(
+            id: 'seller-1',
+            appMetadata: <String, dynamic>{},
+            userMetadata: <String, dynamic>{},
+            aud: 'authenticated',
+            createdAt: '2026-01-01T00:00:00Z',
+          ),
+        ),
+        freshSignup: true,
+      );
+      await tester.tap(find.text('Browse listings'));
+      await tester.pumpAndSettle();
+
+      // Mark consumed the fresh flag (cleared alongside seen): the shell is
+      // up and there is no bounce back to onboarding.
+      expect(find.byType(BottomAppBar), findsOneWidget);
+      expect(find.text('Browse listings'), findsNothing);
     });
 
     test('markSeen notifies and writes exactly once', () async {

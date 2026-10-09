@@ -104,30 +104,6 @@ abstract class AppLocalizations {
   /// **'Sign in'**
   String get title;
 
-  /// Magic-link pane segment.
-  ///
-  /// In en, this message translates to:
-  /// **'Magic link'**
-  String get paneLink;
-
-  /// Password pane segment.
-  ///
-  /// In en, this message translates to:
-  /// **'Password'**
-  String get panePassword;
-
-  /// Magic-link pane heading.
-  ///
-  /// In en, this message translates to:
-  /// **'Sign in with a magic link'**
-  String get linkTitle;
-
-  /// Magic-link pane explanation.
-  ///
-  /// In en, this message translates to:
-  /// **'We email you a sign-in link. No password to remember.'**
-  String get linkSubtitle;
-
   /// Password sign-in heading.
   ///
   /// In en, this message translates to:
@@ -137,7 +113,7 @@ abstract class AppLocalizations {
   /// Password sign-in explanation.
   ///
   /// In en, this message translates to:
-  /// **'Prefer no password? The link tab needs only email.'**
+  /// **'Use the email and password for your account.'**
   String get passwordSignInSubtitle;
 
   /// Account creation heading.
@@ -212,18 +188,6 @@ abstract class AppLocalizations {
   /// **'Resend in {seconds}s'**
   String resendIn(int seconds);
 
-  /// Send magic link action.
-  ///
-  /// In en, this message translates to:
-  /// **'Send sign-in link'**
-  String get sendLink;
-
-  /// Resend magic link action.
-  ///
-  /// In en, this message translates to:
-  /// **'Resend link'**
-  String get resendLink;
-
   /// Password sign-in action.
   ///
   /// In en, this message translates to:
@@ -271,12 +235,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Back to sign in'**
   String get backToSignIn;
-
-  /// Magic link sent confirmation.
-  ///
-  /// In en, this message translates to:
-  /// **'Check your inbox — a sign-in link is on its way to {email}.'**
-  String sentLink(String email);
 
   /// Account created confirmation.
   ///

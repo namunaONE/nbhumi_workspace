@@ -1,4 +1,4 @@
-﻿import 'package:auth/auth.dart';
+import 'package:auth/auth.dart';
 import 'package:core/core.dart';
 import 'package:data/data.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -7,21 +7,14 @@ import 'package:flutter_test/flutter_test.dart';
 /// Records calls; the unused surface throws so a test failure says exactly
 /// which method fired that should not have.
 class _SpyAuthService implements AuthService {
-  String? sentTo;
   int signOutCalls = 0;
-  AppException? sendMagicLinkFailure;
 
   String? signedUpEmail;
   String? signedUpPassword;
   String? signedInEmail;
   String? resetEmail;
   String? updatedPassword;
-
-  @override
-  Future<void> sendMagicLink(String email) async {
-    if (sendMagicLinkFailure != null) throw sendMagicLinkFailure!;
-    sentTo = email;
-  }
+  AppException? signUpFailure;
 
   @override
   Future<void> signOut() async {
@@ -33,6 +26,8 @@ class _SpyAuthService implements AuthService {
     required String email,
     required String password,
   }) async {
+    final error = signUpFailure;
+    if (error != null) throw error;
     signedUpEmail = email;
     signedUpPassword = password;
   }
@@ -70,52 +65,6 @@ ProviderContainer _container(_SpyAuthService spy) {
 }
 
 void main() {
-  group('Auth.sendMagicLink', () {
-    test('rejects malformed email before touching the service', () async {
-      final spy = _SpyAuthService();
-      final container = _container(spy);
-      addTearDown(container.dispose);
-
-      await expectLater(
-        container
-            .read(authProvider.notifier)
-            .sendMagicLink('not-an-email'),
-        throwsA(isA<ValidationException>()),
-      );
-      expect(spy.sentTo, isNull);
-    });
-
-    test('trims and forwards a valid email', () async {
-      final spy = _SpyAuthService();
-      final container = _container(spy);
-      addTearDown(container.dispose);
-
-      await container
-          .read(authProvider.notifier)
-          .sendMagicLink('  ramesh@example.com ');
-      expect(spy.sentTo, 'ramesh@example.com');
-    });
-
-    test('propagates a mapped service failure', () async {
-      const failure = ServerException(
-        code: 'server.rateLimited',
-        messageEn: 'Too many attempts.',
-        messageNe: 'धेरै प्रयास भयो।',
-      );
-      final spy = _SpyAuthService()..sendMagicLinkFailure = failure;
-      final container = _container(spy);
-      addTearDown(container.dispose);
-
-      await expectLater(
-        container
-            .read(authProvider.notifier)
-            .sendMagicLink('ramesh@example.com'),
-        throwsA(isA<ServerException>()),
-      );
-      expect(spy.sentTo, isNull);
-    });
-  });
-
   test('Auth.build mirrors isSignedInProvider', () {
     final container = ProviderContainer(
       overrides: [isSignedInProvider.overrideWithValue(true)],
@@ -160,6 +109,41 @@ void main() {
 
       expect(spy.signedUpEmail, 'ramesh@example.com');
       expect(spy.signedUpPassword, 'correct horse staple');
+    });
+
+    test('sign-up marks the install for post-signup onboarding', () async {
+      final spy = _SpyAuthService();
+      final container = _container(spy);
+      addTearDown(container.dispose);
+
+      expect(container.read<bool>(freshSignupProvider), isFalse);
+
+      await container.read(authProvider.notifier).signUpWithPassword(
+            email: 'ramesh@example.com',
+            password: 'correct horse staple',
+          );
+
+      expect(container.read<bool>(freshSignupProvider), isTrue);
+    });
+
+    test('sign-up propagates a mapped service failure', () async {
+      const failure = ServerException(
+        code: 'server.rateLimited',
+        messageEn: 'Too many attempts.',
+        messageNe: 'धेरै प्रयास भयो।',
+      );
+      final spy = _SpyAuthService()..signUpFailure = failure;
+      final container = _container(spy);
+      addTearDown(container.dispose);
+
+      await expectLater(
+        container.read(authProvider.notifier).signUpWithPassword(
+              email: 'ramesh@example.com',
+              password: 'correct horse staple',
+            ),
+        throwsA(isA<ServerException>()),
+      );
+      expect(spy.signedUpEmail, isNull);
     });
 
     test('sign-in validates the email but passes the password through',

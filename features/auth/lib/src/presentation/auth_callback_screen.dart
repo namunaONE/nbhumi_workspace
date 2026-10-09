@@ -7,7 +7,7 @@ import 'package:go_router/go_router.dart';
 
 import '../viewmodels/auth_viewmodel.dart';
 
-/// Landing route for magic-link (and recovery-link) taps.
+/// Landing route for confirmation-link (and recovery-link) taps.
 ///
 /// The link itself is consumed by the deep-link handler before this screen
 /// appears; this screen only narrates the outcome, because the exchange is

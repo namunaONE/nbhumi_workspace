@@ -52,7 +52,7 @@ abstract final class EnvConfig {
   /// Public web host that doubles as the deep-link host (HYA-257).
   ///
   /// Empty until the production domain exists. While empty, [authRedirectUri]
-  /// uses the custom scheme (see [useCustomSchemeRedirect]) so magic-link
+  /// uses the custom scheme (see [useCustomSchemeRedirect]) so confirmation
   /// sign-in works with no domain at all — only a Supabase allowlist entry.
   /// When the domain is ready, pass `--dart-define=DEEP_LINK_HOST=...` and
   /// replace the host in the native manifests and `deep-links/.well-known/`
@@ -71,14 +71,15 @@ abstract final class EnvConfig {
     defaultValue: 'nbhumi',
   );
 
-  /// Path Supabase redirects to after a magic-link tap.
+  /// Path Supabase redirects to after a confirmation-link tap.
   ///
   /// A const, not configuration: the native intent filters, the Apple
   /// association file, and the router's `/auth/callback` route all match this
   /// literally, so changing it means changing all of them together.
   static const String authCallbackPath = '/auth/callback';
 
-  /// Whether magic links redirect to the custom scheme instead of https.
+  /// Whether confirmation links redirect to the custom scheme instead of
+  /// https.
   ///
   /// True when no [deepLinkHost] is configured (the normal pre-domain state)
   /// or when explicitly forced for testing. The custom scheme needs no DNS,
@@ -89,7 +90,7 @@ abstract final class EnvConfig {
       deepLinkHost.isEmpty ||
       const bool.fromEnvironment('DEEP_LINK_CUSTOM_SCHEME');
 
-  /// The `emailRedirectTo` passed to `signInWithOtp`.
+  /// The `emailRedirectTo` passed to signup and recovery calls.
   static Uri get authRedirectUri => useCustomSchemeRedirect
       ? Uri(scheme: deepLinkScheme, host: 'auth', path: '/callback')
       : Uri(scheme: 'https', host: deepLinkHost, path: authCallbackPath);

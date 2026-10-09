@@ -66,7 +66,7 @@ nbhumi_workspace/
 
 - **Flutter 3.47** + **Dart 3.13**
 - **Riverpod 3.0** (AsyncNotifier, Mutation, codegen)
-- **Supabase** (Postgres, Auth magic-link, Storage, RLS, Realtime)
+- **Supabase** (Postgres, Auth email/password, Storage, RLS, Realtime)
 - **Material 3** (seed #002C6D, light+dark)
 - **MVVM + Clean Architecture** (Views → ViewModels → Repositories → Services)
 

@@ -167,7 +167,7 @@ abstract class AppLocalizations {
   /// Prompt under the signed-out account row.
   ///
   /// In en, this message translates to:
-  /// **'Sign in with a magic link to post a property'**
+  /// **'Sign in to post a property'**
   String get profileSignedOutHint;
 
   /// Subtitle of the account row with an active session.
@@ -401,7 +401,7 @@ abstract class AppLocalizations {
   /// Sign-out subtitle.
   ///
   /// In en, this message translates to:
-  /// **'You can sign back in with a magic link any time'**
+  /// **'You can sign back in any time'**
   String get profileSignOutSubtitle;
 
   /// Delete-account entry tile, confirm button and dialog action.

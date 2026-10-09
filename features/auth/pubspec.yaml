@@ -1,5 +1,5 @@
 name: auth
-description: Magic-link authentication for nBhumi
+description: Email and password authentication for nBhumi
 publish_to: none
 resolution: workspace
 version: 0.1.0

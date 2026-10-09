@@ -1,4 +1,4 @@
-{
+﻿{
   "@@locale": "en",
   "@@last_modified": "2026-10-06T00:00:00.000",
 
@@ -7,25 +7,9 @@
   },
   "title": "Sign in",
 
-  "@paneLink": {
-    "description": "Magic-link pane segment."
-  },
-  "paneLink": "Magic link",
 
-  "@panePassword": {
-    "description": "Password pane segment."
-  },
-  "panePassword": "Password",
 
-  "@linkTitle": {
-    "description": "Magic-link pane heading."
-  },
-  "linkTitle": "Sign in with a magic link",
 
-  "@linkSubtitle": {
-    "description": "Magic-link pane explanation."
-  },
-  "linkSubtitle": "We email you a sign-in link. No password to remember.",
 
   "@passwordSignInTitle": {
     "description": "Password sign-in heading."
@@ -35,7 +19,7 @@
   "@passwordSignInSubtitle": {
     "description": "Password sign-in explanation."
   },
-  "passwordSignInSubtitle": "Prefer no password? The link tab needs only email.",
+  "passwordSignInSubtitle": "Use the email and password for your account.",
 
   "@signUpTitle": {
     "description": "Account creation heading."
@@ -103,15 +87,7 @@
   },
   "resendIn": "Resend in {seconds}s",
 
-  "@sendLink": {
-    "description": "Send magic link action."
-  },
-  "sendLink": "Send sign-in link",
 
-  "@resendLink": {
-    "description": "Resend magic link action."
-  },
-  "resendLink": "Resend link",
 
   "@signInAction": {
     "description": "Password sign-in action."
@@ -152,14 +128,6 @@
     "description": "Back-to-sign-in toggle."
   },
   "backToSignIn": "Back to sign in",
-
-  "@sentLink": {
-    "description": "Magic link sent confirmation.",
-    "placeholders": {
-      "email": { "type": "String", "example": "sita@example.com" }
-    }
-  },
-  "sentLink": "Check your inbox — a sign-in link is on its way to {email}.",
 
   "@accountCreated": {
     "description": "Account created confirmation.",

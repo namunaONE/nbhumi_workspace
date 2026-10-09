@@ -203,7 +203,7 @@ class _ProfileHeaderSection extends ConsumerWidget {
           title: Text(strings.profileLoading),
         ),
       // A missing profile must not hide identity: fall back to the session
-      // email so a fresh magic-link session still sees who it is.
+      // email so a fresh confirmed session still sees who it is.
       AsyncError() => _ProfileHeaderCard(profile: null, email: fallbackEmail),
       AsyncData(:final value) =>
         _ProfileHeaderCard(profile: value, email: fallbackEmail),

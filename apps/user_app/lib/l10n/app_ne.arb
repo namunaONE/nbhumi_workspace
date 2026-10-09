@@ -1,4 +1,4 @@
-{
+﻿{
   "@@locale": "ne",
   "@@last_modified": "2026-10-06T00:00:00.000",
 
@@ -60,7 +60,7 @@
   "@profileSignedOutHint": {
     "description": "Prompt under the signed-out account row."
   },
-  "profileSignedOutHint": "घरजग्गा पोस्ट गर्न म्याजिक लिङ्कबाट साइन इन गर्नुहोस्",
+  "profileSignedOutHint": "पोस्ट गर्न साइन इन गर्नुहोस्",
 
   "@profileSignedIn": {
     "description": "Subtitle of the account row with an active session."
@@ -255,7 +255,7 @@
   "@profileSignOutSubtitle": {
     "description": "Sign-out subtitle."
   },
-  "profileSignOutSubtitle": "जुनसुकै बेला म्याजिक लिङ्कबाट फेरि साइन इन गर्न सक्नुहुन्छ",
+  "profileSignOutSubtitle": "तपाईं जुनसुकै बेला फेरि साइन इन गर्न सक्नुहुन्छ",
 
   "@profileDeleteTitle": {
     "description": "Delete-account entry tile, confirm button and dialog action."

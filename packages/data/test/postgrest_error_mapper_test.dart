@@ -324,10 +324,10 @@ void main() {
   });
 
   group('AuthExceptionMapper', () {
-    test('an expired magic link is reported as a link failure', () {
+    test('an expired confirmation link is reported as a link failure', () {
       final mapped = AuthExceptionMapper.map(
         const AuthException('Email link is expired'),
-        action: 'signIn',
+        action: 'signUp',
       );
 
       expect(mapped.code, 'auth.linkExpired');
@@ -346,7 +346,7 @@ void main() {
     test('rate limiting maps to a ServerException', () {
       final mapped = AuthExceptionMapper.map(
         const AuthException('Too many requests, rate limit exceeded'),
-        action: 'sendMagicLink',
+        action: 'signUpWithPassword',
       );
 
       expect(mapped, isA<ServerException>());
@@ -358,7 +358,7 @@ void main() {
         const AuthException(
           'User with email a@b.com failed to sign in (provider=smtp)',
         ),
-        action: 'sendMagicLink',
+        action: 'signInWithPassword',
       );
 
       expect(mapped.code, 'auth.failed');

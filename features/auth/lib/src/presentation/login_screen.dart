@@ -7,18 +7,15 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../viewmodels/auth_viewmodel.dart';
 
-/// Which credential the screen asks for.
-enum _Pane { link, password }
-
-/// What the password pane does.
+/// What the password form does.
 enum _PasswordMode { signIn, signUp, reset }
 
-/// Login screen. Magic link or email + password — the user's choice.
+/// Login screen. Email + password only — no magic links.
 ///
-/// Magic link stays the default: no password to forget, nothing to stuff.
-/// The password pane covers sign-in, account creation, and recovery:
+/// The single form covers sign-in, account creation, and recovery:
 ///
 /// * Sign in / Create account toggle on one form (confirm field included).
+///   A successful signup marks the install for post-signup onboarding.
 /// * "Forgot password?" switches to reset mode: one email field, one button,
 ///   and the recovery link lands on `/auth/callback?type=recovery`, where
 ///   the callback screen shows the set-new-password form.
@@ -41,7 +38,6 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
 
   static const Duration _cooldown = Duration(seconds: 30);
 
-  _Pane _pane = _Pane.link;
   _PasswordMode _mode = _PasswordMode.signIn;
   bool _busy = false;
   bool _obscure = true;
@@ -94,20 +90,13 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
     setState(() => _busy = true);
     try {
       final auth = ref.read(authProvider.notifier);
-      switch ((_pane, _mode)) {
-        case (_Pane.link, _):
-          await auth.sendMagicLink(_email.text);
-          if (!mounted) return;
-          setState(() {
-            _sentTo = _email.text.trim();
-            _startCooldown();
-          });
-        case (_Pane.password, _PasswordMode.signIn):
+      switch (_mode) {
+        case _PasswordMode.signIn:
           await auth.signInWithPassword(
             email: _email.text,
             password: _password.text,
           );
-        case (_Pane.password, _PasswordMode.signUp):
+        case _PasswordMode.signUp:
           await auth.signUpWithPassword(
             email: _email.text,
             password: _password.text,
@@ -116,7 +105,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
           setState(() {
             _sentTo = _email.text.trim();
           });
-        case (_Pane.password, _PasswordMode.reset):
+        case _PasswordMode.reset:
           await auth.resetPassword(_email.text);
           if (!mounted) return;
           setState(() {
@@ -156,52 +145,22 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                SegmentedButton<_Pane>(
-                  segments: [
-                    ButtonSegment(
-                      value: _Pane.link,
-                      label: Text(strings.paneLink),
-                      icon: const Icon(Icons.mail_outline),
-                    ),
-                    ButtonSegment(
-                      value: _Pane.password,
-                      label: Text(strings.panePassword),
-                      icon: const Icon(Icons.lock_outline),
-                    ),
-                  ],
-                  selected: {_pane},
-                  onSelectionChanged: (selected) => setState(() {
-                    _pane = selected.single;
-                    _sentTo = null;
-                  }),
+                Text(
+                  switch (_mode) {
+                    _PasswordMode.signIn => strings.passwordSignInTitle,
+                    _PasswordMode.signUp => strings.signUpTitle,
+                    _PasswordMode.reset => strings.resetTitle,
+                  },
+                  style: Theme.of(context).textTheme.headlineSmall,
                 ),
-                const SizedBox(height: 24),
-                if (_pane == _Pane.link) ...[
-                  Text(
-                    strings.linkTitle,
-                    style: Theme.of(context).textTheme.headlineSmall,
-                  ),
-                  const SizedBox(height: 8),
-                  Text(strings.linkSubtitle),
-                ] else ...[
-                  Text(
-                    switch (_mode) {
-                      _PasswordMode.signIn => strings.passwordSignInTitle,
-                      _PasswordMode.signUp => strings.signUpTitle,
-                      _PasswordMode.reset => strings.resetTitle,
-                    },
-                    style: Theme.of(context).textTheme.headlineSmall,
-                  ),
-                  const SizedBox(height: 8),
-                  Text(
-                    switch (_mode) {
-                      _PasswordMode.signIn =>
-                        strings.passwordSignInSubtitle,
-                      _PasswordMode.signUp => strings.signUpSubtitle,
-                      _PasswordMode.reset => strings.resetSubtitle,
-                    },
-                  ),
-                ],
+                const SizedBox(height: 8),
+                Text(
+                  switch (_mode) {
+                    _PasswordMode.signIn => strings.passwordSignInSubtitle,
+                    _PasswordMode.signUp => strings.signUpSubtitle,
+                    _PasswordMode.reset => strings.resetSubtitle,
+                  },
+                ),
                 const SizedBox(height: 24),
                 TextFormField(
                   controller: _email,
@@ -214,8 +173,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                   validator: _emailError,
                   onFieldSubmitted: (_) => _submit(),
                 ),
-                if (_pane == _Pane.password &&
-                    _mode != _PasswordMode.reset) ...[
+                if (_mode != _PasswordMode.reset) ...[
                   const SizedBox(height: 16),
                   TextFormField(
                     controller: _password,
@@ -237,8 +195,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                     onFieldSubmitted: (_) => _submit(),
                   ),
                 ],
-                if (_pane == _Pane.password &&
-                    _mode == _PasswordMode.signUp) ...[
+                if (_mode == _PasswordMode.signUp) ...[
                   const SizedBox(height: 16),
                   TextFormField(
                     controller: _confirm,
@@ -259,25 +216,18 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                       ? strings.sending
                       : _cooldownSeconds > 0
                           ? strings.resendIn(_cooldownSeconds)
-                          : switch ((_pane, _mode)) {
-                              (_Pane.link, _) => _sentTo == null
-                                  ? strings.sendLink
-                                  : strings.resendLink,
-                              (_Pane.password, _PasswordMode.signIn) =>
-                                strings.signInAction,
-                              (_Pane.password, _PasswordMode.signUp) =>
-                                strings.signUpAction,
-                              (_Pane.password, _PasswordMode.reset) =>
-                                _sentTo == null
-                                    ? strings.sendReset
-                                    : strings.resendReset,
+                          : switch (_mode) {
+                              _PasswordMode.signIn => strings.signInAction,
+                              _PasswordMode.signUp => strings.signUpAction,
+                              _PasswordMode.reset => _sentTo == null
+                                  ? strings.sendReset
+                                  : strings.resendReset,
                             },
                   isLoading: _busy,
                   onPressed:
                       _busy || _cooldownSeconds > 0 ? null : _submit,
                 ),
-                if (_pane == _Pane.password &&
-                    _mode != _PasswordMode.reset)
+                if (_mode != _PasswordMode.reset)
                   TextButton(
                     onPressed: _busy
                         ? null
@@ -293,8 +243,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                           : strings.switchToSignIn,
                     ),
                   ),
-                if (_pane == _Pane.password &&
-                    _mode == _PasswordMode.signIn)
+                if (_mode == _PasswordMode.signIn)
                   TextButton(
                     onPressed: _busy
                         ? null
@@ -304,8 +253,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                             }),
                     child: Text(strings.forgotPassword),
                   ),
-                if (_pane == _Pane.password &&
-                    _mode == _PasswordMode.reset)
+                if (_mode == _PasswordMode.reset)
                   TextButton(
                     onPressed: _busy
                         ? null
@@ -316,11 +264,9 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                 if (_sentTo != null) ...[
                   const SizedBox(height: 16),
                   Text(
-                    switch ((_pane, _mode)) {
-                      (_Pane.link, _) => strings.sentLink(_sentTo!),
-                      (_Pane.password, _PasswordMode.signUp) =>
-                        strings.accountCreated(_sentTo!),
-                      (_, _) => strings.resetSent(_sentTo!),
+                    switch (_mode) {
+                      _PasswordMode.signUp => strings.accountCreated(_sentTo!),
+                      _ => strings.resetSent(_sentTo!),
                     },
                   ),
                 ],

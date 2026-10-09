@@ -23,7 +23,7 @@
 	<key>CFBundleSignature</key>
 	<string>????</string>
 	<key>CFBundleURLTypes</key>
-<!-- HYA-257: custom-scheme fallback (EnvConfig.deepLinkScheme). Works without DNS or associated domains, so magic-link sign-in is testable before the production domain exists. Universal links additionally need the Runner.entitlements associated-domains entry. -->
+<!-- HYA-257: custom-scheme fallback (EnvConfig.deepLinkScheme). Works without DNS or associated domains, so confirmation sign-in is testable before the production domain exists. Universal links additionally need the Runner.entitlements associated-domains entry. -->
 	<array>
 		<dict>
 			<key>CFBundleTypeRole</key>

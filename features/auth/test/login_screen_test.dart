@@ -7,17 +7,9 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 class _SpyAuthService implements AuthService {
-  String? sentTo;
-  int calls = 0;
   String? signedInEmail;
   String? signedUpEmail;
   String? resetEmail;
-
-  @override
-  Future<void> sendMagicLink(String email) async {
-    calls++;
-    sentTo = email;
-  }
 
   @override
   Future<void> signUpWithPassword({
@@ -76,43 +68,23 @@ Widget _app(
 }
 
 void main() {
-  testWidgets('invalid email blocks the send and shows a bilingual error',
+  testWidgets('invalid email blocks the send and shows an error',
       (tester) async {
     final spy = _SpyAuthService();
     await tester.pumpWidget(_app(spy));
 
-    await tester.enterText(find.byType(TextFormField), 'nope');
-    await tester.tap(find.widgetWithText(FilledButton, 'Send sign-in link'));
+    await tester.enterText(find.byType(TextFormField).first, 'nope');
+    await tester.enterText(find.byType(TextFormField).last, 'long enough');
+    await tester.tap(find.widgetWithText(FilledButton, 'Sign in'));
     await tester.pump();
 
     expect(find.text('Enter a valid email address.'), findsOneWidget);
-    expect(spy.calls, 0);
+    expect(spy.signedInEmail, isNull);
   });
 
-  testWidgets('valid email sends and shows the inbox state', (tester) async {
+  testWidgets('signs in with email and password', (tester) async {
     final spy = _SpyAuthService();
     await tester.pumpWidget(_app(spy));
-
-    await tester.enterText(
-      find.byType(TextFormField),
-      'seller@example.com',
-    );
-    await tester.tap(find.widgetWithText(FilledButton, 'Send sign-in link'));
-    await tester.pump();
-    await tester.pump();
-
-    expect(spy.sentTo, 'seller@example.com');
-    expect(find.textContaining('seller@example.com'), findsWidgets);
-    expect(find.textContaining('Resend in'), findsOneWidget);
-  });
-
-  testWidgets('password pane signs in with email and password',
-      (tester) async {
-    final spy = _SpyAuthService();
-    await tester.pumpWidget(_app(spy));
-
-    await tester.tap(find.text('Password'));
-    await tester.pumpAndSettle();
 
     await tester.enterText(find.byType(TextFormField).first, 's@s.com');
     await tester.enterText(find.byType(TextFormField).last, 'long enough');
@@ -126,8 +98,6 @@ void main() {
     final spy = _SpyAuthService();
     await tester.pumpWidget(_app(spy));
 
-    await tester.tap(find.text('Password'));
-    await tester.pumpAndSettle();
     await tester.tap(find.text('New here? Create an account'));
     await tester.pumpAndSettle();
 
@@ -145,8 +115,6 @@ void main() {
     final spy = _SpyAuthService();
     await tester.pumpWidget(_app(spy));
 
-    await tester.tap(find.text('Password'));
-    await tester.pumpAndSettle();
     await tester.tap(find.text('New here? Create an account'));
     await tester.pumpAndSettle();
 
@@ -164,8 +132,6 @@ void main() {
     final spy = _SpyAuthService();
     await tester.pumpWidget(_app(spy));
 
-    await tester.tap(find.text('Password'));
-    await tester.pumpAndSettle();
     await tester.tap(find.text('Forgot your password?'));
     await tester.pumpAndSettle();
 
@@ -184,7 +150,6 @@ void main() {
     await tester.pumpAndSettle();
 
     expect(find.text('साइन इन'), findsWidgets);
-    expect(find.text('म्याजिक लिङ्क'), findsOneWidget);
-    expect(find.text('पासवर्ड'), findsOneWidget);
+    expect(find.text('पासवर्ड'), findsWidgets);
   });
 }

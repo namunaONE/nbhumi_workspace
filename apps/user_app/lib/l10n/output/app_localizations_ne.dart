@@ -43,8 +43,7 @@ class AppLocalizationsNe extends AppLocalizations {
   String get profileSignedOut => 'साइन इन भएको छैन';
 
   @override
-  String get profileSignedOutHint =>
-      'घरजग्गा पोस्ट गर्न म्याजिक लिङ्कबाट साइन इन गर्नुहोस्';
+  String get profileSignedOutHint => 'पोस्ट गर्न साइन इन गर्नुहोस्';
 
   @override
   String get profileSignedIn => 'साइन इन भएको छ';
@@ -168,7 +167,7 @@ class AppLocalizationsNe extends AppLocalizations {
 
   @override
   String get profileSignOutSubtitle =>
-      'जुनसुकै बेला म्याजिक लिङ्कबाट फेरि साइन इन गर्न सक्नुहुन्छ';
+      'तपाईं जुनसुकै बेला फेरि साइन इन गर्न सक्नुहुन्छ';
 
   @override
   String get profileDeleteTitle => 'मेरो खाता मेट्नुहोस्';

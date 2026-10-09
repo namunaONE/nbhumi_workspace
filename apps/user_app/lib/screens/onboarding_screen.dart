@@ -1,4 +1,5 @@
 import 'package:core/core.dart';
+import 'package:data/data.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -103,6 +104,9 @@ class OnboardingScreen extends ConsumerWidget {
                 label: strings.onboardingBrowse,
                 onPressed: () async {
                   await ref.read(onboardingGateProvider).markSeen();
+                  // A fresh signup routes here once; completing it consumes
+                  // the mark so later sessions land on the feed directly.
+                  ref.read(freshSignupProvider.notifier).clear();
                   if (context.mounted) context.go('/');
                 },
               ),

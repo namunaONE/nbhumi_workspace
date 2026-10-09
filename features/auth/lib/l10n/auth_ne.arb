@@ -1,4 +1,4 @@
-{
+﻿{
   "@@locale": "ne",
   "@@last_modified": "2026-10-06T00:00:00.000",
 
@@ -7,25 +7,9 @@
   },
   "title": "साइन इन",
 
-  "@paneLink": {
-    "description": "Magic-link pane segment."
-  },
-  "paneLink": "म्याजिक लिङ्क",
 
-  "@panePassword": {
-    "description": "Password pane segment."
-  },
-  "panePassword": "पासवर्ड",
 
-  "@linkTitle": {
-    "description": "Magic-link pane heading."
-  },
-  "linkTitle": "म्याजिक लिङ्कबाट साइन इन गर्नुहोस्",
 
-  "@linkSubtitle": {
-    "description": "Magic-link pane explanation."
-  },
-  "linkSubtitle": "हामी साइन-इन लिङ्क इमेल गर्छौं। पासवर्ड सम्झनु पर्दैन।",
 
   "@passwordSignInTitle": {
     "description": "Password sign-in heading."
@@ -35,7 +19,7 @@
   "@passwordSignInSubtitle": {
     "description": "Password sign-in explanation."
   },
-  "passwordSignInSubtitle": "पासवर्ड चाहनुहुन्न? लिङ्क ट्याबलाई इमेल मात्र चाहिन्छ।",
+  "passwordSignInSubtitle": "तपाईंको खाताको इमेल र पासवर्ड प्रयोग गर्नुहोस्।",
 
   "@signUpTitle": {
     "description": "Account creation heading."
@@ -103,15 +87,7 @@
   },
   "resendIn": "{seconds} सेकेन्डमा पुनः पठाउनुहोस्",
 
-  "@sendLink": {
-    "description": "Send magic link action."
-  },
-  "sendLink": "साइन-इन लिङ्क पठाउनुहोस्",
 
-  "@resendLink": {
-    "description": "Resend magic link action."
-  },
-  "resendLink": "लिङ्क पुनः पठाउनुहोस्",
 
   "@signInAction": {
     "description": "Password sign-in action."
@@ -153,13 +129,6 @@
   },
   "backToSignIn": "साइन इनमा फर्कनुहोस्",
 
-  "@sentLink": {
-    "description": "Magic link sent confirmation.",
-    "placeholders": {
-      "email": { "type": "String", "example": "sita@example.com" }
-    }
-  },
-  "sentLink": "इनबक्स जाँच गर्नुहोस् — {email} मा साइन-इन लिङ्क जाँदैछ।",
 
   "@accountCreated": {
     "description": "Account created confirmation.",

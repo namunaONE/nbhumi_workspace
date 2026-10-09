@@ -63,6 +63,16 @@ final appRouterProvider = Provider<GoRouter>((ref) {
   final authRefresh = AuthRefreshNotifier(ref);
   ref.onDispose(authRefresh.dispose);
   final gate = ref.watch(onboardingGateProvider);
+  // Fresh-signup state needs its own listenable: watching the provider would
+  // rebuild the whole router on change (the AuthRefreshNotifier bug this
+  // file's docs describe), while this only re-runs redirect.
+  final freshSignupRefresh =
+      ValueNotifier<bool>(ref.read(freshSignupProvider));
+  ref
+    ..onDispose(freshSignupRefresh.dispose)
+    ..listen<bool>(freshSignupProvider, (_, next) {
+      freshSignupRefresh.value = next;
+    });
 
   final rootKey = GlobalKey<NavigatorState>(debugLabel: 'root');
   final exploreKey = GlobalKey<NavigatorState>(debugLabel: 'explore');
@@ -75,14 +85,23 @@ final appRouterProvider = Provider<GoRouter>((ref) {
     initialLocation: '/',
     // Both notifiers only *tell* the router to re-run `redirect`: neither
     // rebuilds the router itself (see AuthRefreshNotifier).
-    refreshListenable: Listenable.merge([authRefresh, gate]),
+    refreshListenable:
+        Listenable.merge([authRefresh, gate, freshSignupRefresh]),
     redirect: (context, state) {
       final location = state.matchedLocation;
       final isLoggedIn = authRefresh.isSignedIn;
+      final freshSignup = freshSignupRefresh.value;
 
       // Legacy `/search` links (shared URLs, saved searches pointing at the
       // old tab) land on Explore, which is the same screen at `/`.
       if (location == '/search') return '/';
+
+      // A fresh signup routes through onboarding once, after the confirmed
+      // first session exists. Guests keep the first-run gate below; the two
+      // never conflict because a fresh signup is always signed in.
+      if (isLoggedIn && freshSignup && location != '/onboarding') {
+        return '/onboarding';
+      }
 
       // First run goes through onboarding before anything else. No conflict
       // with the auth rules below: a fresh install is never signed in, and a

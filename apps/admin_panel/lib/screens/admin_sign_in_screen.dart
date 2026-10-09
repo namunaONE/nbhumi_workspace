@@ -6,13 +6,14 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 
 /// Sign-in screen for the admin panel.
 ///
-/// ### Why this is not the shared magic-link `LoginScreen`
+/// ### Why this is not the shared user-app `LoginScreen`
 ///
-/// The user app signs in with a Supabase magic link; this panel signs in with a
-/// password. Two different flows, two different screens, and keeping them apart
-/// is the point: if the panel reused the magic-link screen then a future edit
-/// to the buyer sign-in would silently change how the platform's most powerful
-/// account authenticates.
+/// The user app signs in with email and password through a buyer-oriented
+/// screen (sign-in / sign-up / recovery modes); this panel signs in with a
+/// password on a dedicated screen. Two different flows, two different
+/// screens, and keeping them apart is the point: if the panel reused the
+/// buyer screen then a future edit to the buyer sign-in would silently change
+/// how the platform's most powerful account authenticates.
 ///
 /// ### Sign-up is deliberately absent
 ///
