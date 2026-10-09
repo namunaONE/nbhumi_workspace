@@ -1,5 +1,3 @@
-import 'dart:async';
-
 import 'package:flutter/material.dart';
 
 import '../theme/marketplace_colors.dart';
@@ -23,37 +21,35 @@ class TrustBadge extends StatelessWidget {
   /// When true, tapping opens a dialog explaining the verification boundary.
   final bool showInfoOnTap;
 
-  void _showInfo(BuildContext context) {
-    unawaited(
-      showDialog<void>(
-        context: context,
-        builder: (context) {
-          final theme = Theme.of(context);
-          return AlertDialog(
-            icon: Icon(
-              Icons.verified,
-              size: 40,
-              color: theme.extension<MarketplaceColors>()?.verifiedGreen ??
-                  theme.colorScheme.primary,
+  Future<void> _showInfo(BuildContext context) async {
+    await showDialog<void>(
+      context: context,
+      builder: (context) {
+        final theme = Theme.of(context);
+        return AlertDialog(
+          icon: Icon(
+            Icons.verified,
+            size: 40,
+            color: theme.extension<MarketplaceColors>()?.verifiedGreen ??
+                theme.colorScheme.primary,
+          ),
+          title: const Text('Verified by nBhumi'),
+          content: const Text(
+            'This badge confirms that our admin team has verified '
+            "the seller's government ID (Nagarikta/Passport) and "
+            'listing documents.\n\n'
+            'Notice: nBhumi verifies submitted records. Legal title transfer '
+            'and final document execution always take place at the government '
+            'Land Revenue Office (Malpot Karyalaya).',
+          ),
+          actions: <Widget>[
+            FilledButton(
+              onPressed: () => Navigator.of(context).pop(),
+              child: const Text('Understood'),
             ),
-            title: const Text('Verified by nBhumi'),
-            content: const Text(
-              'This badge confirms that our admin team has verified the '
-              "seller's government ID (Nagarikta/Passport) and listing "
-              'documents.\n\n'
-              'Notice: nBhumi verifies submitted records. Legal title '
-              'transfer and final document execution always take place at '
-              'the government Land Revenue Office (Malpot Karyalaya).',
-            ),
-            actions: <Widget>[
-              FilledButton(
-                onPressed: () => Navigator.of(context).pop(),
-                child: const Text('Understood'),
-              ),
-            ],
-          );
-        },
-      ),
+          ],
+        );
+      },
     );
   }
 

@@ -43,8 +43,8 @@ class _FakeRepository implements ListingRepository {
   dynamic noSuchMethod(Invocation invocation) => super.noSuchMethod(invocation);
 }
 
-/// Pumps the pane with a stubbed detail provider.
-Future<void> _pumpPane(
+/// Pumps the screen with a stubbed detail provider.
+Future<void> _pumpScreen(
   WidgetTester tester,
   ListingDetail? detail, {
   Widget? leading,
@@ -75,43 +75,33 @@ Future<void> _pumpPane(
           GlobalCupertinoLocalizations.delegate,
         ],
         supportedLocales: const <Locale>[Locale('en'), Locale('ne')],
-        home: Scaffold(
-          body: ListingDetailPane(
-            listingId: 'listing-1',
-            leading: leading,
-          ),
-        ),
+        home: ListingDetailScreen(listingId: 'listing-1'),
       ),
     ),
   );
   await tester.pumpAndSettle();
 }
 
-/// Widget tests for [ListingDetailPane].
+/// Widget tests for [ListingDetailScreen].
 void main() {
-  group('ListingDetailPane', () {
+  group('ListingDetailScreen', () {
     testWidgets('loaded detail renders the shared body', (tester) async {
-      await _pumpPane(tester, _detail());
+      await _pumpScreen(tester, _detail());
 
       expect(find.byType(ListingDetailBody), findsOneWidget);
       expect(find.text('Shanti Villa'), findsWidgets);
     });
 
-    testWidgets('embedded leading replaces the back button', (tester) async {
-      await _pumpPane(
-        tester,
-        _detail(),
-        leading: const Text('CLOSE'),
-      );
-
-      expect(find.text('CLOSE'), findsOneWidget);
-    });
-
     testWidgets('missing detail renders the unavailable state', (tester) async {
-      await _pumpPane(tester, null);
+      await _pumpScreen(tester, null);
 
       expect(find.byType(ListingDetailBody), findsNothing);
-      expect(find.byType(EmptyState), findsOneWidget);
+      // _NotAvailable shows the not available title and body
+      expect(find.text('This property is no longer available'), findsOneWidget);
+      expect(
+          find.text(
+              'It may have been sold, withdrawn by the seller, or the link may be wrong.'),
+          findsOneWidget);
     });
   });
 }

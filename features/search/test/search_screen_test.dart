@@ -38,7 +38,7 @@ class _FakeListingRepository implements ListingRepository {
 void main() {
   Future<void> pumpScreen(
     WidgetTester tester, {
-    Size size = const Size(400, 800),
+    Size size = const Size(360, 800),
     Widget screen = const SearchScreen(),
   }) async {
     tester.view.physicalSize = size;
@@ -69,122 +69,30 @@ void main() {
     await tester.pumpAndSettle();
   }
 
-  /// Vertical cards rendered by the results grid (not the carousel above).
-  Finder gridCards() => find.descendant(
-        of: find.byType(GridView),
-        matching: find.byType(ListingCard),
-      );
-
-  group('SearchScreen layout toggle', () {
-    testWidgets('starts in the grid with vertical cards', (tester) async {
+  group('SearchScreen grid layout', () {
+    testWidgets('renders listing cards in a grid', (tester) async {
       await pumpScreen(tester);
 
-      expect(gridCards(), findsWidgets);
-      expect(find.byTooltip('List view'), findsOneWidget);
+      expect(find.byType(ListingCard), findsWidgets);
     });
 
-    testWidgets('toggling shows horizontal rows and back', (tester) async {
+    testWidgets('shows listing content in cards', (tester) async {
       await pumpScreen(tester);
-
-      await tester.tap(find.byTooltip('List view'));
-      await tester.pumpAndSettle();
-
-      // Grid cards gone; rows render in the list (and the featured header).
-      expect(gridCards(), findsNothing);
-      expect(find.byType(HorizontalListingCard), findsWidgets);
-      expect(find.byTooltip('Grid view'), findsOneWidget);
-
-      await tester.tap(find.byTooltip('Grid view'));
-      await tester.pumpAndSettle();
-
-      expect(gridCards(), findsWidgets);
-    });
-
-    testWidgets('list rows keep the listing content', (tester) async {
-      await pumpScreen(tester);
-
-      await tester.tap(find.byTooltip('List view'));
-      await tester.pumpAndSettle();
 
       expect(find.text('House a'), findsWidgets);
       expect(find.text('House b'), findsWidgets);
     });
   });
 
-  group('SearchScreen featured carousel', () {
-    testWidgets('shows newest listings above unfiltered results',
+  group('SearchScreen filter bar', () {
+    testWidgets('shows sort, filter and save search buttons when active',
         (tester) async {
       await pumpScreen(tester);
 
-      expect(find.text('Latest listings'), findsOneWidget);
-      expect(find.byType(PageView), findsOneWidget);
-    });
-  });
-
-  group('SearchScreen wide side pane', () {
-    Widget harness() => SearchScreen(
-          detailPaneBuilder: (listingId, onClose) => Column(
-            children: <Widget>[
-              Text('pane:$listingId'),
-              TextButton(onPressed: onClose, child: const Text('SHUT')),
-            ],
-          ),
-        );
-
-    testWidgets('a tap selects into the pane instead of navigating',
-        (tester) async {
-      await pumpScreen(
-        tester,
-        size: const Size(1200, 800),
-        screen: harness(),
-      );
-
-      // The grid card, not the carousel row: both read House a, so tap the
-      // one inside the grid.
-      final gridCard = find.descendant(
-        of: find.byType(GridView),
-        matching: find.text('House a'),
-      );
-      await tester.tap(gridCard);
-      await tester.pumpAndSettle();
-
-      expect(find.text('pane:a'), findsOneWidget);
-    });
-
-    testWidgets('closing the pane returns to the single feed',
-        (tester) async {
-      await pumpScreen(
-        tester,
-        size: const Size(1200, 800),
-        screen: harness(),
-      );
-
-      await tester.tap(
-        find.descendant(
-          of: find.byType(GridView),
-          matching: find.text('House a'),
-        ),
-      );
-      await tester.pumpAndSettle();
-      expect(find.text('pane:a'), findsOneWidget);
-
-      await tester.tap(find.text('SHUT'));
-      await tester.pumpAndSettle();
-
-      expect(find.text('pane:a'), findsNothing);
-      expect(find.text('House a'), findsWidgets);
-    });
-
-    testWidgets('wide feed caps content width instead of stretching',
-        (tester) async {
-      await pumpScreen(
-        tester,
-        size: const Size(1200, 800),
-        screen: harness(),
-      );
-
-      final gridWidth = tester.getSize(find.byType(GridView)).width;
-      expect(gridWidth, lessThanOrEqualTo(960));
+      expect(find.byTooltip('Sort'), findsOneWidget);
+      expect(find.byTooltip('Filters'), findsOneWidget);
+      // Save search button is hidden when no filter is active
+      expect(find.byTooltip('Save search'), findsNothing);
     });
   });
 }

@@ -50,8 +50,8 @@ class LegalDisclaimerCard extends StatelessWidget {
             const SizedBox(width: AppSpacing.sm),
             Expanded(
               child: Text(
-                'Property deed transfers must be executed at government '
-                'Malpot.',
+                'Property deed transfers must be executed at '
+                'government Malpot.',
                 style: theme.textTheme.bodySmall,
               ),
             ),
@@ -110,10 +110,9 @@ class LegalDisclaimerCard extends StatelessWidget {
             if (showNepali) ...<Widget>[
               const SizedBox(height: AppSpacing.sm),
               Text(
-                'सरकारी मालपोत कार्यालयबाट मात्र '
-                'जग्गा/घरको कानुनी हक हस्तान्तरण '
-                'हुन्छ। कारोबार गर्नु अघि सक्कल '
-                'लालपुर्जा र नागरिकता जाँच गर्नुहोस्।',
+                'सरकारी मालपोत कार्यालयबाट मात्र जग्गा/घरको कानुनी हक हस्तान्तरण '
+                'हुन्छ। '
+                'कारोबार गर्नु अघि सक्कल लालपुर्जा र नागरिकता जाँच गर्नुहोस्।',
                 style: theme.textTheme.bodySmall?.copyWith(
                   color: theme.colorScheme.onSurfaceVariant,
                   height: 1.4,
