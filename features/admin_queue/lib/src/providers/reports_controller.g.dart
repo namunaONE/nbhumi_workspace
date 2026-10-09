@@ -10,22 +10,24 @@ part of 'reports_controller.dart';
 // ignore_for_file: type=lint, type=warning
 /// Resolving a report, as a mutation rather than a read.
 ///
-/// Every design decision here is inherited from [AdminReviewController], and the
-/// reasons transfer unchanged — this file exists to say so rather than to
-/// re-explain them:
+/// Every design decision here is inherited from
+/// `AdminReviewController`, and the reasons transfer unchanged — this file
+/// exists to say so rather than to re-explain them:
 ///
-/// * **Plain notifier, not `AsyncNotifier`.** Riverpod retries a provider whose
-///   `build` returns a `Future`: ten attempts with backoff, so a resolution that
-///   *succeeds* server-side but fails on the response would be retried, and the
-///   retry would then fail with `22023: already resolved`. A moderation action
-///   would be reported to the admin as a validation error, and an admin reading
-///   that would reasonably conclude their click did nothing and click again.
+/// * **Plain notifier, not `AsyncNotifier`.** Riverpod retries a provider
+///   whose `build` returns a `Future`: ten attempts with backoff, so a
+///   resolution that *succeeds* server-side but fails on the response would
+///   be retried, and the retry would then fail with `22023: already
+///   resolved`. A moderation action would be reported to the admin as a
+///   validation error, and an admin reading that would reasonably conclude
+///   their click did nothing and click again.
 ///   One attempt, explicit retry.
 /// * **`keepAlive`.** A plain notifier disposes when nothing watches it, which
-///   for a button-triggered action is the common case — and the disposal lands
-///   *mid-call*, after the repository `await` returns, so the next `ref` throws
-///   `UnmountedRefException`. The container outlives every screen, so a
-///   resolution started in one tab finishes even if the admin switches tabs.
+///   for a button-triggered action is the common case — and the disposal
+///   lands *mid-call*, after the repository `await` returns, so the next
+///   `ref` throws `UnmountedRefException`. The container outlives every
+///   screen, so a resolution started in one tab finishes even if the admin
+///   switches tabs.
 /// * **In-flight set as an instance field, not provider state.** Putting it in
 ///   `state` would auto-dispose the controller the moment nothing watched it,
 ///   silently dropping the double-submit guard.
@@ -38,22 +40,24 @@ final reportsControllerProvider = ReportsControllerProvider._();
 
 /// Resolving a report, as a mutation rather than a read.
 ///
-/// Every design decision here is inherited from [AdminReviewController], and the
-/// reasons transfer unchanged — this file exists to say so rather than to
-/// re-explain them:
+/// Every design decision here is inherited from
+/// `AdminReviewController`, and the reasons transfer unchanged — this file
+/// exists to say so rather than to re-explain them:
 ///
-/// * **Plain notifier, not `AsyncNotifier`.** Riverpod retries a provider whose
-///   `build` returns a `Future`: ten attempts with backoff, so a resolution that
-///   *succeeds* server-side but fails on the response would be retried, and the
-///   retry would then fail with `22023: already resolved`. A moderation action
-///   would be reported to the admin as a validation error, and an admin reading
-///   that would reasonably conclude their click did nothing and click again.
+/// * **Plain notifier, not `AsyncNotifier`.** Riverpod retries a provider
+///   whose `build` returns a `Future`: ten attempts with backoff, so a
+///   resolution that *succeeds* server-side but fails on the response would
+///   be retried, and the retry would then fail with `22023: already
+///   resolved`. A moderation action would be reported to the admin as a
+///   validation error, and an admin reading that would reasonably conclude
+///   their click did nothing and click again.
 ///   One attempt, explicit retry.
 /// * **`keepAlive`.** A plain notifier disposes when nothing watches it, which
-///   for a button-triggered action is the common case — and the disposal lands
-///   *mid-call*, after the repository `await` returns, so the next `ref` throws
-///   `UnmountedRefException`. The container outlives every screen, so a
-///   resolution started in one tab finishes even if the admin switches tabs.
+///   for a button-triggered action is the common case — and the disposal
+///   lands *mid-call*, after the repository `await` returns, so the next
+///   `ref` throws `UnmountedRefException`. The container outlives every
+///   screen, so a resolution started in one tab finishes even if the admin
+///   switches tabs.
 /// * **In-flight set as an instance field, not provider state.** Putting it in
 ///   `state` would auto-dispose the controller the moment nothing watched it,
 ///   silently dropping the double-submit guard.
@@ -64,22 +68,24 @@ final class ReportsControllerProvider
     extends $NotifierProvider<ReportsController, void> {
   /// Resolving a report, as a mutation rather than a read.
   ///
-  /// Every design decision here is inherited from [AdminReviewController], and the
-  /// reasons transfer unchanged — this file exists to say so rather than to
-  /// re-explain them:
+  /// Every design decision here is inherited from
+  /// `AdminReviewController`, and the reasons transfer unchanged — this file
+  /// exists to say so rather than to re-explain them:
   ///
-  /// * **Plain notifier, not `AsyncNotifier`.** Riverpod retries a provider whose
-  ///   `build` returns a `Future`: ten attempts with backoff, so a resolution that
-  ///   *succeeds* server-side but fails on the response would be retried, and the
-  ///   retry would then fail with `22023: already resolved`. A moderation action
-  ///   would be reported to the admin as a validation error, and an admin reading
-  ///   that would reasonably conclude their click did nothing and click again.
+  /// * **Plain notifier, not `AsyncNotifier`.** Riverpod retries a provider
+  ///   whose `build` returns a `Future`: ten attempts with backoff, so a
+  ///   resolution that *succeeds* server-side but fails on the response would
+  ///   be retried, and the retry would then fail with `22023: already
+  ///   resolved`. A moderation action would be reported to the admin as a
+  ///   validation error, and an admin reading that would reasonably conclude
+  ///   their click did nothing and click again.
   ///   One attempt, explicit retry.
   /// * **`keepAlive`.** A plain notifier disposes when nothing watches it, which
-  ///   for a button-triggered action is the common case — and the disposal lands
-  ///   *mid-call*, after the repository `await` returns, so the next `ref` throws
-  ///   `UnmountedRefException`. The container outlives every screen, so a
-  ///   resolution started in one tab finishes even if the admin switches tabs.
+  ///   for a button-triggered action is the common case — and the disposal
+  ///   lands *mid-call*, after the repository `await` returns, so the next
+  ///   `ref` throws `UnmountedRefException`. The container outlives every
+  ///   screen, so a resolution started in one tab finishes even if the admin
+  ///   switches tabs.
   /// * **In-flight set as an instance field, not provider state.** Putting it in
   ///   `state` would auto-dispose the controller the moment nothing watched it,
   ///   silently dropping the double-submit guard.
@@ -117,22 +123,24 @@ String _$reportsControllerHash() => r'58777da40b52cb66b3dc2962e43d067b4a879eb2';
 
 /// Resolving a report, as a mutation rather than a read.
 ///
-/// Every design decision here is inherited from [AdminReviewController], and the
-/// reasons transfer unchanged — this file exists to say so rather than to
-/// re-explain them:
+/// Every design decision here is inherited from
+/// `AdminReviewController`, and the reasons transfer unchanged — this file
+/// exists to say so rather than to re-explain them:
 ///
-/// * **Plain notifier, not `AsyncNotifier`.** Riverpod retries a provider whose
-///   `build` returns a `Future`: ten attempts with backoff, so a resolution that
-///   *succeeds* server-side but fails on the response would be retried, and the
-///   retry would then fail with `22023: already resolved`. A moderation action
-///   would be reported to the admin as a validation error, and an admin reading
-///   that would reasonably conclude their click did nothing and click again.
+/// * **Plain notifier, not `AsyncNotifier`.** Riverpod retries a provider
+///   whose `build` returns a `Future`: ten attempts with backoff, so a
+///   resolution that *succeeds* server-side but fails on the response would
+///   be retried, and the retry would then fail with `22023: already
+///   resolved`. A moderation action would be reported to the admin as a
+///   validation error, and an admin reading that would reasonably conclude
+///   their click did nothing and click again.
 ///   One attempt, explicit retry.
 /// * **`keepAlive`.** A plain notifier disposes when nothing watches it, which
-///   for a button-triggered action is the common case — and the disposal lands
-///   *mid-call*, after the repository `await` returns, so the next `ref` throws
-///   `UnmountedRefException`. The container outlives every screen, so a
-///   resolution started in one tab finishes even if the admin switches tabs.
+///   for a button-triggered action is the common case — and the disposal
+///   lands *mid-call*, after the repository `await` returns, so the next
+///   `ref` throws `UnmountedRefException`. The container outlives every
+///   screen, so a resolution started in one tab finishes even if the admin
+///   switches tabs.
 /// * **In-flight set as an instance field, not provider state.** Putting it in
 ///   `state` would auto-dispose the controller the moment nothing watched it,
 ///   silently dropping the double-submit guard.

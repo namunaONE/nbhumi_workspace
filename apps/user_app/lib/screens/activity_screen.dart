@@ -81,12 +81,9 @@ class _ActivityBody extends ConsumerWidget {
     };
 
     return switch (page) {
-      AsyncLoading() => LoadingState(message: strings.profileLoading),
-      AsyncError(:final error) => ErrorState(
-          message: error is AppException
-              ? error.localizedForContext(context)
-              : strings.activityLoadFailed,
-          retryLabel: strings.commonRetry,
+      AsyncLoading() => const Center(child: CircularProgressIndicator()),
+      AsyncError(:final error) => _ActivityError(
+          error: error,
           onRetry: () => ref.invalidate(activityPageProvider),
         ),
       AsyncData(:final value) => ListView(
@@ -171,6 +168,45 @@ class _ActivityBody extends ConsumerWidget {
           ],
         ),
     };
+  }
+}
+
+/// Activity load failure with retry for recoverable errors.
+class _ActivityError extends StatelessWidget {
+  /// Creates the error state.
+  const _ActivityError({required this.error, required this.onRetry});
+
+  /// The load failure.
+  final Object error;
+
+  /// Called to retry loading the page.
+  final VoidCallback onRetry;
+
+  @override
+  Widget build(BuildContext context) {
+    final failure = error is AppException ? error as AppException : null;
+    return Center(
+      child: Padding(
+        padding: const EdgeInsets.all(32),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: <Widget>[
+            Text(
+              failure?.localizedForContext(context) ??
+                  AppLocalizations.of(context).activityLoadFailed,
+              textAlign: TextAlign.center,
+            ),
+            const SizedBox(height: 8),
+            if (failure == null || failure.isRetryable)
+              TextButton.icon(
+                icon: const Icon(Icons.refresh),
+                label: Text(AppLocalizations.of(context).commonRetry),
+                onPressed: onRetry,
+              ),
+          ],
+        ),
+      ),
+    );
   }
 }
 

@@ -93,13 +93,13 @@ class _MineList extends ConsumerWidget {
           ],
         ),
       AsyncData(:final value) => ListView.builder(
-          padding: const EdgeInsets.all(12),
+          padding: const EdgeInsets.all(AppSpacing.md),
           itemCount: value.length,
           itemBuilder: (context, index) {
             final listing = value[index];
             return Padding(
-              padding: const EdgeInsets.only(bottom: 12),
-              child: ListingCard(
+              padding: const EdgeInsets.only(bottom: AppSpacing.sm),
+              child: HorizontalListingCard(
                 listing: listing,
                 onTap: () => context.push('/listing/${listing.id}'),
               ),

@@ -236,6 +236,7 @@ void main() {
           onMunicipalityChanged: (_) {},
           onWardChanged: (_) {},
           onRoadAccessChanged: (_) {},
+          onKittaChanged: (_) {},
         );
 
     testWidgets('lists the municipalities of the chosen district',

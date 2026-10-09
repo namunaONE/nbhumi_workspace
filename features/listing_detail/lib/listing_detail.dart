@@ -3,6 +3,7 @@ library;
 
 export 'src/presentation/contact_seller_button.dart';
 export 'src/presentation/listing_detail_body.dart';
+export 'src/presentation/listing_detail_pane.dart';
 export 'src/presentation/listing_detail_screen.dart';
 export 'src/presentation/listing_verification_slot.dart';
 export 'src/presentation/report_listing_button.dart';

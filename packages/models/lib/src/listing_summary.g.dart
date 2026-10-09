@@ -95,4 +95,5 @@ const _$ListingStatusEnumMap = {
   ListingStatus.pendingReview: 'pending_review',
   ListingStatus.live: 'live',
   ListingStatus.rejected: 'rejected',
+  ListingStatus.unpublished: 'unpublished',
 };

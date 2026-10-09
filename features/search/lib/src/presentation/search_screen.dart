@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:core/core.dart';
 import 'package:data/data.dart';
 import 'package:flutter/material.dart';
@@ -10,6 +12,7 @@ import 'package:search/l10n/output/search_localizations.dart'
 import '../providers/browse_providers.dart';
 import '../utils/search_labels.dart';
 import '../widgets/browse_feed.dart';
+import '../widgets/featured_carousel.dart';
 import '../widgets/listing_grid.dart';
 import 'filter_sheet.dart';
 
@@ -21,7 +24,12 @@ import 'filter_sheet.dart';
 /// Search share one feed.
 class SearchScreen extends ConsumerStatefulWidget {
   /// Creates the search screen.
-  const SearchScreen({this.title, this.actions, super.key});
+  const SearchScreen({
+    this.title,
+    this.actions,
+    this.detailPaneBuilder,
+    super.key,
+  });
 
   /// Overrides the app-bar title. Null keeps the feature string; the app
   /// passes its tab title when hosting this screen as Explore.
@@ -31,9 +39,24 @@ class SearchScreen extends ConsumerStatefulWidget {
   /// chrome the feature must not own (e.g. the notification bell) here.
   final List<Widget>? actions;
 
+  /// Builds the wide-layout detail side pane for a listing id.
+  ///
+  /// A seam, not a feature import: `search` may not import `listing_detail`
+  /// (Rule 10), so the app wires the real pane through the router while
+  /// tests pump the screen bare (a tap pushes the full route, as on phones).
+  /// Null disables the side pane on all widths.
+  final Widget Function(String listingId, VoidCallback onClose)?
+      detailPaneBuilder;
+
   @override
   ConsumerState<SearchScreen> createState() => _SearchScreenState();
 }
+
+/// Window width at or above which the side pane may appear.
+///
+/// Mirrors the shell two-pane threshold, restated here because features
+/// cannot import the app (Rule 10).
+const double _twoPaneMinWidth = 1000;
 
 class _SearchScreenState extends ConsumerState<SearchScreen> {
   /// Grid or list results. Local UI state: unlike the filter, the layout
@@ -41,11 +64,49 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
   /// session that Home reads.
   ListingLayout _layout = ListingLayout.grid;
 
+  /// Listing shown in the side pane on wide windows. Null keeps the
+  /// single-pane feed; the pane's close button clears it.
+  String? _selectedId;
+
+  /// Whether a tap selects into the side pane rather than pushing a route.
+  bool _selectsInPlace(BuildContext context) =>
+      widget.detailPaneBuilder != null &&
+      MediaQuery.sizeOf(context).width >= _twoPaneMinWidth;
+
+  /// Opens a listing in place on wide windows, or pushes the route.
+  void _openListing(String id) {
+    if (_selectsInPlace(context)) {
+      setState(() => _selectedId = id);
+    } else {
+      unawaited(context.push('/listing/$id'));
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final filter = ref.watch(browseFilterProvider);
     final strings = search_strings.AppLocalizations.of(context);
     final showingList = _layout == ListingLayout.list;
+    final selectedId = _selectedId;
+
+    final feed = BrowseFeed(
+      // `context.push`, not `Navigator.pushNamed`: the detail route sits on
+      // the root navigator, which a plain Navigator lookup from this branch
+      // cannot reach.
+      onListingTap: _openListing,
+      header: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: <Widget>[
+          _QueryField(filter: filter),
+          // Featured row only for the unfiltered browse-all surface: above
+          // narrowed results it would push the matches down the screen.
+          if (filter.isEmpty) FeaturedCarousel(onListingTap: _openListing),
+        ],
+      ),
+      layout: _layout,
+      emptyTitle: strings.noMatchTitle,
+      emptyBody: strings.noMatchBody,
+    );
 
     return Scaffold(
       appBar: AppBar(
@@ -68,16 +129,20 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
           const SizedBox(width: 4),
         ],
       ),
-      body: BrowseFeed(
-        // `context.push`, not `Navigator.pushNamed`: the detail route sits on
-        // the root navigator, which a plain Navigator lookup from this branch
-        // cannot reach.
-        onListingTap: (id) => context.push('/listing/$id'),
-        header: _QueryField(filter: filter),
-        layout: _layout,
-        emptyTitle: strings.noMatchTitle,
-        emptyBody: strings.noMatchBody,
-      ),
+      body: selectedId != null && _selectsInPlace(context)
+          ? Row(
+              children: <Widget>[
+                Expanded(child: feed),
+                const VerticalDivider(width: 1),
+                Expanded(
+                  child: widget.detailPaneBuilder!(
+                    selectedId,
+                    () => setState(() => _selectedId = null),
+                  ),
+                ),
+              ],
+            )
+          : feed,
     );
   }
 }

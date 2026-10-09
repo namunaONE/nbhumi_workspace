@@ -27,6 +27,11 @@
   },
   "viewGridTooltip": "Grid view",
 
+  "@featuredTitle": {
+    "description": "Featured newest-listings row heading on Explore."
+  },
+  "featuredTitle": "Latest listings",
+
   "@searchHint": {
     "description": "Title/location query field hint."
   },

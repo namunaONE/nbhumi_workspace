@@ -649,6 +649,30 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Business'**
   String get chipBusiness;
+
+  /// Listing title field label and required-field name.
+  ///
+  /// In en, this message translates to:
+  /// **'Title'**
+  String get fieldTitle;
+
+  /// Listing title placeholder.
+  ///
+  /// In en, this message translates to:
+  /// **'e.g. Sunny 3BHK house in Sitapaila'**
+  String get fieldTitleHint;
+
+  /// Listing description field label.
+  ///
+  /// In en, this message translates to:
+  /// **'Description (optional)'**
+  String get fieldDescription;
+
+  /// Listing description placeholder.
+  ///
+  /// In en, this message translates to:
+  /// **'Land, road, water and surroundings'**
+  String get fieldDescriptionHint;
 }
 
 class _AppLocalizationsDelegate

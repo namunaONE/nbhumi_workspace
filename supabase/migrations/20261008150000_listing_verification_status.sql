@@ -3,9 +3,10 @@
 -- WHAT THIS DOES
 -- ==============
 -- `v1_listing_verification_status(p_listing_id)` answers whether a listing
--- has a *verified* Tier-3 document (lalpurja / tiro_rasid row in
--- kyc_documents with this listing_id). The detail screen renders the
--- "Verified Listing" badge from it. No new table, no RLS change:
+-- has a *verified* Tier-3 document (a lalpurja row in kyc_documents with
+-- this listing_id — per-listing checks need lalpurja, enforced by
+-- `v1_submit_kyc`). The detail screen renders the "Verified Listing"
+-- badge from it. No new table, no RLS change:
 -- kyc_documents stays owner-or-admin readable, and this SECURITY DEFINER
 -- function is the only public peephole.
 --

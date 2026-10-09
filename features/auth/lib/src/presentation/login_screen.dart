@@ -257,27 +257,27 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                   ),
                 ],
                 const SizedBox(height: 16),
-                FilledButton(
-                  onPressed: _busy || _cooldownSeconds > 0 ? null : _submit,
-                  child: Text(
-                    _busy
-                        ? strings.sending
-                        : _cooldownSeconds > 0
-                            ? strings.resendIn(_cooldownSeconds)
-                            : switch ((_pane, _mode)) {
-                                (_Pane.link, _) => _sentTo == null
-                                    ? strings.sendLink
-                                    : strings.resendLink,
-                                (_Pane.password, _PasswordMode.signIn) =>
-                                  strings.signInAction,
-                                (_Pane.password, _PasswordMode.signUp) =>
-                                  strings.signUpAction,
-                                (_Pane.password, _PasswordMode.reset) =>
-                                  _sentTo == null
-                                      ? strings.sendReset
-                                      : strings.resendReset,
-                              },
-                  ),
+                PrimaryCTA(
+                  label: _busy
+                      ? strings.sending
+                      : _cooldownSeconds > 0
+                          ? strings.resendIn(_cooldownSeconds)
+                          : switch ((_pane, _mode)) {
+                              (_Pane.link, _) => _sentTo == null
+                                  ? strings.sendLink
+                                  : strings.resendLink,
+                              (_Pane.password, _PasswordMode.signIn) =>
+                                strings.signInAction,
+                              (_Pane.password, _PasswordMode.signUp) =>
+                                strings.signUpAction,
+                              (_Pane.password, _PasswordMode.reset) =>
+                                _sentTo == null
+                                    ? strings.sendReset
+                                    : strings.resendReset,
+                            },
+                  isLoading: _busy,
+                  onPressed:
+                      _busy || _cooldownSeconds > 0 ? null : () => _submit(),
                 ),
                 if (_pane == _Pane.password &&
                     _mode != _PasswordMode.reset)

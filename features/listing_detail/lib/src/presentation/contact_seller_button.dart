@@ -108,29 +108,19 @@ class _ContactSellerButtonState extends ConsumerState<ContactSellerButton> {
               ),
               const SizedBox(height: 12),
             ],
-            FilledButton.icon(
-              onPressed: _busy ? null : _reveal,
-              icon: _busy
-                  ? const SizedBox(
-                      height: 18,
-                      width: 18,
-                      child: CircularProgressIndicator(strokeWidth: 2),
-                    )
-                  : const Icon(Icons.phone_outlined),
-              label: Text(
-                switch ((_busy, contact, _isSignedIn)) {
-                  (true, _, _) => strings.contactLoading,
-                  (false, _, false) => strings.contactSignIn,
-                  // Re-offered rather than hidden: the reveal may have expired
-                  // server-side, and a user who has hit the daily cap needs
-                  // to see that it is still there rather than wonder where
-                  // it went.
-                  (false, _, true) => strings.contactSeller,
-                },
-              ),
-              style: FilledButton.styleFrom(
-                minimumSize: const Size.fromHeight(48),
-              ),
+            PrimaryCTA(
+              label: switch ((_busy, contact, _isSignedIn)) {
+                (true, _, _) => strings.contactLoading,
+                (false, _, false) => strings.contactSignIn,
+                // Re-offered rather than hidden: the reveal may have expired
+                // server-side, and a user who has hit the daily cap needs
+                // to see that it is still there rather than wonder where
+                // it went.
+                (false, _, true) => strings.contactSeller,
+              },
+              icon: Icons.phone_outlined,
+              isLoading: _busy,
+              onPressed: _reveal,
             ),
           ],
         ),

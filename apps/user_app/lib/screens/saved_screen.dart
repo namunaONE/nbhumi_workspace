@@ -1,114 +1,132 @@
+import 'dart:async';
+
 import 'package:core/core.dart';
 import 'package:data/data.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:listing_detail/listing_detail.dart';
 import 'package:models/models.dart';
 import 'package:search/search.dart' show browseFilterProvider;
 import 'package:user_app/l10n/output/app_localizations.dart';
+import 'package:user_app/shell/app_shell.dart';
 
 /// Saved listings.
 ///
 /// The buyer's bookmarks (HYA-268 C1), newest first. Guests see a sign-in
 /// prompt rather than an empty shelf: an empty list would read as "you saved
 /// nothing" to someone who was never given the chance to save.
-class SavedScreen extends ConsumerWidget {
+class SavedScreen extends ConsumerStatefulWidget {
   /// Creates the saved listings screen.
   const SavedScreen({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<SavedScreen> createState() => _SavedScreenState();
+}
+
+class _SavedScreenState extends ConsumerState<SavedScreen> {
+  /// Listing shown in the side pane on wide windows. Null keeps the
+  /// single-pane shelf; the pane's close button clears it.
+  String? _selectedId;
+
+  /// Opens a listing in place on wide windows, or pushes the route.
+  void _openListing(String id) {
+    if (MediaQuery.sizeOf(context).width >= AppBreakpoints.twoPane) {
+      setState(() => _selectedId = id);
+    } else {
+      unawaited(context.push('/listing/$id'));
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
     final session = ref.watch(sessionProvider);
     final strings = AppLocalizations.of(context);
     if (session == null) {
       return Scaffold(
         appBar: AppBar(title: Text(strings.savedTitle)),
-        body: Center(
-          child: Padding(
-            padding: const EdgeInsets.all(32),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: <Widget>[
-                const Icon(Icons.favorite_outline, size: 48),
-                const SizedBox(height: 16),
-                Text(strings.savedGuestPrompt),
-                const SizedBox(height: 24),
-                FilledButton(
-                  onPressed: () => context.push('/login'),
-                  child: Text(strings.commonSignIn),
-                ),
-              ],
-            ),
-          ),
+        body: EmptyState(
+          title: strings.savedGuestPrompt,
+          body: strings.savedEmptyBody,
+          icon: Icons.favorite_outline,
+          actionLabel: strings.commonSignIn,
+          onAction: () => context.push('/login'),
         ),
       );
     }
 
+    final selectedId = _selectedId;
+    final shelf = RefreshIndicator(
+      onRefresh: () async {
+        ref
+          ..invalidate(savedListingsProvider)
+          ..invalidate(savedSearchesProvider);
+      },
+      child: ListView(
+        padding: const EdgeInsets.all(AppSpacing.md),
+        children: <Widget>[
+          _ShelfSection(onListingTap: _openListing),
+          const SizedBox(height: AppSpacing.sm),
+          const _SearchesSection(),
+        ],
+      ),
+    );
+
     return Scaffold(
       appBar: AppBar(title: Text(strings.savedTitle)),
-      body: RefreshIndicator(
-        onRefresh: () async {
-          ref
-            ..invalidate(savedListingsProvider)
-            ..invalidate(savedSearchesProvider);
-        },
-        child: ListView(
-          padding: const EdgeInsets.all(12),
-          children: const <Widget>[
-            _ShelfSection(),
-            SizedBox(height: 8),
-            _SearchesSection(),
-          ],
-        ),
-      ),
+      body: selectedId != null &&
+              MediaQuery.sizeOf(context).width >= AppBreakpoints.twoPane
+          ? Row(
+              children: <Widget>[
+                Expanded(child: shelf),
+                const VerticalDivider(width: 1),
+                Expanded(
+                  child: ListingDetailPane(
+                    listingId: selectedId,
+                    leading: CloseButton(
+                      onPressed: () => setState(() => _selectedId = null),
+                    ),
+                  ),
+                ),
+              ],
+            )
+          : shelf,
     );
   }
 }
 
 /// Bookmarked listings, newest first.
 class _ShelfSection extends ConsumerWidget {
-  const _ShelfSection();
+  /// Creates the shelf section.
+  const _ShelfSection({required this.onListingTap});
+
+  /// Called with the id of a tapped listing.
+  final void Function(String id) onListingTap;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final saved = ref.watch(savedListingsProvider);
 
     return switch (saved) {
-      AsyncLoading() => const Center(
-          child: Padding(
-            padding: EdgeInsets.all(24),
-            child: CircularProgressIndicator(),
-          ),
-        ),
-      AsyncError(:final error) => _SavedError(
-          error: error,
+      AsyncLoading() => const LoadingState(),
+      AsyncError(:final error) => ErrorState(
+          message: error is AppException
+              ? error.localizedForContext(context)
+              : 'Could not load your saved list.',
+          retryLabel: AppLocalizations.of(context).commonRetry,
           onRetry: () => ref.invalidate(savedListingsProvider),
         ),
-      AsyncData(:final value) when value.isEmpty => Card(
-          child: Padding(
-            padding: const EdgeInsets.all(16),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: <Widget>[
-                const Icon(Icons.favorite_outline, size: 40),
-                const SizedBox(height: 12),
-                Text(
-                  AppLocalizations.of(context).savedEmptyTitle,
-                  style: const TextStyle(fontSize: 18),
-                  textAlign: TextAlign.center,
-                ),
-                const SizedBox(height: 8),
-                Text(
-                  AppLocalizations.of(context).savedEmptyBody,
-                  textAlign: TextAlign.center,
-                ),
-              ],
-            ),
-          ),
+      AsyncData(:final value) when value.isEmpty => EmptyState(
+          title: AppLocalizations.of(context).savedEmptyTitle,
+          body: AppLocalizations.of(context).savedEmptyBody,
+          icon: Icons.favorite_outline,
+          actionLabel: AppLocalizations.of(context).onboardingBrowse,
+          onAction: () => context.go('/'),
         ),
       AsyncData(:final value) => Column(
           children: <Widget>[
-            for (final listing in value) _SavedCard(listing: listing),
+            for (final listing in value)
+              _SavedCard(listing: listing, onListingTap: onListingTap),
           ],
         ),
     };
@@ -117,8 +135,8 @@ class _ShelfSection extends ConsumerWidget {
 
 /// Stored searches with one-tap re-run and delete.
 ///
-/// Tapping a row installs its filter into the browse state and jumps to the
-/// Search tab, so the buyer sees today's matches, not the day's they saved.
+/// Tapping a row installs its filter into the browse state and jumps to
+/// Explore, so the buyer sees today's matches, not the day's they saved.
 class _SearchesSection extends ConsumerWidget {
   const _SearchesSection();
 
@@ -137,8 +155,18 @@ class _SearchesSection extends ConsumerWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
               Padding(
-                padding: const EdgeInsets.fromLTRB(16, 12, 16, 0),
-                child: Text(AppLocalizations.of(context).savedSearchesTitle),
+                padding: const EdgeInsets.fromLTRB(
+                  AppSpacing.lg,
+                  AppSpacing.md,
+                  AppSpacing.lg,
+                  0,
+                ),
+                child: Text(
+                  AppLocalizations.of(context).savedSearchesTitle,
+                  style: Theme.of(context).textTheme.titleSmall?.copyWith(
+                        fontWeight: FontWeight.w600,
+                      ),
+                ),
               ),
               for (final search in value)
                 ListTile(
@@ -185,51 +213,20 @@ class _SearchesSection extends ConsumerWidget {
 /// faster than full grid cards stacked end to end.
 class _SavedCard extends ConsumerWidget {
   /// Creates a saved row.
-  const _SavedCard({required this.listing});
+  const _SavedCard({required this.listing, required this.onListingTap});
 
   /// The listing to render.
   final ListingSummary listing;
+
+  /// Called with the tapped listing id.
+  final void Function(String id) onListingTap;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) => Padding(
         padding: const EdgeInsets.only(bottom: AppSpacing.sm),
         child: HorizontalListingCard(
           listing: listing,
-          onTap: () => context.push('/listing/${listing.id}'),
+          onTap: () => onListingTap(listing.id),
         ),
       );
-}
-
-/// Failure loading the shelf, with a retry for recoverable errors.
-class _SavedError extends StatelessWidget {
-  const _SavedError({required this.error, required this.onRetry});
-
-  final Object error;
-  final VoidCallback onRetry;
-
-  @override
-  Widget build(BuildContext context) {
-    final failure = error is AppException ? error as AppException : null;
-    return Center(
-      child: Padding(
-        padding: const EdgeInsets.all(32),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: <Widget>[
-            Text(
-              failure?.localizedForContext(context) ??
-                  'Could not load your saved list.',
-            ),
-            const SizedBox(height: 8),
-            if (failure == null || failure.isRetryable)
-              TextButton.icon(
-                icon: const Icon(Icons.refresh),
-                label: Text(AppLocalizations.of(context).commonRetry),
-                onPressed: onRetry,
-              ),
-          ],
-        ),
-      ),
-    );
-  }
 }

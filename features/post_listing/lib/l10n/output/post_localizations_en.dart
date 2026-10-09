@@ -323,4 +323,16 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get chipBusiness => 'Business';
+
+  @override
+  String get fieldTitle => 'Title';
+
+  @override
+  String get fieldTitleHint => 'e.g. Sunny 3BHK house in Sitapaila';
+
+  @override
+  String get fieldDescription => 'Description (optional)';
+
+  @override
+  String get fieldDescriptionHint => 'Land, road, water and surroundings';
 }

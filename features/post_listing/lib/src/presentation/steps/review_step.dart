@@ -117,22 +117,14 @@ class ReviewStep extends StatelessWidget {
           ),
         ],
         const SizedBox(height: 16),
-        FilledButton(
+        PrimaryCTA(
           // Disabled unless every step passes, not just this one: the
           // seller can reach review by stepping backwards.
+          label: strings.reviewSubmit,
+          isLoading: state.submitting,
           onPressed: state.canSubmit(strings) && !state.submitting
               ? onSubmit
               : null,
-          style: FilledButton.styleFrom(
-            minimumSize: const Size.fromHeight(48),
-          ),
-          child: state.submitting
-              ? const SizedBox(
-                  height: 20,
-                  width: 20,
-                  child: CircularProgressIndicator(strokeWidth: 2),
-                )
-              : Text(strings.reviewSubmit),
         ),
       ],
     );

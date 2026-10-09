@@ -38,9 +38,9 @@
 ///                       `v1_my_listing_reveals`. No buyer identity.
 library;
 
+export 'src/activity_page.dart';
 export 'src/admin_queue_entry.dart';
 export 'src/admin_user.dart';
-export 'src/activity_page.dart';
 export 'src/district.dart';
 export 'src/fraud_signal.dart';
 export 'src/kyc_document.dart';

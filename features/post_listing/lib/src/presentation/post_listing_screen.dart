@@ -100,6 +100,8 @@ class _StepBody extends StatelessWidget {
           state: state,
           onTypeSelected: notifier.setPropertyType,
           onPurposeSelected: notifier.setPurpose,
+          onTitleChanged: notifier.setTitle,
+          onDescriptionChanged: notifier.setDescription,
         ),
       WizardStep.location => LocationStep(
           state: state,
@@ -204,9 +206,9 @@ class _Navigation extends StatelessWidget {
           ],
           Expanded(
             flex: 2,
-            child: FilledButton(
+            child: PrimaryCTA(
+              label: isLast ? strings.navSubmit : strings.navNext,
               onPressed: isValid ? onNext : null,
-              child: Text(isLast ? strings.navSubmit : strings.navNext),
             ),
           ),
         ],

@@ -21,8 +21,8 @@ class TrustBadge extends StatelessWidget {
   /// When true, tapping opens a dialog explaining the verification boundary.
   final bool showInfoOnTap;
 
-  void _showInfo(BuildContext context) {
-    showDialog<void>(
+  Future<void> _showInfo(BuildContext context) async {
+    await showDialog<void>(
       context: context,
       builder: (context) {
         final theme = Theme.of(context);
@@ -35,8 +35,9 @@ class TrustBadge extends StatelessWidget {
           ),
           title: const Text('Verified by nBhumi'),
           content: const Text(
-            'This badge confirms that our admin team has verified the seller\'s '
-            'government ID (Nagarikta/Passport) and listing documents.\n\n'
+            'This badge confirms that our admin team has verified '
+            "the seller's government ID (Nagarikta/Passport) and "
+            'listing documents.\n\n'
             'Notice: nBhumi verifies submitted records. Legal title transfer '
             'and final document execution always take place at the government '
             'Land Revenue Office (Malpot Karyalaya).',

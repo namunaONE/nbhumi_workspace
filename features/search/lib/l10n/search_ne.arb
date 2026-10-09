@@ -27,6 +27,11 @@
   },
   "viewGridTooltip": "ग्रिड दृश्य",
 
+  "@featuredTitle": {
+    "description": "Featured newest-listings row heading on Explore."
+  },
+  "featuredTitle": "ताजा सूचीहरू",
+
   "@searchHint": {
     "description": "Title/location query field hint."
   },

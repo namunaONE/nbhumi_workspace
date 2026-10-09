@@ -48,7 +48,7 @@ final class AdminReportsProvider
   AdminReports create() => AdminReports();
 }
 
-String _$adminReportsHash() => r'6e872a7a9be121c46515eef7760233d49010b2a5';
+String _$adminReportsHash() => r'1c19d5549e04d3572793efa1bc49136187d10be0';
 
 /// The reports queue, paginated with a keyset cursor.
 ///

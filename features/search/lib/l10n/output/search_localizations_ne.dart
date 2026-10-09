@@ -25,6 +25,9 @@ class AppLocalizationsNe extends AppLocalizations {
   String get viewGridTooltip => 'ग्रिड दृश्य';
 
   @override
+  String get featuredTitle => 'ताजा सूचीहरू';
+
+  @override
   String get searchHint => 'शीर्षक वा स्थानबाट खोज्नुहोस्';
 
   @override
