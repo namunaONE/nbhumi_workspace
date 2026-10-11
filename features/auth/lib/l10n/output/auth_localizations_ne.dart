@@ -138,4 +138,28 @@ class AppLocalizationsNe extends AppLocalizations {
 
   @override
   String get savePassword => 'नयाँ पासवर्ड सेभ गर्नुहोस्';
+
+  @override
+  String get paneLink => 'म्याजिक लिङ्क';
+
+  @override
+  String get panePassword => 'पासवर्ड';
+
+  @override
+  String get linkTitle => 'लिङ्कबाट साइन इन गर्नुहोस्';
+
+  @override
+  String get linkSubtitle =>
+      'हामी तपाईंलाई लिङ्क पठाउँछौं — पासवर्ड बिर्न सक्नुहुन्न।';
+
+  @override
+  String get sendLink => 'लिङ्क पठाउनुहोस्';
+
+  @override
+  String get resendLink => 'लिङ्क पुनः पठाउनुहोस्';
+
+  @override
+  String sentLink(String email) {
+    return 'इनबक्स जाँच गर्नुहोस् — $email मा साइन-इन लिङ्क पठायौं।';
+  }
 }

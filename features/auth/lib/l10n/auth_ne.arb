@@ -217,5 +217,39 @@
   "@savePassword": {
     "description": "Save-new-password action."
   },
-  "savePassword": "नयाँ पासवर्ड सेभ गर्नुहोस्"
+  "savePassword": "नयाँ पासवर्ड सेभ गर्नुहोस्",
+
+  "@paneLink": {
+    "description": "Magic link pane label."
+  },
+  "paneLink": "म्याजिक लिङ्क",
+  "@panePassword": {
+    "description": "Password pane label."
+  },
+  "panePassword": "पासवर्ड",
+
+  "@linkTitle": {
+    "description": "Magic link pane heading."
+  },
+  "linkTitle": "लिङ्कबाट साइन इन गर्नुहोस्",
+  "@linkSubtitle": {
+    "description": "Magic link pane explanation."
+  },
+  "linkSubtitle": "हामी तपाईंलाई लिङ्क पठाउँछौं — पासवर्ड बिर्न सक्नुहुन्न।",
+
+  "@sendLink": {
+    "description": "Send magic link action."
+  },
+  "sendLink": "लिङ्क पठाउनुहोस्",
+  "@resendLink": {
+    "description": "Resend magic link action."
+  },
+  "resendLink": "लिङ्क पुनः पठाउनुहोस्",
+  "@sentLink": {
+    "description": "Magic link sent confirmation.",
+    "placeholders": {
+      "email": { "type": "String", "example": "sita@example.com" }
+    }
+  },
+  "sentLink": "इनबक्स जाँच गर्नुहोस् — {email} मा साइन-इन लिङ्क पठायौं।"
 }
