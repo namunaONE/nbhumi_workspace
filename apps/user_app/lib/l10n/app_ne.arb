@@ -664,5 +664,15 @@
   "@previewBannerDetail": {
     "description": "Banner secondary line: what a preview build is not."
   },
-  "previewBannerDetail": "समीक्षाका लागि मात्र। डेटा रिसेट हुन सक्छ — यसमा निर्भर नगर्नुहोस्।"
+  "previewBannerDetail": "समीक्षाका लागि मात्र। डेटा रिसेट हुन सक्छ — यसमा निर्भर नगर्नुहोस्।",
+
+  "@notFoundTitle": {
+    "description": "Unknown-route screen heading."
+  },
+  "notFoundTitle": "पृष्ठ फेला परेन",
+
+  "@notFoundBody": {
+    "description": "Unknown-route explanation with a way back."
+  },
+  "notFoundBody": "यो लिङ्क बिग्रिएको छ वा पृष्ठ सारिएको छ। सूची एक ट्याप टाढा छ।"
 }

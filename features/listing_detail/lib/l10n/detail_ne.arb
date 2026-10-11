@@ -283,6 +283,11 @@
   },
   "verifiedListingUnderstood": "बुझें",
 
+  "@detailPageTitle": {
+    "description": "Browser tab fallback while the listing is still loading."
+  },
+  "detailPageTitle": "सम्पत्ति विवरण",
+
   "@verifyThisListing": {
     "description": "Owner CTA opening the Tier-3 submit flow."
   },

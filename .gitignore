@@ -229,6 +229,12 @@ web/.plugin_symlinks
 .DS_Store
 Thumbs.db
 
+# Test artifacts (Rule 44 — debug dumps, never committed)
+# Golden-mismatch output from Alchemist/flutter_test.
+**/test/failures/
+test_output.txt
+*.failure
+
 # OS
 .DS_Store
 Thumbs.db

@@ -154,6 +154,33 @@ abstract final class AppSizes {
   static const double contentMaxWidth = 960;
 }
 
+/// Layout widths at which the navigation affordance changes.
+///
+/// Material's 600 and 840 breakpoints. These live in `core` rather than in an
+/// app so that features can read the same thresholds: a feature cannot import
+/// an app (Rule 10), so an app-local `AppBreakpoints` forces every feature to
+/// restate the numbers, which is how two breakpoints drift apart.
+///
+/// The widths describe the *app window*, not the device: a tablet can be in
+/// split-screen and a desktop window can be 500 pixels wide. Branching on the
+/// window keeps the layout correct on foldables and in free-form/multi-window
+/// mode, where `Platform.is`-style checks break.
+abstract final class AppBreakpoints {
+  AppBreakpoints._();
+
+  /// Below this, a compact bottom navigation bar.
+  static const double medium = 600;
+
+  /// At or above this, a permanent drawer and master-detail layouts.
+  static const double expanded = 840;
+
+  /// At or above this window width, list screens may show the detail side
+  /// pane next to the feed instead of pushing the full route. Higher than
+  /// [expanded] because the pane splits the tab content that remains beside
+  /// the permanent drawer — both panes need room to breathe.
+  static const double twoPane = 1000;
+}
+
 /// Animation and timing tokens.
 ///
 /// Durations shared by animations, splash handoffs, and transient UI

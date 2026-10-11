@@ -19,6 +19,7 @@ export 'src/widgets/app_states.dart';
 export 'src/widgets/horizontal_listing_card.dart';
 export 'src/widgets/legal_disclaimer_card.dart';
 export 'src/widgets/listing_card.dart';
+export 'src/widgets/page_title.dart';
 export 'src/widgets/primary_cta.dart';
 export 'src/widgets/section_header.dart';
 export 'src/widgets/status_chip.dart';

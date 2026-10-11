@@ -416,6 +416,12 @@ abstract class AppLocalizations {
   /// **'Understood'**
   String get verifiedListingUnderstood;
 
+  /// Browser tab fallback while the listing is still loading.
+  ///
+  /// In en, this message translates to:
+  /// **'Property details'**
+  String get detailPageTitle;
+
   /// Owner CTA opening the Tier-3 submit flow.
   ///
   /// In en, this message translates to:
