@@ -99,7 +99,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String loadingSuffix(String label) {
-    return 'Loading $labelΓÇª';
+    return 'Loading $label…';
   }
 
   @override

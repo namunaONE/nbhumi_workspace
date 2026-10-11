@@ -1,46 +1,46 @@
-﻿{
+{
   "@@locale": "ne",
   "@@last_modified": "2026-10-06T00:00:00.000",
 
   "@stepType": {
     "description": "Step 1 app-bar title."
   },
-  "stepType": "αñÿαñ░αñ£αñùαÑìαñùαñ╛αñòαÑï αñòαñ┐αñ╕αñ┐αñ«",
+  "stepType": "घरजग्गाको किसिम",
 
   "@stepLocation": {
     "description": "Step 2 app-bar title."
   },
-  "stepLocation": "αñ╕αÑìαñÑαñ╛αñ¿",
+  "stepLocation": "स्थान",
 
   "@stepSpecs": {
     "description": "Step 3 app-bar title."
   },
-  "stepSpecs": "αñåαñòαñ╛αñ░ αñ░ αñòαÑïαñáαñ╛αñ╣αñ░αÑé",
+  "stepSpecs": "आकार र कोठाहरू",
 
   "@stepPrice": {
     "description": "Step 4 app-bar title."
   },
-  "stepPrice": "αñ«αÑéαñ▓αÑìαñ» αñ░ αñ½αÑïαñƒαÑïαñ╣αñ░αÑé",
+  "stepPrice": "मूल्य र फोटोहरू",
 
   "@stepReview": {
     "description": "Step 5 app-bar title."
   },
-  "stepReview": "αñ╕αñ«αÑÇαñòαÑìαñ╖αñ╛",
+  "stepReview": "समीक्षा",
 
   "@navBack": {
     "description": "Wizard back action."
   },
-  "navBack": "αñ½αñ░αÑìαñòαñ¿αÑüαñ╣αÑïαñ╕αÑì",
+  "navBack": "फर्कनुहोस्",
 
   "@navNext": {
     "description": "Wizard next action."
   },
-  "navNext": "αñàαñ░αÑìαñòαÑï",
+  "navNext": "अर्को",
 
   "@navSubmit": {
     "description": "Wizard submit action on the last step."
   },
-  "navSubmit": "αñ¬αÑçαñ╕ αñùαñ░αÑìαñ¿αÑüαñ╣αÑïαñ╕αÑì",
+  "navSubmit": "पेस गर्नुहोस्",
 
   "@progressOf": {
     "description": "Linear progress label.",
@@ -49,77 +49,77 @@
       "total": { "type": "int", "example": "5" }
     }
   },
-  "progressOf": "αñÜαñ░αñú {n} / {total}",
+  "progressOf": "चरण {n} / {total}",
 
   "@districtsUnavailableTitle": {
     "description": "Heading when reference data fails to load."
   },
-  "districtsUnavailableTitle": "αñ£αñ┐αñ▓αÑìαñ▓αñ╛ αñ▓αÑïαñí αñùαñ░αÑìαñ¿ αñ╕αñòαñ┐αñÅαñ¿",
+  "districtsUnavailableTitle": "जिल्ला लोड गर्न सकिएन",
 
   "@districtsUnavailableBody": {
     "description": "Explanation when reference data fails to load."
   },
-  "districtsUnavailableBody": "αñçαñ¿αÑìαñƒαñ░αñ¿αÑçαñƒ αñ£αñíαñ╛αñ¿ αñ£αñ╛αñüαñÜ αñùαñ░αÑÇ αñ¬αÑüαñ¿αñâ αñ¬αÑìαñ░αñ»αñ╛αñ╕ αñùαñ░αÑìαñ¿αÑüαñ╣αÑïαñ╕αÑìαÑñ",
+  "districtsUnavailableBody": "इन्टरनेट जडान जाँच गरी पुनः प्रयास गर्नुहोस्।",
 
   "@sentForReview": {
     "description": "Confirmation after submitting."
   },
-  "sentForReview": "αñ╕αñ«αÑÇαñòαÑìαñ╖αñ╛αñòαñ╛ αñ▓αñ╛αñùαñ┐ αñ¬αñáαñ╛αñçαñ»αÑïαÑñ αñ╕αÑìαñ╡αÑÇαñòαÑâαññ αñ¡αñÅαñ¬αñ¢αñ┐ αñªαÑçαñûαñ┐αñ¿αÑçαñ¢αÑñ",
+  "sentForReview": "समीक्षाका लागि पठाइयो। स्वीकृत भएपछि देखिनेछ।",
 
   "@typeQuestion": {
     "description": "Step 1 first question."
   },
-  "typeQuestion": "αñòαÑç αñ╕αÑéαñÜαÑÇ αñùαñ░αÑìαñªαÑê αñ╣αÑüαñ¿αÑüαñ╣αÑüαñ¿αÑìαñ¢?",
+  "typeQuestion": "के सूची गर्दै हुनुहुन्छ?",
 
   "@purposeQuestion": {
     "description": "Step 1 second question."
   },
-  "purposeQuestion": "αñòαñ╕αñ░αÑÇ αñ¼αÑçαñÜαÑìαñ¿ αñÜαñ╛αñ╣αñ¿αÑüαñ╣αÑüαñ¿αÑìαñ¢?",
+  "purposeQuestion": "कसरी बेच्न चाहनुहुन्छ?",
 
   "@purposeSell": {
     "description": "Sell purpose chip."
   },
-  "purposeSell": "αñ¼αÑçαñÜαÑìαñ¿αÑüαñ╣αÑïαñ╕αÑì",
+  "purposeSell": "बेच्नुहोस्",
 
   "@purposeRentOut": {
     "description": "Rent-out purpose chip."
   },
-  "purposeRentOut": "αñ¡αñ╛αñíαñ╛αñ«αñ╛",
+  "purposeRentOut": "भाडामा",
 
   "@purposeLeaseTx": {
     "description": "Lease purpose chip."
   },
-  "purposeLeaseTx": "αñ▓αñ┐αñ£αñ«αñ╛",
+  "purposeLeaseTx": "लिजमा",
 
   "@locationTitle": {
     "description": "Location section heading."
   },
-  "locationTitle": "αñ»αÑï αñòαñ╣αñ╛αñü αñ¢?",
+  "locationTitle": "यो कहाँ छ?",
 
   "@locationSubtitle": {
     "description": "Location section explanation."
   },
-  "locationSubtitle": "αñ£αñ┐αñ▓αÑìαñ▓αñ╛αñ▓αÑç αñòαÑìαñ╖αÑçαññαÑìαñ░αñ½αñ▓ αñ░αÑïαñ¬αñ¿αÑÇ αñ╡αñ╛ αñ¼αñ┐αñÿαñ╛αñ«αñ╛ αñ╣αñ╛αñ▓αÑìαñ¿αÑç αñ¡αñ¿αÑìαñ¿αÑç αññαñ» αñùαñ░αÑìαñ¢αÑñ",
+  "locationSubtitle": "जिल्लाले क्षेत्रफल रोपनी वा बिघामा हाल्ने भन्ने तय गर्छ।",
 
   "@fieldDistrict": {
     "description": "District picker label and required-field name."
   },
-  "fieldDistrict": "αñ£αñ┐αñ▓αÑìαñ▓αñ╛",
+  "fieldDistrict": "जिल्ला",
 
   "@fieldMunicipality": {
     "description": "Municipality picker label and required-field name."
   },
-  "fieldMunicipality": "αñ¿αñùαñ░αñ¬αñ╛αñ▓αñ┐αñòαñ╛",
+  "fieldMunicipality": "नगरपालिका",
 
   "@fieldWard": {
     "description": "Ward picker label."
   },
-  "fieldWard": "αñ╡αñíαñ╛ (αñ╡αÑêαñòαñ▓αÑìαñ¬αñ┐αñò)",
+  "fieldWard": "वडा (वैकल्पिक)",
 
   "@wardNone": {
     "description": "Ward picker empty choice."
   },
-  "wardNone": "αñ╡αñíαñ╛ αñ¢αÑêαñ¿",
+  "wardNone": "वडा छैन",
 
   "@wardNumber": {
     "description": "Ward picker entry.",
@@ -127,100 +127,100 @@
       "number": { "type": "int", "example": "16" }
     }
   },
-  "wardNumber": "αñ╡αñíαñ╛ {number}",
+  "wardNumber": "वडा {number}",
 
   "@wardHint": {
     "description": "Note on ward numbering (Rule 28)."
   },
-  "wardHint": "αñ╡αñíαñ╛ αñ¿αñ«αÑìαñ¼αñ░ αÑº αñªαÑçαñûαñ┐ αÑ⌐αÑ⌐ αñ╕αñ«αÑìαñ« αñ╣αÑüαñ¿αÑìαñ¢αÑñ αñ¿αÑçαñ¬αñ╛αñ▓αñ«αñ╛ αñ╕αñ¼αÑêαñ¡αñ¿αÑìαñªαñ╛ αñºαÑçαñ░αÑê αñ╡αñíαñ╛ αñ¡αñÅαñòαÑï αñ╕αÑìαñÑαñ╛αñ¿αÑÇαñ» αññαñ╣ αñ¬αÑïαñûαñ░αñ╛ αñ«αñ╣αñ╛αñ¿αñùαñ░αñ¬αñ╛αñ▓αñ┐αñòαñ╛ αñ╣αÑï, αÑ⌐αÑ⌐ αñ╡αñƒαñ╛αÑñ",
+  "wardHint": "वडा नम्बर १ देखि ३३ सम्म हुन्छ। नेपालमा सबैभन्दा धेरै वडा भएको स्थानीय तह पोखरा महानगरपालिका हो, ३३ वटा।",
 
   "@wardNoMunicipality": {
     "description": "Note when the ward picker has no bound yet."
   },
-  "wardNoMunicipality": "αñ¬αñ╣αñ┐αñ▓αÑç αñ¿αñùαñ░αñ¬αñ╛αñ▓αñ┐αñòαñ╛ αñ¢αñ╛αñ¿αÑìαñ¿αÑüαñ╣αÑïαñ╕αÑì, αñàαñ¿αñ┐ αñ╡αñíαñ╛ αñ¢αñ╛αñ¿αÑìαñ¿αÑüαñ╣αÑïαñ╕αÑìαÑñ",
+  "wardNoMunicipality": "पहिले नगरपालिका छान्नुहोस्, अनि वडा छान्नुहोस्।",
 
   "@municipalitiesLoading": {
     "description": "Municipality loading row."
   },
-  "municipalitiesLoading": "αñ¿αñùαñ░αñ¬αñ╛αñ▓αñ┐αñòαñ╛αñ╣αñ░αÑé",
+  "municipalitiesLoading": "नगरपालिकाहरू",
 
   "@loadingSuffix": {
     "description": "Loading row template.",
     "placeholders": {
-      "label": { "type": "String", "example": "αñ¿αñùαñ░αñ¬αñ╛αñ▓αñ┐αñòαñ╛αñ╣αñ░αÑé" }
+      "label": { "type": "String", "example": "नगरपालिकाहरू" }
     }
   },
-  "loadingSuffix": "{label} αñ▓αÑïαñí αñ╣αÑüαñüαñªαÑêαñ¢ΓÇª",
+  "loadingSuffix": "{label} लोड हुँदैछ…",
 
   "@municipalitiesError": {
     "description": "Municipality load failure."
   },
-  "municipalitiesError": "αñ¿αñùαñ░αñ¬αñ╛αñ▓αñ┐αñòαñ╛ αñ▓αÑïαñí αñùαñ░αÑìαñ¿ αñ╕αñòαñ┐αñÅαñ¿αÑñ αñçαñ¿αÑìαñƒαñ░αñ¿αÑçαñƒ αñ£αñíαñ╛αñ¿ αñ£αñ╛αñüαñÜ αñùαñ░αÑìαñ¿αÑüαñ╣αÑïαñ╕αÑìαÑñ",
+  "municipalitiesError": "नगरपालिका लोड गर्न सकिएन। इन्टरनेट जडान जाँच गर्नुहोस्।",
 
   "@retryAction": {
     "description": "Inline retry action."
   },
-  "retryAction": "αñ¬αÑüαñ¿αñâ αñ¬αÑìαñ░αñ»αñ╛αñ╕",
+  "retryAction": "पुनः प्रयास",
 
   "@fieldRoadAccess": {
     "description": "Road frontage field label."
   },
-  "fieldRoadAccess": "αñ¼αñ╛αñƒαÑïαñòαÑï αñ¬αñ╣αÑüαñüαñÜ",
+  "fieldRoadAccess": "बाटोको पहुँच",
 
   "@fieldKitta": {
     "description": "Land parcel (kitta) number field label."
   },
-  "fieldKitta": "αñòαñ┐αññαÑìαññαñ╛ αñ¿αñ«αÑìαñ¼αñ░",
+  "fieldKitta": "कित्ता नम्बर",
 
   "@fieldKittaHint": {
     "description": "Kitta field hint: where to find it."
   },
-  "fieldKittaHint": "αñ▓αñ╛αñ▓αñ¬αÑüαñ░αÑìαñ£αñ╛αñ«αñ╛ αñ¡αñÅαñòαÑïαÑñ αñ¢αñ┐αñƒαÑï αñ¬αÑìαñ░αñ«αñ╛αñúαÑÇαñòαñ░αñúαñ«αñ╛ αñ«αñªαÑìαñªαññ αñùαñ░αÑìαñ¢αÑñ",
+  "fieldKittaHint": "लालपुर्जामा भएको। छिटो प्रमाणीकरणमा मद्दत गर्छ।",
 
   "@fieldOptional": {
     "description": "Optional-field hint."
   },
-  "fieldOptional": "αñ╡αÑêαñòαñ▓αÑìαñ¬αñ┐αñò",
+  "fieldOptional": "वैकल्पिक",
 
   "@unitRopani": {
     "description": "Ropani field label."
   },
-  "unitRopani": "αñ░αÑïαñ¬αñ¿αÑÇ",
+  "unitRopani": "रोपनी",
 
   "@unitAana": {
     "description": "Aana field label."
   },
-  "unitAana": "αñåαñ¿αñ╛",
+  "unitAana": "आना",
 
   "@unitPaisa": {
     "description": "Paisa field label."
   },
-  "unitPaisa": "αñ¬αÑêαñ╕αñ╛",
+  "unitPaisa": "पैसा",
 
   "@unitDam": {
     "description": "Dam field label."
   },
-  "unitDam": "αñªαñ╛αñ«",
+  "unitDam": "दाम",
 
   "@unitBigha": {
     "description": "Bigha field label."
   },
-  "unitBigha": "αñ¼αñ┐αñÿαñ╛",
+  "unitBigha": "बिघा",
 
   "@unitKattha": {
     "description": "Kattha field label."
   },
-  "unitKattha": "αñòαñáαÑìαñáαñ╛",
+  "unitKattha": "कठ्ठा",
 
   "@unitDhur": {
     "description": "Dhur field label."
   },
-  "unitDhur": "αñºαÑüαñ░",
+  "unitDhur": "धुर",
 
   "@specsAreaTitle": {
     "description": "Area section heading."
   },
-  "specsAreaTitle": "αñòαÑìαñ╖αÑçαññαÑìαñ░αñ½αñ▓",
+  "specsAreaTitle": "क्षेत्रफल",
 
   "@specsAreaHill": {
     "description": "Hill-district area explanation.",
@@ -228,7 +228,7 @@
       "district": { "type": "String", "example": "Kathmandu" }
     }
   },
-  "specsAreaHill": "{district} αñ¬αñ╣αñ╛αñíαÑÇ αñ£αñ┐αñ▓αÑìαñ▓αñ╛ αñ╣αÑïαÑñ αñ░αÑïαñ¬αñ¿αÑÇ, αñåαñ¿αñ╛, αñ¬αÑêαñ╕αñ╛ αñ╡αñ╛ αñªαñ╛αñ« αñ╣αñ╛αñ▓αÑìαñ¿αÑüαñ╣αÑïαñ╕αÑìαÑñ",
+  "specsAreaHill": "{district} पहाडी जिल्ला हो। रोपनी, आना, पैसा वा दाम हाल्नुहोस्।",
 
   "@specsAreaTerai": {
     "description": "Terai-district area explanation.",
@@ -236,27 +236,27 @@
       "district": { "type": "String", "example": "Chitwan" }
     }
   },
-  "specsAreaTerai": "{district} αññαñ░αñ╛αñê αñ£αñ┐αñ▓αÑìαñ▓αñ╛ αñ╣αÑïαÑñ αñ¼αñ┐αñÿαñ╛, αñòαñáαÑìαñáαñ╛ αñ╡αñ╛ αñºαÑüαñ░ αñ╣αñ╛αñ▓αÑìαñ¿αÑüαñ╣αÑïαñ╕αÑìαÑñ",
+  "specsAreaTerai": "{district} तराई जिल्ला हो। बिघा, कठ्ठा वा धुर हाल्नुहोस्।",
 
   "@specsNoDistrict": {
     "description": "Note when no district is chosen yet."
   },
-  "specsNoDistrict": "αñ¬αñ╣αñ┐αñ▓αÑç αñ£αñ┐αñ▓αÑìαñ▓αñ╛ αñ¢αñ╛αñ¿αÑìαñ¿αÑüαñ╣αÑïαñ╕αÑìαÑñ αñ¬αñ╣αñ╛αñíαÑÇ αñ£αñ┐αñ▓αÑìαñ▓αñ╛αñ«αñ╛ αñ░αÑïαñ¬αñ¿αÑÇ αñ░ αññαñ░αñ╛αñêαñ«αñ╛ αñ¼αñ┐αñÿαñ╛αñ«αñ╛ αñòαÑìαñ╖αÑçαññαÑìαñ░αñ½αñ▓ αñ╣αñ╛αñ▓αñ┐αñ¿αÑìαñ¢αÑñ",
+  "specsNoDistrict": "पहिले जिल्ला छान्नुहोस्। पहाडी जिल्लामा रोपनी र तराईमा बिघामा क्षेत्रफल हालिन्छ।",
 
   "@specsRooms": {
     "description": "Rooms section heading."
   },
-  "specsRooms": "αñòαÑïαñáαñ╛αñ╣αñ░αÑé",
+  "specsRooms": "कोठाहरू",
 
   "@fieldBedrooms": {
     "description": "Bedrooms field label."
   },
-  "fieldBedrooms": "αñ╢αñ»αñ¿αñòαñòαÑìαñ╖",
+  "fieldBedrooms": "शयनकक्ष",
 
   "@fieldBathrooms": {
     "description": "Bathrooms field label."
   },
-  "fieldBathrooms": "αñ╕αÑìαñ¿αñ╛αñ¿αñùαÑâαñ╣",
+  "fieldBathrooms": "स्नानगृह",
 
   "@derivedArea": {
     "description": "Derived square-metre note.",
@@ -264,17 +264,17 @@
       "sqm": { "type": "String", "example": "508" }
     }
   },
-  "derivedArea": "αñ£αñ«αÑìαñ«αñ╛ αñ▓αñùαñ¡αñù {sqm} αñ╡.αñ«αñ┐.αÑñ αñ╡αñ┐αñ£αÑìαñ₧αñ╛αñ¬αñ¿ αñ╡.αñ«αñ┐.αñ«αñ╛ αñ¡αñúαÑìαñíαñ╛αñ░αñú αñ╣αÑüαñ¿αÑìαñ¢ αñ░ αññαñ¬αñ╛αñêαñéαñ▓αÑç αñ╣αñ╛αñ▓αÑçαñòαñ╛ αñÅαñòαñ╛αñçαñ«αñ╛ αñªαÑçαñûαñ┐αñ¿αÑìαñ¢αÑñ",
+  "derivedArea": "जम्मा लगभग {sqm} व.मि.। विज्ञापन व.मि.मा भण्डारण हुन्छ र तपाईंले हालेका एकाइमा देखिन्छ।",
 
   "@priceTitle": {
     "description": "Asking-price section heading."
   },
-  "priceTitle": "αñ«αñ╛αñù αñ«αÑéαñ▓αÑìαñ»",
+  "priceTitle": "माग मूल्य",
 
   "@fieldPrice": {
     "description": "Price field label and required-field name."
   },
-  "fieldPrice": "αñ«αÑéαñ▓αÑìαñ»",
+  "fieldPrice": "मूल्य",
 
   "@buyersWillSee": {
     "description": "Formatted-price echo.",
@@ -282,82 +282,82 @@
       "amount": { "type": "String", "example": "NPR 2,50,00,000" }
     }
   },
-  "buyersWillSee": "αñûαñ░αÑÇαñªαñªαñ╛αñ░αñ▓αÑç {amount} αñªαÑçαñûαÑìαñ¿αÑçαñ¢αñ¿αÑì",
+  "buyersWillSee": "खरीददारले {amount} देख्नेछन्",
 
   "@photosTitle": {
     "description": "Photos section heading."
   },
-  "photosTitle": "αñ½αÑïαñƒαÑïαñ╣αñ░αÑé",
+  "photosTitle": "फोटोहरू",
 
   "@photosSubtitle": {
     "description": "Photos section explanation."
   },
-  "photosSubtitle": "αñòαñ«αÑìαññαÑÇαñ«αñ╛ αñÅαñëαñƒαñ╛ αñÑαñ¬αÑìαñ¿αÑüαñ╣αÑïαñ╕αÑìαÑñ αñ½αÑïαñƒαÑï αñ¡αñÅαñòαñ╛ αñ╡αñ┐αñ£αÑìαñ₧αñ╛αñ¬αñ¿αñ«αñ╛ αñºαÑçαñ░αÑê αñ╕αÑïαñºαñ¬αÑüαñ¢ αñåαñëαñüαñ¢αÑñ",
+  "photosSubtitle": "कम्तीमा एउटा थप्नुहोस्। फोटो भएका विज्ञापनमा धेरै सोधपुछ आउँछ।",
 
   "@removePhoto": {
     "description": "Remove-photo tooltip."
   },
-  "removePhoto": "αñ½αÑïαñƒαÑï αñ╣αñƒαñ╛αñëαñ¿αÑüαñ╣αÑïαñ╕αÑì",
+  "removePhoto": "फोटो हटाउनुहोस्",
 
   "@reviewTitle": {
     "description": "Review step heading."
   },
-  "reviewTitle": "αñåαñ½αÑìαñ¿αÑï αñ╡αñ┐αñ£αÑìαñ₧αñ╛αñ¬αñ¿ αñ£αñ╛αñüαñÜαÑìαñ¿αÑüαñ╣αÑïαñ╕αÑì",
+  "reviewTitle": "आफ्नो विज्ञापन जाँच्नुहोस्",
 
   "@reviewSubtitle": {
     "description": "Review step explanation."
   },
-  "reviewSubtitle": "αñ╕αñ╛αñ░αÑìαñ╡αñ£αñ¿αñ┐αñò αñ╣αÑüαñ¿αÑüαñàαñÿαñ┐ αñ»αñ╕αñòαÑï αñ╕αñ«αÑÇαñòαÑìαñ╖αñ╛ αñ╣αÑüαñ¿αÑçαñ¢αÑñ",
+  "reviewSubtitle": "सार्वजनिक हुनुअघि यसको समीक्षा हुनेछ।",
 
   "@reviewType": {
     "description": "Type summary row label."
   },
-  "reviewType": "αñòαñ┐αñ╕αñ┐αñ«",
+  "reviewType": "किसिम",
 
   "@reviewTitleRow": {
     "description": "Title summary row label."
   },
-  "reviewTitleRow": "αñ╢αÑÇαñ░αÑìαñ╖αñò",
+  "reviewTitleRow": "शीर्षक",
 
   "@reviewLocation": {
     "description": "Location summary row label."
   },
-  "reviewLocation": "αñ╕αÑìαñÑαñ╛αñ¿",
+  "reviewLocation": "स्थान",
 
   "@reviewArea": {
     "description": "Area summary row label."
   },
-  "reviewArea": "αñòαÑìαñ╖αÑçαññαÑìαñ░αñ½αñ▓",
+  "reviewArea": "क्षेत्रफल",
 
   "@reviewRooms": {
     "description": "Rooms summary row label."
   },
-  "reviewRooms": "αñòαÑïαñáαñ╛αñ╣αñ░αÑé",
+  "reviewRooms": "कोठाहरू",
 
   "@reviewPrice": {
     "description": "Price summary row label."
   },
-  "reviewPrice": "αñ«αÑéαñ▓αÑìαñ»",
+  "reviewPrice": "मूल्य",
 
   "@reviewPhotos": {
     "description": "Photos summary row label."
   },
-  "reviewPhotos": "αñ½αÑïαñƒαÑïαñ╣αñ░αÑé",
+  "reviewPhotos": "फोटोहरू",
 
   "@reviewDescription": {
     "description": "Description summary section label."
   },
-  "reviewDescription": "αñ╡αñ░αÑìαñúαñ¿",
+  "reviewDescription": "वर्णन",
 
   "@reviewNotSet": {
     "description": "Placeholder for an empty summary value."
   },
-  "reviewNotSet": "αñ¢αÑêαñ¿",
+  "reviewNotSet": "छैन",
 
   "@reviewNotApplicable": {
     "description": "Placeholder when rooms do not apply."
   },
-  "reviewNotApplicable": "αñ▓αñ╛αñùαÑé αñ╣αÑüαñüαñªαÑêαñ¿",
+  "reviewNotApplicable": "लागू हुँदैन",
 
   "@reviewPhotosAdded": {
     "description": "Photo count summary.",
@@ -365,35 +365,35 @@
       "count": { "type": "int", "example": "3" }
     }
   },
-  "reviewPhotosAdded": "{count} αñÑαñ¬αñ┐αñ»αÑï",
+  "reviewPhotosAdded": "{count} थपियो",
 
   "@reviewContactNote": {
     "description": "Note on contact visibility."
   },
-  "reviewContactNote": "αñûαñ░αÑÇαñªαñªαñ╛αñ░αñ▓αÑç αñ╕αñ╛αñçαñ¿ αñçαñ¿ αñùαñ░αÑçαñ░ αñàαñ¿αÑüαñ░αÑïαñº αñùαñ░αÑçαñ¬αñ¢αñ┐ αñ«αñ╛αññαÑìαñ░ αññαñ¬αñ╛αñêαñéαñòαÑï αñ╕αñ«αÑìαñ¬αñ░αÑìαñò αñ╡αñ┐αñ╡αñ░αñú αñªαÑçαñûαÑìαñ¢αñ¿αÑì, αññαÑìαñ»αñ╕αÑêαñ▓αÑç αññαñ¬αñ╛αñêαñéαñòαÑï αñ¿αñ«αÑìαñ¼αñ░ αñ╡αñ┐αñ£αÑìαñ₧αñ╛αñ¬αñ¿αñ«αñ╛ αñòαñ╣αñ┐αñ▓αÑìαñ»αÑê αñ¬αÑìαñ░αñòαñ╛αñ╢αñ┐αññ αñ╣αÑüαñüαñªαÑêαñ¿αÑñ",
+  "reviewContactNote": "खरीददारले साइन इन गरेर अनुरोध गरेपछि मात्र तपाईंको सम्पर्क विवरण देख्छन्, त्यसैले तपाईंको नम्बर विज्ञापनमा कहिल्यै प्रकाशित हुँदैन।",
 
   "@reviewSubmit": {
     "description": "Review submit action."
   },
-  "reviewSubmit": "αñ╕αñ«αÑÇαñòαÑìαñ╖αñ╛αñòαñ╛ αñ▓αñ╛αñùαñ┐ αñ¬αÑçαñ╕ αñùαñ░αÑìαñ¿αÑüαñ╣αÑïαñ╕αÑì",
+  "reviewSubmit": "समीक्षाका लागि पेस गर्नुहोस्",
 
   "@fieldPropertyType": {
     "description": "Property-type required-field name."
   },
-  "fieldPropertyType": "αñÿαñ░αñ£αñùαÑìαñùαñ╛αñòαÑï αñòαñ┐αñ╕αñ┐αñ«",
+  "fieldPropertyType": "घरजग्गाको किसिम",
 
   "@fieldPurpose": {
     "description": "Purpose required-field name."
   },
-  "fieldPurpose": "αñ¼αñ┐αñòαÑìαñ░αÑÇ, αñ¡αñ╛αñíαñ╛ αñ╡αñ╛ αñ▓αñ┐αñ£",
+  "fieldPurpose": "बिक्री, भाडा वा लिज",
 
   "@requiredField": {
     "description": "Generic required-field message.",
     "placeholders": {
-      "label": { "type": "String", "example": "αñ£αñ┐αñ▓αÑìαñ▓αñ╛" }
+      "label": { "type": "String", "example": "जिल्ला" }
     }
   },
-  "requiredField": "{label} αñåαñ╡αñ╢αÑìαñ»αñò αñ¢",
+  "requiredField": "{label} आवश्यक छ",
 
   "@crossDistrict": {
     "description": "Cross-district municipality message.",
@@ -402,7 +402,7 @@
       "district": { "type": "String", "example": "Lalitpur" }
     }
   },
-  "crossDistrict": "{name} {district}αñ«αñ╛ αñ¢αÑêαñ¿",
+  "crossDistrict": "{name} {district}मा छैन",
 
   "@wardRange": {
     "description": "Ward out-of-range message.",
@@ -410,7 +410,7 @@
       "max": { "type": "int", "example": "33" }
     }
   },
-  "wardRange": "αñ╡αñíαñ╛ αÑº αñªαÑçαñûαñ┐ {max} αñ╕αñ«αÑìαñ«αñòαÑï αñ¿αñ«αÑìαñ¼αñ░ αñ╣αÑüαñ¿αÑüαñ¬αñ░αÑìαñ¢",
+  "wardRange": "वडा १ देखि {max} सम्मको नम्बर हुनुपर्छ",
 
   "@wardCount": {
     "description": "Ward exceeds body count message.",
@@ -419,7 +419,7 @@
       "count": { "type": "int", "example": "10" }
     }
   },
-  "wardCount": "{name}αñ«αñ╛ {count} αñ╡αñíαñ╛ αñ¢αñ¿αÑì",
+  "wardCount": "{name}मा {count} वडा छन्",
 
   "@numberInvalid": {
     "description": "Non-numeric input message.",
@@ -427,7 +427,7 @@
       "label": { "type": "String", "example": "Road access" }
     }
   },
-  "numberInvalid": "{label} αñ╕αñéαñûαÑìαñ»αñ╛ αñ╣αÑüαñ¿αÑüαñ¬αñ░αÑìαñ¢",
+  "numberInvalid": "{label} संख्या हुनुपर्छ",
 
   "@numberNegative": {
     "description": "Negative input message.",
@@ -435,307 +435,307 @@
       "label": { "type": "String", "example": "Road access" }
     }
   },
-  "numberNegative": "{label} αñ¿αñòαñ╛αñ░αñ╛αññαÑìαñ«αñò αñ╣αÑüαñ¿ αñ╕αñòαÑìαñªαÑêαñ¿",
+  "numberNegative": "{label} नकारात्मक हुन सक्दैन",
 
   "@areaWrongHill": {
     "description": "Terai units in a hill district."
   },
-  "areaWrongHill": "αñ»αÑï αñ£αñ┐αñ▓αÑìαñ▓αñ╛αñ«αñ╛ αñòαÑìαñ╖αÑçαññαÑìαñ░αñ½αñ▓ αñ¬αñ╣αñ╛αñíαÑÇ αñÅαñòαñ╛αñç (αñ░αÑïαñ¬αñ¿αÑÇ, αñåαñ¿αñ╛, αñ¬αÑêαñ╕αñ╛, αñªαñ╛αñ«) αñ«αñ╛ αñ╣αÑüαñ¿αÑìαñ¢, αñ¼αñ┐αñÿαñ╛αñ«αñ╛ αñ╣αÑïαñçαñ¿",
+  "areaWrongHill": "यो जिल्लामा क्षेत्रफल पहाडी एकाइ (रोपनी, आना, पैसा, दाम) मा हुन्छ, बिघामा होइन",
 
   "@areaWrongTerai": {
     "description": "Hill units in a terai district."
   },
-  "areaWrongTerai": "αñ»αÑï αñ£αñ┐αñ▓αÑìαñ▓αñ╛αñ«αñ╛ αñòαÑìαñ╖αÑçαññαÑìαñ░αñ½αñ▓ αññαñ░αñ╛αñê αñÅαñòαñ╛αñç (αñ¼αñ┐αñÿαñ╛, αñòαñáαÑìαñáαñ╛, αñºαÑüαñ░) αñ«αñ╛ αñ╣αÑüαñ¿αÑìαñ¢, αñ░αÑïαñ¬αñ¿αÑÇαñ«αñ╛ αñ╣αÑïαñçαñ¿",
+  "areaWrongTerai": "यो जिल्लामा क्षेत्रफल तराई एकाइ (बिघा, कठ्ठा, धुर) मा हुन्छ, रोपनीमा होइन",
 
   "@areaHillEmpty": {
     "description": "No hill area entered."
   },
-  "areaHillEmpty": "αñ░αÑïαñ¬αñ¿αÑÇ, αñåαñ¿αñ╛, αñ¬αÑêαñ╕αñ╛ αñ╡αñ╛ αñªαñ╛αñ«αñ«αñ╛ αñòαÑìαñ╖αÑçαññαÑìαñ░αñ½αñ▓ αñ╣αñ╛αñ▓αÑìαñ¿αÑüαñ╣αÑïαñ╕αÑì",
+  "areaHillEmpty": "रोपनी, आना, पैसा वा दाममा क्षेत्रफल हाल्नुहोस्",
 
   "@areaTeraiEmpty": {
     "description": "No terai area entered."
   },
-  "areaTeraiEmpty": "αñ¼αñ┐αñÿαñ╛, αñòαñáαÑìαñáαñ╛ αñ╡αñ╛ αñºαÑüαñ░αñ«αñ╛ αñòαÑìαñ╖αÑçαññαÑìαñ░αñ½αñ▓ αñ╣αñ╛αñ▓αÑìαñ¿αÑüαñ╣αÑïαñ╕αÑì",
+  "areaTeraiEmpty": "बिघा, कठ्ठा वा धुरमा क्षेत्रफल हाल्नुहोस्",
 
   "@bedroomsMin": {
     "description": "Bedroom minimum message."
   },
-  "bedroomsMin": "αñ╢αñ»αñ¿αñòαñòαÑìαñ╖ αÑº αñ╡αñ╛ αñ¼αñóαÑÇ αñ╣αÑüαñ¿αÑüαñ¬αñ░αÑìαñ¢",
+  "bedroomsMin": "शयनकक्ष १ वा बढी हुनुपर्छ",
 
   "@bathroomsMin": {
     "description": "Bathroom minimum message."
   },
-  "bathroomsMin": "αñ╕αÑìαñ¿αñ╛αñ¿αñùαÑâαñ╣ αÑº αñ╡αñ╛ αñ¼αñóαÑÇ αñ╣αÑüαñ¿αÑüαñ¬αñ░αÑìαñ¢",
+  "bathroomsMin": "स्नानगृह १ वा बढी हुनुपर्छ",
 
   "@priceInvalid": {
     "description": "Non-positive price message."
   },
-  "priceInvalid": "αñ«αÑéαñ▓αÑìαñ» αñ╢αÑéαñ¿αÑìαñ»αñ¡αñ¿αÑìαñªαñ╛ αñ¼αñóαÑÇ αñ╣αÑüαñ¿αÑüαñ¬αñ░αÑìαñ¢",
+  "priceInvalid": "मूल्य शून्यभन्दा बढी हुनुपर्छ",
 
   "@photosRequired": {
     "description": "Missing photo message."
   },
-  "photosRequired": "αñòαñ«αÑìαññαÑÇαñ«αñ╛ αñÅαñëαñƒαñ╛ αñ½αÑïαñƒαÑï αñÑαñ¬αÑìαñ¿αÑüαñ╣αÑïαñ╕αÑì",
+  "photosRequired": "कम्तीमा एउटा फोटो थप्नुहोस्",
 
   "@chipLand": {
     "description": "Land type chip."
   },
-  "chipLand": "αñ£αñùαÑìαñùαñ╛",
+  "chipLand": "जग्गा",
 
   "@chipHouse": {
     "description": "House type chip."
   },
-  "chipHouse": "αñÿαñ░",
+  "chipHouse": "घर",
 
   "@chipApartment": {
     "description": "Apartment type chip."
   },
-  "chipApartment": "αñàαñ¬αñ╛αñ░αÑìαñƒαñ«αÑçαñ¿αÑìαñƒ",
+  "chipApartment": "अपार्टमेन्ट",
 
   "@chipVilla": {
     "description": "Villa type chip."
   },
-  "chipVilla": "αñ¡αñ┐αñ▓αÑìαñ▓αñ╛",
+  "chipVilla": "भिल्ला",
 
   "@chipCommercial": {
     "description": "Commercial type chip."
   },
-  "chipCommercial": "αñ╡αÑìαñ»αñ╛αñ╡αñ╕αñ╛αñ»αñ┐αñò",
+  "chipCommercial": "व्यावसायिक",
 
   "@chipBusiness": {
     "description": "Business type chip."
   },
-  "chipBusiness": "αñ╡αÑìαñ»αñ╡αñ╕αñ╛αñ»",
+  "chipBusiness": "व्यवसाय",
 "@fieldTitle": {
   "description": "Listing title field label and required-field name."
 },
-"fieldTitle": "αñ╢αÑÇαñ░αÑìαñ╖αñò",
+"fieldTitle": "शीर्षक",
 "@fieldTitleHint": {
   "description": "Listing title placeholder."
 },
-"fieldTitleHint": "αñ£αñ╕αÑìαññαÑê: αñ╕αÑÇαññαñ╛αñ¬αñ╛αñçαñ▓αñ╛αñ«αñ╛ αñÿαñ╛αñ« αñ▓αñ╛αñùαÑìαñ¿αÑç αñÿαñ░",
+"fieldTitleHint": "जस्तै: सीतापाइलामा घाम लाग्ने घर",
 "@fieldDescription": {
   "description": "Listing description field label."
 },
-"fieldDescription": "αñ╡αñ┐αñ╡αñ░αñú (αñ╡αÑêαñòαñ▓αÑìαñ¬αñ┐αñò)",
+"fieldDescription": "विवरण (वैकल्पिक)",
 "@fieldDescriptionHint": {
   "description": "Listing description placeholder."
 },
-  "fieldDescriptionHint": "αñ£αñùαÑìαñùαñ╛, αñ¼αñ╛αñƒαÑï, αñ¬αñ╛αñ¿αÑÇ αñ░ αñ╡αñ░αñ¬αñ░",
+  "fieldDescriptionHint": "जग्गा, बाटो, पानी र वरपर",
   "@sectionLeaseTerms": {
     "description": "Lease-specific section heading on the specs step."
   },
-  "sectionLeaseTerms": "├á┬ñ┬▓├á┬ñ┬┐├á┬ñ┼ô├á┬ñΓÇó├á┬ñ┬╛ ├á┬ñ┬╕├á┬ñ┬░├á┬Ñ┬ì├á┬ñ┬ñ├á┬ñ┬╣├á┬ñ┬░├á┬ÑΓÇÜ",
+  "sectionLeaseTerms": "à¤²à¤¿à¤œà¤•à¤¾ à¤¸à¤°à¥à¤¤à¤¹à¤°à¥‚",
 
   "@leaseTermsExplanation": {
     "description": "Lease section explanation."
   },
-  "leaseTermsExplanation": "├á┬ñ┬▓├á┬ñ┬┐├á┬ñ┼ô├á┬ñ┬▓├á┬ñ┬╛├á┬ñ╦å ├á┬ñΓÇª├á┬ñ┬╡├á┬ñ┬º├á┬ñ┬┐ ├á┬ñ┼í├á┬ñ┬╛├á┬ñ┬╣├á┬ñ┬┐├á┬ñ┬¿├á┬Ñ┬ì├á┬ñΓÇ║├á┬Ñ┬ñ ├á┬ñΓÇô├á┬ñ┬░├á┬ñ┬┐├á┬ñ┬ª├á┬ñΓÇó├á┬ñ┬░├á┬Ñ┬ì├á┬ñ┬ñ├á┬ñ┬╛├á┬ñ┬╣├á┬ñ┬░├á┬ÑΓÇÜ ├á┬ñ┬»├á┬ñ┬╕├á┬Ñ╦å├á┬ñΓÇª├á┬ñ┬¿├á┬Ñ┬ü├á┬ñ┬╕├á┬ñ┬╛├á┬ñ┬░ ├á┬ñ┬½├á┬ñ┬┐├á┬ñ┬▓├á┬Ñ┬ì├á┬ñ┼╕├á┬ñ┬░ ├á┬ñΓÇö├á┬ñ┬░├á┬Ñ┬ì├á┬ñΓÇ║├á┬ñ┬¿├á┬Ñ┬ì├á┬Ñ┬ñ",
+  "leaseTermsExplanation": "à¤²à¤¿à¤œà¤²à¤¾à¤ˆ à¤…à¤µà¤§à¤¿ à¤šà¤¾à¤¹à¤¿à¤¨à¥à¤›à¥¤ à¤–à¤°à¤¿à¤¦à¤•à¤°à¥à¤¤à¤¾à¤¹à¤°à¥‚ à¤¯à¤¸à¥ˆà¤…à¤¨à¥à¤¸à¤¾à¤° à¤«à¤¿à¤²à¥à¤Ÿà¤° à¤—à¤°à¥à¤›à¤¨à¥à¥¤",
 
   "@fieldLeaseTerm": {
     "description": "Lease length in months field label."
   },
-  "fieldLeaseTerm": "├á┬ñ┬▓├á┬ñ┬┐├á┬ñ┼ô ├á┬ñΓÇª├á┬ñ┬╡├á┬ñ┬º├á┬ñ┬┐",
+  "fieldLeaseTerm": "à¤²à¤¿à¤œ à¤…à¤µà¤§à¤¿",
 
   "@fieldLeaseTermHint": {
     "description": "Lease term field hint."
   },
-  "fieldLeaseTermHint": "├á┬ñ┬«├á┬ñ┬╣├á┬ñ┬┐├á┬ñ┬¿├á┬ñ┬╛",
+  "fieldLeaseTermHint": "à¤®à¤¹à¤¿à¤¨à¤¾",
 
   "@leaseTermMin": {
     "description": "Lease term minimum message."
   },
-  "leaseTermMin": "├á┬ñ┬▓├á┬ñ┬┐├á┬ñ┼ô ├á┬ñΓÇª├á┬ñ┬╡├á┬ñ┬º├á┬ñ┬┐ ├á┬ñΓÇó├á┬ñ┬«├á┬Ñ┬ì├á┬ñ┬ñ├á┬ÑΓé¼├á┬ñ┬«├á┬ñ┬╛ ├á┬Ñ┬º ├á┬ñ┬«├á┬ñ┬╣├á┬ñ┬┐├á┬ñ┬¿├á┬ñ┬╛ ├á┬ñ┬╣├á┬Ñ┬ü├á┬ñ┬¿├á┬Ñ┬ü├á┬ñ┬¬├á┬ñ┬░├á┬Ñ┬ì├á┬ñΓÇ║",
+  "leaseTermMin": "à¤²à¤¿à¤œ à¤…à¤µà¤§à¤¿ à¤•à¤®à¥à¤¤à¥€à¤®à¤¾ à¥§ à¤®à¤¹à¤¿à¤¨à¤¾ à¤¹à¥à¤¨à¥à¤ªà¤°à¥à¤›",
 
   "@fieldLeaseRenewable": {
     "description": "Lease renewal question."
   },
-  "fieldLeaseRenewable": "├á┬ñ┬▓├á┬ñ┬┐├á┬ñ┼ô ├á┬ñ┬¿├á┬ñ┬╡├á┬ÑΓé¼├á┬ñΓÇó├á┬ñ┬░├á┬ñ┬ú ├á┬ñ┬╣├á┬Ñ┬ü├á┬ñ┬¿ ├á┬ñ┬╕├á┬ñΓÇó├á┬Ñ┬ì├á┬ñΓÇ║?",
+  "fieldLeaseRenewable": "à¤²à¤¿à¤œ à¤¨à¤µà¥€à¤•à¤°à¤£ à¤¹à¥à¤¨ à¤¸à¤•à¥à¤›?",
 
   "@leaseRenewableYes": {
     "description": "Lease renewable answer."
   },
-  "leaseRenewableYes": "├á┬ñ┬╣├á┬Ñ┬ü├á┬ñ┬¿ ├á┬ñ┬╕├á┬ñΓÇó├á┬Ñ┬ì├á┬ñΓÇ║",
+  "leaseRenewableYes": "à¤¹à¥à¤¨ à¤¸à¤•à¥à¤›",
 
   "@leaseRenewableNo": {
     "description": "Lease not renewable answer."
   },
-  "leaseRenewableNo": "├á┬ñ┬╣├á┬Ñ┬ü├á┬ñ┬¿ ├á┬ñ┬╕├á┬ñΓÇó├á┬Ñ┬ì├á┬ñ┬ª├á┬Ñ╦å├á┬ñ┬¿",
+  "leaseRenewableNo": "à¤¹à¥à¤¨ à¤¸à¤•à¥à¤¦à¥ˆà¤¨",
 
   "@leaseRenewableUnset": {
     "description": "Lease renewal unanswered."
   },
-  "leaseRenewableUnset": "├á┬ñΓÇ░├á┬ñ┬▓├á┬Ñ┬ì├á┬ñ┬▓├á┬ÑΓÇí├á┬ñΓÇô ├á┬ñΓÇ║├á┬Ñ╦å├á┬ñ┬¿",
+  "leaseRenewableUnset": "à¤‰à¤²à¥à¤²à¥‡à¤– à¤›à¥ˆà¤¨",
 
   "@sectionRentalTerms": {
     "description": "Rent-specific section heading on the specs step."
   },
-  "sectionRentalTerms": "├á┬ñ┬¡├á┬ñ┬╛├á┬ñ┬í├á┬ñ┬╛├á┬ñΓÇó├á┬ñ┬╛ ├á┬ñ┬╕├á┬ñ┬░├á┬Ñ┬ì├á┬ñ┬ñ├á┬ñ┬╣├á┬ñ┬░├á┬ÑΓÇÜ",
+  "sectionRentalTerms": "à¤­à¤¾à¤¡à¤¾à¤•à¤¾ à¤¸à¤°à¥à¤¤à¤¹à¤°à¥‚",
 
   "@fieldDeposit": {
     "description": "Security deposit field label."
   },
-  "fieldDeposit": "├á┬ñ┼ô├á┬ñ┬«├á┬ñ┬╛├á┬ñ┬¿├á┬ñ┬ñ ├á┬ñ┬░├á┬ñΓÇó├á┬ñ┬«",
+  "fieldDeposit": "à¤œà¤®à¤¾à¤¨à¤¤ à¤°à¤•à¤®",
 
   "@fieldDepositHint": {
     "description": "Security deposit field hint."
   },
-  "fieldDepositHint": "├á┬ñ┬░├á┬Ñ┬ü├á┬ñ┬¬├á┬Ñ╦å├á┬ñ┬»├á┬ñ┬╛├á┬ñ┬ü, ├á┬ñ┬╕├á┬ñ┬╛├á┬ñ┬«├á┬ñ┬╛├á┬ñ┬¿├á┬Ñ┬ì├á┬ñ┬»├á┬ñ┬ñ├á┬ñ┬»├á┬ñ┬╛ ├á┬ñ┬Å├á┬ñΓÇó├á┬ñ┬ª├á┬ÑΓÇí├á┬ñΓÇô├á┬ñ┬┐ ├á┬ñ┬ñ├á┬ÑΓé¼├á┬ñ┬¿ ├á┬ñ┬«├á┬ñ┬╣├á┬ñ┬┐├á┬ñ┬¿├á┬ñ┬╛├á┬ñΓÇó├á┬ÑΓÇ╣ ├á┬ñ┬¡├á┬ñ┬╛├á┬ñ┬í├á┬ñ┬╛",
+  "fieldDepositHint": "à¤°à¥à¤ªà¥ˆà¤¯à¤¾à¤, à¤¸à¤¾à¤®à¤¾à¤¨à¥à¤¯à¤¤à¤¯à¤¾ à¤à¤•à¤¦à¥‡à¤–à¤¿ à¤¤à¥€à¤¨ à¤®à¤¹à¤¿à¤¨à¤¾à¤•à¥‹ à¤­à¤¾à¤¡à¤¾",
 
   "@fieldAvailableFrom": {
     "description": "Availability date field label."
   },
-  "fieldAvailableFrom": "├á┬ñΓÇ░├á┬ñ┬¬├á┬ñ┬▓├á┬ñ┬¼├á┬Ñ┬ì├á┬ñ┬º ├á┬ñ┬«├á┬ñ┬┐├á┬ñ┬ñ├á┬ñ┬┐",
+  "fieldAvailableFrom": "à¤‰à¤ªà¤²à¤¬à¥à¤§ à¤®à¤¿à¤¤à¤¿",
 
   "@fieldAvailableFromPick": {
     "description": "Availability date picker action."
   },
-  "fieldAvailableFromPick": "├á┬ñ┬«├á┬ñ┬┐├á┬ñ┬ñ├á┬ñ┬┐ ├á┬ñΓÇ║├á┬ñ┬╛├á┬ñ┬¿├á┬Ñ┬ì├á┬ñ┬¿├á┬Ñ┬ü├á┬ñ┬╣├á┬ÑΓÇ╣├á┬ñ┬╕├á┬Ñ┬ì",
+  "fieldAvailableFromPick": "à¤®à¤¿à¤¤à¤¿ à¤›à¤¾à¤¨à¥à¤¨à¥à¤¹à¥‹à¤¸à¥",
 
   "@fieldAvailableFromClear": {
     "description": "Availability date clear action."
   },
-  "fieldAvailableFromClear": "├á┬ñ┬«├á┬ñ┬┐├á┬ñ┬ñ├á┬ñ┬┐ ├á┬ñ┬╣├á┬ñ┼╕├á┬ñ┬╛├á┬ñΓÇ░├á┬ñ┬¿├á┬Ñ┬ü├á┬ñ┬╣├á┬ÑΓÇ╣├á┬ñ┬╕├á┬Ñ┬ì",
+  "fieldAvailableFromClear": "à¤®à¤¿à¤¤à¤¿ à¤¹à¤Ÿà¤¾à¤‰à¤¨à¥à¤¹à¥‹à¤¸à¥",
 
   "@availableFromPast": {
     "description": "Availability date in the past message."
   },
-  "availableFromPast": "├á┬ñΓÇ░├á┬ñ┬¬├á┬ñ┬▓├á┬ñ┬¼├á┬Ñ┬ì├á┬ñ┬º ├á┬ñ┬«├á┬ñ┬┐├á┬ñ┬ñ├á┬ñ┬┐ ├á┬ñ┬╡├á┬ñ┬┐├á┬ñΓÇö├á┬ñ┬ñ├á┬ñ┬«├á┬ñ┬╛ ├á┬ñ┬╣├á┬Ñ┬ü├á┬ñ┬¿ ├á┬ñ┬╕├á┬ñΓÇó├á┬Ñ┬ì├á┬ñ┬ª├á┬Ñ╦å├á┬ñ┬¿",
+  "availableFromPast": "à¤‰à¤ªà¤²à¤¬à¥à¤§ à¤®à¤¿à¤¤à¤¿ à¤µà¤¿à¤—à¤¤à¤®à¤¾ à¤¹à¥à¤¨ à¤¸à¤•à¥à¤¦à¥ˆà¤¨",
 
   "@fieldFurnishing": {
     "description": "Furnishing level field label."
   },
-  "fieldFurnishing": "├á┬ñ┬½├á┬ñ┬░├á┬Ñ┬ì├á┬ñ┬¿├á┬ñ┬┐├á┬ñ┼í├á┬ñ┬░",
+  "fieldFurnishing": "à¤«à¤°à¥à¤¨à¤¿à¤šà¤°",
 
   "@furnishingUnfurnished": {
     "description": "Unfurnished furnishing option."
   },
-  "furnishingUnfurnished": "├á┬ñΓÇô├á┬ñ┬╛├á┬ñ┬▓├á┬ÑΓé¼",
+  "furnishingUnfurnished": "à¤–à¤¾à¤²à¥€",
 
   "@furnishingSemiFurnished": {
     "description": "Semi-furnished furnishing option."
   },
-  "furnishingSemiFurnished": "├á┬ñΓÇá├á┬ñΓÇÜ├á┬ñ┬╢├á┬ñ┬┐├á┬ñΓÇó ├á┬ñ┬╕├á┬Ñ┬ü├á┬ñ┬╕├á┬ñ┼ô├á┬Ñ┬ì├á┬ñ┼ô├á┬ñ┬┐├á┬ñ┬ñ",
+  "furnishingSemiFurnished": "à¤†à¤‚à¤¶à¤¿à¤• à¤¸à¥à¤¸à¤œà¥à¤œà¤¿à¤¤",
 
   "@furnishingFurnished": {
     "description": "Furnished furnishing option."
   },
-  "furnishingFurnished": "├á┬ñ┬¬├á┬ÑΓÇÜ├á┬ñ┬░├á┬Ñ┬ì├á┬ñ┬ú ├á┬ñ┬╕├á┬Ñ┬ü├á┬ñ┬╕├á┬ñ┼ô├á┬Ñ┬ì├á┬ñ┼ô├á┬ñ┬┐├á┬ñ┬ñ",
+  "furnishingFurnished": "à¤ªà¥‚à¤°à¥à¤£ à¤¸à¥à¤¸à¤œà¥à¤œà¤¿à¤¤",
 
   "@fieldUtilities": {
     "description": "Utilities included field label."
   },
-  "fieldUtilities": "├á┬ñ┬¡├á┬ñ┬╛├á┬ñ┬í├á┬ñ┬╛├á┬ñ┬«├á┬ñ┬╛ ├á┬ñ┬╕├á┬ñ┬«├á┬ñ┬╛├á┬ñ┬╡├á┬ÑΓÇí├á┬ñ┬╢ ├á┬ñ┬╕├á┬Ñ┬ü├á┬ñ┬╡├á┬ñ┬┐├á┬ñ┬º├á┬ñ┬╛",
+  "fieldUtilities": "à¤­à¤¾à¤¡à¤¾à¤®à¤¾ à¤¸à¤®à¤¾à¤µà¥‡à¤¶ à¤¸à¥à¤µà¤¿à¤§à¤¾",
 
   "@fieldUtilitiesHint": {
     "description": "Utilities included field hint."
   },
-  "fieldUtilitiesHint": "├á┬ñ┼ô├á┬ñ┬╕├á┬Ñ┬ì├á┬ñ┬ñ├á┬Ñ╦å: ├á┬ñ┬¬├á┬ñ┬╛├á┬ñ┬¿├á┬ÑΓé¼ ├á┬ñ┬░ ├á┬ñ┬¡├á┬ñ┬╡├á┬ñ┬¿ ├á┬ñ┬«├á┬ñ┬░├á┬Ñ┬ì├á┬ñ┬«├á┬ñ┬ñ",
+  "fieldUtilitiesHint": "à¤œà¤¸à¥à¤¤à¥ˆ: à¤ªà¤¾à¤¨à¥€ à¤° à¤­à¤µà¤¨ à¤®à¤°à¥à¤®à¤¤",
 
   "@utilitiesTooLong": {
     "description": "Utilities note over the length cap."
   },
-  "utilitiesTooLong": "├á┬ñ┬╕├á┬Ñ┬ü├á┬ñ┬╡├á┬ñ┬┐├á┬ñ┬º├á┬ñ┬╛├á┬ñΓÇó├á┬ÑΓÇ╣ ├á┬ñ┼╕├á┬ñ┬┐├á┬ñ┬¬├á┬Ñ┬ì├á┬ñ┬¬├á┬ñ┬ú├á┬ÑΓé¼ ├á┬Ñ┬¿├á┬Ñ┬ª├á┬Ñ┬ª ├á┬ñΓÇª├á┬ñΓÇó├á┬Ñ┬ì├á┬ñ┬╖├á┬ñ┬░├á┬ñ┬¡├á┬ñ┬¿├á┬Ñ┬ì├á┬ñ┬ª├á┬ñ┬╛ ├á┬ñΓÇó├á┬ñ┬« ├á┬ñ┬░├á┬ñ┬╛├á┬ñΓÇô├á┬Ñ┬ì├á┬ñ┬¿├á┬Ñ┬ü├á┬ñ┬╣├á┬ÑΓÇ╣├á┬ñ┬╕├á┬Ñ┬ì",
+  "utilitiesTooLong": "à¤¸à¥à¤µà¤¿à¤§à¤¾à¤•à¥‹ à¤Ÿà¤¿à¤ªà¥à¤ªà¤£à¥€ à¥¨à¥¦à¥¦ à¤…à¤•à¥à¤·à¤°à¤­à¤¨à¥à¤¦à¤¾ à¤•à¤® à¤°à¤¾à¤–à¥à¤¨à¥à¤¹à¥‹à¤¸à¥",
 
   "@fieldPetPolicy": {
     "description": "Pet policy field label."
   },
-  "fieldPetPolicy": "├á┬ñ┬¬├á┬ñ┬╛├á┬ñ┬▓├á┬Ñ┬ì├á┬ñ┬ñ├á┬Ñ┬ü ├á┬ñ┼ô├á┬ñ┬¿├á┬ñ┬╛├á┬ñ┬╡├á┬ñ┬░",
+  "fieldPetPolicy": "à¤ªà¤¾à¤²à¥à¤¤à¥ à¤œà¤¨à¤¾à¤µà¤°",
 
   "@petNotAllowed": {
     "description": "Pet policy option: no animals."
   },
-  "petNotAllowed": "├á┬ñ┬¬├á┬ñ┬╛├á┬ñ┬▓├á┬Ñ┬ì├á┬ñ┬ñ├á┬Ñ┬ü ├á┬ñ┼ô├á┬ñ┬¿├á┬ñ┬╛├á┬ñ┬╡├á┬ñ┬░ ├á┬ñΓÇ║├á┬Ñ╦å├á┬ñ┬¿",
+  "petNotAllowed": "à¤ªà¤¾à¤²à¥à¤¤à¥ à¤œà¤¨à¤¾à¤µà¤° à¤›à¥ˆà¤¨",
 
   "@petCatsOk": {
     "description": "Pet policy option: cats allowed."
   },
-  "petCatsOk": "├á┬ñ┬¼├á┬ñ┬┐├á┬ñ┬░├á┬ñ┬╛├á┬ñ┬▓├á┬ÑΓÇ╣ ├á┬ñ┼í├á┬ñ┬▓├á┬Ñ┬ì├á┬ñΓÇ║",
+  "petCatsOk": "à¤¬à¤¿à¤°à¤¾à¤²à¥‹ à¤šà¤²à¥à¤›",
 
   "@petDogsOk": {
     "description": "Pet policy option: dogs allowed."
   },
-  "petDogsOk": "├á┬ñΓÇó├á┬Ñ┬ü├á┬ñΓÇó├á┬Ñ┬ü├á┬ñ┬░ ├á┬ñ┼í├á┬ñ┬▓├á┬Ñ┬ì├á┬ñΓÇ║",
+  "petDogsOk": "à¤•à¥à¤•à¥à¤° à¤šà¤²à¥à¤›",
 
   "@petAllPets": {
     "description": "Pet policy option: any animal."
   },
-  "petAllPets": "├á┬ñ┬╕├á┬ñ┬¼├á┬Ñ╦å ├á┬ñ┬¬├á┬ñ┬╛├á┬ñ┬▓├á┬Ñ┬ì├á┬ñ┬ñ├á┬Ñ┬ü ├á┬ñ┼í├á┬ñ┬▓├á┬Ñ┬ì├á┬ñΓÇ║",
+  "petAllPets": "à¤¸à¤¬à¥ˆ à¤ªà¤¾à¤²à¥à¤¤à¥ à¤šà¤²à¥à¤›",
 
   "@petNegotiable": {
     "description": "Pet policy option: ask the seller."
   },
-  "petNegotiable": "├á┬ñ┬«├á┬ñ┬┐├á┬ñ┬▓├á┬ñ┬╛├á┬ñΓÇ░├á┬ñ┬¿ ├á┬ñ┬╕├á┬ñΓÇó├á┬ñ┬┐├á┬ñ┬¿├á┬Ñ┬ì├á┬ñΓÇ║",
+  "petNegotiable": "à¤®à¤¿à¤²à¤¾à¤‰à¤¨ à¤¸à¤•à¤¿à¤¨à¥à¤›",
 
   "@sectionBuilding": {
     "description": "Building-specific section heading on the specs step."
   },
-  "sectionBuilding": "├á┬ñ┬¡├á┬ñ┬╡├á┬ñ┬¿",
+  "sectionBuilding": "à¤­à¤µà¤¨",
 
   "@fieldParking": {
     "description": "Parking spaces field label."
   },
-  "fieldParking": "├á┬ñ┬¬├á┬ñ┬╛├á┬ñ┬░├á┬Ñ┬ì├á┬ñΓÇó├á┬ñ┬┐├á┬ñΓäó ├á┬ñ┬╕├á┬Ñ┬ì├á┬ñ┬Ñ├á┬ñ┬╛├á┬ñ┬¿",
+  "fieldParking": "à¤ªà¤¾à¤°à¥à¤•à¤¿à¤™ à¤¸à¥à¤¥à¤¾à¤¨",
 
   "@parkingMin": {
     "description": "Parking minimum message."
   },
-  "parkingMin": "├á┬ñ┬¬├á┬ñ┬╛├á┬ñ┬░├á┬Ñ┬ì├á┬ñΓÇó├á┬ñ┬┐├á┬ñΓäó ├á┬Ñ┬º ├á┬ñ┬╡├á┬ñ┬╛ ├á┬ñ┬¼├á┬ñ┬ó├á┬ÑΓé¼ ├á┬ñ┬╣├á┬Ñ┬ü├á┬ñ┬¿├á┬Ñ┬ü├á┬ñ┬¬├á┬ñ┬░├á┬Ñ┬ì├á┬ñΓÇ║",
+  "parkingMin": "à¤ªà¤¾à¤°à¥à¤•à¤¿à¤™ à¥§ à¤µà¤¾ à¤¬à¤¢à¥€ à¤¹à¥à¤¨à¥à¤ªà¤°à¥à¤›",
 
   "@fieldFloor": {
     "description": "Floor number field label."
   },
-  "fieldFloor": "├á┬ñ┬ñ├á┬ñ┬▓├á┬ñ┬╛",
+  "fieldFloor": "à¤¤à¤²à¤¾",
 
   "@fieldFloorHint": {
     "description": "Floor number field hint."
   },
-  "fieldFloorHint": "├á┬ñ┬ñ├á┬ñ┬▓├á┬Ñ┬ì├á┬ñ┬▓├á┬ÑΓÇ╣ ├á┬ñ┬ñ├á┬ñ┬▓├á┬ñ┬╛ ├á┬Ñ┬ª ├á┬ñ┬╣├á┬Ñ┬ü├á┬ñ┬¿├á┬Ñ┬ì├á┬ñΓÇ║",
+  "fieldFloorHint": "à¤¤à¤²à¥à¤²à¥‹ à¤¤à¤²à¤¾ à¥¦ à¤¹à¥à¤¨à¥à¤›",
 
   "@fieldTotalFloors": {
     "description": "Total floors field label."
   },
-  "fieldTotalFloors": "├á┬ñΓÇó├á┬Ñ┬ü├á┬ñ┬▓ ├á┬ñ┬ñ├á┬ñ┬▓├á┬ñ┬╛",
+  "fieldTotalFloors": "à¤•à¥à¤² à¤¤à¤²à¤¾",
 
   "@totalFloorsMin": {
     "description": "Total floors minimum message."
   },
-  "totalFloorsMin": "├á┬ñΓÇó├á┬Ñ┬ü├á┬ñ┬▓ ├á┬ñ┬ñ├á┬ñ┬▓├á┬ñ┬╛ ├á┬Ñ┬º ├á┬ñ┬╡├á┬ñ┬╛ ├á┬ñ┬¼├á┬ñ┬ó├á┬ÑΓé¼ ├á┬ñ┬╣├á┬Ñ┬ü├á┬ñ┬¿├á┬Ñ┬ü├á┬ñ┬¬├á┬ñ┬░├á┬Ñ┬ì├á┬ñΓÇ║",
+  "totalFloorsMin": "à¤•à¥à¤² à¤¤à¤²à¤¾ à¥§ à¤µà¤¾ à¤¬à¤¢à¥€ à¤¹à¥à¤¨à¥à¤ªà¤°à¥à¤›",
 
   "@fieldPropertyAge": {
     "description": "Building age field label."
   },
-  "fieldPropertyAge": "├á┬ñ┬¡├á┬ñ┬╡├á┬ñ┬¿ ├á┬ñΓÇ░├á┬ñ┬«├á┬ÑΓÇí├á┬ñ┬░",
+  "fieldPropertyAge": "à¤­à¤µà¤¨ à¤‰à¤®à¥‡à¤°",
 
   "@fieldPropertyAgeHint": {
     "description": "Building age field hint."
   },
-  "fieldPropertyAgeHint": "├á┬ñ┬¿├á┬ñ┬┐├á┬ñ┬░├á┬Ñ┬ì├á┬ñ┬«├á┬ñ┬╛├á┬ñ┬ú├á┬ñ┬ª├á┬ÑΓÇí├á┬ñΓÇô├á┬ñ┬┐ ├á┬ñ┬╡├á┬ñ┬░├á┬Ñ┬ì├á┬ñ┬╖, ├á┬ñ┬¿├á┬ñ┬»├á┬ñ┬╛├á┬ñ┬ü ├á┬ñ┬¡├á┬ñ┬Å ├á┬Ñ┬ª",
+  "fieldPropertyAgeHint": "à¤¨à¤¿à¤°à¥à¤®à¤¾à¤£à¤¦à¥‡à¤–à¤¿ à¤µà¤°à¥à¤·, à¤¨à¤¯à¤¾à¤ à¤­à¤ à¥¦",
 
   "@fieldConstructionStatus": {
     "description": "Construction status field label."
   },
-  "fieldConstructionStatus": "├á┬ñΓÇª├á┬ñ┬╡├á┬ñ┬╕├á┬Ñ┬ì├á┬ñ┬Ñ├á┬ñ┬╛",
+  "fieldConstructionStatus": "à¤…à¤µà¤¸à¥à¤¥à¤¾",
 
   "@constructionNew": {
     "description": "Construction status option: new build."
   },
-  "constructionNew": "├á┬ñ┬¿├á┬ñ┬»├á┬ñ┬╛├á┬ñ┬ü ├á┬ñ┬¿├á┬ñ┬┐├á┬ñ┬░├á┬Ñ┬ì├á┬ñ┬«├á┬ñ┬╛├á┬ñ┬ú",
+  "constructionNew": "à¤¨à¤¯à¤¾à¤ à¤¨à¤¿à¤°à¥à¤®à¤¾à¤£",
 
   "@constructionUnderConstruction": {
     "description": "Construction status option: still being built."
   },
-  "constructionUnderConstruction": "├á┬ñ┬¿├á┬ñ┬┐├á┬ñ┬░├á┬Ñ┬ì├á┬ñ┬«├á┬ñ┬╛├á┬ñ┬ú├á┬ñ┬╛├á┬ñ┬º├á┬ÑΓé¼├á┬ñ┬¿",
+  "constructionUnderConstruction": "à¤¨à¤¿à¤°à¥à¤®à¤¾à¤£à¤¾à¤§à¥€à¤¨",
 
   "@constructionResale": {
     "description": "Construction status option: previously occupied."
   },
-  "constructionResale": "├á┬ñ┬¬├á┬Ñ┬ü├á┬ñ┬¿├á┬ñ┬░├á┬Ñ┬ì├á┬ñ┬╡├á┬ñ┬┐├á┬ñΓÇó├á┬Ñ┬ì├á┬ñ┬░├á┬ñ┬»",
+  "constructionResale": "à¤ªà¥à¤¨à¤°à¥à¤µà¤¿à¤•à¥à¤°à¤¯",
 
   "@reviewLease": {
     "description": "Review summary row label for lease terms."
   },
-  "reviewLease": "├á┬ñ┬▓├á┬ñ┬┐├á┬ñ┼ô",
+  "reviewLease": "à¤²à¤¿à¤œ",
 
   "@reviewLeaseMonths": {
     "description": "Lease term summary value.",
@@ -743,12 +743,12 @@
       "months": { "type": "String", "example": "24" }
     }
   },
-  "reviewLeaseMonths": "{months} ├á┬ñ┬«├á┬ñ┬╣├á┬ñ┬┐├á┬ñ┬¿├á┬ñ┬╛",
+  "reviewLeaseMonths": "{months} à¤®à¤¹à¤¿à¤¨à¤¾",
 
   "@reviewRental": {
     "description": "Review summary row label for rental terms."
   },
-  "reviewRental": "├á┬ñ┬¡├á┬ñ┬╛├á┬ñ┬í├á┬ñ┬╛",
+  "reviewRental": "à¤­à¤¾à¤¡à¤¾",
 
   "@reviewDeposit": {
     "description": "Deposit summary value.",
@@ -756,7 +756,7 @@
       "amount": { "type": "String", "example": "NPR 50,000" }
     }
   },
-  "reviewDeposit": "├á┬ñ┼ô├á┬ñ┬«├á┬ñ┬╛├á┬ñ┬¿├á┬ñ┬ñ {amount}",
+  "reviewDeposit": "à¤œà¤®à¤¾à¤¨à¤¤ {amount}",
 
   "@reviewAvailableFrom": {
     "description": "Availability summary value.",
@@ -764,12 +764,12 @@
       "date": { "type": "String", "example": "1 Dec 2026" }
     }
   },
-  "reviewAvailableFrom": "{date} ├á┬ñ┬ª├á┬ÑΓÇí├á┬ñΓÇô├á┬ñ┬┐",
+  "reviewAvailableFrom": "{date} à¤¦à¥‡à¤–à¤¿",
 
   "@reviewBuilding": {
     "description": "Review summary row label for building details."
   },
-  "reviewBuilding": "├á┬ñ┬¡├á┬ñ┬╡├á┬ñ┬¿",
+  "reviewBuilding": "à¤­à¤µà¤¨",
 
   "@reviewFloor": {
     "description": "Floor summary value.",
@@ -778,7 +778,7 @@
       "total": { "type": "String", "example": "7" }
     }
   },
-  "reviewFloor": "{total} ├á┬ñ┬ñ├á┬ñ┬▓├á┬ñ┬╛├á┬ñ┬«├á┬ñ┬º├á┬Ñ┬ì├á┬ñ┬»├á┬ÑΓÇí ├á┬ñ┬ñ├á┬ñ┬▓├á┬ñ┬╛ {floor}",
+  "reviewFloor": "{total} à¤¤à¤²à¤¾à¤®à¤§à¥à¤¯à¥‡ à¤¤à¤²à¤¾ {floor}",
 
   "@reviewAge": {
     "description": "Building age summary value.",
@@ -786,5 +786,5 @@
       "years": { "type": "String", "example": "10" }
     }
   },
-  "reviewAge": "{years} ├á┬ñ┬╡├á┬ñ┬░├á┬Ñ┬ì├á┬ñ┬╖ ├á┬ñ┬¬├á┬Ñ┬ü├á┬ñ┬░├á┬ñ┬╛├á┬ñ┬¿├á┬ÑΓÇ╣"
+  "reviewAge": "{years} à¤µà¤°à¥à¤· à¤ªà¥à¤°à¤¾à¤¨à¥‹"
 }

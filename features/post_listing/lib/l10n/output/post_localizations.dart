@@ -263,7 +263,7 @@ abstract class AppLocalizations {
   /// Loading row template.
   ///
   /// In en, this message translates to:
-  /// **'Loading {label}ΓÇª'**
+  /// **'Loading {label}…'**
   String loadingSuffix(String label);
 
   /// Municipality load failure.
