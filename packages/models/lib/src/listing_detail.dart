@@ -66,6 +66,42 @@ sealed class ListingDetail with _$ListingDetail {
     /// them.
     int? bedrooms,
     int? bathrooms,
+    /// Lease length in months, null unless the purpose is lease.
+    int? leaseTermMonths,
+
+    /// Whether the lease can be renewed. Null when the listing does not say.
+    bool? leaseRenewable,
+
+    /// Security deposit in NPR, null unless the purpose is rent.
+    int? depositAmount,
+
+    /// First occupancy date, null unless the purpose is rent.
+    DateTime? availableFrom,
+
+    /// Furnishing level, null unless the purpose is rent or when unstated.
+    FurnishingStatus? furnishingStatus,
+
+    /// Which utilities the rent covers, null unless the purpose is rent.
+    String? utilitiesIncluded,
+
+    /// Pet policy, null unless the purpose is rent or when unstated.
+    PetPolicy? petPolicy,
+
+    /// Parking spaces, null for land.
+    int? parkingSpaces,
+
+    /// Floor this unit is on, zero being the ground floor. Null when the
+    /// building has no floor number to report.
+    int? floorNumber,
+
+    /// Total floors in the building. Null when not applicable.
+    int? totalFloors,
+
+    /// Building age in years, zero being new. Null for land.
+    int? propertyAgeYears,
+
+    /// New, under construction or resale. Null for land.
+    ConstructionStatus? constructionStatus,
 
     String? rejectionReason,
 

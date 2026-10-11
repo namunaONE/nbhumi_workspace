@@ -198,4 +198,105 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get verifyThisListing => 'Verify this listing';
+
+  @override
+  String get detailPageTitle => 'Property details';
+
+  @override
+  String specParking(int count) {
+    return '$count parking spaces';
+  }
+
+  @override
+  String get sectionLeaseTerms => 'Lease terms';
+
+  @override
+  String specLeaseTerm(int months) {
+    return '$months months';
+  }
+
+  @override
+  String get termRenewable => 'Can be renewed';
+
+  @override
+  String get termNotRenewable => 'Cannot be renewed';
+
+  @override
+  String get sectionRentalTerms => 'Rental terms';
+
+  @override
+  String specDeposit(String amount) {
+    return 'Deposit $amount';
+  }
+
+  @override
+  String specAvailableFrom(String date) {
+    return 'Available from $date';
+  }
+
+  @override
+  String specFurnishing(String level) {
+    return '$level';
+  }
+
+  @override
+  String get furnishingUnfurnished => 'Unfurnished';
+
+  @override
+  String get furnishingSemiFurnished => 'Partly furnished';
+
+  @override
+  String get furnishingFurnished => 'Fully furnished';
+
+  @override
+  String specPetPolicy(String policy) {
+    return 'Pets: $policy';
+  }
+
+  @override
+  String get petNotAllowed => 'No pets';
+
+  @override
+  String get petCatsOk => 'Cats allowed';
+
+  @override
+  String get petDogsOk => 'Dogs allowed';
+
+  @override
+  String get petAllPets => 'All pets allowed';
+
+  @override
+  String get petNegotiable => 'Negotiable';
+
+  @override
+  String get sectionBuilding => 'Building';
+
+  @override
+  String specFloor(int floor) {
+    return 'Floor $floor';
+  }
+
+  @override
+  String specFloorOf(int floor, int total) {
+    return 'Floor $floor of $total';
+  }
+
+  @override
+  String specAge(int years) {
+    return '$years years old';
+  }
+
+  @override
+  String specConstruction(String status) {
+    return '$status';
+  }
+
+  @override
+  String get constructionNew => 'New build';
+
+  @override
+  String get constructionUnderConstruction => 'Under construction';
+
+  @override
+  String get constructionResale => 'Resale';
 }

@@ -1,4 +1,4 @@
-﻿{
+{
   "@@locale": "ne",
   "@@last_modified": "2026-10-06T00:00:00.000",
 
@@ -521,5 +521,270 @@
 "@fieldDescriptionHint": {
   "description": "Listing description placeholder."
 },
-"fieldDescriptionHint": "जग्गा, बाटो, पानी र वरपर"
+  "fieldDescriptionHint": "जग्गा, बाटो, पानी र वरपर",
+  "@sectionLeaseTerms": {
+    "description": "Lease-specific section heading on the specs step."
+  },
+  "sectionLeaseTerms": "à¤²à¤¿à¤œà¤•à¤¾ à¤¸à¤°à¥à¤¤à¤¹à¤°à¥‚",
+
+  "@leaseTermsExplanation": {
+    "description": "Lease section explanation."
+  },
+  "leaseTermsExplanation": "à¤²à¤¿à¤œà¤²à¤¾à¤ˆ à¤…à¤µà¤§à¤¿ à¤šà¤¾à¤¹à¤¿à¤¨à¥à¤›à¥¤ à¤–à¤°à¤¿à¤¦à¤•à¤°à¥à¤¤à¤¾à¤¹à¤°à¥‚ à¤¯à¤¸à¥ˆà¤…à¤¨à¥à¤¸à¤¾à¤° à¤«à¤¿à¤²à¥à¤Ÿà¤° à¤—à¤°à¥à¤›à¤¨à¥à¥¤",
+
+  "@fieldLeaseTerm": {
+    "description": "Lease length in months field label."
+  },
+  "fieldLeaseTerm": "à¤²à¤¿à¤œ à¤…à¤µà¤§à¤¿",
+
+  "@fieldLeaseTermHint": {
+    "description": "Lease term field hint."
+  },
+  "fieldLeaseTermHint": "à¤®à¤¹à¤¿à¤¨à¤¾",
+
+  "@leaseTermMin": {
+    "description": "Lease term minimum message."
+  },
+  "leaseTermMin": "à¤²à¤¿à¤œ à¤…à¤µà¤§à¤¿ à¤•à¤®à¥à¤¤à¥€à¤®à¤¾ à¥§ à¤®à¤¹à¤¿à¤¨à¤¾ à¤¹à¥à¤¨à¥à¤ªà¤°à¥à¤›",
+
+  "@fieldLeaseRenewable": {
+    "description": "Lease renewal question."
+  },
+  "fieldLeaseRenewable": "à¤²à¤¿à¤œ à¤¨à¤µà¥€à¤•à¤°à¤£ à¤¹à¥à¤¨ à¤¸à¤•à¥à¤›?",
+
+  "@leaseRenewableYes": {
+    "description": "Lease renewable answer."
+  },
+  "leaseRenewableYes": "à¤¹à¥à¤¨ à¤¸à¤•à¥à¤›",
+
+  "@leaseRenewableNo": {
+    "description": "Lease not renewable answer."
+  },
+  "leaseRenewableNo": "à¤¹à¥à¤¨ à¤¸à¤•à¥à¤¦à¥ˆà¤¨",
+
+  "@leaseRenewableUnset": {
+    "description": "Lease renewal unanswered."
+  },
+  "leaseRenewableUnset": "à¤‰à¤²à¥à¤²à¥‡à¤– à¤›à¥ˆà¤¨",
+
+  "@sectionRentalTerms": {
+    "description": "Rent-specific section heading on the specs step."
+  },
+  "sectionRentalTerms": "à¤­à¤¾à¤¡à¤¾à¤•à¤¾ à¤¸à¤°à¥à¤¤à¤¹à¤°à¥‚",
+
+  "@fieldDeposit": {
+    "description": "Security deposit field label."
+  },
+  "fieldDeposit": "à¤œà¤®à¤¾à¤¨à¤¤ à¤°à¤•à¤®",
+
+  "@fieldDepositHint": {
+    "description": "Security deposit field hint."
+  },
+  "fieldDepositHint": "à¤°à¥à¤ªà¥ˆà¤¯à¤¾à¤, à¤¸à¤¾à¤®à¤¾à¤¨à¥à¤¯à¤¤à¤¯à¤¾ à¤à¤•à¤¦à¥‡à¤–à¤¿ à¤¤à¥€à¤¨ à¤®à¤¹à¤¿à¤¨à¤¾à¤•à¥‹ à¤­à¤¾à¤¡à¤¾",
+
+  "@fieldAvailableFrom": {
+    "description": "Availability date field label."
+  },
+  "fieldAvailableFrom": "à¤‰à¤ªà¤²à¤¬à¥à¤§ à¤®à¤¿à¤¤à¤¿",
+
+  "@fieldAvailableFromPick": {
+    "description": "Availability date picker action."
+  },
+  "fieldAvailableFromPick": "à¤®à¤¿à¤¤à¤¿ à¤›à¤¾à¤¨à¥à¤¨à¥à¤¹à¥‹à¤¸à¥",
+
+  "@fieldAvailableFromClear": {
+    "description": "Availability date clear action."
+  },
+  "fieldAvailableFromClear": "à¤®à¤¿à¤¤à¤¿ à¤¹à¤Ÿà¤¾à¤‰à¤¨à¥à¤¹à¥‹à¤¸à¥",
+
+  "@availableFromPast": {
+    "description": "Availability date in the past message."
+  },
+  "availableFromPast": "à¤‰à¤ªà¤²à¤¬à¥à¤§ à¤®à¤¿à¤¤à¤¿ à¤µà¤¿à¤—à¤¤à¤®à¤¾ à¤¹à¥à¤¨ à¤¸à¤•à¥à¤¦à¥ˆà¤¨",
+
+  "@fieldFurnishing": {
+    "description": "Furnishing level field label."
+  },
+  "fieldFurnishing": "à¤«à¤°à¥à¤¨à¤¿à¤šà¤°",
+
+  "@furnishingUnfurnished": {
+    "description": "Unfurnished furnishing option."
+  },
+  "furnishingUnfurnished": "à¤–à¤¾à¤²à¥€",
+
+  "@furnishingSemiFurnished": {
+    "description": "Semi-furnished furnishing option."
+  },
+  "furnishingSemiFurnished": "à¤†à¤‚à¤¶à¤¿à¤• à¤¸à¥à¤¸à¤œà¥à¤œà¤¿à¤¤",
+
+  "@furnishingFurnished": {
+    "description": "Furnished furnishing option."
+  },
+  "furnishingFurnished": "à¤ªà¥‚à¤°à¥à¤£ à¤¸à¥à¤¸à¤œà¥à¤œà¤¿à¤¤",
+
+  "@fieldUtilities": {
+    "description": "Utilities included field label."
+  },
+  "fieldUtilities": "à¤­à¤¾à¤¡à¤¾à¤®à¤¾ à¤¸à¤®à¤¾à¤µà¥‡à¤¶ à¤¸à¥à¤µà¤¿à¤§à¤¾",
+
+  "@fieldUtilitiesHint": {
+    "description": "Utilities included field hint."
+  },
+  "fieldUtilitiesHint": "à¤œà¤¸à¥à¤¤à¥ˆ: à¤ªà¤¾à¤¨à¥€ à¤° à¤­à¤µà¤¨ à¤®à¤°à¥à¤®à¤¤",
+
+  "@utilitiesTooLong": {
+    "description": "Utilities note over the length cap."
+  },
+  "utilitiesTooLong": "à¤¸à¥à¤µà¤¿à¤§à¤¾à¤•à¥‹ à¤Ÿà¤¿à¤ªà¥à¤ªà¤£à¥€ à¥¨à¥¦à¥¦ à¤…à¤•à¥à¤·à¤°à¤­à¤¨à¥à¤¦à¤¾ à¤•à¤® à¤°à¤¾à¤–à¥à¤¨à¥à¤¹à¥‹à¤¸à¥",
+
+  "@fieldPetPolicy": {
+    "description": "Pet policy field label."
+  },
+  "fieldPetPolicy": "à¤ªà¤¾à¤²à¥à¤¤à¥ à¤œà¤¨à¤¾à¤µà¤°",
+
+  "@petNotAllowed": {
+    "description": "Pet policy option: no animals."
+  },
+  "petNotAllowed": "à¤ªà¤¾à¤²à¥à¤¤à¥ à¤œà¤¨à¤¾à¤µà¤° à¤›à¥ˆà¤¨",
+
+  "@petCatsOk": {
+    "description": "Pet policy option: cats allowed."
+  },
+  "petCatsOk": "à¤¬à¤¿à¤°à¤¾à¤²à¥‹ à¤šà¤²à¥à¤›",
+
+  "@petDogsOk": {
+    "description": "Pet policy option: dogs allowed."
+  },
+  "petDogsOk": "à¤•à¥à¤•à¥à¤° à¤šà¤²à¥à¤›",
+
+  "@petAllPets": {
+    "description": "Pet policy option: any animal."
+  },
+  "petAllPets": "à¤¸à¤¬à¥ˆ à¤ªà¤¾à¤²à¥à¤¤à¥ à¤šà¤²à¥à¤›",
+
+  "@petNegotiable": {
+    "description": "Pet policy option: ask the seller."
+  },
+  "petNegotiable": "à¤®à¤¿à¤²à¤¾à¤‰à¤¨ à¤¸à¤•à¤¿à¤¨à¥à¤›",
+
+  "@sectionBuilding": {
+    "description": "Building-specific section heading on the specs step."
+  },
+  "sectionBuilding": "à¤­à¤µà¤¨",
+
+  "@fieldParking": {
+    "description": "Parking spaces field label."
+  },
+  "fieldParking": "à¤ªà¤¾à¤°à¥à¤•à¤¿à¤™ à¤¸à¥à¤¥à¤¾à¤¨",
+
+  "@parkingMin": {
+    "description": "Parking minimum message."
+  },
+  "parkingMin": "à¤ªà¤¾à¤°à¥à¤•à¤¿à¤™ à¥§ à¤µà¤¾ à¤¬à¤¢à¥€ à¤¹à¥à¤¨à¥à¤ªà¤°à¥à¤›",
+
+  "@fieldFloor": {
+    "description": "Floor number field label."
+  },
+  "fieldFloor": "à¤¤à¤²à¤¾",
+
+  "@fieldFloorHint": {
+    "description": "Floor number field hint."
+  },
+  "fieldFloorHint": "à¤¤à¤²à¥à¤²à¥‹ à¤¤à¤²à¤¾ à¥¦ à¤¹à¥à¤¨à¥à¤›",
+
+  "@fieldTotalFloors": {
+    "description": "Total floors field label."
+  },
+  "fieldTotalFloors": "à¤•à¥à¤² à¤¤à¤²à¤¾",
+
+  "@totalFloorsMin": {
+    "description": "Total floors minimum message."
+  },
+  "totalFloorsMin": "à¤•à¥à¤² à¤¤à¤²à¤¾ à¥§ à¤µà¤¾ à¤¬à¤¢à¥€ à¤¹à¥à¤¨à¥à¤ªà¤°à¥à¤›",
+
+  "@fieldPropertyAge": {
+    "description": "Building age field label."
+  },
+  "fieldPropertyAge": "à¤­à¤µà¤¨ à¤‰à¤®à¥‡à¤°",
+
+  "@fieldPropertyAgeHint": {
+    "description": "Building age field hint."
+  },
+  "fieldPropertyAgeHint": "à¤¨à¤¿à¤°à¥à¤®à¤¾à¤£à¤¦à¥‡à¤–à¤¿ à¤µà¤°à¥à¤·, à¤¨à¤¯à¤¾à¤ à¤­à¤ à¥¦",
+
+  "@fieldConstructionStatus": {
+    "description": "Construction status field label."
+  },
+  "fieldConstructionStatus": "à¤…à¤µà¤¸à¥à¤¥à¤¾",
+
+  "@constructionNew": {
+    "description": "Construction status option: new build."
+  },
+  "constructionNew": "à¤¨à¤¯à¤¾à¤ à¤¨à¤¿à¤°à¥à¤®à¤¾à¤£",
+
+  "@constructionUnderConstruction": {
+    "description": "Construction status option: still being built."
+  },
+  "constructionUnderConstruction": "à¤¨à¤¿à¤°à¥à¤®à¤¾à¤£à¤¾à¤§à¥€à¤¨",
+
+  "@constructionResale": {
+    "description": "Construction status option: previously occupied."
+  },
+  "constructionResale": "à¤ªà¥à¤¨à¤°à¥à¤µà¤¿à¤•à¥à¤°à¤¯",
+
+  "@reviewLease": {
+    "description": "Review summary row label for lease terms."
+  },
+  "reviewLease": "à¤²à¤¿à¤œ",
+
+  "@reviewLeaseMonths": {
+    "description": "Lease term summary value.",
+    "placeholders": {
+      "months": { "type": "String", "example": "24" }
+    }
+  },
+  "reviewLeaseMonths": "{months} à¤®à¤¹à¤¿à¤¨à¤¾",
+
+  "@reviewRental": {
+    "description": "Review summary row label for rental terms."
+  },
+  "reviewRental": "à¤­à¤¾à¤¡à¤¾",
+
+  "@reviewDeposit": {
+    "description": "Deposit summary value.",
+    "placeholders": {
+      "amount": { "type": "String", "example": "NPR 50,000" }
+    }
+  },
+  "reviewDeposit": "à¤œà¤®à¤¾à¤¨à¤¤ {amount}",
+
+  "@reviewAvailableFrom": {
+    "description": "Availability summary value.",
+    "placeholders": {
+      "date": { "type": "String", "example": "1 Dec 2026" }
+    }
+  },
+  "reviewAvailableFrom": "{date} à¤¦à¥‡à¤–à¤¿",
+
+  "@reviewBuilding": {
+    "description": "Review summary row label for building details."
+  },
+  "reviewBuilding": "à¤­à¤µà¤¨",
+
+  "@reviewFloor": {
+    "description": "Floor summary value.",
+    "placeholders": {
+      "floor": { "type": "String", "example": "3" },
+      "total": { "type": "String", "example": "7" }
+    }
+  },
+  "reviewFloor": "{total} à¤¤à¤²à¤¾à¤®à¤§à¥à¤¯à¥‡ à¤¤à¤²à¤¾ {floor}",
+
+  "@reviewAge": {
+    "description": "Building age summary value.",
+    "placeholders": {
+      "years": { "type": "String", "example": "10" }
+    }
+  },
+  "reviewAge": "{years} à¤µà¤°à¥à¤· à¤ªà¥à¤°à¤¾à¤¨à¥‹"
 }

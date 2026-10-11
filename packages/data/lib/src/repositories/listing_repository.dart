@@ -185,6 +185,21 @@ class ListingRepository {
       'p_bedrooms': json['bedrooms'],
       'p_bathrooms': json['bathrooms'],
       'p_status': status.wireName,
+      // Lease: only non-null when the purpose is lease.
+      'p_lease_term_months': json['lease_term_months'],
+      'p_lease_renewable': json['lease_renewable'],
+      // Rent: only non-null when the purpose is rent.
+      'p_deposit_amount': json['deposit_amount'],
+      'p_available_from': json['available_from'],
+      'p_furnishing_status': json['furnishing_status'],
+      'p_utilities_included': json['utilities_included'],
+      'p_pet_policy': json['pet_policy'],
+      // Building and parking: only non-null when the type has them.
+      'p_parking_spaces': json['parking_spaces'],
+      'p_floor_number': json['floor_number'],
+      'p_total_floors': json['total_floors'],
+      'p_property_age_years': json['property_age_years'],
+      'p_construction_status': json['construction_status'],
     };
   }
 
@@ -227,6 +242,21 @@ class ListingRepository {
       'p_bedrooms': json?['bedrooms'],
       'p_bathrooms': json?['bathrooms'],
       'p_status': status?.wireName,
+      // Lease, rental and building fields: same coalesce convention, so null
+      // means "leave alone". The trigger nulls inapplicable values on write,
+      // so a stored lease term is never carried onto a rent listing.
+      'p_lease_term_months': json?['lease_term_months'],
+      'p_lease_renewable': json?['lease_renewable'],
+      'p_deposit_amount': json?['deposit_amount'],
+      'p_available_from': json?['available_from'],
+      'p_furnishing_status': json?['furnishing_status'],
+      'p_utilities_included': json?['utilities_included'],
+      'p_pet_policy': json?['pet_policy'],
+      'p_parking_spaces': json?['parking_spaces'],
+      'p_floor_number': json?['floor_number'],
+      'p_total_floors': json?['total_floors'],
+      'p_property_age_years': json?['property_age_years'],
+      'p_construction_status': json?['construction_status'],
     };
   }
 

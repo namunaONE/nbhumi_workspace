@@ -335,4 +335,165 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get fieldDescriptionHint => 'Land, road, water and surroundings';
+
+  @override
+  String get sectionLeaseTerms => 'Lease terms';
+
+  @override
+  String get leaseTermsExplanation =>
+      'A lease needs a term. Buyers filter on it, and a lease without one cannot be actioned.';
+
+  @override
+  String get fieldLeaseTerm => 'Lease term';
+
+  @override
+  String get fieldLeaseTermHint => 'Months';
+
+  @override
+  String get leaseTermMin => 'Lease term must be at least 1 month';
+
+  @override
+  String get fieldLeaseRenewable => 'Can the lease be renewed?';
+
+  @override
+  String get leaseRenewableYes => 'Yes';
+
+  @override
+  String get leaseRenewableNo => 'No';
+
+  @override
+  String get leaseRenewableUnset => 'Not stated';
+
+  @override
+  String get sectionRentalTerms => 'Rental terms';
+
+  @override
+  String get fieldDeposit => 'Security deposit';
+
+  @override
+  String get fieldDepositHint => 'NPR, usually one to three months of rent';
+
+  @override
+  String get fieldAvailableFrom => 'Available from';
+
+  @override
+  String get fieldAvailableFromPick => 'Choose a date';
+
+  @override
+  String get fieldAvailableFromClear => 'Clear date';
+
+  @override
+  String get availableFromPast => 'Availability date cannot be in the past';
+
+  @override
+  String get fieldFurnishing => 'Furnishing';
+
+  @override
+  String get furnishingUnfurnished => 'Unfurnished';
+
+  @override
+  String get furnishingSemiFurnished => 'Partly furnished';
+
+  @override
+  String get furnishingFurnished => 'Fully furnished';
+
+  @override
+  String get fieldUtilities => 'Utilities included';
+
+  @override
+  String get fieldUtilitiesHint => 'e.g. Water and building maintenance';
+
+  @override
+  String get utilitiesTooLong => 'Keep the utilities note under 200 characters';
+
+  @override
+  String get fieldPetPolicy => 'Pets';
+
+  @override
+  String get petNotAllowed => 'No pets';
+
+  @override
+  String get petCatsOk => 'Cats allowed';
+
+  @override
+  String get petDogsOk => 'Dogs allowed';
+
+  @override
+  String get petAllPets => 'All pets allowed';
+
+  @override
+  String get petNegotiable => 'Negotiable';
+
+  @override
+  String get sectionBuilding => 'Building';
+
+  @override
+  String get fieldParking => 'Parking spaces';
+
+  @override
+  String get parkingMin => 'Parking must be 1 or more';
+
+  @override
+  String get fieldFloor => 'Floor';
+
+  @override
+  String get fieldFloorHint => 'Ground floor is 0';
+
+  @override
+  String get fieldTotalFloors => 'Total floors';
+
+  @override
+  String get totalFloorsMin => 'Total floors must be 1 or more';
+
+  @override
+  String get fieldPropertyAge => 'Building age';
+
+  @override
+  String get fieldPropertyAgeHint => 'Years since construction, 0 if new';
+
+  @override
+  String get fieldConstructionStatus => 'Status';
+
+  @override
+  String get constructionNew => 'New build';
+
+  @override
+  String get constructionUnderConstruction => 'Under construction';
+
+  @override
+  String get constructionResale => 'Resale';
+
+  @override
+  String get reviewLease => 'Lease';
+
+  @override
+  String reviewLeaseMonths(String months) {
+    return '$months months';
+  }
+
+  @override
+  String get reviewRental => 'Rental';
+
+  @override
+  String reviewDeposit(String amount) {
+    return 'Deposit $amount';
+  }
+
+  @override
+  String reviewAvailableFrom(String date) {
+    return 'From $date';
+  }
+
+  @override
+  String get reviewBuilding => 'Building';
+
+  @override
+  String reviewFloor(String floor, String total) {
+    return 'Floor $floor of $total';
+  }
+
+  @override
+  String reviewAge(String years) {
+    return '$years years old';
+  }
 }

@@ -427,6 +427,168 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Verify this listing'**
   String get verifyThisListing;
+
+  /// Browser tab fallback while the listing is still loading.
+  ///
+  /// In en, this message translates to:
+  /// **'Property details'**
+  String get detailPageTitle;
+
+  /// Parking spaces spec row.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} parking spaces'**
+  String specParking(int count);
+
+  /// Lease-specific section heading.
+  ///
+  /// In en, this message translates to:
+  /// **'Lease terms'**
+  String get sectionLeaseTerms;
+
+  /// Lease length spec row.
+  ///
+  /// In en, this message translates to:
+  /// **'{months} months'**
+  String specLeaseTerm(int months);
+
+  /// Lease can be renewed.
+  ///
+  /// In en, this message translates to:
+  /// **'Can be renewed'**
+  String get termRenewable;
+
+  /// Lease cannot be renewed.
+  ///
+  /// In en, this message translates to:
+  /// **'Cannot be renewed'**
+  String get termNotRenewable;
+
+  /// Rent-specific section heading.
+  ///
+  /// In en, this message translates to:
+  /// **'Rental terms'**
+  String get sectionRentalTerms;
+
+  /// Security deposit spec row.
+  ///
+  /// In en, this message translates to:
+  /// **'Deposit {amount}'**
+  String specDeposit(String amount);
+
+  /// Availability date spec row.
+  ///
+  /// In en, this message translates to:
+  /// **'Available from {date}'**
+  String specAvailableFrom(String date);
+
+  /// Furnishing level spec row.
+  ///
+  /// In en, this message translates to:
+  /// **'{level}'**
+  String specFurnishing(String level);
+
+  /// Unfurnished option.
+  ///
+  /// In en, this message translates to:
+  /// **'Unfurnished'**
+  String get furnishingUnfurnished;
+
+  /// Semi-furnished option.
+  ///
+  /// In en, this message translates to:
+  /// **'Partly furnished'**
+  String get furnishingSemiFurnished;
+
+  /// Furnished option.
+  ///
+  /// In en, this message translates to:
+  /// **'Fully furnished'**
+  String get furnishingFurnished;
+
+  /// Pet policy spec row.
+  ///
+  /// In en, this message translates to:
+  /// **'Pets: {policy}'**
+  String specPetPolicy(String policy);
+
+  /// No pets option.
+  ///
+  /// In en, this message translates to:
+  /// **'No pets'**
+  String get petNotAllowed;
+
+  /// Cats allowed option.
+  ///
+  /// In en, this message translates to:
+  /// **'Cats allowed'**
+  String get petCatsOk;
+
+  /// Dogs allowed option.
+  ///
+  /// In en, this message translates to:
+  /// **'Dogs allowed'**
+  String get petDogsOk;
+
+  /// All pets option.
+  ///
+  /// In en, this message translates to:
+  /// **'All pets allowed'**
+  String get petAllPets;
+
+  /// Pets negotiable option.
+  ///
+  /// In en, this message translates to:
+  /// **'Negotiable'**
+  String get petNegotiable;
+
+  /// Building-specific section heading.
+  ///
+  /// In en, this message translates to:
+  /// **'Building'**
+  String get sectionBuilding;
+
+  /// Floor number spec row without a total.
+  ///
+  /// In en, this message translates to:
+  /// **'Floor {floor}'**
+  String specFloor(int floor);
+
+  /// Floor position within a building.
+  ///
+  /// In en, this message translates to:
+  /// **'Floor {floor} of {total}'**
+  String specFloorOf(int floor, int total);
+
+  /// Building age spec row.
+  ///
+  /// In en, this message translates to:
+  /// **'{years} years old'**
+  String specAge(int years);
+
+  /// Construction status spec row.
+  ///
+  /// In en, this message translates to:
+  /// **'{status}'**
+  String specConstruction(String status);
+
+  /// New build option.
+  ///
+  /// In en, this message translates to:
+  /// **'New build'**
+  String get constructionNew;
+
+  /// Under construction option.
+  ///
+  /// In en, this message translates to:
+  /// **'Under construction'**
+  String get constructionUnderConstruction;
+
+  /// Resale option.
+  ///
+  /// In en, this message translates to:
+  /// **'Resale'**
+  String get constructionResale;
 }
 
 class _AppLocalizationsDelegate

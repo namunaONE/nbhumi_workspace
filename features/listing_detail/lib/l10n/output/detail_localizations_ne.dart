@@ -186,4 +186,105 @@ class AppLocalizationsNe extends AppLocalizations {
 
   @override
   String get verifyThisListing => 'यो विज्ञापन प्रमाणित गर्नुहोस्';
+
+  @override
+  String get detailPageTitle => 'सम्पत्ति विवरण';
+
+  @override
+  String specParking(int count) {
+    return '$count पार्किङ स्थान';
+  }
+
+  @override
+  String get sectionLeaseTerms => 'लिजका सर्तहरू';
+
+  @override
+  String specLeaseTerm(int months) {
+    return '$months महिना';
+  }
+
+  @override
+  String get termRenewable => 'नवीकरण हुन सक्छ';
+
+  @override
+  String get termNotRenewable => 'नवीकरण हुन सक्दैन';
+
+  @override
+  String get sectionRentalTerms => 'भाडाका सर्तहरू';
+
+  @override
+  String specDeposit(String amount) {
+    return 'जमानत $amount';
+  }
+
+  @override
+  String specAvailableFrom(String date) {
+    return '$date देखि उपलब्ध';
+  }
+
+  @override
+  String specFurnishing(String level) {
+    return '$level';
+  }
+
+  @override
+  String get furnishingUnfurnished => 'खाली';
+
+  @override
+  String get furnishingSemiFurnished => 'आंशिक सुसज्जित';
+
+  @override
+  String get furnishingFurnished => 'पूर्ण सुसज्जित';
+
+  @override
+  String specPetPolicy(String policy) {
+    return 'पाल्तु जनावर: $policy';
+  }
+
+  @override
+  String get petNotAllowed => 'पाल्तु जनावर छैन';
+
+  @override
+  String get petCatsOk => 'बिरालो चल्छ';
+
+  @override
+  String get petDogsOk => 'कुकुर चल्छ';
+
+  @override
+  String get petAllPets => 'सबै पाल्तु चल्छ';
+
+  @override
+  String get petNegotiable => 'मिलाउन सकिन्छ';
+
+  @override
+  String get sectionBuilding => 'भवन';
+
+  @override
+  String specFloor(int floor) {
+    return 'तला $floor';
+  }
+
+  @override
+  String specFloorOf(int floor, int total) {
+    return '$total तलामध्ये तला $floor';
+  }
+
+  @override
+  String specAge(int years) {
+    return '$years वर्ष पुरानो';
+  }
+
+  @override
+  String specConstruction(String status) {
+    return '$status';
+  }
+
+  @override
+  String get constructionNew => 'नयाँ निर्माण';
+
+  @override
+  String get constructionUnderConstruction => 'निर्माणाधीन';
+
+  @override
+  String get constructionResale => 'पुनर्विक्रय';
 }

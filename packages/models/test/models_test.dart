@@ -90,6 +90,70 @@ void main() {
       expect(updated.title, 'Updated Title');
       expect(updated.id, 'test-id');
     });
+
+    test('conditioned enums use wire names, never Dart names', () {
+      // The bug class this guards: `.name` sent straight to the RPC sends
+      // `semiFurnished`, which the CHECK rejects. `pendingReview` broke the
+      // same way once, hence ListingStatus.fromWire.
+      expect(FurnishingStatus.semiFurnished.wireName, 'semi_furnished');
+      expect(PetPolicy.catsOk.wireName, 'cats_ok');
+      expect(PetPolicy.notAllowed.wireName, 'not_allowed');
+      expect(ConstructionStatus.newBuild.wireName, 'new');
+      expect(
+        ConstructionStatus.underConstruction.wireName,
+        'under_construction',
+      );
+
+      expect(
+        FurnishingStatus.fromWire('semi_furnished'),
+        FurnishingStatus.semiFurnished,
+      );
+      expect(PetPolicy.fromWire('cats_ok'), PetPolicy.catsOk);
+      expect(
+        ConstructionStatus.fromWire('under_construction'),
+        ConstructionStatus.underConstruction,
+      );
+    });
+
+    test('conditioned enums refuse unknown values rather than defaulting',
+        () {
+      expect(() => FurnishingStatus.fromWire('luxury'), throwsArgumentError);
+      expect(() => PetPolicy.fromWire('hamsters_ok'), throwsArgumentError);
+      expect(
+        () => ConstructionStatus.fromWire('palace'),
+        throwsArgumentError,
+      );
+    });
+
+    test('round-trip preserves the conditioned fields', () {
+      final listing = Listing(
+        id: 'test-id',
+        sellerId: 'seller-id',
+        propertyType: PropertyType.apartment,
+        listingPurpose: ListingPurpose.rent,
+        title: 'Flat in Jawalakhel',
+        priceNpr: 25000,
+        district: 'Lalitpur',
+        city: 'Lalitpur',
+        depositAmount: 50000,
+        availableFrom: DateTime.utc(2026, 12),
+        furnishingStatus: FurnishingStatus.semiFurnished,
+        utilitiesIncluded: 'Water',
+        petPolicy: PetPolicy.catsOk,
+        parkingSpaces: 1,
+        floorNumber: 3,
+        totalFloors: 7,
+        propertyAgeYears: 10,
+        constructionStatus: ConstructionStatus.resale,
+      );
+
+      final restored = Listing.fromJson(listing.toJson());
+
+      expect(restored, listing);
+      expect(restored.toJson()['furnishing_status'], 'semi_furnished');
+      expect(restored.toJson()['pet_policy'], 'cats_ok');
+      expect(restored.toJson()['construction_status'], 'resale');
+    });
   });
 
   group('Profile', () {

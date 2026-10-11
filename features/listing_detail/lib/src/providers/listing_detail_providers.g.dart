@@ -15,10 +15,10 @@ part of 'listing_detail_providers.dart';
 /// other, and so navigating between two listings does not reuse the first
 /// response.
 ///
-/// Retry is left at the default here, unlike the browse feed: a detail page is a
-/// deliberate, one-shot navigation, and the user is waiting on a single request
-/// rather than scrolling through a list. A transient blip is worth one silent
-/// retry; a hard failure surfaces on the error state below.
+/// Retry is left at the default here, unlike the browse feed: a detail page is
+/// a deliberate, one-shot navigation, and the user is waiting on a single
+/// request rather than scrolling a list. A transient blip is worth one silent
+/// retry; a hard failure surfaces on the error state.
 
 @ProviderFor(ListingDetailView)
 final listingDetailViewProvider = ListingDetailViewFamily._();
@@ -30,10 +30,10 @@ final listingDetailViewProvider = ListingDetailViewFamily._();
 /// other, and so navigating between two listings does not reuse the first
 /// response.
 ///
-/// Retry is left at the default here, unlike the browse feed: a detail page is a
-/// deliberate, one-shot navigation, and the user is waiting on a single request
-/// rather than scrolling through a list. A transient blip is worth one silent
-/// retry; a hard failure surfaces on the error state below.
+/// Retry is left at the default here, unlike the browse feed: a detail page is
+/// a deliberate, one-shot navigation, and the user is waiting on a single
+/// request rather than scrolling a list. A transient blip is worth one silent
+/// retry; a hard failure surfaces on the error state.
 final class ListingDetailViewProvider
     extends $AsyncNotifierProvider<ListingDetailView, ListingDetail?> {
   /// One listing, by id.
@@ -43,10 +43,10 @@ final class ListingDetailViewProvider
   /// other, and so navigating between two listings does not reuse the first
   /// response.
   ///
-  /// Retry is left at the default here, unlike the browse feed: a detail page is a
-  /// deliberate, one-shot navigation, and the user is waiting on a single request
-  /// rather than scrolling through a list. A transient blip is worth one silent
-  /// retry; a hard failure surfaces on the error state below.
+  /// Retry is left at the default here, unlike the browse feed: a detail page is
+  /// a deliberate, one-shot navigation, and the user is waiting on a single
+  /// request rather than scrolling a list. A transient blip is worth one silent
+  /// retry; a hard failure surfaces on the error state.
   ListingDetailViewProvider._({
     required ListingDetailViewFamily super.from,
     required String super.argument,
@@ -83,7 +83,7 @@ final class ListingDetailViewProvider
   }
 }
 
-String _$listingDetailViewHash() => r'1ba6dbae16c6e85e7d355bd57d861f9c848adf13';
+String _$listingDetailViewHash() => r'd502fd4f38f856939e8f2d81c6c6166aee440610';
 
 /// One listing, by id.
 ///
@@ -92,10 +92,10 @@ String _$listingDetailViewHash() => r'1ba6dbae16c6e85e7d355bd57d861f9c848adf13';
 /// other, and so navigating between two listings does not reuse the first
 /// response.
 ///
-/// Retry is left at the default here, unlike the browse feed: a detail page is a
-/// deliberate, one-shot navigation, and the user is waiting on a single request
-/// rather than scrolling through a list. A transient blip is worth one silent
-/// retry; a hard failure surfaces on the error state below.
+/// Retry is left at the default here, unlike the browse feed: a detail page is
+/// a deliberate, one-shot navigation, and the user is waiting on a single
+/// request rather than scrolling a list. A transient blip is worth one silent
+/// retry; a hard failure surfaces on the error state.
 
 final class ListingDetailViewFamily extends $Family
     with
@@ -122,10 +122,10 @@ final class ListingDetailViewFamily extends $Family
   /// other, and so navigating between two listings does not reuse the first
   /// response.
   ///
-  /// Retry is left at the default here, unlike the browse feed: a detail page is a
-  /// deliberate, one-shot navigation, and the user is waiting on a single request
-  /// rather than scrolling through a list. A transient blip is worth one silent
-  /// retry; a hard failure surfaces on the error state below.
+  /// Retry is left at the default here, unlike the browse feed: a detail page is
+  /// a deliberate, one-shot navigation, and the user is waiting on a single
+  /// request rather than scrolling a list. A transient blip is worth one silent
+  /// retry; a hard failure surfaces on the error state.
 
   ListingDetailViewProvider call(String listingId) =>
       ListingDetailViewProvider._(argument: listingId, from: this);
@@ -141,10 +141,10 @@ final class ListingDetailViewFamily extends $Family
 /// other, and so navigating between two listings does not reuse the first
 /// response.
 ///
-/// Retry is left at the default here, unlike the browse feed: a detail page is a
-/// deliberate, one-shot navigation, and the user is waiting on a single request
-/// rather than scrolling through a list. A transient blip is worth one silent
-/// retry; a hard failure surfaces on the error state below.
+/// Retry is left at the default here, unlike the browse feed: a detail page is
+/// a deliberate, one-shot navigation, and the user is waiting on a single
+/// request rather than scrolling a list. A transient blip is worth one silent
+/// retry; a hard failure surfaces on the error state.
 
 abstract class _$ListingDetailView extends $AsyncNotifier<ListingDetail?> {
   late final _$args = ref.$arg as String;

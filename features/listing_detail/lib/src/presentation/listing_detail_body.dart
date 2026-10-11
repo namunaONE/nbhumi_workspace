@@ -1,5 +1,6 @@
 import 'package:core/core.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:listing_detail/l10n/output/detail_localizations.dart'
     as detail_strings;
 import 'package:models/models.dart';
@@ -167,6 +168,97 @@ class ListingDetailBody extends StatelessWidget {
                     icon: Icons.bathtub_outlined,
                     label: strings.specBathrooms(baths),
                   ),
+                if (listing.parkingSpaces case final parking?)
+                  _Spec(
+                    icon: Icons.local_parking_outlined,
+                    label: strings.specParking(parking),
+                  ),
+              ],
+            ),
+          ],
+
+          // Purpose-conditioned terms. The database nulls anything that does
+          // not apply, so each section appears only for its own purpose and
+          // the buyer is never shown a lease term on a rental.
+          if (listing.leaseTermMonths case final term?) ...<Widget>[
+            const Divider(height: 32),
+            _Section(
+              title: strings.sectionLeaseTerms,
+              children: <Widget>[
+                _Spec(
+                  icon: Icons.event_repeat_outlined,
+                  label: strings.specLeaseTerm(term),
+                  detail: listing.leaseRenewable == null
+                      ? null
+                      : (listing.leaseRenewable!
+                          ? strings.termRenewable
+                          : strings.termNotRenewable),
+                ),
+              ],
+            ),
+          ],
+
+          if (_hasRentalTerms(listing)) ...<Widget>[
+            const Divider(height: 32),
+            _Section(
+              title: strings.sectionRentalTerms,
+              children: <Widget>[
+                if (listing.depositAmount case final deposit?)
+                  _Spec(
+                    icon: Icons.savings_outlined,
+                    label: strings.specDeposit(
+                      NepaliCurrency.full(deposit),
+                    ),
+                  ),
+                if (listing.availableFrom case final from?)
+                  _Spec(
+                    icon: Icons.event_available_outlined,
+                    label: strings.specAvailableFrom(_date(context, from)),
+                  ),
+                if (listing.furnishingStatus case final furnishing?)
+                  _Spec(
+                    icon: Icons.chair_outlined,
+                    label: strings.specFurnishing(
+                      _furnishingLabel(strings, furnishing),
+                    ),
+                  ),
+                if (listing.petPolicy case final pets?)
+                  _Spec(
+                    icon: Icons.pets_outlined,
+                    label: strings.specPetPolicy(_petLabel(strings, pets)),
+                  ),
+                if ((listing.utilitiesIncluded ?? '').trim().isNotEmpty)
+                  _Spec(
+                    icon: Icons.power_outlined,
+                    label: listing.utilitiesIncluded!.trim(),
+                  ),
+              ],
+            ),
+          ],
+
+          // Type-conditioned building details: floor position, age, status.
+          if (_hasBuildingDetails(listing)) ...<Widget>[
+            const Divider(height: 32),
+            _Section(
+              title: strings.sectionBuilding,
+              children: <Widget>[
+                if (listing.floorNumber case final floor?)
+                  _Spec(
+                    icon: Icons.stairs_outlined,
+                    label: _floorLabel(strings, listing, floor),
+                  ),
+                if (listing.propertyAgeYears case final age?)
+                  _Spec(
+                    icon: Icons.history_outlined,
+                    label: strings.specAge(age),
+                  ),
+                if (listing.constructionStatus case final construction?)
+                  _Spec(
+                    icon: Icons.construction_outlined,
+                    label: strings.specConstruction(
+                      _constructionLabel(strings, construction),
+                    ),
+                  ),
               ],
             ),
           ],
@@ -216,6 +308,78 @@ class ListingDetailBody extends StatelessWidget {
       ListingPurpose.rent => strings.purposeRent,
       ListingPurpose.lease => strings.purposeLease,
     };
+  }
+
+  /// Whether any rental term is present.
+  ///
+  /// The trigger nulls all of these for a sale or a lease, so the check is a
+  /// plain "did the seller say anything" rather than a purpose test the page
+  /// would have to repeat.
+  static bool _hasRentalTerms(ListingDetail listing) =>
+      listing.depositAmount != null ||
+      listing.availableFrom != null ||
+      listing.furnishingStatus != null ||
+      listing.petPolicy != null ||
+      (listing.utilitiesIncluded ?? '').trim().isNotEmpty;
+
+  /// Whether any building detail is present.
+  static bool _hasBuildingDetails(ListingDetail listing) =>
+      listing.floorNumber != null ||
+      listing.propertyAgeYears != null ||
+      listing.constructionStatus != null;
+
+  /// Floor position, with the building total when the seller gave one.
+  static String _floorLabel(
+    detail_strings.AppLocalizations strings,
+    ListingDetail listing,
+    int floor,
+  ) {
+    final total = listing.totalFloors;
+    if (total != null) return strings.specFloorOf(floor, total);
+    return strings.specFloor(floor);
+  }
+
+  /// Localized furnishing level.
+  static String _furnishingLabel(
+    detail_strings.AppLocalizations strings,
+    FurnishingStatus level,
+  ) =>
+      switch (level) {
+        FurnishingStatus.unfurnished => strings.furnishingUnfurnished,
+        FurnishingStatus.semiFurnished => strings.furnishingSemiFurnished,
+        FurnishingStatus.furnished => strings.furnishingFurnished,
+      };
+
+  /// Localized pet policy.
+  static String _petLabel(
+    detail_strings.AppLocalizations strings,
+    PetPolicy policy,
+  ) =>
+      switch (policy) {
+        PetPolicy.notAllowed => strings.petNotAllowed,
+        PetPolicy.catsOk => strings.petCatsOk,
+        PetPolicy.dogsOk => strings.petDogsOk,
+        PetPolicy.allPets => strings.petAllPets,
+        PetPolicy.negotiable => strings.petNegotiable,
+      };
+
+  /// Localized construction status.
+  static String _constructionLabel(
+    detail_strings.AppLocalizations strings,
+    ConstructionStatus status,
+  ) =>
+      switch (status) {
+        ConstructionStatus.newBuild => strings.constructionNew,
+        ConstructionStatus.underConstruction =>
+          strings.constructionUnderConstruction,
+        ConstructionStatus.resale => strings.constructionResale,
+      };
+
+  /// Short local date for a value the server returns as a date, not a
+  /// timestamp: an availability day must not shift with the viewer's offset.
+  static String _date(BuildContext context, DateTime value) {
+    final locale = Localizations.localeOf(context).toString();
+    return DateFormat.yMMMd(locale).format(value);
   }
 }
 

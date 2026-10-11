@@ -9,6 +9,18 @@ Listing _listing({
   int? areaPaisa = 4,
   int? areaBigha,
   String? kittaNumber,
+  int? leaseTermMonths,
+  bool? leaseRenewable,
+  int? depositAmount,
+  DateTime? availableFrom,
+  FurnishingStatus? furnishingStatus,
+  String? utilitiesIncluded,
+  PetPolicy? petPolicy,
+  int? parkingSpaces,
+  int? floorNumber,
+  int? totalFloors,
+  int? propertyAgeYears,
+  ConstructionStatus? constructionStatus,
 }) =>
     Listing(
       id: 'l1',
@@ -25,6 +37,18 @@ Listing _listing({
       bedrooms: bedrooms,
       bathrooms: bathrooms,
       kittaNumber: kittaNumber,
+      leaseTermMonths: leaseTermMonths,
+      leaseRenewable: leaseRenewable,
+      depositAmount: depositAmount,
+      availableFrom: availableFrom,
+      furnishingStatus: furnishingStatus,
+      utilitiesIncluded: utilitiesIncluded,
+      petPolicy: petPolicy,
+      parkingSpaces: parkingSpaces,
+      floorNumber: floorNumber,
+      totalFloors: totalFloors,
+      propertyAgeYears: propertyAgeYears,
+      constructionStatus: constructionStatus,
     );
 
 void main() {
@@ -154,6 +178,21 @@ void main() {
           'p_bedrooms',
           'p_bathrooms',
           'p_status',
+          // HYA-312: purpose- and type-conditioned fields. The trigger nulls
+          // anything inapplicable server-side, so the client sends the full
+          // set and the guard keeps asserting the real key list.
+          'p_lease_term_months',
+          'p_lease_renewable',
+          'p_deposit_amount',
+          'p_available_from',
+          'p_furnishing_status',
+          'p_utilities_included',
+          'p_pet_policy',
+          'p_parking_spaces',
+          'p_floor_number',
+          'p_total_floors',
+          'p_property_age_years',
+          'p_construction_status',
         },
       );
     });
@@ -276,6 +315,21 @@ void main() {
           'p_bedrooms',
           'p_bathrooms',
           'p_status',
+          // HYA-312: purpose- and type-conditioned fields. The trigger nulls
+          // anything inapplicable server-side, so the client sends the full
+          // set and the guard keeps asserting the real key list.
+          'p_lease_term_months',
+          'p_lease_renewable',
+          'p_deposit_amount',
+          'p_available_from',
+          'p_furnishing_status',
+          'p_utilities_included',
+          'p_pet_policy',
+          'p_parking_spaces',
+          'p_floor_number',
+          'p_total_floors',
+          'p_property_age_years',
+          'p_construction_status',
         },
       );
     });
@@ -291,6 +345,71 @@ void main() {
 
       expect(update.containsKey('p_property_type'), isFalse);
       expect(update.containsKey('p_listing_purpose'), isFalse);
+    });
+
+    test('carries lease and building values when the listing has them', () {
+      // The mapping is a mechanical pass-through: the wizard and the trigger
+      // decide what applies, and this layer must not invent or drop values.
+      final params = ListingRepository.buildCreateParams(
+        _listing(
+          leaseTermMonths: 24,
+          leaseRenewable: true,
+          parkingSpaces: 2,
+          floorNumber: 3,
+          totalFloors: 7,
+          propertyAgeYears: 10,
+          constructionStatus: ConstructionStatus.resale,
+        ),
+        ListingStatus.draft,
+      );
+
+      expect(params['p_lease_term_months'], 24);
+      expect(params['p_lease_renewable'], isTrue);
+      expect(params['p_parking_spaces'], 2);
+      expect(params['p_floor_number'], 3);
+      expect(params['p_total_floors'], 7);
+      expect(params['p_property_age_years'], 10);
+      expect(params['p_construction_status'], 'resale');
+    });
+
+    test('carries rental values with their wire names, not Dart names', () {
+      // furnishingStatus serializes through its wireName, exactly like the
+      // listing_status enum: `.name` would send `semiFurnished`, which the
+      // CHECK rejects.
+      final params = ListingRepository.buildCreateParams(
+        _listing(
+          depositAmount: 50000,
+          availableFrom: DateTime.utc(2026, 12),
+          furnishingStatus: FurnishingStatus.semiFurnished,
+          utilitiesIncluded: 'Water',
+          petPolicy: PetPolicy.catsOk,
+        ),
+        ListingStatus.draft,
+      );
+
+      expect(params['p_deposit_amount'], 50000);
+      expect(params['p_available_from'], '2026-12-01T00:00:00.000Z');
+      expect(params['p_furnishing_status'], 'semi_furnished');
+      expect(params['p_utilities_included'], 'Water');
+      expect(params['p_pet_policy'], 'cats_ok');
+    });
+
+    test('absent conditioned fields travel as null, not as zeroes', () {
+      // A sale carries no lease term: null means "not applicable" and the
+      // trigger keeps it that way, while a 0 would violate the CHECK.
+      final params = ListingRepository.buildCreateParams(
+        _listing(),
+        ListingStatus.draft,
+      );
+
+      expect(params['p_lease_term_months'], isNull);
+      expect(params['p_lease_renewable'], isNull);
+      expect(params['p_deposit_amount'], isNull);
+      expect(params['p_furnishing_status'], isNull);
+      expect(params['p_pet_policy'], isNull);
+      expect(params['p_parking_spaces'], isNull);
+      expect(params['p_floor_number'], isNull);
+      expect(params['p_construction_status'], isNull);
     });
   });
 

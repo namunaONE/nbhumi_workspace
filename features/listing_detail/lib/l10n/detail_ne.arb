@@ -291,5 +291,171 @@
   "@verifyThisListing": {
     "description": "Owner CTA opening the Tier-3 submit flow."
   },
-  "verifyThisListing": "यो विज्ञापन प्रमाणित गर्नुहोस्"
+  "verifyThisListing": "यो विज्ञापन प्रमाणित गर्नुहोस्",
+
+  "@detailPageTitle": {
+    "description": "Browser tab fallback while the listing is still loading."
+  },
+  "detailPageTitle": "सम्पत्ति विवरण"
+,
+"@specParking": {
+    "description": "Parking spaces spec row.",
+    "placeholders": {
+      "count": { "type": "int", "example": "2" }
+    }
+  },
+  "specParking": "{count} पार्किङ स्थान",
+
+  "@sectionLeaseTerms": {
+    "description": "Lease-specific section heading."
+  },
+  "sectionLeaseTerms": "लिजका सर्तहरू",
+
+  "@specLeaseTerm": {
+    "description": "Lease length spec row.",
+    "placeholders": {
+      "months": { "type": "int", "example": "24" }
+    }
+  },
+  "specLeaseTerm": "{months} महिना",
+
+  "@termRenewable": {
+    "description": "Lease can be renewed."
+  },
+  "termRenewable": "नवीकरण हुन सक्छ",
+
+  "@termNotRenewable": {
+    "description": "Lease cannot be renewed."
+  },
+  "termNotRenewable": "नवीकरण हुन सक्दैन",
+
+  "@sectionRentalTerms": {
+    "description": "Rent-specific section heading."
+  },
+  "sectionRentalTerms": "भाडाका सर्तहरू",
+
+  "@specDeposit": {
+    "description": "Security deposit spec row.",
+    "placeholders": {
+      "amount": { "type": "String", "example": "NPR 50,000" }
+    }
+  },
+  "specDeposit": "जमानत {amount}",
+
+  "@specAvailableFrom": {
+    "description": "Availability date spec row.",
+    "placeholders": {
+      "date": { "type": "String", "example": "1 Dec 2026" }
+    }
+  },
+  "specAvailableFrom": "{date} देखि उपलब्ध",
+
+  "@specFurnishing": {
+    "description": "Furnishing level spec row.",
+    "placeholders": {
+      "level": { "type": "String", "example": "आंशिक सुसज्जित" }
+    }
+  },
+  "specFurnishing": "{level}",
+
+  "@furnishingUnfurnished": {
+    "description": "Unfurnished option."
+  },
+  "furnishingUnfurnished": "खाली",
+
+  "@furnishingSemiFurnished": {
+    "description": "Semi-furnished option."
+  },
+  "furnishingSemiFurnished": "आंशिक सुसज्जित",
+
+  "@furnishingFurnished": {
+    "description": "Furnished option."
+  },
+  "furnishingFurnished": "पूर्ण सुसज्जित",
+
+  "@specPetPolicy": {
+    "description": "Pet policy spec row.",
+    "placeholders": {
+      "policy": { "type": "String", "example": "बिरालो चल्छ" }
+    }
+  },
+  "specPetPolicy": "पाल्तु जनावर: {policy}",
+
+  "@petNotAllowed": {
+    "description": "No pets option."
+  },
+  "petNotAllowed": "पाल्तु जनावर छैन",
+
+  "@petCatsOk": {
+    "description": "Cats allowed option."
+  },
+  "petCatsOk": "बिरालो चल्छ",
+
+  "@petDogsOk": {
+    "description": "Dogs allowed option."
+  },
+  "petDogsOk": "कुकुर चल्छ",
+
+  "@petAllPets": {
+    "description": "All pets option."
+  },
+  "petAllPets": "सबै पाल्तु चल्छ",
+
+  "@petNegotiable": {
+    "description": "Pets negotiable option."
+  },
+  "petNegotiable": "मिलाउन सकिन्छ",
+
+  "@sectionBuilding": {
+    "description": "Building-specific section heading."
+  },
+  "sectionBuilding": "भवन",
+
+  "@specFloor": {
+    "description": "Floor number spec row without a total.",
+    "placeholders": {
+      "floor": { "type": "int", "example": "3" }
+    }
+  },
+  "specFloor": "तला {floor}",
+
+  "@specFloorOf": {
+    "description": "Floor position within a building.",
+    "placeholders": {
+      "floor": { "type": "int", "example": "3" },
+      "total": { "type": "int", "example": "7" }
+    }
+  },
+  "specFloorOf": "{total} तलामध्ये तला {floor}",
+
+  "@specAge": {
+    "description": "Building age spec row.",
+    "placeholders": {
+      "years": { "type": "int", "example": "10" }
+    }
+  },
+  "specAge": "{years} वर्ष पुरानो",
+
+  "@specConstruction": {
+    "description": "Construction status spec row.",
+    "placeholders": {
+      "status": { "type": "String", "example": "पुनर्विक्रय" }
+    }
+  },
+  "specConstruction": "{status}",
+
+  "@constructionNew": {
+    "description": "New build option."
+  },
+  "constructionNew": "नयाँ निर्माण",
+
+  "@constructionUnderConstruction": {
+    "description": "Under construction option."
+  },
+  "constructionUnderConstruction": "निर्माणाधीन",
+
+  "@constructionResale": {
+    "description": "Resale option."
+  },
+  "constructionResale": "पुनर्विक्रय"
 }

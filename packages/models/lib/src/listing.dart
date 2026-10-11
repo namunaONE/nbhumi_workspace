@@ -36,6 +36,117 @@ enum ListingPurpose {
   lease,
 }
 
+/// Rental furnishing level.
+///
+/// Only meaningful when [ListingPurpose.rent]: a sale listing describes its
+/// furniture in the description, because "sold furnished" is a negotiation
+/// rather than a listing term. Mirrors the `listings.furnishing_status` CHECK.
+enum FurnishingStatus {
+  /// Bare walls.
+  @JsonValue('unfurnished')
+  unfurnished('unfurnished'),
+
+  /// Kitchen and wardrobes, no soft furnishings.
+  @JsonValue('semi_furnished')
+  semiFurnished('semi_furnished'),
+
+  /// Complete, ready to occupy.
+  @JsonValue('furnished')
+  furnished('furnished');
+
+  FurnishingStatus(this.wireName);
+
+  /// The value the `furnishing_status` CHECK uses.
+  final String wireName;
+
+  /// The level whose [wireName] is [value].
+  ///
+  /// Throws [ArgumentError] rather than defaulting, so a new database level
+  /// surfaces as a clear failure instead of silently reading as furnished.
+  static FurnishingStatus fromWire(String value) => values.firstWhere(
+        (level) => level.wireName == value,
+        orElse: () => throw ArgumentError.value(
+          value,
+          'value',
+          'not a furnishing_status value',
+        ),
+      );
+}
+
+/// Rental pet policy.
+///
+/// Only meaningful when [ListingPurpose.rent]. A text column rather than a
+/// boolean because "cats but not dogs" is a real answer, and `negotiable` is
+/// different from `allowed` in a way that changes whether the tenant asks.
+enum PetPolicy {
+  /// No animals of any kind.
+  @JsonValue('not_allowed')
+  notAllowed('not_allowed'),
+
+  /// Cats welcome, dogs not stated.
+  @JsonValue('cats_ok')
+  catsOk('cats_ok'),
+
+  /// Dogs welcome, cats not stated.
+  @JsonValue('dogs_ok')
+  dogsOk('dogs_ok'),
+
+  /// Any pet.
+  @JsonValue('all_pets')
+  allPets('all_pets'),
+
+  /// Ask the seller.
+  @JsonValue('negotiable')
+  negotiable('negotiable');
+
+  PetPolicy(this.wireName);
+
+  /// The value the `pet_policy` CHECK uses.
+  final String wireName;
+
+  /// The policy whose [wireName] is [value].
+  static PetPolicy fromWire(String value) => values.firstWhere(
+        (policy) => policy.wireName == value,
+        orElse: () => throw ArgumentError.value(
+          value,
+          'value',
+          'not a pet_policy value',
+        ),
+      );
+}
+
+/// Whether the building is new, still under construction, or being resold.
+///
+/// Null for land, which is not built. Mirrors the
+/// `listings.construction_status` CHECK.
+enum ConstructionStatus {
+  /// Never occupied.
+  @JsonValue('new')
+  newBuild('new'),
+
+  /// Not handed over yet.
+  @JsonValue('under_construction')
+  underConstruction('under_construction'),
+
+  /// Previously owned and occupied.
+  @JsonValue('resale')
+  resale('resale');
+
+  ConstructionStatus(this.wireName);
+
+  /// The value the `construction_status` CHECK uses.
+  final String wireName;
+
+  /// The status whose [wireName] is [value].
+  static ConstructionStatus fromWire(String value) => values.firstWhere(
+        (status) => status.wireName == value,
+        orElse: () => throw ArgumentError.value(
+          value,
+          'value',
+          'not a construction_status value',
+        ),
+      );
+}
 /// Listing status state machine.
 ///
 /// Carries an explicit [wireName] because the Dart name and the Postgres enum
@@ -132,6 +243,63 @@ sealed class Listing with _$Listing {
 
     /// Bathroom count. Null when not applicable, as with [bedrooms].
     int? bathrooms,
+    /// Lease length in months. Null unless [listingPurpose] is
+    /// [ListingPurpose.lease]; the `listings_field_applicability` trigger
+    /// nulls it for every other purpose.
+    int? leaseTermMonths,
+
+    /// Whether the lease can be renewed. Null unless the purpose is lease.
+    ///
+    /// Nullable on purpose: "the listing does not say" is a different answer
+    /// from "no", and coercing it loses information the tenant would ask about.
+    bool? leaseRenewable,
+
+    /// Security deposit in NPR. Null unless the purpose is rent.
+    ///
+    /// Zero is a real term (no deposit asked), so the CHECK is `>= 0` rather
+    /// than `> 0` unlike [bedrooms].
+    int? depositAmount,
+
+    /// First date the property can be occupied. Null unless the purpose is
+    /// rent. Stored as a date, not a timestamptz: "available from the 1st"
+    /// must not shift with the viewer's offset.
+    DateTime? availableFrom,
+
+    /// Furnishing level. Null unless the purpose is rent, or when the seller
+    /// left it unstated.
+    FurnishingStatus? furnishingStatus,
+
+    /// Which utilities the rent covers. Null unless the purpose is rent.
+    ///
+    /// Free text capped at 200 characters server-side; anything longer
+    /// belongs in the description.
+    String? utilitiesIncluded,
+
+    /// Pet policy. Null unless the purpose is rent, or when unstated.
+    PetPolicy? petPolicy,
+
+    /// Covered or off-street parking spaces.
+    ///
+    /// Null for land, which has none to count. Zero is rejected so a stored
+    /// value is always a real count.
+    int? parkingSpaces,
+
+    /// Floor this unit is on, zero being the ground floor.
+    ///
+    /// Null for house, land, villa and business premises, which have no floor
+    /// number to report.
+    int? floorNumber,
+
+    /// How many floors the building has. Null unless the building has floors.
+    int? totalFloors,
+
+    /// Age of the building in years, zero being brand new.
+    ///
+    /// Null for land, which is not aged.
+    int? propertyAgeYears,
+
+    /// New, under construction, or resale. Null for land.
+    ConstructionStatus? constructionStatus,
 
     @Default(ListingStatus.draft) ListingStatus status,
     String? rejectionReason,

@@ -657,9 +657,9 @@
   "activityStatusUnpublished": "अप्रकाशित",
 
   "@previewBanner": {
-    "description": "Persistent strip marking a GitHub Pages preview build, not the live marketplace."
+    "description": "Persistent strip marking a GitHub Pages preview build, not the live marketplace. Must not read as a brand name — see the wording note in preview_banner.dart."
   },
-  "previewBanner": "नमुना निर्माण — प्रत्यक्ष बजार होइन",
+  "previewBanner": "पूर्वावलोकन निर्माण — प्रत्यक्ष बजार होइन",
 
   "@previewBannerDetail": {
     "description": "Banner secondary line: what a preview build is not."
