@@ -12,6 +12,7 @@ import 'package:user_app/l10n/output/app_localizations.dart';
 import 'package:user_app/onboarding/onboarding_gate.dart';
 import 'package:user_app/screens/activity_screen.dart';
 import 'package:user_app/screens/my_listings_screen.dart';
+import 'package:user_app/screens/not_found_screen.dart';
 import 'package:user_app/screens/onboarding_screen.dart';
 import 'package:user_app/screens/profile_screen.dart';
 import 'package:user_app/screens/saved_screen.dart';
@@ -83,6 +84,10 @@ final appRouterProvider = Provider<GoRouter>((ref) {
   return GoRouter(
     navigatorKey: rootKey,
     initialLocation: '/',
+    // Unknown URLs (typos, stale shared links) render the branded 404
+    // rather than go_router's default error page — which matters most on
+    // web, where the URL bar invites hand-editing.
+    errorBuilder: (context, state) => const NotFoundScreen(),
     // Both notifiers only *tell* the router to re-run `redirect`: neither
     // rebuilds the router itself (see AuthRefreshNotifier).
     refreshListenable:
