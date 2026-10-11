@@ -379,7 +379,7 @@ void main() {
       final params = ListingRepository.buildCreateParams(
         _listing(
           depositAmount: 50000,
-          availableFrom: DateTime.utc(2026, 12, 1),
+          availableFrom: DateTime.utc(2026, 12),
           furnishingStatus: FurnishingStatus.semiFurnished,
           utilitiesIncluded: 'Water',
           petPolicy: PetPolicy.catsOk,

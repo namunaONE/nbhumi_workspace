@@ -331,7 +331,7 @@ void main() {
         _detail().copyWith(
           listingPurpose: ListingPurpose.rent,
           depositAmount: 50000,
-          availableFrom: DateTime.utc(2026, 12, 1),
+          availableFrom: DateTime.utc(2026, 12),
           furnishingStatus: FurnishingStatus.semiFurnished,
           petPolicy: PetPolicy.catsOk,
           utilitiesIncluded: 'Water and maintenance',
