@@ -1,4 +1,4 @@
-{
+﻿{
   "@@locale": "en",
   "@@last_modified": "2026-10-06T00:00:00.000",
 
@@ -291,14 +291,7 @@
   "@verifyThisListing": {
     "description": "Owner CTA opening the Tier-3 submit flow."
   },
-  "verifyThisListing": "Verify this listing",
-
-  "@detailPageTitle": {
-    "description": "Browser tab fallback while the listing is still loading."
-  },
-  "detailPageTitle": "Property details"
-,
-"@specParking": {
+  "verifyThisListing": "Verify this listing"`n  ,`n  "@specParking":"@specParking": {
     "description": "Parking spaces spec row.",
     "placeholders": {
       "count": { "type": "int", "example": "2" }
