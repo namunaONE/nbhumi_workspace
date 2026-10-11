@@ -9,7 +9,6 @@ import 'package:listing_detail/listing_detail.dart';
 import 'package:models/models.dart';
 import 'package:search/search.dart' show browseFilterProvider;
 import 'package:user_app/l10n/output/app_localizations.dart';
-import 'package:user_app/shell/app_shell.dart';
 
 /// Saved listings.
 ///
