@@ -286,5 +286,171 @@
   "@verifyThisListing": {
     "description": "Owner CTA opening the Tier-3 submit flow."
   },
-  "verifyThisListing": "Verify this listing"
+  "verifyThisListing": "Verify this listing",
+
+  "@detailPageTitle": {
+    "description": "Browser tab fallback while the listing is still loading."
+  },
+  "detailPageTitle": "Property details"
+,
+"@specParking": {
+    "description": "Parking spaces spec row.",
+    "placeholders": {
+      "count": { "type": "int", "example": "2" }
+    }
+  },
+  "specParking": "{count} parking spaces",
+
+  "@sectionLeaseTerms": {
+    "description": "Lease-specific section heading."
+  },
+  "sectionLeaseTerms": "Lease terms",
+
+  "@specLeaseTerm": {
+    "description": "Lease length spec row.",
+    "placeholders": {
+      "months": { "type": "int", "example": "24" }
+    }
+  },
+  "specLeaseTerm": "{months} months",
+
+  "@termRenewable": {
+    "description": "Lease can be renewed."
+  },
+  "termRenewable": "Can be renewed",
+
+  "@termNotRenewable": {
+    "description": "Lease cannot be renewed."
+  },
+  "termNotRenewable": "Cannot be renewed",
+
+  "@sectionRentalTerms": {
+    "description": "Rent-specific section heading."
+  },
+  "sectionRentalTerms": "Rental terms",
+
+  "@specDeposit": {
+    "description": "Security deposit spec row.",
+    "placeholders": {
+      "amount": { "type": "String", "example": "NPR 50,000" }
+    }
+  },
+  "specDeposit": "Deposit {amount}",
+
+  "@specAvailableFrom": {
+    "description": "Availability date spec row.",
+    "placeholders": {
+      "date": { "type": "String", "example": "1 Dec 2026" }
+    }
+  },
+  "specAvailableFrom": "Available from {date}",
+
+  "@specFurnishing": {
+    "description": "Furnishing level spec row.",
+    "placeholders": {
+      "level": { "type": "String", "example": "Partly furnished" }
+    }
+  },
+  "specFurnishing": "{level}",
+
+  "@furnishingUnfurnished": {
+    "description": "Unfurnished option."
+  },
+  "furnishingUnfurnished": "Unfurnished",
+
+  "@furnishingSemiFurnished": {
+    "description": "Semi-furnished option."
+  },
+  "furnishingSemiFurnished": "Partly furnished",
+
+  "@furnishingFurnished": {
+    "description": "Furnished option."
+  },
+  "furnishingFurnished": "Fully furnished",
+
+  "@specPetPolicy": {
+    "description": "Pet policy spec row.",
+    "placeholders": {
+      "policy": { "type": "String", "example": "Cats allowed" }
+    }
+  },
+  "specPetPolicy": "Pets: {policy}",
+
+  "@petNotAllowed": {
+    "description": "No pets option."
+  },
+  "petNotAllowed": "No pets",
+
+  "@petCatsOk": {
+    "description": "Cats allowed option."
+  },
+  "petCatsOk": "Cats allowed",
+
+  "@petDogsOk": {
+    "description": "Dogs allowed option."
+  },
+  "petDogsOk": "Dogs allowed",
+
+  "@petAllPets": {
+    "description": "All pets option."
+  },
+  "petAllPets": "All pets allowed",
+
+  "@petNegotiable": {
+    "description": "Pets negotiable option."
+  },
+  "petNegotiable": "Negotiable",
+
+  "@sectionBuilding": {
+    "description": "Building-specific section heading."
+  },
+  "sectionBuilding": "Building",
+
+  "@specFloor": {
+    "description": "Floor number spec row without a total.",
+    "placeholders": {
+      "floor": { "type": "int", "example": "3" }
+    }
+  },
+  "specFloor": "Floor {floor}",
+
+  "@specFloorOf": {
+    "description": "Floor position within a building.",
+    "placeholders": {
+      "floor": { "type": "int", "example": "3" },
+      "total": { "type": "int", "example": "7" }
+    }
+  },
+  "specFloorOf": "Floor {floor} of {total}",
+
+  "@specAge": {
+    "description": "Building age spec row.",
+    "placeholders": {
+      "years": { "type": "int", "example": "10" }
+    }
+  },
+  "specAge": "{years} years old",
+
+  "@specConstruction": {
+    "description": "Construction status spec row.",
+    "placeholders": {
+      "status": { "type": "String", "example": "Resale" }
+    }
+  },
+  "specConstruction": "{status}",
+
+  "@constructionNew": {
+    "description": "New build option."
+  },
+  "constructionNew": "New build",
+
+  "@constructionUnderConstruction": {
+    "description": "Under construction option."
+  },
+  "constructionUnderConstruction": "Under construction",
+
+  "@constructionResale": {
+    "description": "Resale option."
+  },
+  "constructionResale": "Resale"
 }
