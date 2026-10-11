@@ -42,11 +42,7 @@ void main() {
     testWidgets('passes the child through untouched when the gate is closed',
         (tester) async {
       await tester.pumpWidget(
-        wrap(
-          PreviewBanner(
-            child: const Text('APP CONTENT'),
-          ),
-        ),
+        wrap(const PreviewBanner(child: Text('APP CONTENT'))),
       );
 
       expect(find.text('APP CONTENT'), findsOneWidget);
@@ -57,7 +53,7 @@ void main() {
       // Guards the no-op: a wrapper that still built a Column would shift
       // layout even when the banner is hidden.
       await tester.pumpWidget(
-        wrap(PreviewBanner(child: const Text('APP CONTENT'))),
+        wrap(const PreviewBanner(child: Text('APP CONTENT'))),
       );
 
       expect(find.byType(Column), findsNothing);
@@ -76,6 +72,34 @@ void main() {
         find.text('For review only. Data may be reset — do not rely on it.'),
         findsOneWidget,
       );
+    });
+
+    testWidgets('names a state, never a brand', (tester) async {
+      // A previous draft used Nepali that collided with the owning
+      // organisation's name (Namuna One), making the banner read as a rebrand
+      // rather than a status. Pumped under the Nepali locale so the assertion
+      // reads the string a Nepali-speaking tester actually sees.
+      await tester.pumpWidget(
+        const MaterialApp(
+          locale: Locale('ne'),
+          localizationsDelegates: <LocalizationsDelegate<dynamic>>[
+            AppLocalizations.delegate,
+            GlobalMaterialLocalizations.delegate,
+            GlobalWidgetsLocalizations.delegate,
+            GlobalCupertinoLocalizations.delegate,
+          ],
+          supportedLocales: <Locale>[Locale('en'), Locale('ne')],
+          home: Scaffold(body: PreviewBannerStrip()),
+        ),
+      );
+
+      final rendered = tester
+          .widgetList<Text>(find.byType(Text))
+          .map((t) => t.data ?? '')
+          .join(' ');
+
+      expect(rendered, isNotEmpty);
+      expect(rendered.contains('Namuna'), isFalse);
     });
 
     testWidgets('uses theme colors rather than literals (Rule 43)',
@@ -97,7 +121,8 @@ void main() {
       );
     });
 
-    testWidgets('carries an icon so the strip is not text-only', (tester) async {
+    testWidgets('carries an icon so the strip is not text-only',
+        (tester) async {
       await tester.pumpWidget(wrap(const PreviewBannerStrip()));
 
       final strip = find.byType(PreviewBannerStrip);

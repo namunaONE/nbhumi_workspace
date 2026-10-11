@@ -414,7 +414,7 @@ class AppLocalizationsNe extends AppLocalizations {
   String get activityStatusUnpublished => 'अप्रकाशित';
 
   @override
-  String get previewBanner => 'नमुना निर्माण — प्रत्यक्ष बजार होइन';
+  String get previewBanner => 'पूर्वावलोकन निर्माण — प्रत्यक्ष बजार होइन';
 
   @override
   String get previewBannerDetail =>

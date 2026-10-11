@@ -12,6 +12,15 @@ import 'package:user_app/l10n/output/app_localizations.dart';
 /// draw conclusions about inventory, accounts or data durability. The build
 /// advertises itself instead of relying on the URL to explain.
 ///
+/// ### Why the wording avoids a brand name
+///
+/// The Nepali line is deliberately not a transliteration of any company or
+/// product name. An earlier draft read "नमुना निर्माण", which collided with the
+/// owning organisation's name (Namuna One) and made the banner read as a
+/// rebrand rather than a status. "पूर्वावलोकन निर्माण" ("preview build") states
+/// what the build is without impersonating anything. Keep it that way: this
+/// strip names a state, never a brand.
+///
 /// ### Why the gate is compile-time
 ///
 /// `EnvConfig.environment` is a `String.fromEnvironment`, baked in by
@@ -83,7 +92,9 @@ class PreviewBannerStrip extends StatelessWidget {
             children: <Widget>[
               Icon(
                 Icons.science_outlined,
-                // One-off glyph size: not a spacing or radius token, so it stays
+                // One-off glyph size: not a spacing or radius token, so it
+                // stays a literal rather than being derived from an unrelated
+                // one.
                 // a literal rather than being derived from an unrelated one.
                 size: 18,
                 color: theme.colorScheme.onErrorContainer,

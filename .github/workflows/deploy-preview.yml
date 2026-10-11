@@ -59,12 +59,18 @@ jobs:
         # ENVIRONMENT=preview drives the PreviewBanner and verbose logging
         # (logger.minLevelFor fails open to verbose for unknown values).
         #
-        # --base-href / is correct despite the /<repo>/ URL prefix: the app is
-        # on hash routing, so the Flutter app itself lives at the Pages root
-        # and deep links need no 404.html rewrite.
+        # base-href must be the repo path, NOT "/". GitHub Pages *project*
+        # sites serve from /<repo>/, so a base of "/" makes the browser request
+        # /main.dart.js, which 404s, and the app renders a blank canvas while
+        # the HTML banner still paints. This is unrelated to routing: hash
+        # routing decides where the router reads its path from, base-href
+        # decides where asset URLs resolve, and the two are independent.
+        # Derived from the repo name so a rename or fork does not silently 404.
+        # Only a *user* site (username.github.io) or a custom domain is served
+        # from "/".
         run: |
           flutter build web --release \
-            --base-href / \
+            --base-href /${{ github.event.repository.name }}/ \
             --pwa-strategy offline-first \
             --dart-define=SUPABASE_URL=${{ secrets.SUPABASE_URL }} \
             --dart-define=SUPABASE_PUBLISHABLE_KEY=${{ secrets.SUPABASE_PUBLISHABLE_KEY }} \
