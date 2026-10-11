@@ -194,5 +194,8 @@ class AppLocalizationsEn extends AppLocalizations {
   String get verifiedListingUnderstood => 'Understood';
 
   @override
+  String get detailPageTitle => 'Property details';
+
+  @override
   String get verifyThisListing => 'Verify this listing';
 }

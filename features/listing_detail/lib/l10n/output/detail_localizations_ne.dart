@@ -182,5 +182,8 @@ class AppLocalizationsNe extends AppLocalizations {
   String get verifiedListingUnderstood => 'बुझें';
 
   @override
+  String get detailPageTitle => 'सम्पत्ति विवरण';
+
+  @override
   String get verifyThisListing => 'यो विज्ञापन प्रमाणित गर्नुहोस्';
 }

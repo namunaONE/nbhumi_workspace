@@ -283,6 +283,11 @@
   },
   "verifiedListingUnderstood": "Understood",
 
+  "@detailPageTitle": {
+    "description": "Browser tab fallback while the listing is still loading."
+  },
+  "detailPageTitle": "Property details",
+
   "@verifyThisListing": {
     "description": "Owner CTA opening the Tier-3 submit flow."
   },
