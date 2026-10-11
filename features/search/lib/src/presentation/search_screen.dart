@@ -105,9 +105,11 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
       emptyBody: strings.noMatchBody,
     );
 
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(widget.title ?? strings.title),
+    return PageTitle(
+      title: widget.title ?? strings.title,
+      child: Scaffold(
+        appBar: AppBar(
+          title: Text(widget.title ?? strings.title),
         actions: <Widget>[
           _SortButton(filter: filter),
           _FilterButton(activeCount: filter.activeCount),
@@ -140,6 +142,7 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
               ],
             )
           : feed,
+      ),
     );
   }
 }

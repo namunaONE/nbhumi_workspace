@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:core/core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -23,8 +24,10 @@ class SettingsScreen extends ConsumerWidget {
     final themeMode = ref.watch(appThemeProvider);
     final theme = Theme.of(context);
 
-    return Scaffold(
-      appBar: AppBar(title: Text(strings.settingsTitle)),
+    return PageTitle(
+      title: strings.settingsTitle,
+      child: Scaffold(
+        appBar: AppBar(title: Text(strings.settingsTitle)),
       body: ListView(
         padding: const EdgeInsets.symmetric(vertical: 8),
         children: <Widget>[
@@ -119,6 +122,7 @@ class SettingsScreen extends ConsumerWidget {
           ),
         ],
       ),
+    ),
     );
   }
 }

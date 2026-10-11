@@ -73,12 +73,13 @@ class ListingDetailBody extends StatelessWidget {
           ReportListingButton(listing: listing),
         ],
       ),
-      body: ListView(
-        children: <Widget>[
-          AppImageGallery(
-            photos: listing.photos,
-            title: listing.title,
-          ),
+      body: SelectionArea(
+        child: ListView(
+          children: <Widget>[
+            AppImageGallery(
+              photos: listing.photos,
+              title: listing.title,
+            ),
           Padding(
             padding: const EdgeInsets.fromLTRB(16, 16, 16, 8),
             child: Column(
@@ -187,7 +188,8 @@ class ListingDetailBody extends StatelessWidget {
             children: <Widget>[_SellerCard(seller: listing.seller)],
           ),
           const SizedBox(height: 96),
-        ],
+          ],
+        ),
       ),
       bottomNavigationBar: ContactSellerButton(listing: listing),
     );
