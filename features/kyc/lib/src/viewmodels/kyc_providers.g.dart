@@ -112,7 +112,7 @@ final class KycSubmitControllerProvider
 }
 
 String _$kycSubmitControllerHash() =>
-    r'92c13a0c2aef57e5204987e53bea45bd7e0a7a89';
+    r'6e26c42fa743b61f6e6f4776cf5362ce813b4808';
 
 /// Runs one KYC submission: pick, upload, submit, refresh.
 ///

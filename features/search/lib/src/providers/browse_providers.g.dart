@@ -22,7 +22,11 @@ part of 'browse_providers.dart';
 /// backoff (200ms to 6.4s), so `provider.future` takes roughly 40 seconds to
 /// reject. A user on a bad mobile network would watch a spinner for the best
 /// part of a minute instead of seeing an error with a retry button (Rule 36).
-/// Riverpod's docs note the same risk; the fix is `retry: (count, error) => null`.
+///
+/// ### Why retry is disabled again
+///
+/// The default backoff is why. Setting `retry: (count, error) => null` turns it
+/// off so a failure surfaces immediately with the retry button below.
 
 @ProviderFor(Browse)
 final browseProvider = BrowseProvider._();
@@ -41,7 +45,11 @@ final browseProvider = BrowseProvider._();
 /// backoff (200ms to 6.4s), so `provider.future` takes roughly 40 seconds to
 /// reject. A user on a bad mobile network would watch a spinner for the best
 /// part of a minute instead of seeing an error with a retry button (Rule 36).
-/// Riverpod's docs note the same risk; the fix is `retry: (count, error) => null`.
+///
+/// ### Why retry is disabled again
+///
+/// The default backoff is why. Setting `retry: (count, error) => null` turns it
+/// off so a failure surfaces immediately with the retry button below.
 final class BrowseProvider extends $AsyncNotifierProvider<Browse, BrowseState> {
   /// Browse feed, paginated with a keyset cursor.
   ///
@@ -57,7 +65,11 @@ final class BrowseProvider extends $AsyncNotifierProvider<Browse, BrowseState> {
   /// backoff (200ms to 6.4s), so `provider.future` takes roughly 40 seconds to
   /// reject. A user on a bad mobile network would watch a spinner for the best
   /// part of a minute instead of seeing an error with a retry button (Rule 36).
-  /// Riverpod's docs note the same risk; the fix is `retry: (count, error) => null`.
+  ///
+  /// ### Why retry is disabled again
+  ///
+  /// The default backoff is why. Setting `retry: (count, error) => null` turns it
+  /// off so a failure surfaces immediately with the retry button below.
   BrowseProvider._()
     : super(
         from: null,
@@ -77,7 +89,7 @@ final class BrowseProvider extends $AsyncNotifierProvider<Browse, BrowseState> {
   Browse create() => Browse();
 }
 
-String _$browseHash() => r'6a258da92892bd37c03adb3b1e3f179388279825';
+String _$browseHash() => r'd60ba5e46da6d5a667bb0e521e6f6cae7a679f7e';
 
 /// Browse feed, paginated with a keyset cursor.
 ///
@@ -93,7 +105,11 @@ String _$browseHash() => r'6a258da92892bd37c03adb3b1e3f179388279825';
 /// backoff (200ms to 6.4s), so `provider.future` takes roughly 40 seconds to
 /// reject. A user on a bad mobile network would watch a spinner for the best
 /// part of a minute instead of seeing an error with a retry button (Rule 36).
-/// Riverpod's docs note the same risk; the fix is `retry: (count, error) => null`.
+///
+/// ### Why retry is disabled again
+///
+/// The default backoff is why. Setting `retry: (count, error) => null` turns it
+/// off so a failure surfaces immediately with the retry button below.
 
 abstract class _$Browse extends $AsyncNotifier<BrowseState> {
   FutureOr<BrowseState> build();
@@ -158,7 +174,7 @@ final class BrowseFilterProvider
   }
 }
 
-String _$browseFilterHash() => r'a603bb1123e4a8b24ebbca274557fac4819bb6b2';
+String _$browseFilterHash() => r'8cac48640ed72b19ea6f5e42658acfe09862aa3c';
 
 /// The filters currently applied to the feed.
 ///
