@@ -417,5 +417,12 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get previewBannerDetail =>
-      'For review only. Data may be reset — do not rely on it.';
+      'For review only. Data may be reset - do not rely on it.';
+
+  @override
+  String get notFoundTitle => 'Page not found';
+
+  @override
+  String get notFoundBody =>
+      'This link is broken or the page was moved. The listings are one tap away.';
 }

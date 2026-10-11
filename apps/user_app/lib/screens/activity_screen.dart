@@ -25,33 +25,39 @@ class ActivityScreen extends ConsumerWidget {
     final strings = AppLocalizations.of(context);
 
     if (session == null) {
-      return Scaffold(
-        appBar: AppBar(title: Text(strings.activityTitle)),
-        body: ListView(
-          padding: const EdgeInsets.symmetric(vertical: AppSpacing.sm),
-          children: <Widget>[
-            ListTile(
-              leading: const Icon(Icons.login),
-              title: Text(strings.commonSignIn),
-              subtitle: Text(strings.activityGuestPrompt),
-              onTap: () => context.push('/login'),
-            ),
-          ],
+      return PageTitle(
+        title: strings.activityTitle,
+        child: Scaffold(
+          appBar: AppBar(title: Text(strings.activityTitle)),
+          body: ListView(
+            padding: const EdgeInsets.symmetric(vertical: AppSpacing.sm),
+            children: <Widget>[
+              ListTile(
+                leading: const Icon(Icons.login),
+                title: Text(strings.commonSignIn),
+                subtitle: Text(strings.activityGuestPrompt),
+                onTap: () => context.push('/login'),
+              ),
+            ],
+          ),
         ),
       );
     }
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(strings.activityTitle),
-        actions: <Widget>[
-          IconButton(
-            icon: const Icon(Icons.refresh_outlined),
-            tooltip: strings.activityRefresh,
-            onPressed: () => ref.invalidate(activityPageProvider),
-          ),
-        ],
+    return PageTitle(
+      title: strings.activityTitle,
+      child: Scaffold(
+        appBar: AppBar(
+          title: Text(strings.activityTitle),
+          actions: <Widget>[
+            IconButton(
+              icon: const Icon(Icons.refresh_outlined),
+              tooltip: strings.activityRefresh,
+              onPressed: () => ref.invalidate(activityPageProvider),
+            ),
+          ],
+        ),
+        body: _ActivityBody(userId: session.user.id),
       ),
-      body: _ActivityBody(userId: session.user.id),
     );
   }
 }

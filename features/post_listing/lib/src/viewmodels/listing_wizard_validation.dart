@@ -1,4 +1,4 @@
-import 'package:core/core.dart';
+﻿import 'package:core/core.dart';
 import 'package:post_listing/l10n/output/post_localizations.dart'
     as post_strings;
 

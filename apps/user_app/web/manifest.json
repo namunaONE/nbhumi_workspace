@@ -5,7 +5,7 @@
   "start_url": "/",
   "scope": "/",
   "display": "standalone",
-  "orientation": "portrait-primary",
+  "orientation": "any",
   "background_color": "#002C6D",
   "theme_color": "#002C6D",
   "categories": ["business", "lifestyle", "shopping"],
@@ -39,12 +39,12 @@
   "shortcuts": [
     {
       "name": "Explore listings",
-      "url": "/",
+      "url": "/#/",
       "description": "Browse live property listings"
     },
     {
       "name": "Saved listings",
-      "url": "/saved",
+      "url": "/#/saved",
       "description": "View your saved listings"
     }
   ]

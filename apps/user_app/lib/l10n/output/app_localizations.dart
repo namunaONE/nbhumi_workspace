@@ -863,8 +863,20 @@ abstract class AppLocalizations {
   /// Banner secondary line: what a preview build is not.
   ///
   /// In en, this message translates to:
-  /// **'For review only. Data may be reset — do not rely on it.'**
+  /// **'For review only. Data may be reset - do not rely on it.'**
   String get previewBannerDetail;
+
+  /// Unknown-route screen heading.
+  ///
+  /// In en, this message translates to:
+  /// **'Page not found'**
+  String get notFoundTitle;
+
+  /// Unknown-route explanation with a way back.
+  ///
+  /// In en, this message translates to:
+  /// **'This link is broken or the page was moved. The listings are one tap away.'**
+  String get notFoundBody;
 }
 
 class _AppLocalizationsDelegate

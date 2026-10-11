@@ -285,6 +285,124 @@ void main() {
     });
   });
 
+
+  group('conditioned sections', () {
+    testWidgets('a lease shows its term and the renewal answer',
+        (tester) async {
+      await tester.pumpWidget(_harness(
+        _detail().copyWith(
+          listingPurpose: ListingPurpose.lease,
+          leaseTermMonths: 24,
+          leaseRenewable: true,
+        ),
+      ));
+
+      expect(find.text('Lease terms'), findsOneWidget);
+      expect(find.text('24 months'), findsOneWidget);
+      expect(find.text('Can be renewed'), findsOneWidget);
+    });
+
+    testWidgets('a lease without a renewal answer says nothing about it',
+        (tester) async {
+      // Unset is not "no": the row must not claim either way.
+      await tester.pumpWidget(_harness(
+        _detail().copyWith(
+          listingPurpose: ListingPurpose.lease,
+          leaseTermMonths: 12,
+        ),
+      ));
+
+      expect(find.text('Lease terms'), findsOneWidget);
+      expect(find.text('12 months'), findsOneWidget);
+      expect(find.text('Can be renewed'), findsNothing);
+      expect(find.text('Cannot be renewed'), findsNothing);
+    });
+
+    testWidgets('a sale shows no lease section', (tester) async {
+      await tester.pumpWidget(_harness(_detail()));
+
+      expect(find.text('Lease terms'), findsNothing);
+      expect(find.text('Rental terms'), findsNothing);
+    });
+
+    testWidgets('a rent shows deposit, date, furnishing and pets',
+        (tester) async {
+      await tester.pumpWidget(_harness(
+        _detail().copyWith(
+          listingPurpose: ListingPurpose.rent,
+          depositAmount: 50000,
+          availableFrom: DateTime.utc(2026, 12, 1),
+          furnishingStatus: FurnishingStatus.semiFurnished,
+          petPolicy: PetPolicy.catsOk,
+          utilitiesIncluded: 'Water and maintenance',
+        ),
+      ));
+
+      expect(find.text('Rental terms'), findsOneWidget);
+      expect(find.text('Deposit NPR 50,000'), findsOneWidget);
+      expect(find.textContaining('Dec 1, 2026'), findsOneWidget);
+      expect(find.text('Partly furnished'), findsOneWidget);
+      expect(find.text('Pets: Cats allowed'), findsOneWidget);
+      expect(find.text('Water and maintenance'), findsOneWidget);
+    });
+
+    testWidgets('a rent with no terms shows no rental section',
+        (tester) async {
+      // The trigger guarantees this shape cannot come from the server, but
+      // the page must still degrade to nothing rather than an empty heading.
+      await tester.pumpWidget(_harness(
+        _detail().copyWith(listingPurpose: ListingPurpose.rent),
+      ));
+
+      expect(find.text('Rental terms'), findsNothing);
+    });
+
+    testWidgets('an apartment shows floor, age and construction',
+        (tester) async {
+      await tester.pumpWidget(_harness(
+        _detail().copyWith(
+          propertyType: PropertyType.apartment,
+          floorNumber: 3,
+          totalFloors: 7,
+          parkingSpaces: 1,
+          propertyAgeYears: 10,
+          constructionStatus: ConstructionStatus.resale,
+        ),
+      ));
+
+      expect(find.text('Building'), findsOneWidget);
+      expect(find.text('Floor 3 of 7'), findsOneWidget);
+      expect(find.text('1 parking spaces'), findsOneWidget);
+      expect(find.text('10 years old'), findsOneWidget);
+      expect(find.text('Resale'), findsOneWidget);
+    });
+
+    testWidgets('a floor without a total still reads', (tester) async {
+      await tester.pumpWidget(_harness(
+        _detail().copyWith(
+          propertyType: PropertyType.apartment,
+          floorNumber: 2,
+        ),
+      ));
+
+      expect(find.text('Floor 2'), findsOneWidget);
+    });
+
+    testWidgets('land shows no building section', (tester) async {
+      await tester.pumpWidget(_harness(
+        _detail().copyWith(
+          propertyType: PropertyType.land,
+          bedrooms: null,
+          bathrooms: null,
+        ),
+      ));
+
+      expect(find.text('Building'), findsNothing);
+      expect(find.text('Lease terms'), findsNothing);
+      expect(find.text('Rental terms'), findsNothing);
+    });
+  });
+
   group('seller card', () {
     testWidgets('shows the name, agency and verified tick', (tester) async {
       await tester.pumpWidget(_harness(_detail()));

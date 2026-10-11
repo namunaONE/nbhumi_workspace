@@ -1,4 +1,4 @@
-import 'package:core/core.dart';
+﻿import 'package:core/core.dart';
 import 'package:models/models.dart';
 
 /// One photo attached to a listing, before the listing exists.
@@ -358,7 +358,7 @@ class ListingWizardState {
   ///
   /// Deliberately not `hasHillArea || hasTeraiArea`. That expression is true
   /// when a seller typed *any* number, including numbers in the wrong unit
-  /// system for their district — and the area would then be computed from the
+  /// system for their district ΓÇö and the area would then be computed from the
   /// wrong set, publishing a plot of size 0 while their input was silently
   /// dropped. 1 ropani and 1 bigha differ by about 12x (Rule 25).
   bool get hasArea {

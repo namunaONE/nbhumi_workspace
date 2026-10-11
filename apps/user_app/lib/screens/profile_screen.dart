@@ -25,9 +25,11 @@ class ProfileScreen extends ConsumerWidget {
     final session = ref.watch(sessionProvider);
     final strings = AppLocalizations.of(context);
 
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(strings.profileTitle),
+    return PageTitle(
+      title: strings.profileTitle,
+      child: Scaffold(
+        appBar: AppBar(
+          title: Text(strings.profileTitle),
         actions: <Widget>[
           if (session != null)
             IconButton(
@@ -108,6 +110,7 @@ class ProfileScreen extends ConsumerWidget {
           ),
         ],
       ),
+    ),
     );
   }
 }

@@ -9,7 +9,6 @@ import 'package:listing_detail/listing_detail.dart';
 import 'package:models/models.dart';
 import 'package:search/search.dart' show browseFilterProvider;
 import 'package:user_app/l10n/output/app_localizations.dart';
-import 'package:user_app/shell/app_shell.dart';
 
 /// Saved listings.
 ///
@@ -43,14 +42,17 @@ class _SavedScreenState extends ConsumerState<SavedScreen> {
     final session = ref.watch(sessionProvider);
     final strings = AppLocalizations.of(context);
     if (session == null) {
-      return Scaffold(
-        appBar: AppBar(title: Text(strings.savedTitle)),
-        body: EmptyState(
-          title: strings.savedGuestPrompt,
-          body: strings.savedEmptyBody,
-          icon: Icons.favorite_outline,
-          actionLabel: strings.commonSignIn,
-          onAction: () => context.push('/login'),
+      return PageTitle(
+        title: strings.savedTitle,
+        child: Scaffold(
+          appBar: AppBar(title: Text(strings.savedTitle)),
+          body: EmptyState(
+            title: strings.savedGuestPrompt,
+            body: strings.savedEmptyBody,
+            icon: Icons.favorite_outline,
+            actionLabel: strings.commonSignIn,
+            onAction: () => context.push('/login'),
+          ),
         ),
       );
     }
@@ -72,25 +74,28 @@ class _SavedScreenState extends ConsumerState<SavedScreen> {
       ),
     );
 
-    return Scaffold(
-      appBar: AppBar(title: Text(strings.savedTitle)),
-      body: selectedId != null &&
-              MediaQuery.sizeOf(context).width >= AppBreakpoints.twoPane
-          ? Row(
-              children: <Widget>[
-                Expanded(child: shelf),
-                const VerticalDivider(width: 1),
-                Expanded(
-                  child: ListingDetailPane(
-                    listingId: selectedId,
-                    leading: CloseButton(
-                      onPressed: () => setState(() => _selectedId = null),
+    return PageTitle(
+      title: strings.savedTitle,
+      child: Scaffold(
+        appBar: AppBar(title: Text(strings.savedTitle)),
+        body: selectedId != null &&
+                MediaQuery.sizeOf(context).width >= AppBreakpoints.twoPane
+            ? Row(
+                children: <Widget>[
+                  Expanded(child: shelf),
+                  const VerticalDivider(width: 1),
+                  Expanded(
+                    child: ListingDetailPane(
+                      listingId: selectedId,
+                      leading: CloseButton(
+                        onPressed: () => setState(() => _selectedId = null),
+                      ),
                     ),
                   ),
-                ),
-              ],
-            )
-          : shelf,
+                ],
+              )
+            : shelf,
+      ),
     );
   }
 }
