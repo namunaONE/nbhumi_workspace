@@ -1,4 +1,4 @@
-{
+﻿{
   "@@locale": "en",
   "@@last_modified": "2026-10-06T00:00:00.000",
 
@@ -149,7 +149,7 @@
       "label": { "type": "String", "example": "Municipalities" }
     }
   },
-  "loadingSuffix": "Loading {label}…",
+  "loadingSuffix": "Loading {label}ΓÇª",
 
   "@municipalitiesError": {
     "description": "Municipality load failure."
@@ -524,5 +524,270 @@
   "@fieldDescriptionHint": {
     "description": "Listing description placeholder."
   },
-  "fieldDescriptionHint": "Land, road, water and surroundings"
+  "fieldDescriptionHint": "Land, road, water and surroundings",
+  "@sectionLeaseTerms": {
+    "description": "Lease-specific section heading on the specs step."
+  },
+  "sectionLeaseTerms": "Lease terms",
+
+  "@leaseTermsExplanation": {
+    "description": "Lease section explanation."
+  },
+  "leaseTermsExplanation": "A lease needs a term. Buyers filter on it, and a lease without one cannot be actioned.",
+
+  "@fieldLeaseTerm": {
+    "description": "Lease length in months field label."
+  },
+  "fieldLeaseTerm": "Lease term",
+
+  "@fieldLeaseTermHint": {
+    "description": "Lease term field hint."
+  },
+  "fieldLeaseTermHint": "Months",
+
+  "@leaseTermMin": {
+    "description": "Lease term minimum message."
+  },
+  "leaseTermMin": "Lease term must be at least 1 month",
+
+  "@fieldLeaseRenewable": {
+    "description": "Lease renewal question."
+  },
+  "fieldLeaseRenewable": "Can the lease be renewed?",
+
+  "@leaseRenewableYes": {
+    "description": "Lease renewable answer."
+  },
+  "leaseRenewableYes": "Yes",
+
+  "@leaseRenewableNo": {
+    "description": "Lease not renewable answer."
+  },
+  "leaseRenewableNo": "No",
+
+  "@leaseRenewableUnset": {
+    "description": "Lease renewal unanswered."
+  },
+  "leaseRenewableUnset": "Not stated",
+
+  "@sectionRentalTerms": {
+    "description": "Rent-specific section heading on the specs step."
+  },
+  "sectionRentalTerms": "Rental terms",
+
+  "@fieldDeposit": {
+    "description": "Security deposit field label."
+  },
+  "fieldDeposit": "Security deposit",
+
+  "@fieldDepositHint": {
+    "description": "Security deposit field hint."
+  },
+  "fieldDepositHint": "NPR, usually one to three months of rent",
+
+  "@fieldAvailableFrom": {
+    "description": "Availability date field label."
+  },
+  "fieldAvailableFrom": "Available from",
+
+  "@fieldAvailableFromPick": {
+    "description": "Availability date picker action."
+  },
+  "fieldAvailableFromPick": "Choose a date",
+
+  "@fieldAvailableFromClear": {
+    "description": "Availability date clear action."
+  },
+  "fieldAvailableFromClear": "Clear date",
+
+  "@availableFromPast": {
+    "description": "Availability date in the past message."
+  },
+  "availableFromPast": "Availability date cannot be in the past",
+
+  "@fieldFurnishing": {
+    "description": "Furnishing level field label."
+  },
+  "fieldFurnishing": "Furnishing",
+
+  "@furnishingUnfurnished": {
+    "description": "Unfurnished furnishing option."
+  },
+  "furnishingUnfurnished": "Unfurnished",
+
+  "@furnishingSemiFurnished": {
+    "description": "Semi-furnished furnishing option."
+  },
+  "furnishingSemiFurnished": "Partly furnished",
+
+  "@furnishingFurnished": {
+    "description": "Furnished furnishing option."
+  },
+  "furnishingFurnished": "Fully furnished",
+
+  "@fieldUtilities": {
+    "description": "Utilities included field label."
+  },
+  "fieldUtilities": "Utilities included",
+
+  "@fieldUtilitiesHint": {
+    "description": "Utilities included field hint."
+  },
+  "fieldUtilitiesHint": "e.g. Water and building maintenance",
+
+  "@utilitiesTooLong": {
+    "description": "Utilities note over the length cap."
+  },
+  "utilitiesTooLong": "Keep the utilities note under 200 characters",
+
+  "@fieldPetPolicy": {
+    "description": "Pet policy field label."
+  },
+  "fieldPetPolicy": "Pets",
+
+  "@petNotAllowed": {
+    "description": "Pet policy option: no animals."
+  },
+  "petNotAllowed": "No pets",
+
+  "@petCatsOk": {
+    "description": "Pet policy option: cats allowed."
+  },
+  "petCatsOk": "Cats allowed",
+
+  "@petDogsOk": {
+    "description": "Pet policy option: dogs allowed."
+  },
+  "petDogsOk": "Dogs allowed",
+
+  "@petAllPets": {
+    "description": "Pet policy option: any animal."
+  },
+  "petAllPets": "All pets allowed",
+
+  "@petNegotiable": {
+    "description": "Pet policy option: ask the seller."
+  },
+  "petNegotiable": "Negotiable",
+
+  "@sectionBuilding": {
+    "description": "Building-specific section heading on the specs step."
+  },
+  "sectionBuilding": "Building",
+
+  "@fieldParking": {
+    "description": "Parking spaces field label."
+  },
+  "fieldParking": "Parking spaces",
+
+  "@parkingMin": {
+    "description": "Parking minimum message."
+  },
+  "parkingMin": "Parking must be 1 or more",
+
+  "@fieldFloor": {
+    "description": "Floor number field label."
+  },
+  "fieldFloor": "Floor",
+
+  "@fieldFloorHint": {
+    "description": "Floor number field hint."
+  },
+  "fieldFloorHint": "Ground floor is 0",
+
+  "@fieldTotalFloors": {
+    "description": "Total floors field label."
+  },
+  "fieldTotalFloors": "Total floors",
+
+  "@totalFloorsMin": {
+    "description": "Total floors minimum message."
+  },
+  "totalFloorsMin": "Total floors must be 1 or more",
+
+  "@fieldPropertyAge": {
+    "description": "Building age field label."
+  },
+  "fieldPropertyAge": "Building age",
+
+  "@fieldPropertyAgeHint": {
+    "description": "Building age field hint."
+  },
+  "fieldPropertyAgeHint": "Years since construction, 0 if new",
+
+  "@fieldConstructionStatus": {
+    "description": "Construction status field label."
+  },
+  "fieldConstructionStatus": "Status",
+
+  "@constructionNew": {
+    "description": "Construction status option: new build."
+  },
+  "constructionNew": "New build",
+
+  "@constructionUnderConstruction": {
+    "description": "Construction status option: still being built."
+  },
+  "constructionUnderConstruction": "Under construction",
+
+  "@constructionResale": {
+    "description": "Construction status option: previously occupied."
+  },
+  "constructionResale": "Resale",
+
+  "@reviewLease": {
+    "description": "Review summary row label for lease terms."
+  },
+  "reviewLease": "Lease",
+
+  "@reviewLeaseMonths": {
+    "description": "Lease term summary value.",
+    "placeholders": {
+      "months": { "type": "String", "example": "24" }
+    }
+  },
+  "reviewLeaseMonths": "{months} months",
+
+  "@reviewRental": {
+    "description": "Review summary row label for rental terms."
+  },
+  "reviewRental": "Rental",
+
+  "@reviewDeposit": {
+    "description": "Deposit summary value.",
+    "placeholders": {
+      "amount": { "type": "String", "example": "NPR 50,000" }
+    }
+  },
+  "reviewDeposit": "Deposit {amount}",
+
+  "@reviewAvailableFrom": {
+    "description": "Availability summary value.",
+    "placeholders": {
+      "date": { "type": "String", "example": "1 Dec 2026" }
+    }
+  },
+  "reviewAvailableFrom": "From {date}",
+
+  "@reviewBuilding": {
+    "description": "Review summary row label for building details."
+  },
+  "reviewBuilding": "Building",
+
+  "@reviewFloor": {
+    "description": "Floor summary value.",
+    "placeholders": {
+      "floor": { "type": "String", "example": "3" },
+      "total": { "type": "String", "example": "7" }
+    }
+  },
+  "reviewFloor": "Floor {floor} of {total}",
+
+  "@reviewAge": {
+    "description": "Building age summary value.",
+    "placeholders": {
+      "years": { "type": "String", "example": "10" }
+    }
+  },
+  "reviewAge": "{years} years old"
 }

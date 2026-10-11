@@ -1,4 +1,4 @@
-import 'package:core/core.dart';
+﻿import 'package:core/core.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:models/models.dart';
 import 'package:post_listing/l10n/output/post_localizations.dart';
@@ -400,8 +400,8 @@ void main() {
       const state = ListingWizardState();
       final errors = state.validate(WizardStep.type, ne).errors;
 
-      expect(errors['propertyType'], 'घरजग्गाको किसिम आवश्यक छ');
-      expect(errors['listingPurpose'], 'बिक्री, भाडा वा लिज आवश्यक छ');
+      expect(errors['propertyType'], 'αñÿαñ░αñ£αñùαÑìαñùαñ╛αñòαÑï αñòαñ┐αñ╕αñ┐αñ« αñåαñ╡αñ╢αÑìαñ»αñò αñ¢');
+      expect(errors['listingPurpose'], 'αñ¼αñ┐αñòαÑìαñ░αÑÇ, αñ¡αñ╛αñíαñ╛ αñ╡αñ╛ αñ▓αñ┐αñ£ αñåαñ╡αñ╢αÑìαñ»αñò αñ¢');
     });
 
     test('ward range carries the ceiling in Nepali', () {
@@ -416,7 +416,7 @@ void main() {
       final state = _complete(district: chitwan);
       expect(
         state.validate(WizardStep.specs, ne)['area'],
-        contains('तराई'),
+        contains('αññαñ░αñ╛αñê'),
       );
     });
 
@@ -424,8 +424,8 @@ void main() {
       final state = _complete().copyWith(priceNpr: '0', photos: const []);
       final errors = state.validate(WizardStep.price, ne).errors;
 
-      expect(errors['priceNpr'], 'मूल्य शून्यभन्दा बढी हुनुपर्छ');
-      expect(errors['photos'], 'कम्तीमा एउटा फोटो थप्नुहोस्');
+      expect(errors['priceNpr'], 'αñ«αÑéαñ▓αÑìαñ» αñ╢αÑéαñ¿αÑìαñ»αñ¡αñ¿αÑìαñªαñ╛ αñ¼αñóαÑÇ αñ╣αÑüαñ¿αÑüαñ¬αñ░αÑìαñ¢');
+      expect(errors['photos'], 'αñòαñ«αÑìαññαÑÇαñ«αñ╛ αñÅαñëαñƒαñ╛ αñ½αÑïαñƒαÑï αñÑαñ¬αÑìαñ¿αÑüαñ╣αÑïαñ╕αÑì');
     });
   });
 }

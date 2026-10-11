@@ -263,7 +263,7 @@ abstract class AppLocalizations {
   /// Loading row template.
   ///
   /// In en, this message translates to:
-  /// **'Loading {label}…'**
+  /// **'Loading {label}ΓÇª'**
   String loadingSuffix(String label);
 
   /// Municipality load failure.
@@ -673,6 +673,306 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Land, road, water and surroundings'**
   String get fieldDescriptionHint;
+
+  /// Lease-specific section heading on the specs step.
+  ///
+  /// In en, this message translates to:
+  /// **'Lease terms'**
+  String get sectionLeaseTerms;
+
+  /// Lease section explanation.
+  ///
+  /// In en, this message translates to:
+  /// **'A lease needs a term. Buyers filter on it, and a lease without one cannot be actioned.'**
+  String get leaseTermsExplanation;
+
+  /// Lease length in months field label.
+  ///
+  /// In en, this message translates to:
+  /// **'Lease term'**
+  String get fieldLeaseTerm;
+
+  /// Lease term field hint.
+  ///
+  /// In en, this message translates to:
+  /// **'Months'**
+  String get fieldLeaseTermHint;
+
+  /// Lease term minimum message.
+  ///
+  /// In en, this message translates to:
+  /// **'Lease term must be at least 1 month'**
+  String get leaseTermMin;
+
+  /// Lease renewal question.
+  ///
+  /// In en, this message translates to:
+  /// **'Can the lease be renewed?'**
+  String get fieldLeaseRenewable;
+
+  /// Lease renewable answer.
+  ///
+  /// In en, this message translates to:
+  /// **'Yes'**
+  String get leaseRenewableYes;
+
+  /// Lease not renewable answer.
+  ///
+  /// In en, this message translates to:
+  /// **'No'**
+  String get leaseRenewableNo;
+
+  /// Lease renewal unanswered.
+  ///
+  /// In en, this message translates to:
+  /// **'Not stated'**
+  String get leaseRenewableUnset;
+
+  /// Rent-specific section heading on the specs step.
+  ///
+  /// In en, this message translates to:
+  /// **'Rental terms'**
+  String get sectionRentalTerms;
+
+  /// Security deposit field label.
+  ///
+  /// In en, this message translates to:
+  /// **'Security deposit'**
+  String get fieldDeposit;
+
+  /// Security deposit field hint.
+  ///
+  /// In en, this message translates to:
+  /// **'NPR, usually one to three months of rent'**
+  String get fieldDepositHint;
+
+  /// Availability date field label.
+  ///
+  /// In en, this message translates to:
+  /// **'Available from'**
+  String get fieldAvailableFrom;
+
+  /// Availability date picker action.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose a date'**
+  String get fieldAvailableFromPick;
+
+  /// Availability date clear action.
+  ///
+  /// In en, this message translates to:
+  /// **'Clear date'**
+  String get fieldAvailableFromClear;
+
+  /// Availability date in the past message.
+  ///
+  /// In en, this message translates to:
+  /// **'Availability date cannot be in the past'**
+  String get availableFromPast;
+
+  /// Furnishing level field label.
+  ///
+  /// In en, this message translates to:
+  /// **'Furnishing'**
+  String get fieldFurnishing;
+
+  /// Unfurnished furnishing option.
+  ///
+  /// In en, this message translates to:
+  /// **'Unfurnished'**
+  String get furnishingUnfurnished;
+
+  /// Semi-furnished furnishing option.
+  ///
+  /// In en, this message translates to:
+  /// **'Partly furnished'**
+  String get furnishingSemiFurnished;
+
+  /// Furnished furnishing option.
+  ///
+  /// In en, this message translates to:
+  /// **'Fully furnished'**
+  String get furnishingFurnished;
+
+  /// Utilities included field label.
+  ///
+  /// In en, this message translates to:
+  /// **'Utilities included'**
+  String get fieldUtilities;
+
+  /// Utilities included field hint.
+  ///
+  /// In en, this message translates to:
+  /// **'e.g. Water and building maintenance'**
+  String get fieldUtilitiesHint;
+
+  /// Utilities note over the length cap.
+  ///
+  /// In en, this message translates to:
+  /// **'Keep the utilities note under 200 characters'**
+  String get utilitiesTooLong;
+
+  /// Pet policy field label.
+  ///
+  /// In en, this message translates to:
+  /// **'Pets'**
+  String get fieldPetPolicy;
+
+  /// Pet policy option: no animals.
+  ///
+  /// In en, this message translates to:
+  /// **'No pets'**
+  String get petNotAllowed;
+
+  /// Pet policy option: cats allowed.
+  ///
+  /// In en, this message translates to:
+  /// **'Cats allowed'**
+  String get petCatsOk;
+
+  /// Pet policy option: dogs allowed.
+  ///
+  /// In en, this message translates to:
+  /// **'Dogs allowed'**
+  String get petDogsOk;
+
+  /// Pet policy option: any animal.
+  ///
+  /// In en, this message translates to:
+  /// **'All pets allowed'**
+  String get petAllPets;
+
+  /// Pet policy option: ask the seller.
+  ///
+  /// In en, this message translates to:
+  /// **'Negotiable'**
+  String get petNegotiable;
+
+  /// Building-specific section heading on the specs step.
+  ///
+  /// In en, this message translates to:
+  /// **'Building'**
+  String get sectionBuilding;
+
+  /// Parking spaces field label.
+  ///
+  /// In en, this message translates to:
+  /// **'Parking spaces'**
+  String get fieldParking;
+
+  /// Parking minimum message.
+  ///
+  /// In en, this message translates to:
+  /// **'Parking must be 1 or more'**
+  String get parkingMin;
+
+  /// Floor number field label.
+  ///
+  /// In en, this message translates to:
+  /// **'Floor'**
+  String get fieldFloor;
+
+  /// Floor number field hint.
+  ///
+  /// In en, this message translates to:
+  /// **'Ground floor is 0'**
+  String get fieldFloorHint;
+
+  /// Total floors field label.
+  ///
+  /// In en, this message translates to:
+  /// **'Total floors'**
+  String get fieldTotalFloors;
+
+  /// Total floors minimum message.
+  ///
+  /// In en, this message translates to:
+  /// **'Total floors must be 1 or more'**
+  String get totalFloorsMin;
+
+  /// Building age field label.
+  ///
+  /// In en, this message translates to:
+  /// **'Building age'**
+  String get fieldPropertyAge;
+
+  /// Building age field hint.
+  ///
+  /// In en, this message translates to:
+  /// **'Years since construction, 0 if new'**
+  String get fieldPropertyAgeHint;
+
+  /// Construction status field label.
+  ///
+  /// In en, this message translates to:
+  /// **'Status'**
+  String get fieldConstructionStatus;
+
+  /// Construction status option: new build.
+  ///
+  /// In en, this message translates to:
+  /// **'New build'**
+  String get constructionNew;
+
+  /// Construction status option: still being built.
+  ///
+  /// In en, this message translates to:
+  /// **'Under construction'**
+  String get constructionUnderConstruction;
+
+  /// Construction status option: previously occupied.
+  ///
+  /// In en, this message translates to:
+  /// **'Resale'**
+  String get constructionResale;
+
+  /// Review summary row label for lease terms.
+  ///
+  /// In en, this message translates to:
+  /// **'Lease'**
+  String get reviewLease;
+
+  /// Lease term summary value.
+  ///
+  /// In en, this message translates to:
+  /// **'{months} months'**
+  String reviewLeaseMonths(String months);
+
+  /// Review summary row label for rental terms.
+  ///
+  /// In en, this message translates to:
+  /// **'Rental'**
+  String get reviewRental;
+
+  /// Deposit summary value.
+  ///
+  /// In en, this message translates to:
+  /// **'Deposit {amount}'**
+  String reviewDeposit(String amount);
+
+  /// Availability summary value.
+  ///
+  /// In en, this message translates to:
+  /// **'From {date}'**
+  String reviewAvailableFrom(String date);
+
+  /// Review summary row label for building details.
+  ///
+  /// In en, this message translates to:
+  /// **'Building'**
+  String get reviewBuilding;
+
+  /// Floor summary value.
+  ///
+  /// In en, this message translates to:
+  /// **'Floor {floor} of {total}'**
+  String reviewFloor(String floor, String total);
+
+  /// Building age summary value.
+  ///
+  /// In en, this message translates to:
+  /// **'{years} years old'**
+  String reviewAge(String years);
 }
 
 class _AppLocalizationsDelegate
