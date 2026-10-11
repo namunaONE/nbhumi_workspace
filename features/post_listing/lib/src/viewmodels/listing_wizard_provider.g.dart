@@ -10,24 +10,24 @@ part of 'listing_wizard_provider.dart';
 // ignore_for_file: type=lint, type=warning
 /// Photo picker for the wizard.
 ///
-/// Overridden in `main.dart` with a real `image_picker` implementation, and in
-/// tests with a scripted one.
+/// Overridden in tests with a scripted implementation. The default is real,
+/// so a build that forgets to override still works.
 
 @ProviderFor(photoPicker)
 final photoPickerProvider = PhotoPickerProvider._();
 
 /// Photo picker for the wizard.
 ///
-/// Overridden in `main.dart` with a real `image_picker` implementation, and in
-/// tests with a scripted one.
+/// Overridden in tests with a scripted implementation. The default is real,
+/// so a build that forgets to override still works.
 
 final class PhotoPickerProvider
     extends $FunctionalProvider<PhotoPicker, PhotoPicker, PhotoPicker>
     with $Provider<PhotoPicker> {
   /// Photo picker for the wizard.
   ///
-  /// Overridden in `main.dart` with a real `image_picker` implementation, and in
-  /// tests with a scripted one.
+  /// Overridden in tests with a scripted implementation. The default is real,
+  /// so a build that forgets to override still works.
   PhotoPickerProvider._()
     : super(
         from: null,
@@ -114,7 +114,7 @@ final class ListingWizardProvider
   }
 }
 
-String _$listingWizardHash() => r'5817d901e9d877aa1b98d784366902077cc47eae';
+String _$listingWizardHash() => r'68f5561fc50797f1f936ec77a5a46448e85cdc8c';
 
 /// The post-listing wizard.
 ///

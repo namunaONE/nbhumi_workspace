@@ -157,19 +157,121 @@ extension ListingWizardValidation on ListingWizardState {
         ..addAll(_optionalNonNegative(s, 'areaDhur', areaDhur, s.unitDhur));
     }
 
-    // Bedrooms and bathrooms are optional, but the column carries
-    // CHECK (> 0), so 0 is rejected by the database. Catching it here turns a
-    // server error into an inline hint.
-    for (final entry in <String, String>{
-      'bedrooms': bedrooms,
-      'bathrooms': bathrooms,
-    }.entries) {
-      final parsed = _parse(entry.value);
-      if (entry.value.trim().isNotEmpty &&
-          (parsed == null || parsed < 1)) {
-        errors[entry.key] = entry.key == 'bedrooms'
-            ? s.bedroomsMin
-            : s.bathroomsMin;
+    // Rooms only exist in residential buildings. The fields are hidden for
+    // land, commercial and business, so anything in state here came from a type
+    // the seller switched away from; validating it anyway keeps the state
+    // honest rather than trusting the UI to have cleared it.
+    if (isResidential) {
+      // Bedrooms and bathrooms are optional, but the column carries
+      // CHECK (> 0), so 0 is rejected by the database. Catching it here turns
+      // a server error into an inline hint.
+      for (final entry in <String, String>{
+        'bedrooms': bedrooms,
+        'bathrooms': bathrooms,
+      }.entries) {
+        final parsed = _parse(entry.value);
+        if (entry.value.trim().isNotEmpty &&
+            (parsed == null || parsed < 1)) {
+          errors[entry.key] = entry.key == 'bedrooms'
+              ? s.bedroomsMin
+              : s.bathroomsMin;
+        }
+      }
+    }
+
+    // Parking is counted wherever there is ground to park on, so land is the
+    // only type that drops out.
+    if (hasParking) {
+      errors.addAll(
+        _optionalAtLeastOne(s, 'parkingSpaces', parkingSpaces, s.parkingMin),
+      );
+    }
+
+    // Floor counts only apply inside a taller building.
+    if (hasFloors) {
+      errors
+        ..addAll(
+          _optionalNonNegative(s, 'floorNumber', floorNumber, s.fieldFloor),
+        )
+        ..addAll(
+          _optionalAtLeastOne(s, 'totalFloors', totalFloors, s.totalFloorsMin),
+        );
+    }
+
+    // A building can be aged; land cannot.
+    if (isBuilt) {
+      errors.addAll(
+        _optionalNonNegative(
+          s,
+          'propertyAgeYears',
+          propertyAgeYears,
+          s.fieldPropertyAge,
+        ),
+      );
+    }
+
+    errors
+      ..addAll(_validateLeaseTerms(s).errors)
+      ..addAll(_validateRentalTerms(s).errors);
+
+    return StepValidation(errors);
+  }
+
+  /// Lease terms are only required when the purpose is a lease.
+  ///
+  /// A term is required rather than optional because a lease without one is
+  /// not a contract a tenant can act on, and the review screen would otherwise
+  /// show "Not set" for the one field that defines the arrangement.
+  StepValidation _validateLeaseTerms(post_strings.AppLocalizations s) {
+    if (!isLease) return const StepValidation.valid();
+
+    final errors = <String, String>{};
+    final term = _parse(leaseTermMonths);
+
+    if (leaseTermMonths.trim().isEmpty) {
+      errors['leaseTermMonths'] = s.requiredField(s.fieldLeaseTerm);
+    } else if (term == null) {
+      errors['leaseTermMonths'] = s.numberInvalid(s.fieldLeaseTerm);
+    } else if (term < 1) {
+      errors['leaseTermMonths'] = s.leaseTermMin;
+    }
+
+    return StepValidation(errors);
+  }
+
+  /// Rental terms are only required when the purpose is a rent.
+  ///
+  /// The deposit stays optional: some rentals are genuinely deposit-free, and
+  /// the column's CHECK is `>= 0` rather than `> 0` for exactly that reason.
+  /// The availability date is checked against today, because a listing that
+  /// says it is available from last month is either wrong or stale, and a
+  /// tenant who filters on availability would skip it either way.
+  StepValidation _validateRentalTerms(post_strings.AppLocalizations s) {
+    final errors = <String, String>{};
+
+    if (isRent) {
+      final deposit = _parse(depositAmount);
+      if (depositAmount.trim().isNotEmpty) {
+        if (deposit == null) {
+          errors['depositAmount'] = s.numberInvalid(s.fieldDeposit);
+        } else if (deposit < 0) {
+          errors['depositAmount'] = s.numberNegative(s.fieldDeposit);
+        }
+      }
+
+      final available = availableFrom;
+      if (available != null) {
+        final now = DateTime.now();
+        final dateOnly =
+            DateTime(available.year, available.month, available.day);
+        final todayOnly = DateTime(now.year, now.month, now.day);
+        if (dateOnly.isBefore(todayOnly)) {
+          errors['availableFrom'] = s.availableFromPast;
+        }
+      }
+
+      if (utilitiesIncluded.trim().length > 200) {
+        errors['utilitiesIncluded'] = s.utilitiesTooLong;
       }
     }
 
@@ -215,6 +317,25 @@ extension ListingWizardValidation on ListingWizardState {
     return const <String, String>{};
   }
 
+  /// Validates an optional integer field whose zero is meaningless.
+  ///
+  /// Parking spaces and total floors both carry `CHECK (> 0)` in the database:
+  /// "none" is expressed by leaving the field empty, so a stored 0 can only be
+  /// a mistake. The bedroom rule is its own because the column is
+  /// residential-only.
+  Map<String, String> _optionalAtLeastOne(
+    post_strings.AppLocalizations s,
+    String field,
+    String raw,
+    String minimumMessage,
+  ) {
+    if (raw.trim().isEmpty) return const <String, String>{};
+    final parsed = _parse(raw);
+    if (parsed == null || parsed < 1) {
+      return <String, String>{field: minimumMessage};
+    }
+    return const <String, String>{};
+  }
   static int? _parse(String raw) {
     final trimmed = raw.trim();
     if (trimmed.isEmpty) return null;

@@ -138,6 +138,18 @@ class ListingWizardState {
     this.areaDhur = '',
     this.bedrooms = '',
     this.bathrooms = '',
+    this.leaseTermMonths = '',
+    this.leaseRenewable,
+    this.depositAmount = '',
+    this.availableFrom,
+    this.furnishingStatus,
+    this.utilitiesIncluded = '',
+    this.petPolicy,
+    this.parkingSpaces = '',
+    this.floorNumber = '',
+    this.totalFloors = '',
+    this.propertyAgeYears = '',
+    this.constructionStatus,
     this.priceNpr = '',
     this.photos = const <WizardPhoto>[],
     this.submitting = false,
@@ -217,6 +229,47 @@ class ListingWizardState {
 
   /// Bathroom count as typed. Optional.
   final String bathrooms;
+  /// Lease length in months as typed. Optional, and only meaningful for a
+  /// lease listing.
+  final String leaseTermMonths;
+
+  /// Whether the lease can be renewed. Tri-state: unset means "not stated",
+  /// which is a different answer from "no".
+  final bool? leaseRenewable;
+
+  /// Security deposit in NPR as typed. Optional, rent listings only.
+  final String depositAmount;
+
+  /// First occupancy date. Optional, rent listings only.
+  ///
+  /// A [DateTime] rather than a string because the field is a date picker, not
+  /// a text box: holding it as text would mean parsing on every render and
+  /// re-formatting for the picker's initial value.
+  final DateTime? availableFrom;
+
+  /// Furnishing level. Optional, rent listings only.
+  final FurnishingStatus? furnishingStatus;
+
+  /// Which utilities the rent covers. Optional, rent listings only.
+  final String utilitiesIncluded;
+
+  /// Pet policy. Optional, rent listings only.
+  final PetPolicy? petPolicy;
+
+  /// Parking space count as typed. Optional.
+  final String parkingSpaces;
+
+  /// Floor this unit is on as typed. Optional.
+  final String floorNumber;
+
+  /// Total floors as typed. Optional.
+  final String totalFloors;
+
+  /// Building age in years as typed. Optional.
+  final String propertyAgeYears;
+
+  /// New, under construction or resale. Optional.
+  final ConstructionStatus? constructionStatus;
 
   /// Asking price in NPR as typed.
   final String priceNpr;
@@ -247,6 +300,49 @@ class ListingWizardState {
 
   /// Whether this district measures in hill units.
   bool get usesHillUnits => region == Region.hill;
+  // -------------------------------------------------------------------------
+  // Applicability: which groups of fields answer to this listing
+  // -------------------------------------------------------------------------
+  // These mirror `enforce_listing_field_applicability` in the database. Having
+  // them here is what lets the steps decide what to render and the validation
+  // decide what to require, and having them in one place is what stops the two
+  // from drifting into "the form asks for a lease term on a house for sale".
+  /// Whether anyone sleeps in it: house, apartment or villa.
+  ///
+  /// Land has no rooms, and a "commercial shop" or a "business" listing is
+  /// premises, not a home -- a shop floor does not carry a bedroom count.
+  bool get isResidential =>
+      propertyType == PropertyType.house ||
+      propertyType == PropertyType.apartment ||
+      propertyType == PropertyType.villa;
+
+  /// Whether the building has floors to report: apartment, commercial or
+  /// business premises.
+  ///
+  /// A house, a villa and a plot of land have no floor number worth naming.
+  bool get hasFloors =>
+      propertyType == PropertyType.apartment ||
+      propertyType == PropertyType.commercial ||
+      propertyType == PropertyType.business;
+
+  /// Whether there is a building at all, so age and construction status mean
+  /// something.
+  bool get isBuilt =>
+      propertyType != null && propertyType != PropertyType.land;
+
+  /// Whether parking can be counted. Land has none.
+  bool get hasParking =>
+      propertyType != null && propertyType != PropertyType.land;
+
+  /// Whether this is a lease, which is the only purpose with a term.
+  bool get isLease => listingPurpose == ListingPurpose.lease;
+
+  /// Whether this is a rental, which is the only purpose with rent-specific
+  /// terms.
+  bool get isRent => listingPurpose == ListingPurpose.rent;
+
+  /// Whether the seller actually stated a renewal answer.
+  bool get hasLeaseRenewable => isLease && leaseRenewable != null;
 
   /// Any hill unit entered.
   bool get hasHillArea => _anyUnits(
@@ -348,6 +444,18 @@ class ListingWizardState {
     String? areaDhur,
     String? bedrooms,
     String? bathrooms,
+    String? leaseTermMonths,
+    bool? leaseRenewable,
+    String? depositAmount,
+    DateTime? availableFrom,
+    FurnishingStatus? furnishingStatus,
+    String? utilitiesIncluded,
+    PetPolicy? petPolicy,
+    String? parkingSpaces,
+    String? floorNumber,
+    String? totalFloors,
+    String? propertyAgeYears,
+    ConstructionStatus? constructionStatus,
     String? priceNpr,
     List<WizardPhoto>? photos,
     bool? submitting,
@@ -357,6 +465,11 @@ class ListingWizardState {
     bool clearSubmitError = false,
     bool clearDistrict = false,
     bool clearMunicipality = false,
+    bool clearLeaseRenewable = false,
+    bool clearAvailableFrom = false,
+    bool clearFurnishingStatus = false,
+    bool clearPetPolicy = false,
+    bool clearConstructionStatus = false,
   }) =>
       ListingWizardState(
         step: step ?? this.step,
@@ -381,6 +494,26 @@ class ListingWizardState {
         areaDhur: areaDhur ?? this.areaDhur,
         bedrooms: bedrooms ?? this.bedrooms,
         bathrooms: bathrooms ?? this.bathrooms,
+        leaseTermMonths: leaseTermMonths ?? this.leaseTermMonths,
+        leaseRenewable: clearLeaseRenewable
+            ? null
+            : (leaseRenewable ?? this.leaseRenewable),
+        depositAmount: depositAmount ?? this.depositAmount,
+        availableFrom: clearAvailableFrom
+            ? null
+            : (availableFrom ?? this.availableFrom),
+        furnishingStatus: clearFurnishingStatus
+            ? null
+            : (furnishingStatus ?? this.furnishingStatus),
+        utilitiesIncluded: utilitiesIncluded ?? this.utilitiesIncluded,
+        petPolicy: clearPetPolicy ? null : (petPolicy ?? this.petPolicy),
+        parkingSpaces: parkingSpaces ?? this.parkingSpaces,
+        floorNumber: floorNumber ?? this.floorNumber,
+        totalFloors: totalFloors ?? this.totalFloors,
+        propertyAgeYears: propertyAgeYears ?? this.propertyAgeYears,
+        constructionStatus: clearConstructionStatus
+            ? null
+            : (constructionStatus ?? this.constructionStatus),
         priceNpr: priceNpr ?? this.priceNpr,
         photos: photos ?? this.photos,
         submitting: submitting ?? this.submitting,
