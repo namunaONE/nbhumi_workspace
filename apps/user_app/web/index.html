@@ -31,8 +31,73 @@
   <title>nBhumi — Nepal Property Marketplace</title>
   <link rel="icon" type="image/png" href="favicon.png"/>
   <link rel="manifest" href="manifest.json">
+
+  <!--
+    Security headers expressible as <meta> only.
+
+    GitHub Pages serves no custom HTTP headers, so this is the only layer
+    available here — and it is deliberately partial. X-Frame-Options as a meta
+    tag is advisory (ignored by some browsers, overridable intra-page) and is
+    NOT a substitute for the CSP header that a real host can set.
+
+    No Content-Security-Policy is declared, on purpose. Flutter's CanvasKit
+    renderer requires script-src 'wasm-unsafe-eval' plus
+    https://www.gstatic.com/flutter-canvaskit/ and style-src 'unsafe-inline';
+    a nonce-based CSP breaks the app outright (flutter/flutter#86553). A policy
+    loose enough to admit CanvasKit stops being a control, and shipping one
+    would misrepresent the app's posture. The real boundary is Supabase RLS,
+    which is enforced server-side and is unaffected by what this host can send.
+
+    COOP/COEP are absent for the same reason: Pages cannot set them, which is
+    why the --wasm / skwasm renderer is not usable until the move to Vercel.
+  -->
+  <meta http-equiv="X-Frame-Options" content="DENY">
+  <meta http-equiv="referrer" content="strict-origin-when-cross-origin">
+
+  <!--
+    A preview must never be indexed. robots.txt alone is a request; this is the
+    directive. Belt and braces, because a stray inbound link should not surface
+    a demo build as if it were the marketplace.
+  -->
+  <meta name="robots" content="noindex, nofollow">
 </head>
 <body>
+  <!--
+    Pre-paint preview marker.
+
+    CanvasKit downloads ~1.5MB before the first frame, so a tester would
+    otherwise stare at 1-2s of blank canvas with nothing to identify the build.
+    This strip is pure HTML/CSS so it paints instantly, then hands off to the
+    Flutter PreviewBanner on `flutter-first-frame` — the documented handoff
+    event. It never navigates or dismisses anything app-side.
+
+    Styled inline rather than via a stylesheet because GitHub Pages serves no
+    headers and a one-rule external file is a request that can 404.
+  -->
+  <div id="preview-banner"
+       style="position:fixed;top:0;left:0;right:0;z-index:2147483647;
+              background:#002C6D;color:#fff;text-align:center;
+              font:600 13px/1.4 -apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;
+              padding:6px 12px;letter-spacing:.2px;">
+    Preview build — not the live marketplace · नमुना निर्माण — प्रत्यक्ष बजार होइन
+  </div>
+  <script>
+    // Hand off to the in-app banner once Flutter has actually painted, so the
+    // two never show at once. If Flutter never boots, the strip stays: an
+    // unlabelled page is worse than a stale one.
+    window.addEventListener('flutter-first-frame', function () {
+      var el = document.getElementById('preview-banner');
+      if (el) { el.remove(); }
+    });
+    // Flutter's loader also emits `load` on the bootstrap; the first-frame
+    // listener above is the authoritative signal, this is only a backstop for
+    // builds where the event name changed.
+    setTimeout(function () {
+      var el = document.getElementById('preview-banner');
+      if (el && document.querySelector('flt-glass-pane')) { el.remove(); }
+    }, 8000);
+  </script>
+
   <script src="flutter_bootstrap.js" async></script>
 
   <!--

@@ -1,0 +1,98 @@
+name: Deploy Web Preview
+
+# Publishes apps/user_app to GitHub Pages as a preview build.
+#
+# NOT production. GitHub Pages serves no custom headers (no HSTS, COOP/COEP,
+# CSP), so this stays on the CanvasKit renderer and its Terms of Service
+# prohibit commercial hosting. Vercel takes over production later — the only
+# deltas there are the hosting config and + --wasm.
+#
+# A custom workflow rather than the `gh-pages` branch because the branch route
+# counts against GitHub's 10-builds-per-hour soft limit, which Actions
+# workflows are explicitly exempt from.
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'apps/user_app/**'
+      - 'packages/**'
+      - 'features/**'
+      - '.github/workflows/deploy-preview.yml'
+  workflow_dispatch: {} # manual re-deploy from the Actions tab
+
+# Least privilege: read source, write the Pages deployment. Never `contents:
+# write`, which would let this workflow push commits.
+permissions:
+  contents: read
+  pages: write
+  id-token: write # required by pages deploy action
+
+# A new push supersedes an in-flight deploy. Without this a rapid pair of
+# pushes races two deployments into the same Pages environment.
+concurrency:
+  group: 'pages'
+  cancel-in-progress: true
+
+jobs:
+  build:
+    name: Build user_app for web
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: subosito/flutter-action@v2
+        with:
+          flutter-version: 3.47.0
+          channel: stable
+          cache: true
+
+      - name: Install dependencies
+        run: dart pub get
+
+      - name: Build web
+        working-directory: apps/user_app
+        # Secrets, never a committed value (Rule 7). SUPABASE_ANON_KEY is
+        # legacy and read by nothing today; passed so a dashboard still on the
+        # old secret name cannot silently fall back to a compiled-in default.
+        #
+        # ENVIRONMENT=preview drives the PreviewBanner and verbose logging
+        # (logger.minLevelFor fails open to verbose for unknown values).
+        #
+        # --base-href / is correct despite the /<repo>/ URL prefix: the app is
+        # on hash routing, so the Flutter app itself lives at the Pages root
+        # and deep links need no 404.html rewrite.
+        run: |
+          flutter build web --release \
+            --base-href / \
+            --pwa-strategy offline-first \
+            --dart-define=SUPABASE_URL=${{ secrets.SUPABASE_URL }} \
+            --dart-define=SUPABASE_PUBLISHABLE_KEY=${{ secrets.SUPABASE_PUBLISHABLE_KEY }} \
+            --dart-define=SUPABASE_ANON_KEY=${{ secrets.SUPABASE_ANON_KEY }} \
+            --dart-define=ENVIRONMENT=preview
+
+      - name: Disable Jekyll processing
+        # GitHub Pages runs Jekyll by default, which ignores any path starting
+        # with _ or . and would silently 404 a future asset with such a name.
+        # One empty file removes that whole failure mode.
+        run: touch apps/user_app/build/web/.nojekyll
+
+      - name: Setup Pages
+        uses: actions/configure-pages@v5
+
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: apps/user_app/build/web
+
+  deploy:
+    name: Deploy to GitHub Pages
+    runs-on: ubuntu-latest
+    needs: build
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4

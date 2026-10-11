@@ -93,14 +93,18 @@ void main() {
       await _pumpScreen(tester, null);
 
       expect(find.byType(ListingDetailBody), findsNothing);
-      // _NotAvailable shows the not available title and body
-      expect(find.text('This property is no longer available'), findsOneWidget);
+      // _NotAvailable shows the not available title and body.
       expect(
-        find.text(
-          'It may have been sold, withdrawn by the seller, or the link may be wrong.',
-        ),
+        find.text('This property is no longer available'),
         findsOneWidget,
       );
+      expect(
+          find.text(
+            'It may have been sold, withdrawn by the seller, '
+            'or the link may be wrong.',
+          ),
+          findsOneWidget,
+        );
     });
   });
 }

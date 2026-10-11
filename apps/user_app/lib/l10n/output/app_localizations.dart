@@ -853,6 +853,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Unpublished'**
   String get activityStatusUnpublished;
+
+  /// Persistent strip marking a GitHub Pages preview build, not the live marketplace.
+  ///
+  /// In en, this message translates to:
+  /// **'Preview build — not the live marketplace'**
+  String get previewBanner;
+
+  /// Banner secondary line: what a preview build is not.
+  ///
+  /// In en, this message translates to:
+  /// **'For review only. Data may be reset — do not rely on it.'**
+  String get previewBannerDetail;
 }
 
 class _AppLocalizationsDelegate

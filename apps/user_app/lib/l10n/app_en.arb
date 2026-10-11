@@ -654,5 +654,15 @@
   "@activityStatusUnpublished": {
     "description": "Unpublished status chip."
   },
-  "activityStatusUnpublished": "Unpublished"
+  "activityStatusUnpublished": "Unpublished",
+
+  "@previewBanner": {
+    "description": "Persistent strip marking a GitHub Pages preview build, not the live marketplace."
+  },
+  "previewBanner": "Preview build — not the live marketplace",
+
+  "@previewBannerDetail": {
+    "description": "Banner secondary line: what a preview build is not."
+  },
+  "previewBannerDetail": "For review only. Data may be reset — do not rely on it."
 }

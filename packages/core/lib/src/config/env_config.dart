@@ -19,10 +19,11 @@ library;
 /// Compile-time environment configuration.
 abstract final class EnvConfig {
   /// Supabase project URL. Empty when not supplied — see the library doc.
-  static const String supabaseUrl = String.fromEnvironment(
-    'SUPABASE_URL',
-    defaultValue: '',
-  );
+  ///
+  /// The empty default is `String.fromEnvironment`'s own, so it is not restated
+  /// here: spelling it out trips `avoid_redundant_argument_values` under
+  /// `--fatal-infos` (Rule 20), and the doc comment carries the intent anyway.
+  static const String supabaseUrl = String.fromEnvironment('SUPABASE_URL');
 
   /// Supabase publishable API key. Safe to ship in a client binary — it is
   /// subject to RLS, unlike `service_role`.
@@ -30,10 +31,10 @@ abstract final class EnvConfig {
   /// Named `publishable` rather than `anon` to match the current Supabase
   /// terminology. `Supabase.initialize` deprecated its `anonKey` parameter in
   /// favour of `publishableKey`.
-  static const String supabasePublishableKey = String.fromEnvironment(
-    'SUPABASE_PUBLISHABLE_KEY',
-    defaultValue: '',
-  );
+  ///
+  /// Empty default is implicit for the same reason as [supabaseUrl] above.
+  static const String supabasePublishableKey =
+      String.fromEnvironment('SUPABASE_PUBLISHABLE_KEY');
 
   /// Current environment name: dev, staging, or prod.
   static const String environment = String.fromEnvironment(

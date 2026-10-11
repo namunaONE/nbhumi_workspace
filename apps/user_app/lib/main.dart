@@ -24,6 +24,7 @@ import 'package:user_app/l10n/output/app_localizations.dart';
 import 'package:user_app/onboarding/onboarding_gate.dart';
 import 'package:user_app/router/app_router.dart';
 import 'package:user_app/settings/app_settings.dart';
+import 'package:user_app/widgets/preview_banner.dart';
 
 Future<void> main() async {
   final binding = WidgetsFlutterBinding.ensureInitialized();
@@ -119,9 +120,17 @@ class UserApp extends ConsumerWidget {
           // Widget tests pump the full app (Rule 33 forbids real backends
           // but not the shell): hiding content behind a 3s animation would
           // break every one of them, so tests skip straight to the content.
-          return SplashScreen(
-            enabled: !_splashBypassed,
-            child: child ?? const SizedBox.shrink(),
+          //
+          // PreviewBanner wraps outermost so the strip is above the splash,
+          // never inside it — a banner that appears only after the animation
+          // has already given the build away is decoration. It is a no-op in
+          // every non-preview build (see the widget's gate), so tests and
+          // release builds see exactly the tree they saw before.
+          return PreviewBanner(
+            child: SplashScreen(
+              enabled: !_splashBypassed,
+              child: child ?? const SizedBox.shrink(),
+            ),
           );
         },
       ),

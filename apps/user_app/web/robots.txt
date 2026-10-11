@@ -1,0 +1,5 @@
+# This preview build is not a public index target: it exists to share with
+# reviewers, not to rank. A marketplace's organic traffic must come from the
+# production host, never from a demo.
+User-agent: *
+Disallow: /

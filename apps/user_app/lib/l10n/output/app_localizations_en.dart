@@ -411,4 +411,11 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get activityStatusUnpublished => 'Unpublished';
+
+  @override
+  String get previewBanner => 'Preview build — not the live marketplace';
+
+  @override
+  String get previewBannerDetail =>
+      'For review only. Data may be reset — do not rely on it.';
 }

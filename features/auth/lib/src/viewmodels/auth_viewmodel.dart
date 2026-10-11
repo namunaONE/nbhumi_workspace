@@ -4,13 +4,13 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'auth_viewmodel.g.dart';
 
-/// Session state for magic link or email + password auth.
+/// Session state for email + password auth.
 ///
 /// Mirrors `isSignedInProvider` rather than owning its own session copy so the
 /// router's [AuthRefreshNotifier], the profile screen and this notifier can
-/// never disagree. The notifier's real job is the side-effects (send link,
-/// sign up, sign in, recovery, sign out) plus the validation gate (Rule 6) that belongs
-/// above the service.
+/// never disagree. The notifier's real job is the side-effects (sign up, sign
+/// in, recovery, sign out) plus the validation gate (Rule 6) that belongs above
+/// the service.
 @riverpod
 class Auth extends _$Auth {
   @override
@@ -32,8 +32,9 @@ class Auth extends _$Auth {
   ///
   /// Whether a confirmation email intervenes depends on the project's
   /// "Confirm email" setting: either way the session (now or after the
-  /// callback exchange) surfaces through `isSignedInProvider` like a
-  /// magic-link session, so the router needs no second path. Marks the install for post-signup onboarding.
+  /// callback exchange) surfaces through `isSignedInProvider` like any other
+  /// sign-in, so the router needs no second path. Marks the install for
+  /// post-signup onboarding.
   Future<void> signUpWithPassword({
     required String email,
     required String password,

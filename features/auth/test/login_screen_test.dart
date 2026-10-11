@@ -1,4 +1,4 @@
-﻿import 'package:auth/auth.dart';
+import 'package:auth/auth.dart';
 import 'package:auth/l10n/output/auth_localizations.dart' as auth_strings;
 import 'package:data/data.dart';
 import 'package:flutter/material.dart';

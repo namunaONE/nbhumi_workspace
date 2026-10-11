@@ -654,5 +654,15 @@
   "@activityStatusUnpublished": {
     "description": "Unpublished status chip."
   },
-  "activityStatusUnpublished": "अप्रकाशित"
+  "activityStatusUnpublished": "अप्रकाशित",
+
+  "@previewBanner": {
+    "description": "Persistent strip marking a GitHub Pages preview build, not the live marketplace."
+  },
+  "previewBanner": "नमुना निर्माण — प्रत्यक्ष बजार होइन",
+
+  "@previewBannerDetail": {
+    "description": "Banner secondary line: what a preview build is not."
+  },
+  "previewBannerDetail": "समीक्षाका लागि मात्र। डेटा रिसेट हुन सक्छ — यसमा निर्भर नगर्नुहोस्।"
 }
