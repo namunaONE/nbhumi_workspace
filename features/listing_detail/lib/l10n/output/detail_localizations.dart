@@ -428,12 +428,6 @@ abstract class AppLocalizations {
   /// **'Verify this listing'**
   String get verifyThisListing;
 
-  /// Browser tab fallback while the listing is still loading.
-  ///
-  /// In en, this message translates to:
-  /// **'Property details'**
-  String get detailPageTitle;
-
   /// Parking spaces spec row.
   ///
   /// In en, this message translates to:

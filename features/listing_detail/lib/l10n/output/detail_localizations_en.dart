@@ -200,9 +200,6 @@ class AppLocalizationsEn extends AppLocalizations {
   String get verifyThisListing => 'Verify this listing';
 
   @override
-  String get detailPageTitle => 'Property details';
-
-  @override
   String specParking(int count) {
     return '$count parking spaces';
   }

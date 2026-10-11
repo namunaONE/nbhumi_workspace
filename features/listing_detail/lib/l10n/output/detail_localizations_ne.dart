@@ -188,9 +188,6 @@ class AppLocalizationsNe extends AppLocalizations {
   String get verifyThisListing => 'यो विज्ञापन प्रमाणित गर्नुहोस्';
 
   @override
-  String get detailPageTitle => 'सम्पत्ति विवरण';
-
-  @override
   String specParking(int count) {
     return '$count पार्किङ स्थान';
   }
