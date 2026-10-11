@@ -360,6 +360,129 @@ void main() {
     });
   });
 
+  group('SpecsStep conditioned sections', () {
+    Widget specs(ListingWizardState state) => _app(
+          SpecsStep(
+            state: state,
+            onUnitChanged: (_, _) {},
+            onBedroomsChanged: (_) {},
+            onBathroomsChanged: (_) {},
+            onLeaseTermChanged: (_) {},
+            onLeaseRenewableChanged: ({required renewable}) {},
+            onDepositChanged: (_) {},
+            onAvailableFromChanged: ({required availableFrom}) {},
+            onFurnishingChanged: ({required furnishing}) {},
+            onUtilitiesChanged: (_) {},
+            onPetPolicyChanged: ({required petPolicy}) {},
+            onParkingChanged: (_) {},
+            onFloorNumberChanged: (_) {},
+            onTotalFloorsChanged: (_) {},
+            onPropertyAgeChanged: (_) {},
+            onConstructionStatusChanged: ({required constructionStatus}) {},
+          ),
+        );
+
+    testWidgets('land is not asked for bedrooms or bathrooms', (tester) async {
+      await tester.pumpWidget(specs(
+        _state().copyWith(propertyType: PropertyType.land),
+      ));
+
+      // The room fields are gone, not merely blank: a land seller who sees
+      // "Bedrooms" fills it in with something meaningless.
+      expect(find.text('Bedrooms'), findsNothing);
+      expect(find.text('Bathrooms'), findsNothing);
+      // The area fields are still there -- land has plenty of those.
+      expect(find.text('Aana'), findsOneWidget);
+    });
+
+    testWidgets('a house is asked for bedrooms and bathrooms', (tester) async {
+      await tester.pumpWidget(specs(
+        _state().copyWith(propertyType: PropertyType.house),
+      ));
+
+      expect(find.text('Bedrooms'), findsOneWidget);
+      expect(find.text('Bathrooms'), findsOneWidget);
+    });
+
+    testWidgets('a commercial shop is not asked for rooms', (tester) async {
+      await tester.pumpWidget(specs(
+        _state().copyWith(propertyType: PropertyType.commercial),
+      ));
+
+      expect(find.text('Bedrooms'), findsNothing);
+      expect(find.text('Bathrooms'), findsNothing);
+    });
+
+    testWidgets('land is not asked for parking, floors, age or status',
+        (tester) async {
+      await tester.pumpWidget(specs(
+        _state().copyWith(propertyType: PropertyType.land),
+      ));
+
+      expect(find.text('Parking spaces'), findsNothing);
+      expect(find.text('Floor'), findsNothing);
+      expect(find.text('Total floors'), findsNothing);
+      expect(find.text('Building age'), findsNothing);
+      // A plot of ground has no construction status to report.
+      expect(find.text('Status'), findsNothing);
+    });
+
+    testWidgets('an apartment is asked for floor and total floors',
+        (tester) async {
+      await tester.pumpWidget(specs(
+        _state().copyWith(propertyType: PropertyType.apartment),
+      ));
+
+      expect(find.text('Floor'), findsOneWidget);
+      expect(find.text('Total floors'), findsOneWidget);
+      expect(find.text('Building age'), findsOneWidget);
+    });
+
+    testWidgets('a lease asks for a term and a renewal answer',
+        (tester) async {
+      await tester.pumpWidget(specs(
+        _state().copyWith(listingPurpose: ListingPurpose.lease),
+      ));
+
+      expect(find.text('Lease term'), findsOneWidget);
+      expect(find.text('Can the lease be renewed?'), findsOneWidget);
+      expect(find.text('Yes'), findsOneWidget);
+      expect(find.text('No'), findsOneWidget);
+      // And nothing from the rental section.
+      expect(find.text('Security deposit'), findsNothing);
+      expect(find.text('Choose a date'), findsNothing);
+    });
+
+    testWidgets('a rent asks for deposit, furnishing, utilities and pets',
+        (tester) async {
+      await tester.pumpWidget(specs(
+        _state().copyWith(listingPurpose: ListingPurpose.rent),
+      ));
+
+      expect(find.text('Security deposit'), findsOneWidget);
+      // The availability field is a date picker, so its resting label is the
+      // action that opens it rather than the field name.
+      expect(find.text('Choose a date'), findsOneWidget);
+      expect(find.text('Furnishing'), findsOneWidget);
+      expect(find.text('Utilities included'), findsOneWidget);
+      expect(find.text('Pets'), findsOneWidget);
+      // And no lease term, which does not apply to a tenancy.
+      expect(find.text('Lease term'), findsNothing);
+    });
+
+    testWidgets('a sale asks for neither lease nor rental terms',
+        (tester) async {
+      await tester.pumpWidget(specs(
+        _state().copyWith(listingPurpose: ListingPurpose.sale),
+      ));
+
+      expect(find.text('Lease term'), findsNothing);
+      expect(find.text('Security deposit'), findsNothing);
+      expect(find.text('Furnishing'), findsNothing);
+      expect(find.text('Pets'), findsNothing);
+    });
+  });
+
   group('LocationStep cascade', () {
     Widget location(ListingWizardState state) => LocationStep(
           state: state,
@@ -537,6 +660,111 @@ void main() {
         find.widgetWithText(FilledButton, 'Submit for review'),
       );
       expect(button.onPressed, isNotNull);
+    });
+  });
+
+
+  group('ReviewStep conditioned rows', () {
+    ReviewStep build(ListingWizardState state) => ReviewStep(
+          state: state,
+          onEditStep: (_) {},
+          onSubmit: () {},
+        );
+
+    testWidgets('a lease shows its term and the renewal answer',
+        (tester) async {
+      await tester.pumpWidget(
+        _app(build(
+          _state().copyWith(
+            listingPurpose: ListingPurpose.lease,
+            leaseTermMonths: '24',
+            leaseRenewable: true,
+            priceNpr: '25000000',
+            photos: const <WizardPhoto>[WizardPhoto(url: 'https://x/1.jpg')],
+          ),
+        )),
+      );
+
+      expect(find.text('Lease'), findsOneWidget);
+      expect(find.textContaining('24 months'), findsOneWidget);
+      // The renewal answer is composed alongside the term, so "Yes" appears
+      // inside the lease row rather than as its own row.
+      expect(find.textContaining('Yes'), findsOneWidget);
+    });
+
+    testWidgets('a rent listing shows deposit, date, furnishing and pets',
+        (tester) async {
+      final tomorrow = DateTime.now().add(const Duration(days: 1));
+      await tester.pumpWidget(
+        _app(build(
+          _state().copyWith(
+            listingPurpose: ListingPurpose.rent,
+            depositAmount: '50000',
+            availableFrom: tomorrow,
+            furnishingStatus: FurnishingStatus.semiFurnished,
+            petPolicy: PetPolicy.catsOk,
+            priceNpr: '25000',
+            photos: const <WizardPhoto>[WizardPhoto(url: 'https://x/1.jpg')],
+          ),
+        )),
+      );
+
+      expect(find.text('Rental'), findsOneWidget);
+      expect(find.textContaining('NPR 50,000'), findsOneWidget);
+      expect(find.textContaining('Partly furnished'), findsOneWidget);
+      expect(find.textContaining('Cats allowed'), findsOneWidget);
+    });
+
+    testWidgets('a sale shows neither lease nor rental rows', (tester) async {
+      await tester.pumpWidget(
+        _app(build(
+          _state().copyWith(
+            priceNpr: '25000000',
+            photos: const <WizardPhoto>[WizardPhoto(url: 'https://x/1.jpg')],
+          ),
+        )),
+      );
+
+      expect(find.text('Lease'), findsNothing);
+      expect(find.text('Rental'), findsNothing);
+    });
+
+    testWidgets('an apartment shows its floor position and building age',
+        (tester) async {
+      await tester.pumpWidget(
+        _app(build(
+          _state().copyWith(
+            propertyType: PropertyType.apartment,
+            floorNumber: '3',
+            totalFloors: '7',
+            propertyAgeYears: '10',
+            constructionStatus: ConstructionStatus.resale,
+            priceNpr: '25000000',
+            photos: const <WizardPhoto>[WizardPhoto(url: 'https://x/1.jpg')],
+          ),
+        )),
+      );
+
+      expect(find.text('Building'), findsOneWidget);
+      expect(find.textContaining('Floor 3 of 7'), findsOneWidget);
+      expect(find.textContaining('10 years old'), findsOneWidget);
+      expect(find.textContaining('Resale'), findsOneWidget);
+    });
+
+    testWidgets('land shows no building row at all', (tester) async {
+      await tester.pumpWidget(
+        _app(build(
+          _state().copyWith(
+            propertyType: PropertyType.land,
+            priceNpr: '25000000',
+            photos: const <WizardPhoto>[WizardPhoto(url: 'https://x/1.jpg')],
+          ),
+        )),
+      );
+
+      // Land has no floors, no age and no construction status, so a building
+      // row would read as a claim about a plot of ground.
+      expect(find.text('Building'), findsNothing);
     });
   });
 

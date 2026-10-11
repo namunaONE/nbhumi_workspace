@@ -1,4 +1,4 @@
-﻿import 'package:core/core.dart';
+import 'package:core/core.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:models/models.dart';
 import 'package:post_listing/l10n/output/post_localizations.dart';
@@ -317,6 +317,267 @@ void main() {
     });
   });
 
+  group('step three: purpose-conditioned fields', () {
+    test('a lease requires a term', () {
+      // A lease without a term is not a contract a tenant can act on, and the
+      // review screen would otherwise show "Not set" for the field that
+      // defines the arrangement.
+      final state = _complete().copyWith(listingPurpose: ListingPurpose.lease);
+      final errors = state.validate(WizardStep.specs, en).errors;
+
+      expect(errors['leaseTermMonths'], 'Lease term is required');
+    });
+
+    test('a lease accepts a term of one month or more', () {
+      final state = _complete().copyWith(
+        listingPurpose: ListingPurpose.lease,
+        leaseTermMonths: '24',
+      );
+      expect(state.validate(WizardStep.specs, en).isValid, isTrue);
+    });
+
+    test('a lease rejects a term below one month', () {
+      final state = _complete().copyWith(
+        listingPurpose: ListingPurpose.lease,
+        leaseTermMonths: '0',
+      );
+      expect(
+        state.validate(WizardStep.specs, en)['leaseTermMonths'],
+        'Lease term must be at least 1 month',
+      );
+    });
+
+    test('a lease asks nothing about deposits or pets', () {
+      // The other purpose's fields must not be required, or a lease seller is
+      // held to rent terms that do not apply to them.
+      final state = _complete().copyWith(
+        listingPurpose: ListingPurpose.lease,
+        leaseTermMonths: '12',
+      );
+      final errors = state.validate(WizardStep.specs, en).errors;
+
+      expect(errors, isNot(contains('depositAmount')));
+      expect(errors, isNot(contains('availableFrom')));
+      expect(errors, isNot(contains('utilitiesIncluded')));
+      expect(errors, isNot(contains('petPolicy')));
+    });
+
+    test('a rent listing asks nothing about a lease term', () {
+      final state = _complete().copyWith(listingPurpose: ListingPurpose.rent);
+      final errors = state.validate(WizardStep.specs, en).errors;
+
+      expect(errors, isNot(contains('leaseTermMonths')));
+    });
+
+    test('a rent listing accepts a past-free availability date', () {
+      final tomorrow = DateTime.now().add(const Duration(days: 1));
+      final state = _complete().copyWith(
+        listingPurpose: ListingPurpose.rent,
+        availableFrom: tomorrow,
+      );
+      expect(state.validate(WizardStep.specs, en).isValid, isTrue);
+    });
+
+    test('a rent listing refuses an availability date in the past', () {
+      final yesterday = DateTime.now().subtract(const Duration(days: 1));
+      final state = _complete().copyWith(
+        listingPurpose: ListingPurpose.rent,
+        availableFrom: yesterday,
+      );
+      expect(
+        state.validate(WizardStep.specs, en)['availableFrom'],
+        'Availability date cannot be in the past',
+      );
+    });
+
+    test('a rent listing accepts today as an availability date', () {
+      // Same-day occupancy is normal and must not be refused as "in the
+      // past"; the comparison is date-only, so the clock time is ignored.
+      final state = _complete().copyWith(
+        listingPurpose: ListingPurpose.rent,
+        availableFrom: DateTime.now(),
+      );
+      expect(state.validate(WizardStep.specs, en).isValid, isTrue);
+    });
+
+    test('a rent listing accepts a zero deposit', () {
+      // Some rentals are genuinely deposit-free, so the CHECK is >= 0 and the
+      // validator mirrors that rather than reusing the bedroom rule.
+      final state = _complete().copyWith(
+        listingPurpose: ListingPurpose.rent,
+        depositAmount: '0',
+      );
+      expect(state.validate(WizardStep.specs, en).isValid, isTrue);
+    });
+
+    test('a rent listing refuses a negative deposit', () {
+      final state = _complete().copyWith(
+        listingPurpose: ListingPurpose.rent,
+        depositAmount: '-1',
+      );
+      expect(
+        state.validate(WizardStep.specs, en)['depositAmount'],
+        'Security deposit cannot be negative',
+      );
+    });
+
+    test('a rent listing caps the utilities note', () {
+      final state = _complete().copyWith(
+        listingPurpose: ListingPurpose.rent,
+        utilitiesIncluded: 'x' * 201,
+      );
+      expect(
+        state.validate(WizardStep.specs, en)['utilitiesIncluded'],
+        'Keep the utilities note under 200 characters',
+      );
+    });
+
+    test('a rent listing accepts a short utilities note', () {
+      final state = _complete().copyWith(
+        listingPurpose: ListingPurpose.rent,
+        utilitiesIncluded: 'Water and maintenance',
+      );
+      expect(state.validate(WizardStep.specs, en).isValid, isTrue);
+    });
+  });
+
+  group('step three: type-conditioned fields', () {
+    test('land is not asked for bedrooms or bathrooms', () {
+      // The fields are hidden for land, so anything in state here came from a
+      // type the seller switched away from -- and it must not be validated,
+      // because the seller can no longer see or clear it.
+      final state = _complete().copyWith(
+        propertyType: PropertyType.land,
+        bedrooms: '3',
+        bathrooms: '2',
+      );
+      expect(state.validate(WizardStep.specs, en).isValid, isTrue);
+    });
+
+    test('land is not asked for parking, floors, age or construction', () {
+      final state = _complete().copyWith(
+        propertyType: PropertyType.land,
+        parkingSpaces: '0',
+        floorNumber: '-1',
+        totalFloors: '0',
+        propertyAgeYears: '-5',
+      );
+      expect(state.validate(WizardStep.specs, en).isValid, isTrue);
+    });
+
+    test('a commercial shop is not asked for bedrooms', () {
+      final state = _complete().copyWith(
+        propertyType: PropertyType.commercial,
+        bedrooms: '3',
+      );
+      expect(state.validate(WizardStep.specs, en).isValid, isTrue);
+    });
+
+    test('a commercial shop is asked for floor counts', () {
+      // "Shop on the 2nd floor of a 5-storey plaza" is the normal shape of a
+      // commercial listing, so the floors section applies.
+      final state = _complete().copyWith(
+        propertyType: PropertyType.commercial,
+        floorNumber: '2',
+        totalFloors: '5',
+      );
+      expect(state.validate(WizardStep.specs, en).isValid, isTrue);
+    });
+
+    test('a commercial shop refuses a zero total floor count', () {
+      final state = _complete().copyWith(
+        propertyType: PropertyType.commercial,
+        totalFloors: '0',
+      );
+      expect(
+        state.validate(WizardStep.specs, en)['totalFloors'],
+        'Total floors must be 1 or more',
+      );
+    });
+
+    test('an apartment accepts the ground floor', () {
+      // Floor zero is a real value, unlike a zero bedroom count, so this is
+      // >= 0 rather than > 0.
+      final state = _complete().copyWith(
+        propertyType: PropertyType.apartment,
+        floorNumber: '0',
+        totalFloors: '7',
+      );
+      expect(state.validate(WizardStep.specs, en).isValid, isTrue);
+    });
+
+    test('an apartment refuses a negative floor', () {
+      final state = _complete().copyWith(
+        propertyType: PropertyType.apartment,
+        floorNumber: '-1',
+      );
+      expect(
+        state.validate(WizardStep.specs, en)['floorNumber'],
+        isNotNull,
+      );
+    });
+
+    test('a house is asked for parking but not for floors', () {
+      final state = _complete().copyWith(parkingSpaces: '2');
+      final errors = state.validate(WizardStep.specs, en).errors;
+
+      expect(errors, isNot(contains('parkingSpaces')));
+      expect(errors, isNot(contains('floorNumber')));
+      expect(errors, isNot(contains('totalFloors')));
+    });
+
+    test('a house refuses a zero parking count', () {
+      final state = _complete().copyWith(parkingSpaces: '0');
+      expect(
+        state.validate(WizardStep.specs, en)['parkingSpaces'],
+        'Parking must be 1 or more',
+      );
+    });
+
+    test('a villa is built, so it is asked for age and construction', () {
+      final state = _complete().copyWith(
+        propertyType: PropertyType.villa,
+        propertyAgeYears: '10',
+        constructionStatus: ConstructionStatus.resale,
+      );
+      expect(state.validate(WizardStep.specs, en).isValid, isTrue);
+    });
+
+    test('a villa refuses a negative age', () {
+      final state = _complete().copyWith(
+        propertyType: PropertyType.villa,
+        propertyAgeYears: '-3',
+      );
+      expect(
+        state.validate(WizardStep.specs, en)['propertyAgeYears'],
+        isNotNull,
+      );
+    });
+  });
+
+  group('step three: switching between purposes clears the other set', () {
+    test('isLease and isRent are mutually exclusive', () {
+      final lease = _complete().copyWith(listingPurpose: ListingPurpose.lease);
+      final rent = _complete().copyWith(listingPurpose: ListingPurpose.rent);
+      final sale = _complete();
+
+      expect(lease.isLease, isTrue);
+      expect(lease.isRent, isFalse);
+      expect(rent.isRent, isTrue);
+      expect(rent.isLease, isFalse);
+      expect(sale.isLease, isFalse);
+      expect(sale.isRent, isFalse);
+    });
+
+    test('a lease with a term passes the whole specs step', () {
+      final state = _complete().copyWith(
+        listingPurpose: ListingPurpose.lease,
+        leaseTermMonths: '12',
+      );
+      expect(state.validate(WizardStep.specs, en).isValid, isTrue);
+    });
+  });
+
   group('step four: price and photos', () {
     test('requires a price', () {
       final state = _complete().copyWith(priceNpr: '');
@@ -400,8 +661,8 @@ void main() {
       const state = ListingWizardState();
       final errors = state.validate(WizardStep.type, ne).errors;
 
-      expect(errors['propertyType'], 'αñÿαñ░αñ£αñùαÑìαñùαñ╛αñòαÑï αñòαñ┐αñ╕αñ┐αñ« αñåαñ╡αñ╢αÑìαñ»αñò αñ¢');
-      expect(errors['listingPurpose'], 'αñ¼αñ┐αñòαÑìαñ░αÑÇ, αñ¡αñ╛αñíαñ╛ αñ╡αñ╛ αñ▓αñ┐αñ£ αñåαñ╡αñ╢αÑìαñ»αñò αñ¢');
+      expect(errors['propertyType'], 'घरजग्गाको किसिम आवश्यक छ');
+      expect(errors['listingPurpose'], 'बिक्री, भाडा वा लिज आवश्यक छ');
     });
 
     test('ward range carries the ceiling in Nepali', () {
@@ -416,7 +677,7 @@ void main() {
       final state = _complete(district: chitwan);
       expect(
         state.validate(WizardStep.specs, ne)['area'],
-        contains('αññαñ░αñ╛αñê'),
+        contains('तराई'),
       );
     });
 
@@ -424,8 +685,8 @@ void main() {
       final state = _complete().copyWith(priceNpr: '0', photos: const []);
       final errors = state.validate(WizardStep.price, ne).errors;
 
-      expect(errors['priceNpr'], 'αñ«αÑéαñ▓αÑìαñ» αñ╢αÑéαñ¿αÑìαñ»αñ¡αñ¿αÑìαñªαñ╛ αñ¼αñóαÑÇ αñ╣αÑüαñ¿αÑüαñ¬αñ░αÑìαñ¢');
-      expect(errors['photos'], 'αñòαñ«αÑìαññαÑÇαñ«αñ╛ αñÅαñëαñƒαñ╛ αñ½αÑïαñƒαÑï αñÑαñ¬αÑìαñ¿αÑüαñ╣αÑïαñ╕αÑì');
+      expect(errors['priceNpr'], 'मूल्य शून्यभन्दा बढी हुनुपर्छ');
+      expect(errors['photos'], 'कम्तीमा एउटा फोटो थप्नुहोस्');
     });
   });
 }
