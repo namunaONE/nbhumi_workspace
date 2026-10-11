@@ -156,4 +156,128 @@ void main() {
       expect(find.text('Bathrooms'), findsNothing);
     });
   });
+
+  group('conditioned terms', () {
+    testWidgets('a lease shows its term and the renewal answer',
+        (tester) async {
+      await pumpTable(
+        tester,
+        listing().copyWith(
+          listingPurpose: ListingPurpose.lease,
+          leaseTermMonths: 24,
+          leaseRenewable: true,
+        ),
+      );
+
+      expect(find.text('Lease term'), findsOneWidget);
+      expect(find.text('24 months, renewable'), findsOneWidget);
+    });
+
+    testWidgets('a lease without a renewal answer shows the term alone',
+        (tester) async {
+      // Unset is not "no": appending anything would invent an answer.
+      await pumpTable(
+        tester,
+        listing().copyWith(
+          listingPurpose: ListingPurpose.lease,
+          leaseTermMonths: 12,
+        ),
+      );
+
+      expect(find.text('12 months'), findsOneWidget);
+      expect(find.textContaining('renewable'), findsNothing);
+      expect(find.textContaining('fixed'), findsNothing);
+    });
+
+    testWidgets('a fixed lease says so', (tester) async {
+      await pumpTable(
+        tester,
+        listing().copyWith(
+          listingPurpose: ListingPurpose.lease,
+          leaseTermMonths: 6,
+          leaseRenewable: false,
+        ),
+      );
+
+      expect(find.text('6 months, fixed'), findsOneWidget);
+    });
+
+    testWidgets('a sale shows no lease or rental rows', (tester) async {
+      await pumpTable(tester, listing());
+
+      expect(find.text('Lease term'), findsNothing);
+      expect(find.text('Deposit'), findsNothing);
+      expect(find.text('Furnishing'), findsNothing);
+      expect(find.text('Pets'), findsNothing);
+    });
+
+    testWidgets('a rent shows deposit, date, furnishing and pets',
+        (tester) async {
+      await pumpTable(
+        tester,
+        listing().copyWith(
+          listingPurpose: ListingPurpose.rent,
+          depositAmount: 50000,
+          availableFrom: DateTime.utc(2026, 12, 1),
+          furnishingStatus: FurnishingStatus.semiFurnished,
+          utilitiesIncluded: 'Water and maintenance',
+          petPolicy: PetPolicy.catsOk,
+        ),
+      );
+
+      expect(find.text('Deposit'), findsOneWidget);
+      expect(find.text('NPR 50,000'), findsOneWidget);
+      expect(find.text('2026-12-01'), findsOneWidget);
+      expect(find.text('Partly furnished'), findsOneWidget);
+      expect(find.text('Water and maintenance'), findsOneWidget);
+      expect(find.text('Cats allowed'), findsOneWidget);
+    });
+
+    testWidgets('an apartment shows floor, parking, age and construction',
+        (tester) async {
+      await pumpTable(
+        tester,
+        listing().copyWith(
+          propertyType: PropertyType.apartment,
+          parkingSpaces: 1,
+          floorNumber: 3,
+          totalFloors: 7,
+          propertyAgeYears: 10,
+          constructionStatus: ConstructionStatus.resale,
+        ),
+      );
+
+      expect(find.text('Parking'), findsOneWidget);
+      expect(find.text('1'), findsWidgets);
+      expect(find.text('Floor'), findsOneWidget);
+      expect(find.text('3 of 7'), findsOneWidget);
+      expect(find.text('Building age'), findsOneWidget);
+      expect(find.text('10 yrs'), findsOneWidget);
+      expect(find.text('Resale'), findsOneWidget);
+    });
+
+    testWidgets('a floor without a total still reads', (tester) async {
+      await pumpTable(
+        tester,
+        listing().copyWith(
+          propertyType: PropertyType.apartment,
+          floorNumber: 2,
+        ),
+      );
+
+      expect(find.text('2'), findsOneWidget);
+    });
+
+    testWidgets('a land listing shows no building rows', (tester) async {
+      await pumpTable(
+        tester,
+        listing().copyWith(propertyType: PropertyType.land),
+      );
+
+      expect(find.text('Parking'), findsNothing);
+      expect(find.text('Floor'), findsNothing);
+      expect(find.text('Building age'), findsNothing);
+      expect(find.text('Construction'), findsNothing);
+    });
+  });
 }

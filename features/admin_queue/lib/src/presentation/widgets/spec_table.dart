@@ -46,6 +46,13 @@ class SpecTable extends StatelessWidget {
   /// Map preserves insertion order, but a reviewer scanning this table wants
   /// location, then size, then rooms, then access — and that intent is clearer
   /// written down than implied by insertion.
+  ///
+  /// ### Why the lease, rental and building rows read on null alone
+  ///
+  /// The `listings_field_applicability` trigger nulls anything that does not
+  /// apply to the listing's purpose and property type, so a non-null value is
+  /// proof the term belongs here. No purpose or type check is needed, and
+  /// adding one would be a second owner for a rule the database already owns.
   List<(String, String)> _rows() {
     final area = _areaText;
 
@@ -55,6 +62,25 @@ class SpecTable extends StatelessWidget {
       if (area != null) ('Area', area),
       if (listing.bedrooms != null) ('Bedrooms', '${listing.bedrooms}'),
       if (listing.bathrooms != null) ('Bathrooms', '${listing.bathrooms}'),
+      if (listing.parkingSpaces != null)
+        ('Parking', '${listing.parkingSpaces}'),
+      if (listing.leaseTermMonths != null)
+        ('Lease term', _leaseTermText),
+      if (listing.depositAmount != null)
+        ('Deposit', NepaliCurrency.full(listing.depositAmount!)),
+      if (listing.availableFrom != null)
+        ('Available from', _isoDate(listing.availableFrom!)),
+      if (listing.furnishingStatus != null)
+        ('Furnishing', _furnishingLabel(listing.furnishingStatus!)),
+      if (listing.petPolicy != null)
+        ('Pets', _petLabel(listing.petPolicy!)),
+      if ((listing.utilitiesIncluded ?? '').trim().isNotEmpty)
+        ('Utilities', listing.utilitiesIncluded!.trim()),
+      if (listing.floorNumber != null) ('Floor', _floorText),
+      if (listing.propertyAgeYears != null)
+        ('Building age', '${listing.propertyAgeYears} yrs'),
+      if (listing.constructionStatus != null)
+        ('Construction', _constructionLabel(listing.constructionStatus!)),
       if (listing.roadAccessFt != null)
         ('Road access', '${listing.roadAccessFt} ft'),
       if (listing.district.isNotEmpty) ('District', listing.district),
@@ -62,6 +88,34 @@ class SpecTable extends StatelessWidget {
       if (_ward != null) ('Ward', '$_ward'),
     ];
   }
+
+  /// Lease length with the renewal answer composed in.
+  ///
+  /// Unset renewal reads as nothing extra: "24 months" alone is honest, while
+  /// appending "renewal unknown" would noise up every row for a question most
+  /// sellers were never asked.
+  String get _leaseTermText {
+    final months = listing.leaseTermMonths!;
+    final renewable = listing.leaseRenewable;
+    if (renewable == null) return '$months months';
+    return renewable ? '$months months, renewable' : '$months months, fixed';
+  }
+
+  /// Floor position with the building total when the seller gave one.
+  String get _floorText {
+    final floor = listing.floorNumber!;
+    final total = listing.totalFloors;
+    if (total != null) return '$floor of $total';
+    return '$floor';
+  }
+
+  /// Calendar date without a time or offset.
+  ///
+  /// `available_from` is a Postgres date, so rendering it through a DateFormat
+  /// would attach the viewer's timezone to a value that has none. ISO order
+  /// reads unambiguously in either app language.
+  static String _isoDate(DateTime value) =>
+      value.toIso8601String().split('T').first;
 
   /// Area in whichever local units apply.
   ///
@@ -123,6 +177,34 @@ class SpecTable extends StatelessWidget {
         ListingPurpose.sale => 'For sale',
         ListingPurpose.rent => 'For rent',
         ListingPurpose.lease => 'For lease',
+      };
+
+  /// Display name for a furnishing level.
+  ///
+  /// Hardcoded English like every other label here: the admin panel ships no
+  /// l10n, and these strings mirror the wire values 1:1 so a new database
+  /// level surfaces as a compile error in the switch, not a blank row.
+  static String _furnishingLabel(FurnishingStatus level) => switch (level) {
+        FurnishingStatus.unfurnished => 'Unfurnished',
+        FurnishingStatus.semiFurnished => 'Partly furnished',
+        FurnishingStatus.furnished => 'Furnished',
+      };
+
+  /// Display name for a pet policy.
+  static String _petLabel(PetPolicy policy) => switch (policy) {
+        PetPolicy.notAllowed => 'No pets',
+        PetPolicy.catsOk => 'Cats allowed',
+        PetPolicy.dogsOk => 'Dogs allowed',
+        PetPolicy.allPets => 'All pets allowed',
+        PetPolicy.negotiable => 'Negotiable',
+      };
+
+  /// Display name for a construction status.
+  static String _constructionLabel(ConstructionStatus status) =>
+      switch (status) {
+        ConstructionStatus.newBuild => 'New build',
+        ConstructionStatus.underConstruction => 'Under construction',
+        ConstructionStatus.resale => 'Resale',
       };
 }
 
