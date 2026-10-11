@@ -1,4 +1,3 @@
-import 'package:core/core.dart';
 import 'package:data/data.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
@@ -46,9 +45,7 @@ class _FakeRepository implements ListingRepository {
 /// Pumps the screen with a stubbed detail provider.
 Future<void> _pumpScreen(
   WidgetTester tester,
-  ListingDetail? detail, {
-  Widget? leading,
-}) async {
+  ListingDetail? detail) async {
   tester.view.physicalSize = const Size(500, 2400);
   tester.view.devicePixelRatio = 1.0;
   addTearDown(tester.view.resetPhysicalSize);
@@ -66,15 +63,15 @@ Future<void> _pumpScreen(
         listingDetailViewProvider('listing-1')
             .overrideWith(() => _FakeDetailView(detail)),
       ],
-      child: MaterialApp(
-        locale: const Locale('en'),
-        localizationsDelegates: const <LocalizationsDelegate<dynamic>>[
+      child: const MaterialApp(
+        locale: Locale('en'),
+        localizationsDelegates: <LocalizationsDelegate<dynamic>>[
           detail_strings.AppLocalizations.delegate,
           GlobalMaterialLocalizations.delegate,
           GlobalWidgetsLocalizations.delegate,
           GlobalCupertinoLocalizations.delegate,
         ],
-        supportedLocales: const <Locale>[Locale('en'), Locale('ne')],
+        supportedLocales: <Locale>[Locale('en'), Locale('ne')],
         home: ListingDetailScreen(listingId: 'listing-1'),
       ),
     ),
@@ -99,9 +96,11 @@ void main() {
       // _NotAvailable shows the not available title and body
       expect(find.text('This property is no longer available'), findsOneWidget);
       expect(
-          find.text(
-              'It may have been sold, withdrawn by the seller, or the link may be wrong.'),
-          findsOneWidget);
+        find.text(
+          'It may have been sold, withdrawn by the seller, or the link may be wrong.',
+        ),
+        findsOneWidget,
+      );
     });
   });
 }

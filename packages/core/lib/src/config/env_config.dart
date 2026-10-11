@@ -1,12 +1,16 @@
 /// Environment configuration for nBhumi.
 ///
-/// Values are injected at compile time via `--dart-define`.
-/// Example:
+/// Values are injected at compile time via `--dart-define` (Rule 7). There are
+/// intentionally **no default values**: a build that forgets to pass them fails
+/// with an obvious empty-string Supabase URL rather than silently pointing at a
+/// project nobody chose. Example:
 /// ```sh
 /// flutter run \
-///   --dart-define=SUPABASE_URL=https://rerjioibpqvcomdingte.supabase.co \
+///   --dart-define=SUPABASE_URL=https://your-project-ref.supabase.co \
 ///   --dart-define=SUPABASE_PUBLISHABLE_KEY=sb_publishable_...
 /// ```
+/// For local convenience, `tool/run_web.ps1` sources `.env.local` (gitignored)
+/// and forwards the values for you.
 ///
 /// No `service_role` key may ever appear here. That key bypasses RLS and must
 /// stay on the server (Rule 2).
@@ -14,10 +18,10 @@ library;
 
 /// Compile-time environment configuration.
 abstract final class EnvConfig {
-  /// Supabase project URL.
+  /// Supabase project URL. Empty when not supplied — see the library doc.
   static const String supabaseUrl = String.fromEnvironment(
     'SUPABASE_URL',
-    defaultValue: 'https://rerjioibpqvcomdingte.supabase.co',
+    defaultValue: '',
   );
 
   /// Supabase publishable API key. Safe to ship in a client binary — it is
@@ -28,7 +32,7 @@ abstract final class EnvConfig {
   /// favour of `publishableKey`.
   static const String supabasePublishableKey = String.fromEnvironment(
     'SUPABASE_PUBLISHABLE_KEY',
-    defaultValue: 'sb_publishable_DaQ2qWXImnMaQ_TV8Zedvg_xcGvy_v3',
+    defaultValue: '',
   );
 
   /// Current environment name: dev, staging, or prod.

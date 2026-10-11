@@ -1,3 +1,8 @@
+# Credentials come from the environment (Rule 7): set SUPABASE_URL and
+# SUPABASE_PUBLISHABLE_KEY first, e.g. by dot-sourcing .env.local.
+if (-not $env:SUPABASE_URL -or -not $env:SUPABASE_PUBLISHABLE_KEY) {
+    throw 'Set SUPABASE_URL and SUPABASE_PUBLISHABLE_KEY before running this script.'
+}
 $content = Get-Content "C:\Users\user\StudioProjects\nbhumi_workspace\supabase\migrations\20261005000012_municipalities_seed_chunk1.sql" -Raw -Encoding UTF8
 $statements = $content -split '(?=insert into)' | Where-Object { $_.Trim().StartsWith('insert into') }
 $count = $statements.Count
@@ -11,11 +16,11 @@ for ($i = 0; $i -lt $count; $i += 50) {
     $batchNum++
     $batchSql = $batch -join "`r`n" + "`r`n"
     Write-Host "Applying batch $batchNum ($($batch.Count) statements)..."
-    $uri = "https://rerjioibpqvcomdingte.supabase.co/rest/v1/rpc/exec_sql"
+    $uri = "$env:SUPABASE_URL/rest/v1/rpc/exec_sql"
     $headers = @{
-        "Authorization" = "Bearer sb_publishable_DaQ2qWXImnMaQ_TV8Zedvg_xcGvy_v3"
+        "Authorization" = "Bearer $env:SUPABASE_PUBLISHABLE_KEY"
         "Content-Type" = "application/json"
-        "apikey" = "sb_publishable_DaQ2qWXImnMaQ_TV8Zedvg_xcGvy_v3"
+        "apikey" = "$env:SUPABASE_PUBLISHABLE_KEY"
     }
     $body = @{ query = $batch -join "`r`n" } | ConvertTo-Json -Depth 10
     try {
