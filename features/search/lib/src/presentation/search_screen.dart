@@ -52,12 +52,6 @@ class SearchScreen extends ConsumerStatefulWidget {
   ConsumerState<SearchScreen> createState() => _SearchScreenState();
 }
 
-/// Window width at or above which the side pane may appear.
-///
-/// Mirrors the shell two-pane threshold, restated here because features
-/// cannot import the app (Rule 10).
-const double _twoPaneMinWidth = 1000;
-
 class _SearchScreenState extends ConsumerState<SearchScreen> {
   /// Grid or list results. Local UI state: unlike the filter, the layout
   /// choice is presentation-only and must not leak into the shared browse
@@ -69,9 +63,12 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
   String? _selectedId;
 
   /// Whether a tap selects into the side pane rather than pushing a route.
+  ///
+  /// The threshold is the shell's own `twoPane`, read from `core` because
+  /// features cannot import an app (Rule 10) and the shell reads the same one.
   bool _selectsInPlace(BuildContext context) =>
       widget.detailPaneBuilder != null &&
-      MediaQuery.sizeOf(context).width >= _twoPaneMinWidth;
+      MediaQuery.sizeOf(context).width >= AppBreakpoints.twoPane;
 
   /// Opens a listing in place on wide windows, or pushes the route.
   void _openListing(String id) {
@@ -108,9 +105,11 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
       emptyBody: strings.noMatchBody,
     );
 
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(widget.title ?? strings.title),
+    return PageTitle(
+      title: widget.title ?? strings.title,
+      child: Scaffold(
+        appBar: AppBar(
+          title: Text(widget.title ?? strings.title),
         actions: <Widget>[
           _SortButton(filter: filter),
           _FilterButton(activeCount: filter.activeCount),
@@ -143,6 +142,7 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
               ],
             )
           : feed,
+      ),
     );
   }
 }

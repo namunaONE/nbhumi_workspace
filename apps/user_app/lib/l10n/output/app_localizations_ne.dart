@@ -419,4 +419,11 @@ class AppLocalizationsNe extends AppLocalizations {
   @override
   String get previewBannerDetail =>
       'समीक्षाका लागि मात्र। डेटा रिसेट हुन सक्छ — यसमा निर्भर नगर्नुहोस्।';
+
+  @override
+  String get notFoundTitle => 'पृष्ठ फेला परेन';
+
+  @override
+  String get notFoundBody =>
+      'यो लिङ्क बिग्रिएको छ वा पृष्ठ सारिएको छ। सूची एक ट्याप टाढा छ।';
 }

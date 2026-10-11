@@ -1,3 +1,4 @@
+import 'package:core/core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -51,25 +52,6 @@ enum AppTab {
         AppTab.myListings => strings.navMyListings,
         AppTab.profile => strings.navProfile,
       };
-}
-
-/// Layout widths at which the navigation affordance changes.
-///
-/// Material's 600 and 840 breakpoints, matching DESIGN.md. Widths are read from
-/// [MediaQuery] rather than [LayoutBuilder] because the shell decides app-level
-/// chrome, not a component within a constrained parent.
-abstract final class AppBreakpoints {
-  /// Below this, bottom navigation.
-  static const double medium = 600;
-
-  /// At or above this, a permanent drawer and master-detail layouts.
-  static const double expanded = 840;
-
-  /// At or above this window width, list screens may show the detail side
-  /// pane next to the feed instead of pushing the full route. Higher than
-  /// [expanded] because the pane splits the tab content that remains beside
-  /// the permanent drawer — both panes need room to breathe.
-  static const double twoPane = 1000;
 }
 
 /// Hosts the four tabs and adapts its navigation to the available width.

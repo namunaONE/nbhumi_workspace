@@ -335,4 +335,179 @@ class AppLocalizationsNe extends AppLocalizations {
 
   @override
   String get fieldDescriptionHint => 'जग्गा, बाटो, पानी र वरपर';
+
+  @override
+  String get sectionLeaseTerms => 'à¤²à¤¿à¤œà¤•à¤¾ à¤¸à¤°à¥à¤¤à¤¹à¤°à¥‚';
+
+  @override
+  String get leaseTermsExplanation =>
+      'à¤²à¤¿à¤œà¤²à¤¾à¤ˆ à¤…à¤µà¤§à¤¿ à¤šà¤¾à¤¹à¤¿à¤¨à¥à¤›à¥¤ à¤–à¤°à¤¿à¤¦à¤•à¤°à¥à¤¤à¤¾à¤¹à¤°à¥‚ à¤¯à¤¸à¥ˆà¤…à¤¨à¥à¤¸à¤¾à¤° à¤«à¤¿à¤²à¥à¤Ÿà¤° à¤—à¤°à¥à¤›à¤¨à¥à¥¤';
+
+  @override
+  String get fieldLeaseTerm => 'à¤²à¤¿à¤œ à¤…à¤µà¤§à¤¿';
+
+  @override
+  String get fieldLeaseTermHint => 'à¤®à¤¹à¤¿à¤¨à¤¾';
+
+  @override
+  String get leaseTermMin =>
+      'à¤²à¤¿à¤œ à¤…à¤µà¤§à¤¿ à¤•à¤®à¥à¤¤à¥€à¤®à¤¾ à¥§ à¤®à¤¹à¤¿à¤¨à¤¾ à¤¹à¥à¤¨à¥à¤ªà¤°à¥à¤›';
+
+  @override
+  String get fieldLeaseRenewable =>
+      'à¤²à¤¿à¤œ à¤¨à¤µà¥€à¤•à¤°à¤£ à¤¹à¥à¤¨ à¤¸à¤•à¥à¤›?';
+
+  @override
+  String get leaseRenewableYes => 'à¤¹à¥à¤¨ à¤¸à¤•à¥à¤›';
+
+  @override
+  String get leaseRenewableNo => 'à¤¹à¥à¤¨ à¤¸à¤•à¥à¤¦à¥ˆà¤¨';
+
+  @override
+  String get leaseRenewableUnset => 'à¤‰à¤²à¥à¤²à¥‡à¤– à¤›à¥ˆà¤¨';
+
+  @override
+  String get sectionRentalTerms => 'à¤­à¤¾à¤¡à¤¾à¤•à¤¾ à¤¸à¤°à¥à¤¤à¤¹à¤°à¥‚';
+
+  @override
+  String get fieldDeposit => 'à¤œà¤®à¤¾à¤¨à¤¤ à¤°à¤•à¤®';
+
+  @override
+  String get fieldDepositHint =>
+      'à¤°à¥à¤ªà¥ˆà¤¯à¤¾à¤, à¤¸à¤¾à¤®à¤¾à¤¨à¥à¤¯à¤¤à¤¯à¤¾ à¤à¤•à¤¦à¥‡à¤–à¤¿ à¤¤à¥€à¤¨ à¤®à¤¹à¤¿à¤¨à¤¾à¤•à¥‹ à¤­à¤¾à¤¡à¤¾';
+
+  @override
+  String get fieldAvailableFrom => 'à¤‰à¤ªà¤²à¤¬à¥à¤§ à¤®à¤¿à¤¤à¤¿';
+
+  @override
+  String get fieldAvailableFromPick =>
+      'à¤®à¤¿à¤¤à¤¿ à¤›à¤¾à¤¨à¥à¤¨à¥à¤¹à¥‹à¤¸à¥';
+
+  @override
+  String get fieldAvailableFromClear =>
+      'à¤®à¤¿à¤¤à¤¿ à¤¹à¤Ÿà¤¾à¤‰à¤¨à¥à¤¹à¥‹à¤¸à¥';
+
+  @override
+  String get availableFromPast =>
+      'à¤‰à¤ªà¤²à¤¬à¥à¤§ à¤®à¤¿à¤¤à¤¿ à¤µà¤¿à¤—à¤¤à¤®à¤¾ à¤¹à¥à¤¨ à¤¸à¤•à¥à¤¦à¥ˆà¤¨';
+
+  @override
+  String get fieldFurnishing => 'à¤«à¤°à¥à¤¨à¤¿à¤šà¤°';
+
+  @override
+  String get furnishingUnfurnished => 'à¤–à¤¾à¤²à¥€';
+
+  @override
+  String get furnishingSemiFurnished =>
+      'à¤†à¤‚à¤¶à¤¿à¤• à¤¸à¥à¤¸à¤œà¥à¤œà¤¿à¤¤';
+
+  @override
+  String get furnishingFurnished => 'à¤ªà¥‚à¤°à¥à¤£ à¤¸à¥à¤¸à¤œà¥à¤œà¤¿à¤¤';
+
+  @override
+  String get fieldUtilities =>
+      'à¤­à¤¾à¤¡à¤¾à¤®à¤¾ à¤¸à¤®à¤¾à¤µà¥‡à¤¶ à¤¸à¥à¤µà¤¿à¤§à¤¾';
+
+  @override
+  String get fieldUtilitiesHint =>
+      'à¤œà¤¸à¥à¤¤à¥ˆ: à¤ªà¤¾à¤¨à¥€ à¤° à¤­à¤µà¤¨ à¤®à¤°à¥à¤®à¤¤';
+
+  @override
+  String get utilitiesTooLong =>
+      'à¤¸à¥à¤µà¤¿à¤§à¤¾à¤•à¥‹ à¤Ÿà¤¿à¤ªà¥à¤ªà¤£à¥€ à¥¨à¥¦à¥¦ à¤…à¤•à¥à¤·à¤°à¤­à¤¨à¥à¤¦à¤¾ à¤•à¤® à¤°à¤¾à¤–à¥à¤¨à¥à¤¹à¥‹à¤¸à¥';
+
+  @override
+  String get fieldPetPolicy => 'à¤ªà¤¾à¤²à¥à¤¤à¥ à¤œà¤¨à¤¾à¤µà¤°';
+
+  @override
+  String get petNotAllowed => 'à¤ªà¤¾à¤²à¥à¤¤à¥ à¤œà¤¨à¤¾à¤µà¤° à¤›à¥ˆà¤¨';
+
+  @override
+  String get petCatsOk => 'à¤¬à¤¿à¤°à¤¾à¤²à¥‹ à¤šà¤²à¥à¤›';
+
+  @override
+  String get petDogsOk => 'à¤•à¥à¤•à¥à¤° à¤šà¤²à¥à¤›';
+
+  @override
+  String get petAllPets => 'à¤¸à¤¬à¥ˆ à¤ªà¤¾à¤²à¥à¤¤à¥ à¤šà¤²à¥à¤›';
+
+  @override
+  String get petNegotiable => 'à¤®à¤¿à¤²à¤¾à¤‰à¤¨ à¤¸à¤•à¤¿à¤¨à¥à¤›';
+
+  @override
+  String get sectionBuilding => 'à¤­à¤µà¤¨';
+
+  @override
+  String get fieldParking => 'à¤ªà¤¾à¤°à¥à¤•à¤¿à¤™ à¤¸à¥à¤¥à¤¾à¤¨';
+
+  @override
+  String get parkingMin =>
+      'à¤ªà¤¾à¤°à¥à¤•à¤¿à¤™ à¥§ à¤µà¤¾ à¤¬à¤¢à¥€ à¤¹à¥à¤¨à¥à¤ªà¤°à¥à¤›';
+
+  @override
+  String get fieldFloor => 'à¤¤à¤²à¤¾';
+
+  @override
+  String get fieldFloorHint => 'à¤¤à¤²à¥à¤²à¥‹ à¤¤à¤²à¤¾ à¥¦ à¤¹à¥à¤¨à¥à¤›';
+
+  @override
+  String get fieldTotalFloors => 'à¤•à¥à¤² à¤¤à¤²à¤¾';
+
+  @override
+  String get totalFloorsMin =>
+      'à¤•à¥à¤² à¤¤à¤²à¤¾ à¥§ à¤µà¤¾ à¤¬à¤¢à¥€ à¤¹à¥à¤¨à¥à¤ªà¤°à¥à¤›';
+
+  @override
+  String get fieldPropertyAge => 'à¤­à¤µà¤¨ à¤‰à¤®à¥‡à¤°';
+
+  @override
+  String get fieldPropertyAgeHint =>
+      'à¤¨à¤¿à¤°à¥à¤®à¤¾à¤£à¤¦à¥‡à¤–à¤¿ à¤µà¤°à¥à¤·, à¤¨à¤¯à¤¾à¤ à¤­à¤ à¥¦';
+
+  @override
+  String get fieldConstructionStatus => 'à¤…à¤µà¤¸à¥à¤¥à¤¾';
+
+  @override
+  String get constructionNew => 'à¤¨à¤¯à¤¾à¤ à¤¨à¤¿à¤°à¥à¤®à¤¾à¤£';
+
+  @override
+  String get constructionUnderConstruction =>
+      'à¤¨à¤¿à¤°à¥à¤®à¤¾à¤£à¤¾à¤§à¥€à¤¨';
+
+  @override
+  String get constructionResale => 'à¤ªà¥à¤¨à¤°à¥à¤µà¤¿à¤•à¥à¤°à¤¯';
+
+  @override
+  String get reviewLease => 'à¤²à¤¿à¤œ';
+
+  @override
+  String reviewLeaseMonths(String months) {
+    return '$months à¤®à¤¹à¤¿à¤¨à¤¾';
+  }
+
+  @override
+  String get reviewRental => 'à¤­à¤¾à¤¡à¤¾';
+
+  @override
+  String reviewDeposit(String amount) {
+    return 'à¤œà¤®à¤¾à¤¨à¤¤ $amount';
+  }
+
+  @override
+  String reviewAvailableFrom(String date) {
+    return '$date à¤¦à¥‡à¤–à¤¿';
+  }
+
+  @override
+  String get reviewBuilding => 'à¤­à¤µà¤¨';
+
+  @override
+  String reviewFloor(String floor, String total) {
+    return '$total à¤¤à¤²à¤¾à¤®à¤§à¥à¤¯à¥‡ à¤¤à¤²à¤¾ $floor';
+  }
+
+  @override
+  String reviewAge(String years) {
+    return '$years à¤µà¤°à¥à¤· à¤ªà¥à¤°à¤¾à¤¨à¥‹';
+  }
 }

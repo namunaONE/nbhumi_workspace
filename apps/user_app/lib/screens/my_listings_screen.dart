@@ -20,25 +20,31 @@ class MyListingsScreen extends ConsumerWidget {
     final session = ref.watch(sessionProvider);
     final strings = AppLocalizations.of(context);
     if (session == null) {
-      return Scaffold(
-        appBar: AppBar(title: Text(strings.mineTitle)),
-        body: EmptyState(
-          title: strings.mineGuestPrompt,
-          body: strings.mineEmptyBody,
-          icon: Icons.home_work_outlined,
-          actionLabel: strings.commonSignIn,
-          onAction: () => context.push('/login'),
+      return PageTitle(
+        title: strings.mineTitle,
+        child: Scaffold(
+          appBar: AppBar(title: Text(strings.mineTitle)),
+          body: EmptyState(
+            title: strings.mineGuestPrompt,
+            body: strings.mineEmptyBody,
+            icon: Icons.home_work_outlined,
+            actionLabel: strings.commonSignIn,
+            onAction: () => context.push('/login'),
+          ),
         ),
       );
     }
 
-    return Scaffold(
-      appBar: AppBar(title: Text(strings.mineTitle)),
-      body: RefreshIndicator(
-        onRefresh: () async {
-          ref.invalidate(myListingsProvider);
-        },
-        child: const _MineList(),
+    return PageTitle(
+      title: strings.mineTitle,
+      child: Scaffold(
+        appBar: AppBar(title: Text(strings.mineTitle)),
+        body: RefreshIndicator(
+          onRefresh: () async {
+            ref.invalidate(myListingsProvider);
+          },
+          child: const _MineList(),
+        ),
       ),
     );
   }

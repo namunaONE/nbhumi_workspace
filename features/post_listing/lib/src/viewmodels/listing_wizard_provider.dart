@@ -116,13 +116,142 @@ class ListingWizard extends _$ListingWizard {
   /// specific problem.
   void goTo(WizardStep step) => state = state.copyWith(step: step);
 
-  /// Records the chosen property type.
-  void setPropertyType(PropertyType type) =>
-      state = state.copyWith(propertyType: type);
+  /// Records the chosen property type, and clears what no longer applies.
+  ///
+  /// The same rule the database trigger enforces, applied client-side so the
+  /// form empties as the seller switches: a plot of land loses its bedroom
+  /// count, a flat loses its frontage and parcel number. Without the clearing a
+  /// seller who switched from house to land would still be holding "3
+  /// bedrooms" in state and silently sending it, and the review step would
+  /// show a room count the listing does not have.
+  void setPropertyType(PropertyType type) {
+    if (type == state.propertyType) return;
+    final residential = switch (type) {
+      PropertyType.house ||
+      PropertyType.apartment ||
+      PropertyType.villa =>
+        true,
+      PropertyType.land ||
+      PropertyType.commercial ||
+      PropertyType.business =>
+        false,
+    };
+    final hasFloors = switch (type) {
+      PropertyType.apartment ||
+      PropertyType.commercial ||
+      PropertyType.business =>
+        true,
+      PropertyType.land ||
+      PropertyType.house ||
+      PropertyType.villa =>
+        false,
+    };
+    final isLand = type == PropertyType.land;
+    final isApartment = type == PropertyType.apartment;
 
-  /// Records the chosen purpose.
-  void setPurpose(ListingPurpose purpose) =>
-      state = state.copyWith(listingPurpose: purpose);
+    state = state.copyWith(
+      propertyType: type,
+      bedrooms: residential ? null : '',
+      bathrooms: residential ? null : '',
+      roadAccessFt: isApartment ? '' : null,
+      kittaNumber: isApartment ? '' : null,
+      parkingSpaces: isLand ? '' : null,
+      floorNumber: hasFloors ? null : '',
+      totalFloors: hasFloors ? null : '',
+      propertyAgeYears: isLand ? '' : null,
+      clearConstructionStatus: isLand,
+    );
+  }
+
+  /// Records the chosen purpose, and clears the other purpose's fields.
+  ///
+  /// A lease term on a rent listing is not harmless: the seller would see a
+  /// field they filled in for a lease disappear from review, with no reason
+  /// given. Clearing on switch is that reason.
+  void setPurpose(ListingPurpose purpose) {
+    if (purpose == state.listingPurpose) return;
+    final isLease = purpose == ListingPurpose.lease;
+    final isRent = purpose == ListingPurpose.rent;
+
+    state = state.copyWith(
+      listingPurpose: purpose,
+      // Lease fields survive a switch to lease and are dropped otherwise.
+      leaseTermMonths: isLease ? null : '',
+      clearLeaseRenewable: !isLease,
+      // Rent fields likewise.
+      depositAmount: isRent ? null : '',
+      utilitiesIncluded: isRent ? null : '',
+      clearAvailableFrom: !isRent,
+      clearFurnishingStatus: !isRent,
+      clearPetPolicy: !isRent,
+    );
+  }
+
+  /// Records the lease length in months.
+  void setLeaseTermMonths(String value) =>
+      state = state.copyWith(leaseTermMonths: value);
+
+  /// Records whether the lease can be renewed, or null to withdraw it.
+  ///
+  /// Named rather than positional because a bare `bool?` at a call site reads
+  /// as `setLeaseRenewable(true)` with no hint that null is meaningful.
+  void setLeaseRenewable({required bool? renewable}) => state = state.copyWith(
+        leaseRenewable: renewable,
+        clearLeaseRenewable: renewable == null,
+      );
+
+  /// Records the security deposit in NPR.
+  void setDepositAmount(String value) =>
+      state = state.copyWith(depositAmount: value);
+
+  /// Records the first occupancy date, or null to clear it.
+  void setAvailableFrom({required DateTime? availableFrom}) =>
+      state = state.copyWith(
+        availableFrom: availableFrom,
+        clearAvailableFrom: availableFrom == null,
+      );
+
+  /// Records the furnishing level, or null to clear it.
+  void setFurnishingStatus({required FurnishingStatus? furnishing}) =>
+      state = state.copyWith(
+        furnishingStatus: furnishing,
+        clearFurnishingStatus: furnishing == null,
+      );
+
+  /// Records which utilities the rent covers.
+  void setUtilitiesIncluded(String value) =>
+      state = state.copyWith(utilitiesIncluded: value);
+
+  /// Records the pet policy, or null to clear it.
+  void setPetPolicy({required PetPolicy? petPolicy}) => state = state.copyWith(
+        petPolicy: petPolicy,
+        clearPetPolicy: petPolicy == null,
+      );
+
+  /// Records the parking space count.
+  void setParkingSpaces(String value) =>
+      state = state.copyWith(parkingSpaces: value);
+
+  /// Records the floor this unit is on.
+  void setFloorNumber(String value) =>
+      state = state.copyWith(floorNumber: value);
+
+  /// Records the building's total floors.
+  void setTotalFloors(String value) =>
+      state = state.copyWith(totalFloors: value);
+
+  /// Records the building age in years.
+  void setPropertyAgeYears(String value) =>
+      state = state.copyWith(propertyAgeYears: value);
+
+  /// Records the construction status, or null to clear it.
+  void setConstructionStatus({
+    required ConstructionStatus? constructionStatus,
+  }) =>
+      state = state.copyWith(
+        constructionStatus: constructionStatus,
+        clearConstructionStatus: constructionStatus == null,
+      );
 
   /// Records the title.
   void setTitle(String value) => state = state.copyWith(title: value);
@@ -364,8 +493,25 @@ class ListingWizard extends _$ListingWizard {
       areaBigha: state.usesHillUnits ? null : _intOrNull(state.areaBigha),
       areaKattha: state.usesHillUnits ? null : _intOrNull(state.areaKattha),
       areaDhur: state.usesHillUnits ? null : _intOrNull(state.areaDhur),
-      bedrooms: _intOrNull(state.bedrooms),
-      bathrooms: _intOrNull(state.bathrooms),
+      bedrooms: state.isResidential ? _intOrNull(state.bedrooms) : null,
+      bathrooms: state.isResidential ? _intOrNull(state.bathrooms) : null,
+      // Lease terms travel only on a lease.
+      leaseTermMonths: state.isLease ? _intOrNull(state.leaseTermMonths) : null,
+      leaseRenewable: state.isLease ? state.leaseRenewable : null,
+      // Rental terms travel only on a rent.
+      depositAmount: state.isRent ? _intOrNull(state.depositAmount) : null,
+      availableFrom: state.isRent ? state.availableFrom : null,
+      furnishingStatus: state.isRent ? state.furnishingStatus : null,
+      utilitiesIncluded:
+          state.isRent ? _nullIfBlank(state.utilitiesIncluded) : null,
+      petPolicy: state.isRent ? state.petPolicy : null,
+      // Building and parking terms follow the type.
+      parkingSpaces: state.hasParking ? _intOrNull(state.parkingSpaces) : null,
+      floorNumber: state.hasFloors ? _intOrNull(state.floorNumber) : null,
+      totalFloors: state.hasFloors ? _intOrNull(state.totalFloors) : null,
+      propertyAgeYears:
+          state.isBuilt ? _intOrNull(state.propertyAgeYears) : null,
+      constructionStatus: state.isBuilt ? state.constructionStatus : null,
     );
   }
 

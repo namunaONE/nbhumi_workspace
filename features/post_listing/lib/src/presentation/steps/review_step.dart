@@ -1,5 +1,7 @@
 import 'package:core/core.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
+import 'package:models/models.dart';
 import 'package:post_listing/l10n/output/post_localizations.dart'
     as post_strings;
 
@@ -87,6 +89,27 @@ class ReviewStep extends StatelessWidget {
           value: _rooms(context, state),
           onTap: () => onEditStep(WizardStep.specs),
         ),
+        // Purpose- and type-conditioned rows, each appearing only when it has
+        // something to say. A row that renders "Not set" for a lease term on a
+        // sale listing would be a bug the seller cannot act on.
+        if (state.isLease)
+          _Row(
+            label: strings.reviewLease,
+            value: _lease(context, state),
+            onTap: () => onEditStep(WizardStep.specs),
+          ),
+        if (state.isRent)
+          _Row(
+            label: strings.reviewRental,
+            value: _rental(context, state),
+            onTap: () => onEditStep(WizardStep.specs),
+          ),
+        if (state.hasFloors || state.isBuilt)
+          _Row(
+            label: strings.reviewBuilding,
+            value: _building(context, state),
+            onTap: () => onEditStep(WizardStep.specs),
+          ),
         _Row(
           label: strings.reviewPrice,
           value: _price(context, state),
@@ -204,6 +227,114 @@ class ReviewStep extends StatelessWidget {
     if (price == null || price <= 0) return strings.reviewNotSet;
     return NepaliCurrency.full(price);
   }
+
+  /// Lease terms, or "not applicable" when there are none to show.
+  ///
+  /// The renewal answer stays tri-state: an unanswered question reads as not
+  /// stated, which is a different sentence from "cannot be renewed".
+  static String _lease(BuildContext context, ListingWizardState state) {
+    final strings = post_strings.AppLocalizations.of(context);
+    final months = int.tryParse(state.leaseTermMonths.trim());
+    if (months == null || months < 1) return strings.reviewNotSet;
+
+    final parts = <String>[strings.reviewLeaseMonths('$months')];
+    if (state.leaseRenewable case final renewable?) {
+      parts.add(
+        renewable ? strings.leaseRenewableYes : strings.leaseRenewableNo,
+      );
+    }
+    return parts.join(' · ');
+  }
+
+  /// Rental terms, each part appearing only when the seller supplied it.
+  static String _rental(BuildContext context, ListingWizardState state) {
+    final strings = post_strings.AppLocalizations.of(context);
+    final parts = <String>[];
+
+    final deposit = int.tryParse(state.depositAmount.trim());
+    if (deposit != null) {
+      parts.add(strings.reviewDeposit(NepaliCurrency.full(deposit)));
+    }
+    if (state.availableFrom case final from?) {
+      final locale = Localizations.localeOf(context).toString();
+      parts.add(
+        strings.reviewAvailableFrom(
+          DateFormat.yMMMd(locale).format(from),
+        ),
+      );
+    }
+    if (state.furnishingStatus case final furnishing?) {
+      parts.add(_furnishing(strings, furnishing));
+    }
+    if (state.petPolicy case final pets?) parts.add(_pet(strings, pets));
+    if (state.utilitiesIncluded.trim().isNotEmpty) {
+      parts.add(state.utilitiesIncluded.trim());
+    }
+
+    return parts.isEmpty ? strings.reviewNotSet : parts.join(' · ');
+  }
+
+  /// Building details: floor position, age and construction status.
+  static String _building(BuildContext context, ListingWizardState state) {
+    final strings = post_strings.AppLocalizations.of(context);
+    final parts = <String>[];
+
+    final floor = int.tryParse(state.floorNumber.trim());
+    final total = int.tryParse(state.totalFloors.trim());
+    if (floor != null && total != null && total > 0) {
+      parts.add(strings.reviewFloor('$floor', '$total'));
+    } else if (floor != null) {
+      parts.add(strings.reviewFloor('$floor', '?'));
+    }
+
+    if (state.parkingSpaces.trim().isNotEmpty) {
+      parts.add(
+        '${state.parkingSpaces.trim()} ${strings.fieldParking}',
+      );
+    }
+    if (state.propertyAgeYears.trim().isNotEmpty) {
+      parts.add(strings.reviewAge(state.propertyAgeYears.trim()));
+    }
+    if (state.constructionStatus case final construction?) {
+      parts.add(_construction(strings, construction));
+    }
+
+    return parts.isEmpty ? strings.reviewNotSet : parts.join(' · ');
+  }
+
+
+  static String _furnishing(
+    post_strings.AppLocalizations strings,
+    FurnishingStatus level,
+  ) =>
+      switch (level) {
+        FurnishingStatus.unfurnished => strings.furnishingUnfurnished,
+        FurnishingStatus.semiFurnished => strings.furnishingSemiFurnished,
+        FurnishingStatus.furnished => strings.furnishingFurnished,
+      };
+
+  static String _pet(
+    post_strings.AppLocalizations strings,
+    PetPolicy policy,
+  ) =>
+      switch (policy) {
+        PetPolicy.notAllowed => strings.petNotAllowed,
+        PetPolicy.catsOk => strings.petCatsOk,
+        PetPolicy.dogsOk => strings.petDogsOk,
+        PetPolicy.allPets => strings.petAllPets,
+        PetPolicy.negotiable => strings.petNegotiable,
+      };
+
+  static String _construction(
+    post_strings.AppLocalizations strings,
+    ConstructionStatus status,
+  ) =>
+      switch (status) {
+        ConstructionStatus.newBuild => strings.constructionNew,
+        ConstructionStatus.underConstruction =>
+          strings.constructionUnderConstruction,
+        ConstructionStatus.resale => strings.constructionResale,
+      };
 }
 
 /// A tappable label/value row in the review summary.

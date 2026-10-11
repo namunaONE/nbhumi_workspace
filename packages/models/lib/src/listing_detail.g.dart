@@ -53,6 +53,26 @@ _ListingDetail _$ListingDetailFromJson(
   roadAccessFt: (json['road_access_ft'] as num?)?.toInt(),
   bedrooms: (json['bedrooms'] as num?)?.toInt(),
   bathrooms: (json['bathrooms'] as num?)?.toInt(),
+  leaseTermMonths: (json['lease_term_months'] as num?)?.toInt(),
+  leaseRenewable: json['lease_renewable'] as bool?,
+  depositAmount: (json['deposit_amount'] as num?)?.toInt(),
+  availableFrom: json['available_from'] == null
+      ? null
+      : DateTime.parse(json['available_from'] as String),
+  furnishingStatus: $enumDecodeNullable(
+    _$FurnishingStatusEnumMap,
+    json['furnishing_status'],
+  ),
+  utilitiesIncluded: json['utilities_included'] as String?,
+  petPolicy: $enumDecodeNullable(_$PetPolicyEnumMap, json['pet_policy']),
+  parkingSpaces: (json['parking_spaces'] as num?)?.toInt(),
+  floorNumber: (json['floor_number'] as num?)?.toInt(),
+  totalFloors: (json['total_floors'] as num?)?.toInt(),
+  propertyAgeYears: (json['property_age_years'] as num?)?.toInt(),
+  constructionStatus: $enumDecodeNullable(
+    _$ConstructionStatusEnumMap,
+    json['construction_status'],
+  ),
   rejectionReason: json['rejection_reason'] as String?,
   submittedAt: json['submitted_at'] == null
       ? null
@@ -97,6 +117,19 @@ Map<String, dynamic> _$ListingDetailToJson(_ListingDetail instance) =>
       'road_access_ft': instance.roadAccessFt,
       'bedrooms': instance.bedrooms,
       'bathrooms': instance.bathrooms,
+      'lease_term_months': instance.leaseTermMonths,
+      'lease_renewable': instance.leaseRenewable,
+      'deposit_amount': instance.depositAmount,
+      'available_from': instance.availableFrom?.toIso8601String(),
+      'furnishing_status': _$FurnishingStatusEnumMap[instance.furnishingStatus],
+      'utilities_included': instance.utilitiesIncluded,
+      'pet_policy': _$PetPolicyEnumMap[instance.petPolicy],
+      'parking_spaces': instance.parkingSpaces,
+      'floor_number': instance.floorNumber,
+      'total_floors': instance.totalFloors,
+      'property_age_years': instance.propertyAgeYears,
+      'construction_status':
+          _$ConstructionStatusEnumMap[instance.constructionStatus],
       'rejection_reason': instance.rejectionReason,
       'submitted_at': instance.submittedAt?.toIso8601String(),
       'photos': instance.photos,
@@ -128,4 +161,24 @@ const _$ListingStatusEnumMap = {
   ListingStatus.live: 'live',
   ListingStatus.rejected: 'rejected',
   ListingStatus.unpublished: 'unpublished',
+};
+
+const _$FurnishingStatusEnumMap = {
+  FurnishingStatus.unfurnished: 'unfurnished',
+  FurnishingStatus.semiFurnished: 'semi_furnished',
+  FurnishingStatus.furnished: 'furnished',
+};
+
+const _$PetPolicyEnumMap = {
+  PetPolicy.notAllowed: 'not_allowed',
+  PetPolicy.catsOk: 'cats_ok',
+  PetPolicy.dogsOk: 'dogs_ok',
+  PetPolicy.allPets: 'all_pets',
+  PetPolicy.negotiable: 'negotiable',
+};
+
+const _$ConstructionStatusEnumMap = {
+  ConstructionStatus.newBuild: 'new',
+  ConstructionStatus.underConstruction: 'under_construction',
+  ConstructionStatus.resale: 'resale',
 };
