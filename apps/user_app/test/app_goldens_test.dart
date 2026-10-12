@@ -9,18 +9,19 @@ import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:kyc/l10n/output/kyc_localizations.dart' as kyc_strings;
-import 'package:listing_detail/listing_detail.dart';
 import 'package:listing_detail/l10n/output/detail_localizations.dart'
     as detail_strings;
+import 'package:listing_detail/listing_detail.dart';
 import 'package:models/models.dart';
 import 'package:notifications/l10n/output/notifications_localizations.dart'
     as notif_strings;
-import 'package:post_listing/post_listing.dart';
 import 'package:post_listing/l10n/output/post_localizations.dart'
     as post_strings;
-import 'package:search/search.dart';
+import 'package:post_listing/post_listing.dart';
 import 'package:search/l10n/output/search_localizations.dart' as search_strings;
+import 'package:search/search.dart';
 import 'package:user_app/l10n/output/app_localizations.dart';
 import 'package:user_app/onboarding/onboarding_gate.dart';
 import 'package:user_app/screens/home_screen.dart';
@@ -44,6 +45,20 @@ Future<void> main() async {
   const compact = Size(400, 800);
   const expanded = Size(1280, 800);
   const large = Size(1200, 900);
+
+  // Warm the bundled brand fonts before the first pump. AppTheme's getters
+  // rebuild per access and every first-use load is async: without warming,
+  // a load can finish mid-capture and change text metrics between runs,
+  // making goldens flaky. Evaluating the getters fires every load the
+  // themes use; pendingFonts drains them (they resolve from bundled
+  // assets, so this succeeds offline). Afterwards every load
+  // early-returns from google_fonts' cache and rendering is deterministic.
+  // Lives here rather than in flutter_test_config: that hook can run
+  // before the test binding swaps in TestAssetBundle, and the lookup
+  // would miss.
+  setUpAll(
+    () => GoogleFonts.pendingFonts([AppTheme.light, AppTheme.dark]),
+  );
 
   for (final theme in <ThemeMode>[ThemeMode.light, ThemeMode.dark]) {
     final themeName = theme == ThemeMode.light ? 'light' : 'dark';

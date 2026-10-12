@@ -58,6 +58,10 @@ flutter:
   generate: true
   assets:
     - assets/animations/
+    # Bundled Plus Jakarta Sans (OFL, see assets/fonts/OFL.txt): lets
+    # google_fonts resolve locally — offline-first for low connectivity and
+    # deterministic fonts under flutter test (no runtime fetching there).
+    - assets/fonts/
 
 # Launcher icons from the logo SVG (assets/icon/*.svg are the source of
 # truth; PNGs are rendered from them). flutter_launcher_icons consumes the

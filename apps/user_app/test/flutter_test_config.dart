@@ -17,8 +17,22 @@ Future<void> testExecutable(Future<void> Function() testMain) async {
   // test font (Ahem in CI goldens), which is exactly what makes the PNGs
   // platform-independent.
   GoogleFonts.config.allowRuntimeFetching = false;
+  // Warm the bundled brand fonts before any test pumps. AppTheme's getters
+  // rebuild per access and every first-use load is async: without warming,
+  // a load can finish mid-capture and change text metrics between runs,
+  // making goldens flaky. Warming lives in each golden file's setUpAll
+  // (not here): this hook can run before the test binding swaps in
+  // TestAssetBundle, and the lookup would miss. Afterwards every load
+  // early-returns from google_fonts' cache, so rendering is deterministic.
   await AlchemistConfig.runWithConfig(
-    config: const AlchemistConfig(),
+    // Platform (human-readable) goldens are disabled: their PNGs were never
+    // committed (only goldens/ci/ is, per DESIGN.md §7), their files would
+    // differ per host OS anyway, and the readable variant needs real fonts
+    // that never load under flutter test (see above). The CI goldens are
+    // the single compared set on every host, dev machine or CI.
+    config: const AlchemistConfig(
+      platformGoldensConfig: PlatformGoldensConfig(enabled: false),
+    ),
     run: testMain,
   );
 }
