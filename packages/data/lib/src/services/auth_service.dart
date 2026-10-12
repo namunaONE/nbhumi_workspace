@@ -195,12 +195,19 @@ class AuthService {
   /// sign-in link into a recovery flow by appending `?type=recovery`.
   ///
   /// Throws a mapped [AppException], never a raw [AuthException] (Rule 38).
+  ///
+  /// Token-shaped failures map through
+  /// [AuthExceptionMapper.mapCallbackExchange] rather than
+  /// [AuthExceptionMapper.map]: the exchange redeems a one-time
+  /// link and there is no session yet that could have expired, so reporting
+  /// them as `auth.sessionExpired` would tell a user who never had a session
+  /// something confusing. They surface as `auth.linkInvalid` instead.
   Future<bool> exchangeSessionFromUrl(Uri url) async {
     try {
       final response = await _client.getSessionFromUrl(url);
       return response.redirectType == AuthChangeEvent.passwordRecovery.name;
     } on AuthException catch (e) {
-      final mapped = AuthExceptionMapper.map(
+      final mapped = AuthExceptionMapper.mapCallbackExchange(
         e,
         action: 'exchangeSessionFromUrl',
       );

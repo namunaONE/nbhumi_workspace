@@ -32,8 +32,7 @@ ProviderContainer testContainer() =>
 /// Returns the error object rather than asserting, so each test can make its
 /// own claim about it.
 Future<Object> readFailure() async {
-  final container = testContainer()
-    ..listen(throwingProvider, (_, _) {});
+  final container = testContainer()..listen(throwingProvider, (_, _) {});
   try {
     await container.read(throwingProvider.future);
   } on Object catch (e) {
@@ -288,13 +287,22 @@ void main() {
 
     test('only NetworkException is retryable', () {
       // Drives whether the snackbar offers a retry action (Rule 36).
-      const network =
-          NetworkException(code: 'n', messageEn: 'a', messageNe: 'b');
-      const validation =
-          ValidationException(code: 'v', messageEn: 'a', messageNe: 'b');
+      const network = NetworkException(
+        code: 'n',
+        messageEn: 'a',
+        messageNe: 'b',
+      );
+      const validation = ValidationException(
+        code: 'v',
+        messageEn: 'a',
+        messageNe: 'b',
+      );
       const server = ServerException(code: 's', messageEn: 'a', messageNe: 'b');
-      const auth =
-          AuthFailureException(code: 'a', messageEn: 'a', messageNe: 'b');
+      const auth = AuthFailureException(
+        code: 'a',
+        messageEn: 'a',
+        messageNe: 'b',
+      );
 
       expect(network.isRetryable, isTrue);
       expect(validation.isRetryable, isFalse);
@@ -415,6 +423,169 @@ void main() {
 
       expect(mapped, isA<AuthFailureException>());
       expect(mapped.code, isNot('auth.failed'));
+    });
+
+    test('a dead connection during signup is retryable, not a dead end', () {
+      // Without this branch a network blip reads as "we could not sign you
+      // in" with no retry button — the one failure where retrying is the
+      // honest advice.
+      for (final message in <String>[
+        'Failed to fetch',
+        'SocketException: Connection failed',
+        'Network request timed out',
+      ]) {
+        final mapped = AuthExceptionMapper.map(
+          AuthException(message),
+          action: 'signUpWithPassword',
+        );
+
+        expect(mapped, isA<NetworkException>(), reason: message);
+        expect(mapped.isRetryable, isTrue, reason: message);
+        expect(mapped.code, 'network.unreachable', reason: message);
+        expect(mapped.messageNe, isNotEmpty, reason: message);
+      }
+    });
+
+    test('disabled registration names the problem, not the server', () {
+      final mapped = AuthExceptionMapper.map(
+        const AuthException('Signups not allowed for this instance'),
+        action: 'signUpWithPassword',
+      );
+
+      expect(mapped.code, 'auth.signupsDisabled');
+      expect(mapped.messageEn, contains('try again later'));
+      expect(mapped.messageNe, isNotEmpty);
+      expect(mapped.isRetryable, isFalse);
+    });
+
+    test('a trigger failure reads as a server fault, never raw Postgres', () {
+      final mapped = AuthExceptionMapper.map(
+        const AuthException('Database error saving new user'),
+        action: 'signUpWithPassword',
+      );
+
+      expect(mapped, isA<ServerException>());
+      expect(mapped.code, 'server.signupFailed');
+      expect(mapped.messageEn, isNot(contains('Database')));
+      expect(mapped.messageNe, isNotEmpty);
+    });
+
+    test('a server password rule names the requirement', () {
+      for (final message in <String>[
+        'Password should be at least 6 characters',
+        'Password is known to be too common',
+        'New password should be different from the old password',
+      ]) {
+        final mapped = AuthExceptionMapper.map(
+          AuthException(message),
+          action: 'signUpWithPassword',
+        );
+
+        expect(mapped, isA<ValidationException>(), reason: message);
+        expect(mapped.code, 'validation.passwordPolicy', reason: message);
+        expect(mapped.messageNe, isNotEmpty, reason: message);
+      }
+    });
+
+    test('an unsent confirmation email reads as a server fault', () {
+      final mapped = AuthExceptionMapper.map(
+        const AuthException('Error sending confirmation email'),
+        action: 'signUpWithPassword',
+      );
+
+      expect(mapped, isA<ServerException>());
+      expect(mapped.code, 'server.emailSendFailed');
+      expect(mapped.messageNe, isNotEmpty);
+    });
+
+    test('a bare smtp mention still falls through to generic', () {
+      // The email-send branch is deliberately narrow: a message that merely
+      // mentions smtp in passing must not be dressed up as a send failure.
+      final mapped = AuthExceptionMapper.map(
+        const AuthException(
+          'User with email a@b.com failed to sign in (provider=smtp)',
+        ),
+        action: 'signInWithPassword',
+      );
+
+      expect(mapped.code, 'auth.failed');
+    });
+
+    test('an unrecognized signup failure is worded for signup', () {
+      // The old fallback said "we could not sign you in" no matter the
+      // action — including when the action was creating an account.
+      final mapped = AuthExceptionMapper.map(
+        const AuthException('something nobody anticipated'),
+        action: 'signUpWithPassword',
+      );
+
+      expect(mapped.code, 'auth.signupFailed');
+      expect(mapped.messageEn, contains('create your account'));
+      expect(mapped.messageNe, isNotEmpty);
+    });
+
+    test('an unrecognized sign-in failure keeps the old wording', () {
+      final mapped = AuthExceptionMapper.map(
+        const AuthException('something nobody anticipated'),
+        action: 'signInWithPassword',
+      );
+
+      expect(mapped.code, 'auth.failed');
+    });
+  });
+
+  group('AuthExceptionMapper.mapCallbackExchange', () {
+    test('an expired link stays a link failure', () {
+      final mapped = AuthExceptionMapper.mapCallbackExchange(
+        const AuthException('Token has expired or is invalid'),
+        action: 'exchangeSessionFromUrl',
+      );
+
+      expect(mapped.code, 'auth.linkExpired');
+    });
+
+    test('a token failure is never reported as an expired session', () {
+      // The exchange redeems a one-time link; there is no session yet that
+      // could have expired. map() alone reports these as sessionExpired —
+      // the exact message users saw when tapping a dead magic link.
+      for (final message in <String>[
+        'invalid JWT',
+        'refresh token not found',
+      ]) {
+        final plain = AuthExceptionMapper.map(
+          AuthException(message),
+          action: 'exchangeSessionFromUrl',
+        );
+        expect(plain.code, 'auth.sessionExpired', reason: message);
+
+        final mapped = AuthExceptionMapper.mapCallbackExchange(
+          AuthException(message),
+          action: 'exchangeSessionFromUrl',
+        );
+        expect(mapped.code, 'auth.linkInvalid', reason: message);
+        expect(mapped.messageEn, contains('Request a new one'));
+        expect(mapped.messageNe, isNotEmpty, reason: message);
+      }
+    });
+
+    test('a lost PKCE verifier reads as a dead link', () {
+      // Verifiers live with the requesting install: a link opened on another
+      // device, or after a reinstall, cannot complete the exchange.
+      final mapped = AuthExceptionMapper.mapCallbackExchange(
+        const AuthException('code verifier could not be found'),
+        action: 'exchangeSessionFromUrl',
+      );
+
+      expect(mapped.code, 'auth.linkInvalid');
+    });
+
+    test('unrelated exchange failures pass through unchanged', () {
+      final mapped = AuthExceptionMapper.mapCallbackExchange(
+        const AuthException('Too many requests, rate limit exceeded'),
+        action: 'exchangeSessionFromUrl',
+      );
+
+      expect(mapped.code, 'server.rateLimited');
     });
   });
 
