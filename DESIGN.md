@@ -68,15 +68,14 @@ the same brand pair as the verified badge.
 Warm neutral in light, deep charcoal in dark. Components sit **one step
 higher in dark mode** so they lift off the background.
 
-> **Known gap: the brand blue is not `primary`.**
-> The scheme uses the default `tonalSpot` variant, which caps primary chroma at
-> C36. `logoBlue` is higher-chroma than that, so `primary` ends up a
-> *desaturated pastel* blue and the seed colour appears nowhere in the UI.
-> Switching to `DynamicSchemeVariant.fidelity` (or pinning
-> `primary`/`onPrimary` to brand values) would make FABs, focus rings and
-> active states brand-exact. Deliberately **not** done yet: it visibly
-> recolours the whole app, so it needs visual sign-off rather than a silent
-> flag flip. Tracked as a follow-up.
+> **Resolved: light `primary` is pinned to the brand blue.**
+> The scheme previously used pure `tonalSpot`, so `primary` came out #475D92
+> (desaturated pastel) and the seed colour appeared nowhere. `fidelity` was
+> measured and rejected — light primary goes near-black #001843 and light
+> tertiary goes dark brown #370D00. The chosen fix pins just the light
+> `primary`/`onPrimary` pair to logoBlue/white (13.28:1); dark keeps the
+> generated #B0C6FF, which already carries the brand hue at 7.77:1.
+> Measured comparison lives in the `lightScheme` doc comment.
 
 ### 2.3 Marketplace accents — `marketplace_colors.dart`
 

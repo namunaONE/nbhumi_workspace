@@ -66,6 +66,18 @@ abstract final class AppTheme {
   /// Light color scheme, factored out of [light] so tests can assert
   /// contrast on the generated roles without building the GoogleFonts text
   /// theme (font bytes never load under `flutter test`).
+  ///
+  /// Light `primary` is pinned to the brand blue rather than generated. The
+  /// seed never survives tonalSpot — primary comes out #475D92, a desaturated
+  /// pastel, and the brand blue appears nowhere. Fidelity was measured and
+  /// rejected: it pushes light primary to near-black #001843 and light
+  /// tertiary to a dark brown #370D00. Pinning just this pair is the minimal
+  /// brand-exact change: white on logoBlue is 13.28:1, and the generated
+  /// primaryContainer (#D9E2FF) stays as the selection-pill surface.
+  ///
+  /// Dark is deliberately NOT pinned: logoBlue cannot serve as an accent on
+  /// dark surfaces, and the generated #B0C6FF already carries the brand hue
+  /// at 7.77:1. Asymmetry here is correctness, not drift.
   static ColorScheme get lightScheme {
     final donors = _donorFamilies(Brightness.light);
     return _withLogoFamilies(
@@ -80,6 +92,9 @@ abstract final class AppTheme {
       ),
       secondaryDonor: donors.secondary,
       tertiaryDonor: donors.tertiary,
+    ).copyWith(
+      primary: BrandColors.logoBlue,
+      onPrimary: Colors.white,
     );
   }
 
