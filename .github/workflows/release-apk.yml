@@ -45,15 +45,21 @@ jobs:
         run: dart pub get
 
       - name: Decode keystore & write Gradle properties (if secrets provided)
-        # Only runs if KEYSTORE_BASE64 secret exists and is non-empty
-        if: ${{ secrets.KEYSTORE_BASE64 != '' }}
+        # Only runs if KEYSTORE_BASE64 secret exists and is non-empty.
+        # Uses env var indirection to avoid expression parser errors when secret is missing.
+        if: ${{ env.KEYSTORE_BASE64 != '' }}
+        env:
+          KEYSTORE_BASE64: ${{ secrets.KEYSTORE_BASE64 }}
+          KEYSTORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
+          KEY_ALIAS: ${{ secrets.KEY_ALIAS }}
+          KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
         run: |
-          echo "${{ secrets.KEYSTORE_BASE64 }}" | base64 -d > apps/user_app/android/app/release-keystore.jks
+          echo "$KEYSTORE_BASE64" | base64 -d > apps/user_app/android/app/release-keystore.jks
           cat <<EOF > apps/user_app/android/key.properties
           releaseKeystoreFile=apps/user_app/android/app/release-keystore.jks
-          releaseKeystorePassword=${{ secrets.KEYSTORE_PASSWORD }}
-          releaseKeyAlias=${{ secrets.KEY_ALIAS }}
-          releaseKeyPassword=${{ secrets.KEY_PASSWORD }}
+          releaseKeystorePassword=$KEYSTORE_PASSWORD
+          releaseKeyAlias=$KEY_ALIAS
+          releaseKeyPassword=$KEY_PASSWORD
           EOF
 
       - name: Build dev APK (debug, unsigned)
