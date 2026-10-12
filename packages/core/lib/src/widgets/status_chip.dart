@@ -57,6 +57,65 @@ class StatusChip extends StatelessWidget {
     );
   }
 
+  /// Creates a listing-lifecycle chip (Draft / Pending / Live / Rejected /
+  /// Unpublished).
+  ///
+  /// Centralises the status→colour mapping so the seller shelf, the activity
+  /// feed and the admin queue cannot drift: a status means the same thing in
+  /// all three places. [label] stays a plain string because each surface
+  /// localises differently — wire names in admin, full labels in activity.
+  ///
+  /// Four of the five pairs reuse existing tokens on purpose, not new hues:
+  /// live is the verified green, pending is the sale orange (waiting reads
+  /// as amber), rejected is the error pair, draft is the neutral surface,
+  /// unpublished is the tertiary pair (pulled, not failed, so never red).
+  /// [scheme] is required because three of the pairs are scheme roles;
+  /// [colors] is nullable with scheme-role fallbacks, as in
+  /// [StatusChip.purpose].
+  factory StatusChip.status(
+    ListingStatus status, {
+    required String label,
+    required ColorScheme scheme,
+    MarketplaceColors? colors,
+    bool dense = false,
+  }) {
+    final resolved = switch (status) {
+      ListingStatus.live => colors == null
+          ? (background: scheme.primary, foreground: scheme.onPrimary)
+          : (
+              background: colors.verifiedGreen,
+              foreground: colors.onVerifiedGreen,
+            ),
+      ListingStatus.rejected => (
+          background: scheme.errorContainer,
+          foreground: scheme.onErrorContainer,
+        ),
+      ListingStatus.pendingReview => colors == null
+          ? (
+              background: scheme.tertiaryContainer,
+              foreground: scheme.onTertiaryContainer,
+            )
+          : (
+              background: colors.saleOrange,
+              foreground: colors.onSaleOrange,
+            ),
+      ListingStatus.draft => (
+          background: scheme.surfaceContainerHighest,
+          foreground: scheme.onSurfaceVariant,
+        ),
+      ListingStatus.unpublished => (
+          background: scheme.tertiaryContainer,
+          foreground: scheme.onTertiaryContainer,
+        ),
+    };
+    return StatusChip(
+      label: label,
+      background: resolved.background,
+      foreground: resolved.foreground,
+      dense: dense,
+    );
+  }
+
   /// Creates a KYC-verified chip.
   factory StatusChip.verified({
     MarketplaceColors? colors,

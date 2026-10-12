@@ -176,6 +176,11 @@ class _DetailBody extends StatelessWidget {
 }
 
 /// The listing's current status, as a chip.
+///
+/// Colours come from [StatusChip.status] so a status means the same thing
+/// here, on the seller shelf and in the activity feed: pending is amber,
+/// live is the verified green, rejected is the error pair, unpublished is
+/// the tertiary pair — pulled, not failed, so it must not read as red.
 class _StatusChip extends StatelessWidget {
   const _StatusChip({required this.status});
 
@@ -184,53 +189,14 @@ class _StatusChip extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    // Nullable with a fallback, as in ListingCard: a theme without
-    // MarketplaceColors still renders.
-    final colors = theme.extension<MarketplaceColors>();
-
-    // Colour follows the queue tabs so a status means the same thing in both
-    // places: pending is the neutral surface, live is the verified green,
-    // rejected is the error colour, unpublished is the warning surface --
-    // pulled, not failed, so it must not read as red.
-    final (background, foreground) = switch (status) {
-      ListingStatus.live => colors == null
-          ? (theme.colorScheme.primary, theme.colorScheme.onPrimary)
-          : (colors.verifiedGreen, colors.onVerifiedGreen),
-      ListingStatus.rejected => (
-          theme.colorScheme.errorContainer,
-          theme.colorScheme.onErrorContainer,
-        ),
-      ListingStatus.pendingReview => colors == null
-          ? (
-              theme.colorScheme.tertiaryContainer,
-              theme.colorScheme.onTertiaryContainer,
-            )
-          : (colors.saleOrange, colors.onSaleOrange),
-      ListingStatus.draft => (
-          theme.colorScheme.surfaceContainerHighest,
-          theme.colorScheme.onSurfaceVariant,
-        ),
-      ListingStatus.unpublished => (
-          theme.colorScheme.tertiaryContainer,
-          theme.colorScheme.onTertiaryContainer,
-        ),
-    };
-
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-      decoration: BoxDecoration(
-        color: background,
-        borderRadius: BorderRadius.circular(6),
-      ),
-      child: Text(
-        // The wire name, not `.name`: the database and the UI must agree on the
-        // spelling, and every other surface in this app shows the wire form.
-        status.wireName,
-        style: theme.textTheme.labelSmall?.copyWith(
-          color: foreground,
-          fontWeight: FontWeight.w600,
-        ),
-      ),
+    return StatusChip.status(
+      status,
+      // The wire name, not a label: the database and the UI must agree on
+      // the spelling, and every other surface in this app shows the wire
+      // form.
+      label: status.wireName,
+      scheme: theme.colorScheme,
+      colors: theme.extension<MarketplaceColors>(),
     );
   }
 }

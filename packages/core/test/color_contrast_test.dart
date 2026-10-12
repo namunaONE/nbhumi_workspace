@@ -207,6 +207,38 @@ void main() {
     }
   });
 
+  group('listing statuses meet their floors', () {
+    // StatusChip.status maps four of the five lifecycle states onto existing
+    // pairs rather than new hues (measured values in the test names). Live
+    // and pending are covered by the verified and sale groups above; the
+    // scheme-side pairs are pinned here so a future scheme tweak that drops
+    // one of them fails loudly instead of silently recolouring a status.
+    for (final entry in schemes.entries) {
+      final s = entry.value;
+
+      test('${entry.key}: draft (neutral surface) is >= 4.5:1', () {
+        expect(
+          ratio(s.onSurfaceVariant, s.surfaceContainerHighest),
+          greaterThanOrEqualTo(textFloor),
+        );
+      });
+
+      test('${entry.key}: rejected (error pair) is >= 4.5:1', () {
+        expect(
+          ratio(s.onErrorContainer, s.errorContainer),
+          greaterThanOrEqualTo(textFloor),
+        );
+      });
+
+      test('${entry.key}: unpublished (tertiary pair) is >= 4.5:1', () {
+        expect(
+          ratio(s.onTertiaryContainer, s.tertiaryContainer),
+          greaterThanOrEqualTo(textFloor),
+        );
+      });
+    }
+  });
+
   group('the verified wash is legible on the surface it sits on', () {
     // StatusChip.verified and TrustBadge both paint a 12%-alpha wash of the
     // ink over the card surface. The ink is what must pass, so the test has

@@ -44,6 +44,7 @@ class ActivityListingRow extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final strings = AppLocalizations.of(context);
+    final theme = Theme.of(context);
     return ListTile(
       leading: Icon(
         listing.status == ListingStatus.live
@@ -55,9 +56,15 @@ class ActivityListingRow extends StatelessWidget {
         '${NepaliCurrency.compact(listing.priceNpr)} · '
         '${listing.district}, ${listing.city}',
       ),
-      trailing: Chip(
-        label: Text(activityStatusLabel(strings, listing.status)),
-        visualDensity: VisualDensity.compact,
+      // Status colours come from the shared mapping so a status reads the
+      // same here as in the admin queue; the label stays localised here
+      // because core must not own app strings (Rule 10).
+      trailing: StatusChip.status(
+        listing.status,
+        label: activityStatusLabel(strings, listing.status),
+        scheme: theme.colorScheme,
+        colors: theme.extension<MarketplaceColors>(),
+        dense: true,
       ),
       onTap: () => context.push('/listing/${listing.id}'),
     );
