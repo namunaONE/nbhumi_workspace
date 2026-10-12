@@ -52,6 +52,45 @@ void main() {
       }
     });
   });
+
+  group('onVerifiedTint — the wash ink, not the fill ink', () {
+    // A tinted surface is a different surface. Painting "Verified" in the
+    // raw logo green on the 12%-alpha wash the chips use measured 1.74:1 in
+    // the light scheme — a live WCAG failure, shipped, until HYA-195.
+
+    test('dark scheme keeps the raw logo green as its ink', () {
+      expect(MarketplaceColors.dark.onVerifiedTint, BrandColors.logoGreen);
+    });
+
+    test('light scheme darkens the ink so the wash stays legible', () {
+      expect(MarketplaceColors.light.onVerifiedTint,
+          isNot(MarketplaceColors.light.verifiedGreen));
+    });
+
+    test('the light ink passes AA on the wash it is painted on', () {
+      final ink = MarketplaceColors.light.onVerifiedTint;
+      final wash = _wash(ink, const Color(0xFFFAFAF8), 0.12);
+      expect(_contrastRatio(ink, wash), greaterThanOrEqualTo(4.5));
+    });
+
+    test('the dark ink passes AA on the wash it is painted on', () {
+      final ink = MarketplaceColors.dark.onVerifiedTint;
+      final wash = _wash(ink, const Color(0xFF121417), 0.12);
+      expect(_contrastRatio(ink, wash), greaterThanOrEqualTo(4.5));
+    });
+  });
+}
+
+/// Blends [fg] at [alpha] over [bg], as `withValues(alpha:)` does on a surface.
+Color _wash(Color fg, Color bg, double alpha) {
+  int ch(double a, double b) =>
+      (a * 255 * alpha + b * 255 * (1 - alpha)).round();
+  return Color.fromARGB(
+    255,
+    ch(fg.r, bg.r),
+    ch(fg.g, bg.g),
+    ch(fg.b, bg.b),
+  );
 }
 
 double _contrastRatio(Color foreground, Color background) {

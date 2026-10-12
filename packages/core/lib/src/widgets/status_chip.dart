@@ -63,8 +63,13 @@ class StatusChip extends StatelessWidget {
     Color? fallbackForeground,
     bool dense = false,
   }) {
-    final foreground =
-        colors?.verifiedGreen ?? fallbackForeground ?? const Color(0xFF1B6B2E);
+    // The tint is a wash, not a fill, so the ink must be the tint ink —
+    // the raw logo green measures 1.74:1 on it in the light scheme.
+    // [fallbackForeground] is only for a caller that brings its own ink on
+    // a surface it has already checked.
+    final foreground = colors?.onVerifiedTint ??
+        fallbackForeground ??
+        const Color(0xFF006E27);
     return StatusChip(
       label: 'Verified',
       background: foreground.withValues(alpha: 0.12),

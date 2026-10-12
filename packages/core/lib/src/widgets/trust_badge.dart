@@ -30,7 +30,9 @@ class TrustBadge extends StatelessWidget {
           icon: Icon(
             Icons.verified,
             size: 40,
-            color: theme.extension<MarketplaceColors>()?.verifiedGreen ??
+            // Tint ink: a 40px icon still needs 3:1 (WCAG non-text), and the
+            // raw logo green is 1.9:1 on the light dialog surface.
+            color: theme.extension<MarketplaceColors>()?.onVerifiedTint ??
                 theme.colorScheme.primary,
           ),
           title: const Text('Verified by nBhumi'),
@@ -57,7 +59,10 @@ class TrustBadge extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final colors = theme.extension<MarketplaceColors>();
-    final foreground = colors?.verifiedGreen ?? theme.colorScheme.primary;
+    // Tint ink, not fill ink: the badge is a translucent wash, and the raw
+    // logo green measures 1.74:1 on it in the light scheme.
+    final foreground =
+        colors?.onVerifiedTint ?? theme.colorScheme.primary;
 
     final badge = Container(
       padding: EdgeInsets.symmetric(
