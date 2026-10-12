@@ -183,7 +183,17 @@ separator.
 | `compactCardThreshold` | 220 | Below this card width the grid uses compact density |
 | `loadingRowHeight` | 64 | List-mode footer cell |
 | `splashGlyph` | 200 | Splash brand glyph |
-| `contentMaxWidth` | 960 | Feed cap; beyond it content centers instead of stretching |
+| `contentMaxWidth` | 960 | Feed cap; alias of `AppContentWidths.feed` — beyond it content centers instead of stretching |
+
+### 4.4b `AppContentWidths` + `CenteredContent`
+
+| Token | Value | Use |
+|---|---|---|
+| `form` | 480 | Auth, onboarding single-column, dialogs — a full-width CTA inside stays tappable |
+| `reading` | 720 | Detail, wizard steps, profile, shelves |
+| `feed` | 960 | Wide grids; canonical value behind `AppSizes.contentMaxWidth` |
+
+`packages/core/lib/src/widgets/centered_content.dart` (`CenteredContent`, default `reading`) is the one wrapper: `Align(topCenter)` + `ConstrainedBox` placed **outside** the scrollable/outer `Column` so body and sticky CTA share the cap. Only the feed keeps its own inline `Align` + `ConstrainedBox` (`listing_grid.dart`); everything else uses this widget.
 
 ### 4.5 `AppDurations`
 

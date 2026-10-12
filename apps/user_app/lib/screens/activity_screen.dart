@@ -29,16 +29,20 @@ class ActivityScreen extends ConsumerWidget {
         title: strings.activityTitle,
         child: Scaffold(
           appBar: AppBar(title: Text(strings.activityTitle)),
-          body: ListView(
-            padding: const EdgeInsets.symmetric(vertical: AppSpacing.sm),
-            children: <Widget>[
-              ListTile(
-                leading: const Icon(Icons.login),
-                title: Text(strings.commonSignIn),
-                subtitle: Text(strings.activityGuestPrompt),
-                onTap: () => context.push('/login'),
-              ),
-            ],
+          // Capped at reading width (DESIGN.md §4.4b).
+          body: CenteredContent(
+            maxWidth: AppContentWidths.reading,
+            child: ListView(
+              padding: const EdgeInsets.symmetric(vertical: AppSpacing.sm),
+              children: <Widget>[
+                ListTile(
+                  leading: const Icon(Icons.login),
+                  title: Text(strings.commonSignIn),
+                  subtitle: Text(strings.activityGuestPrompt),
+                  onTap: () => context.push('/login'),
+                ),
+              ],
+            ),
           ),
         ),
       );
@@ -56,7 +60,11 @@ class ActivityScreen extends ConsumerWidget {
             ),
           ],
         ),
-        body: _ActivityBody(userId: session.user.id),
+        // Capped at reading width (DESIGN.md §4.4b).
+        body: CenteredContent(
+          maxWidth: AppContentWidths.reading,
+          child: _ActivityBody(userId: session.user.id),
+        ),
       ),
     );
   }

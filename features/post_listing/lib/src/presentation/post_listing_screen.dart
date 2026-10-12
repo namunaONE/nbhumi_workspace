@@ -41,9 +41,7 @@ class PostListingScreen extends ConsumerWidget {
         title: Text(_stepTitle(strings, state.step)),
         // Leaving mid-form is allowed and the answers are kept, so a seller
         // interrupted by a call does not lose the listing.
-        leading: CloseButton(
-          onPressed: () => Navigator.of(context).maybePop(),
-        ),
+        leading: CloseButton(onPressed: () => Navigator.of(context).maybePop()),
         bottom: PreferredSize(
           preferredSize: const Size.fromHeight(56),
           child: _Progress(step: state.step),
@@ -58,11 +56,8 @@ class PostListingScreen extends ConsumerWidget {
           error: (error, stackTrace) => _DistrictsUnavailable(
             message: AppException.unmapped(error).localizedForContext(context),
           ),
-          data: (loaded) => _StepBody(
-            state: state,
-            districts: loaded,
-            notifier: notifier,
-          ),
+          data: (loaded) =>
+              _StepBody(state: state, districts: loaded, notifier: notifier),
         ),
       ),
     );
@@ -70,10 +65,7 @@ class PostListingScreen extends ConsumerWidget {
 }
 
 /// App-bar title for a wizard step.
-String _stepTitle(
-  post_strings.AppLocalizations strings,
-  WizardStep step,
-) =>
+String _stepTitle(post_strings.AppLocalizations strings, WizardStep step) =>
     switch (step) {
       WizardStep.type => strings.stepType,
       WizardStep.location => strings.stepLocation,
@@ -96,71 +88,75 @@ class _StepBody extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final step = switch (state.step) {      WizardStep.type => TypeStep(
-          state: state,
-          onTypeSelected: notifier.setPropertyType,
-          onPurposeSelected: notifier.setPurpose,
-          onTitleChanged: notifier.setTitle,
-          onDescriptionChanged: notifier.setDescription,
-        ),
+    final step = switch (state.step) {
+      WizardStep.type => TypeStep(
+        state: state,
+        onTypeSelected: notifier.setPropertyType,
+        onPurposeSelected: notifier.setPurpose,
+        onTitleChanged: notifier.setTitle,
+        onDescriptionChanged: notifier.setDescription,
+      ),
       WizardStep.location => LocationStep(
-          state: state,
-          districts: districts,
-          onDistrictChanged: notifier.setDistrict,
-          onMunicipalityChanged: notifier.setMunicipality,
-          onWardChanged: notifier.setWard,
-          onRoadAccessChanged: notifier.setRoadAccessFt,
-          onKittaChanged: notifier.setKittaNumber,
-        ),
+        state: state,
+        districts: districts,
+        onDistrictChanged: notifier.setDistrict,
+        onMunicipalityChanged: notifier.setMunicipality,
+        onWardChanged: notifier.setWard,
+        onRoadAccessChanged: notifier.setRoadAccessFt,
+        onKittaChanged: notifier.setKittaNumber,
+      ),
       WizardStep.specs => SpecsStep(
-          state: state,
-          onUnitChanged: notifier.setAreaUnit,
-          onBedroomsChanged: notifier.setBedrooms,
-          onBathroomsChanged: notifier.setBathrooms,
-          onLeaseTermChanged: notifier.setLeaseTermMonths,
-          onLeaseRenewableChanged: notifier.setLeaseRenewable,
-          onDepositChanged: notifier.setDepositAmount,
-          onAvailableFromChanged: notifier.setAvailableFrom,
-          onFurnishingChanged: notifier.setFurnishingStatus,
-          onUtilitiesChanged: notifier.setUtilitiesIncluded,
-          onPetPolicyChanged: notifier.setPetPolicy,
-          onParkingChanged: notifier.setParkingSpaces,
-          onFloorNumberChanged: notifier.setFloorNumber,
-          onTotalFloorsChanged: notifier.setTotalFloors,
-          onPropertyAgeChanged: notifier.setPropertyAgeYears,
-          onConstructionStatusChanged: notifier.setConstructionStatus,
-        ),
+        state: state,
+        onUnitChanged: notifier.setAreaUnit,
+        onBedroomsChanged: notifier.setBedrooms,
+        onBathroomsChanged: notifier.setBathrooms,
+        onLeaseTermChanged: notifier.setLeaseTermMonths,
+        onLeaseRenewableChanged: notifier.setLeaseRenewable,
+        onDepositChanged: notifier.setDepositAmount,
+        onAvailableFromChanged: notifier.setAvailableFrom,
+        onFurnishingChanged: notifier.setFurnishingStatus,
+        onUtilitiesChanged: notifier.setUtilitiesIncluded,
+        onPetPolicyChanged: notifier.setPetPolicy,
+        onParkingChanged: notifier.setParkingSpaces,
+        onFloorNumberChanged: notifier.setFloorNumber,
+        onTotalFloorsChanged: notifier.setTotalFloors,
+        onPropertyAgeChanged: notifier.setPropertyAgeYears,
+        onConstructionStatusChanged: notifier.setConstructionStatus,
+      ),
       WizardStep.price => PricePhotosStep(
-          state: state,
-          onPriceChanged: notifier.setPrice,
-          onAddPhotos: notifier.addPhotos,
-          onRemovePhoto: notifier.removePhoto,
-        ),
+        state: state,
+        onPriceChanged: notifier.setPrice,
+        onAddPhotos: notifier.addPhotos,
+        onRemovePhoto: notifier.removePhoto,
+      ),
       WizardStep.review => ReviewStep(
-          state: state,
-          onEditStep: notifier.goTo,
-          onSubmit: () => _submit(context),
-        ),
+        state: state,
+        onEditStep: notifier.goTo,
+        onSubmit: () => _submit(context),
+      ),
     };
 
-    return Column(
-      children: <Widget>[
-        Expanded(
-          child: SingleChildScrollView(
-            padding: const EdgeInsets.all(16),
-            child: step,
+    // Capped at reading width so steps and the Back/Next bar center on wide
+    // windows instead of stretching (DESIGN.md §4.4b).
+    return CenteredContent(
+      child: Column(
+        children: <Widget>[
+          Expanded(
+            child: SingleChildScrollView(
+              padding: const EdgeInsets.all(AppSpacing.lg),
+              child: step,
+            ),
           ),
-        ),
-        _Navigation(
-          state: state,
-          onBack: notifier.back,
-          onNext: state.step == WizardStep.review
-              ? () => _submit(context)
-              : () => notifier.next(
-                    post_strings.AppLocalizations.of(context),
-                  ),
-        ),
-      ],
+          _Navigation(
+            state: state,
+            onBack: notifier.back,
+            onNext: state.step == WizardStep.review
+                ? () => _submit(context)
+                : () =>
+                      notifier.next(post_strings.AppLocalizations.of(context)),
+          ),
+        ],
+      ),
     );
   }
 
@@ -172,11 +168,7 @@ class _StepBody extends StatelessWidget {
     final ok = await notifier.submit(strings);
     if (!ok) return;
 
-    messenger.showSnackBar(
-      SnackBar(
-        content: Text(strings.sentForReview),
-      ),
-    );
+    messenger.showSnackBar(SnackBar(content: Text(strings.sentForReview)));
     router.go('/');
   }
 }

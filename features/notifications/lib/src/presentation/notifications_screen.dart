@@ -36,36 +36,40 @@ class NotificationsScreen extends ConsumerWidget {
           }),
         ],
       ),
-      body: switch (inbox) {
-        AsyncLoading() => const LoadingState(),
-        AsyncError(:final error) => Builder(
-            builder: (context) {
-              // Retry only surfaces for recoverable failures, matching the
-              // previous inline error: a dead-end error shows the message
-              // with no action that could never succeed.
-              final failure = error is AppException ? error : null;
-              final retryable = failure == null || failure.isRetryable;
-              return ErrorState(
-                message: failure?.localizedForContext(context) ??
-                    strings.loadFailed,
-                retryLabel: retryable ? strings.retry : null,
-                onRetry: retryable
-                    ? () => ref.invalidate(notificationsProvider())
-                    : null,
-              );
-            },
-          ),
-        AsyncData(:final value) when value.isEmpty => EmptyState(
-            title: strings.emptyTitle,
-            body: strings.emptyBody,
-            icon: Icons.notifications_off_outlined,
-          ),
-        AsyncData(:final value) => ListView.builder(
-            itemCount: value.length,
-            itemBuilder: (context, index) =>
-                _NotificationTile(notification: value[index]),
-          ),
-      },
+      // Capped at reading width so the inbox centers on wide windows (DESIGN.md §4.4b).
+      body: CenteredContent(
+        maxWidth: AppContentWidths.reading,
+        child: switch (inbox) {
+          AsyncLoading() => const LoadingState(),
+          AsyncError(:final error) => Builder(
+              builder: (context) {
+                // Retry only surfaces for recoverable failures, matching the
+                // previous inline error: a dead-end error shows the message
+                // with no action that could never succeed.
+                final failure = error is AppException ? error : null;
+                final retryable = failure == null || failure.isRetryable;
+                return ErrorState(
+                  message: failure?.localizedForContext(context) ??
+                      strings.loadFailed,
+                  retryLabel: retryable ? strings.retry : null,
+                  onRetry: retryable
+                      ? () => ref.invalidate(notificationsProvider())
+                      : null,
+                );
+              },
+            ),
+          AsyncData(:final value) when value.isEmpty => EmptyState(
+              title: strings.emptyTitle,
+              body: strings.emptyBody,
+              icon: Icons.notifications_off_outlined,
+            ),
+          AsyncData(:final value) => ListView.builder(
+              itemCount: value.length,
+              itemBuilder: (context, index) =>
+                  _NotificationTile(notification: value[index]),
+            ),
+        },
+      ),
     );
   }
 }

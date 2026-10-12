@@ -50,8 +50,12 @@ class AuthCallbackScreen extends ConsumerWidget {
       });
       final strings = auth_strings.AppLocalizations.of(context);
       return Scaffold(
+        // Capped at form width — centered confirmation, never full-screen.
         body: SafeArea(
-          child: Center(child: Text(strings.callbackSignedIn)),
+          child: CenteredContent(
+            maxWidth: AppContentWidths.form,
+            child: Center(child: Text(strings.callbackSignedIn)),
+          ),
         ),
       );
     }
@@ -59,26 +63,30 @@ class AuthCallbackScreen extends ConsumerWidget {
     final strings = auth_strings.AppLocalizations.of(context);
     return Scaffold(
       appBar: AppBar(title: Text(strings.callbackSigningIn)),
+      // Capped at form width (DESIGN.md §4.4b).
       body: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.all(24),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              const LinearProgressIndicator(),
-              const SizedBox(height: 24),
-              Text(
-                strings.callbackWorking,
-                style: Theme.of(context).textTheme.headlineSmall,
-              ),
-              const SizedBox(height: 8),
-              Text(strings.callbackSlowHint),
-              const SizedBox(height: 16),
-              OutlinedButton(
-                onPressed: () => context.go('/login'),
-                child: Text(strings.callbackBackToLogin),
-              ),
-            ],
+        child: CenteredContent(
+          maxWidth: AppContentWidths.form,
+          child: Padding(
+            padding: const EdgeInsets.all(24),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                const LinearProgressIndicator(),
+                const SizedBox(height: 24),
+                Text(
+                  strings.callbackWorking,
+                  style: Theme.of(context).textTheme.headlineSmall,
+                ),
+                const SizedBox(height: 8),
+                Text(strings.callbackSlowHint),
+                const SizedBox(height: 16),
+                OutlinedButton(
+                  onPressed: () => context.go('/login'),
+                  child: Text(strings.callbackBackToLogin),
+                ),
+              ],
+            ),
           ),
         ),
       ),
@@ -108,20 +116,24 @@ class _CallbackError extends StatelessWidget {
     final strings = auth_strings.AppLocalizations.of(context);
     return Scaffold(
       appBar: AppBar(title: Text(strings.callbackFailedTitle)),
+      // Capped at form width — centered error card.
       body: SafeArea(
-        child: Center(
-          child: Padding(
-            padding: const EdgeInsets.all(24),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Text(failure.localizedForContext(context)),
-                const SizedBox(height: 16),
-                FilledButton(
-                  onPressed: () => context.go('/login'),
-                  child: Text(strings.callbackRequestNew),
-                ),
-              ],
+        child: CenteredContent(
+          maxWidth: AppContentWidths.form,
+          child: Center(
+            child: Padding(
+              padding: const EdgeInsets.all(24),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Text(failure.localizedForContext(context)),
+                  const SizedBox(height: 16),
+                  FilledButton(
+                    onPressed: () => context.go('/login'),
+                    child: Text(strings.callbackRequestNew),
+                  ),
+                ],
+              ),
             ),
           ),
         ),
@@ -177,64 +189,68 @@ class _SetPasswordFormState extends ConsumerState<_SetPasswordForm> {
     final strings = auth_strings.AppLocalizations.of(context);
     return Scaffold(
       appBar: AppBar(title: Text(strings.newPasswordTitle)),
+      // Capped at form width — matches admin sign-in pattern (DESIGN.md §4.4b).
       body: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.all(24),
-          child: Form(
-            key: _formKey,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                Text(
-                  strings.newPasswordIntro(Validators.minPasswordLength),
-                ),
-                const SizedBox(height: 24),
-                TextFormField(
-                  controller: _password,
-                  obscureText: _obscure,
-                  enabled: !_busy,
-                  decoration: InputDecoration(
-                    labelText: strings.newPasswordLabel,
-                    border: const OutlineInputBorder(),
-                    suffixIcon: IconButton(
-                      icon: Icon(
-                        _obscure
-                            ? Icons.visibility_outlined
-                            : Icons.visibility_off_outlined,
+        child: CenteredContent(
+          maxWidth: AppContentWidths.form,
+          child: Padding(
+            padding: const EdgeInsets.all(24),
+            child: Form(
+              key: _formKey,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  Text(
+                    strings.newPasswordIntro(Validators.minPasswordLength),
+                  ),
+                  const SizedBox(height: 24),
+                  TextFormField(
+                    controller: _password,
+                    obscureText: _obscure,
+                    enabled: !_busy,
+                    decoration: InputDecoration(
+                      labelText: strings.newPasswordLabel,
+                      border: const OutlineInputBorder(),
+                      suffixIcon: IconButton(
+                        icon: Icon(
+                          _obscure
+                              ? Icons.visibility_outlined
+                              : Icons.visibility_off_outlined,
+                        ),
+                        onPressed: () => setState(() => _obscure = !_obscure),
                       ),
-                      onPressed: () => setState(() => _obscure = !_obscure),
+                    ),
+                    validator: (value) =>
+                        Validators.isValidPassword(value ?? '')
+                            ? null
+                            : strings.passwordError(
+                                Validators.minPasswordLength,
+                              ),
+                    onFieldSubmitted: (_) => _save(),
+                  ),
+                  const SizedBox(height: 16),
+                  TextFormField(
+                    controller: _confirm,
+                    obscureText: _obscure,
+                    enabled: !_busy,
+                    decoration: InputDecoration(
+                      labelText: strings.confirmNewLabel,
+                      border: const OutlineInputBorder(),
+                    ),
+                    validator: (value) => value == _password.text
+                        ? null
+                        : strings.mismatchError,
+                    onFieldSubmitted: (_) => _save(),
+                  ),
+                  const SizedBox(height: 16),
+                  FilledButton(
+                    onPressed: _busy ? null : _save,
+                    child: Text(
+                      _busy ? strings.saving : strings.savePassword,
                     ),
                   ),
-                  validator: (value) =>
-                      Validators.isValidPassword(value ?? '')
-                          ? null
-                          : strings.passwordError(
-                              Validators.minPasswordLength,
-                            ),
-                  onFieldSubmitted: (_) => _save(),
-                ),
-                const SizedBox(height: 16),
-                TextFormField(
-                  controller: _confirm,
-                  obscureText: _obscure,
-                  enabled: !_busy,
-                  decoration: InputDecoration(
-                    labelText: strings.confirmNewLabel,
-                    border: const OutlineInputBorder(),
-                  ),
-                  validator: (value) => value == _password.text
-                      ? null
-                      : strings.mismatchError,
-                  onFieldSubmitted: (_) => _save(),
-                ),
-                const SizedBox(height: 16),
-                FilledButton(
-                  onPressed: _busy ? null : _save,
-                  child: Text(
-                    _busy ? strings.saving : strings.savePassword,
-                  ),
-                ),
-              ],
+                ],
+              ),
             ),
           ),
         ),

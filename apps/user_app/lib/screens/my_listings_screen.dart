@@ -39,11 +39,14 @@ class MyListingsScreen extends ConsumerWidget {
       title: strings.mineTitle,
       child: Scaffold(
         appBar: AppBar(title: Text(strings.mineTitle)),
-        body: RefreshIndicator(
-          onRefresh: () async {
-            ref.invalidate(myListingsProvider);
-          },
-          child: const _MineList(),
+        // Capped at reading width so seller rows center on wide windows.
+        body: CenteredContent(
+          child: RefreshIndicator(
+            onRefresh: () async {
+              ref.invalidate(myListingsProvider);
+            },
+            child: const _MineList(),
+          ),
         ),
       ),
     );
@@ -61,33 +64,33 @@ class _MineList extends ConsumerWidget {
     return switch (mine) {
       AsyncLoading() => const LoadingState(),
       AsyncError(:final error) => ErrorState(
-          message: error is AppException
-              ? error.localizedForContext(context)
-              : 'Could not load your listings.',
-          retryLabel: AppLocalizations.of(context).commonRetry,
-          onRetry: () => ref.invalidate(myListingsProvider),
-        ),
+        message: error is AppException
+            ? error.localizedForContext(context)
+            : 'Could not load your listings.',
+        retryLabel: AppLocalizations.of(context).commonRetry,
+        onRetry: () => ref.invalidate(myListingsProvider),
+      ),
       AsyncData(:final value) when value.isEmpty => EmptyState(
-          title: AppLocalizations.of(context).mineEmptyTitle,
-          body: AppLocalizations.of(context).mineEmptyBody,
-          icon: Icons.home_work_outlined,
-          actionLabel: AppLocalizations.of(context).profilePostTitle,
-          onAction: () => context.push('/post'),
-        ),
+        title: AppLocalizations.of(context).mineEmptyTitle,
+        body: AppLocalizations.of(context).mineEmptyBody,
+        icon: Icons.home_work_outlined,
+        actionLabel: AppLocalizations.of(context).profilePostTitle,
+        onAction: () => context.push('/post'),
+      ),
       AsyncData(:final value) => ListView.builder(
-          padding: const EdgeInsets.all(AppSpacing.md),
-          itemCount: value.length,
-          itemBuilder: (context, index) {
-            final listing = value[index];
-            return Padding(
-              padding: const EdgeInsets.only(bottom: AppSpacing.sm),
-              child: HorizontalListingCard(
-                listing: listing,
-                onTap: () => context.push('/listing/${listing.id}'),
-              ),
-            );
-          },
-        ),
+        padding: const EdgeInsets.all(AppSpacing.md),
+        itemCount: value.length,
+        itemBuilder: (context, index) {
+          final listing = value[index];
+          return Padding(
+            padding: const EdgeInsets.only(bottom: AppSpacing.sm),
+            child: HorizontalListingCard(
+              listing: listing,
+              onTap: () => context.push('/listing/${listing.id}'),
+            ),
+          );
+        },
+      ),
     };
   }
 }

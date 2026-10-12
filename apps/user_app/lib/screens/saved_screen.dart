@@ -58,19 +58,23 @@ class _SavedScreenState extends ConsumerState<SavedScreen> {
     }
 
     final selectedId = _selectedId;
-    final shelf = RefreshIndicator(
-      onRefresh: () async {
-        ref
-          ..invalidate(savedListingsProvider)
-          ..invalidate(savedSearchesProvider);
-      },
-      child: ListView(
-        padding: const EdgeInsets.all(AppSpacing.md),
-        children: <Widget>[
-          _ShelfSection(onListingTap: _openListing),
-          const SizedBox(height: AppSpacing.sm),
-          const _SearchesSection(),
-        ],
+    // Capped at reading width: dense row cards stretch absurdly on desktop.
+    // Inside the ≥1000 two-pane half the cap passes through untouched.
+    final shelf = CenteredContent(
+      child: RefreshIndicator(
+        onRefresh: () async {
+          ref
+            ..invalidate(savedListingsProvider)
+            ..invalidate(savedSearchesProvider);
+        },
+        child: ListView(
+          padding: const EdgeInsets.all(AppSpacing.md),
+          children: <Widget>[
+            _ShelfSection(onListingTap: _openListing),
+            const SizedBox(height: AppSpacing.sm),
+            const _SearchesSection(),
+          ],
+        ),
       ),
     );
 
@@ -78,7 +82,8 @@ class _SavedScreenState extends ConsumerState<SavedScreen> {
       title: strings.savedTitle,
       child: Scaffold(
         appBar: AppBar(title: Text(strings.savedTitle)),
-        body: selectedId != null &&
+        body:
+            selectedId != null &&
                 MediaQuery.sizeOf(context).width >= AppBreakpoints.twoPane
             ? Row(
                 children: <Widget>[
@@ -115,25 +120,25 @@ class _ShelfSection extends ConsumerWidget {
     return switch (saved) {
       AsyncLoading() => const LoadingState(),
       AsyncError(:final error) => ErrorState(
-          message: error is AppException
-              ? error.localizedForContext(context)
-              : 'Could not load your saved list.',
-          retryLabel: AppLocalizations.of(context).commonRetry,
-          onRetry: () => ref.invalidate(savedListingsProvider),
-        ),
+        message: error is AppException
+            ? error.localizedForContext(context)
+            : 'Could not load your saved list.',
+        retryLabel: AppLocalizations.of(context).commonRetry,
+        onRetry: () => ref.invalidate(savedListingsProvider),
+      ),
       AsyncData(:final value) when value.isEmpty => EmptyState(
-          title: AppLocalizations.of(context).savedEmptyTitle,
-          body: AppLocalizations.of(context).savedEmptyBody,
-          icon: Icons.favorite_outline,
-          actionLabel: AppLocalizations.of(context).onboardingBrowse,
-          onAction: () => context.go('/'),
-        ),
+        title: AppLocalizations.of(context).savedEmptyTitle,
+        body: AppLocalizations.of(context).savedEmptyBody,
+        icon: Icons.favorite_outline,
+        actionLabel: AppLocalizations.of(context).onboardingBrowse,
+        onAction: () => context.go('/'),
+      ),
       AsyncData(:final value) => Column(
-          children: <Widget>[
-            for (final listing in value)
-              _SavedCard(listing: listing, onListingTap: onListingTap),
-          ],
-        ),
+        children: <Widget>[
+          for (final listing in value)
+            _SavedCard(listing: listing, onListingTap: onListingTap),
+        ],
+      ),
     };
   }
 }
@@ -156,41 +161,40 @@ class _SearchesSection extends ConsumerWidget {
       AsyncError() => const SizedBox.shrink(),
       AsyncData(:final value) when value.isEmpty => const SizedBox.shrink(),
       AsyncData(:final value) => Card(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              Padding(
-                padding: const EdgeInsets.fromLTRB(
-                  AppSpacing.lg,
-                  AppSpacing.md,
-                  AppSpacing.lg,
-                  0,
-                ),
-                child: Text(
-                  AppLocalizations.of(context).savedSearchesTitle,
-                  style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                        fontWeight: FontWeight.w600,
-                      ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            Padding(
+              padding: const EdgeInsets.fromLTRB(
+                AppSpacing.lg,
+                AppSpacing.md,
+                AppSpacing.lg,
+                0,
+              ),
+              child: Text(
+                AppLocalizations.of(context).savedSearchesTitle,
+                style: Theme.of(context).textTheme.titleSmall
+                    ?.copyWith(fontWeight: FontWeight.w600),
+              ),
+            ),
+            for (final search in value)
+              ListTile(
+                leading: const Icon(Icons.bookmark_outline),
+                title: Text(search.name),
+                onTap: () {
+                  ref.read(browseFilterProvider.notifier).filter = search
+                      .toFilter();
+                  context.go('/');
+                },
+                trailing: IconButton(
+                  icon: const Icon(Icons.delete_outline),
+                  tooltip: AppLocalizations.of(context).savedSearchDelete,
+                  onPressed: () => _delete(context, ref, search.id),
                 ),
               ),
-              for (final search in value)
-                ListTile(
-                  leading: const Icon(Icons.bookmark_outline),
-                  title: Text(search.name),
-                  onTap: () {
-                    ref.read(browseFilterProvider.notifier).filter =
-                        search.toFilter();
-                    context.go('/');
-                  },
-                  trailing: IconButton(
-                    icon: const Icon(Icons.delete_outline),
-                    tooltip: AppLocalizations.of(context).savedSearchDelete,
-                    onPressed: () => _delete(context, ref, search.id),
-                  ),
-                ),
-            ],
-          ),
+          ],
         ),
+      ),
     };
   }
 
@@ -228,10 +232,10 @@ class _SavedCard extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) => Padding(
-        padding: const EdgeInsets.only(bottom: AppSpacing.sm),
-        child: HorizontalListingCard(
-          listing: listing,
-          onTap: () => onListingTap(listing.id),
-        ),
-      );
+    padding: const EdgeInsets.only(bottom: AppSpacing.sm),
+    child: HorizontalListingCard(
+      listing: listing,
+      onTap: () => onListingTap(listing.id),
+    ),
+  );
 }

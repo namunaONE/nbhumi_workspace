@@ -55,20 +55,26 @@ class AdminListingDetailScreen extends ConsumerWidget {
               ),
         title: const Text('Review listing'),
       ),
-      body: switch (detail) {
-        AsyncLoading() => const Center(child: CircularProgressIndicator()),
-        AsyncError(:final error) => _DetailLoadError(
-            error: AppException.unmapped(error),
-            onRetry: () =>
-                ref.invalidate(adminListingDetailProvider(listingId)),
-          ),
-        // A null value is a *successful* load with nothing in it. The RPC
-        // answers P0002 for missing, unpublished and not-yours alike, so this
-        // screen cannot tell those apart and must not pretend to.
-        AsyncData(value: null) => const _DetailUnavailable(),
-        AsyncData(: final ListingDetail value) =>
-          _DetailBody(listing: value),
-      },
+      // Capped at reading width (DESIGN.md §4.4b). In two-pane mode the outer
+      // AdminQueueScreen already caps the Row at feed width, so this passes
+      // through untouched. In single-pane mode this caps the detail.
+      body: CenteredContent(
+        maxWidth: AppContentWidths.reading,
+        child: switch (detail) {
+          AsyncLoading() => const Center(child: CircularProgressIndicator()),
+          AsyncError(:final error) => _DetailLoadError(
+              error: AppException.unmapped(error),
+              onRetry: () =>
+                  ref.invalidate(adminListingDetailProvider(listingId)),
+            ),
+          // A null value is a *successful* load with nothing in it. The RPC
+          // answers P0002 for missing, unpublished and not-yours alike, so this
+          // screen cannot tell those apart and must not pretend to.
+          AsyncData(value: null) => const _DetailUnavailable(),
+          AsyncData(: final ListingDetail value) =>
+            _DetailBody(listing: value),
+        },
+      ),
     );
   }
 }

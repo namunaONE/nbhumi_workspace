@@ -88,41 +88,45 @@ class _ContactSellerButtonState extends ConsumerState<ContactSellerButton> {
     final theme = Theme.of(context);
     final contact = _contact;
 
+    // Capped with the body above so the CTA aligns with the reading column.
     return SafeArea(
-      child: Padding(
-        padding: const EdgeInsets.fromLTRB(16, 8, 16, 16),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: <Widget>[
-            if (contact != null) ...<Widget>[
-              _ContactCard(contact: contact),
-              const SizedBox(height: 12),
-            ],
-            if (_error case final error?) ...<Widget>[
-              Text(
-                error.localizedForContext(context),
-                style: theme.textTheme.bodySmall
-                    ?.copyWith(color: theme.colorScheme.error),
-                textAlign: TextAlign.center,
+      child: CenteredContent(
+        child: Padding(
+          padding: const EdgeInsets.fromLTRB(16, 8, 16, 16),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: <Widget>[
+              if (contact != null) ...<Widget>[
+                _ContactCard(contact: contact),
+                const SizedBox(height: 12),
+              ],
+              if (_error case final error?) ...<Widget>[
+                Text(
+                  error.localizedForContext(context),
+                  style: theme.textTheme.bodySmall?.copyWith(
+                    color: theme.colorScheme.error,
+                  ),
+                  textAlign: TextAlign.center,
+                ),
+                const SizedBox(height: 12),
+              ],
+              PrimaryCTA(
+                label: switch ((_busy, contact, _isSignedIn)) {
+                  (true, _, _) => strings.contactLoading,
+                  (false, _, false) => strings.contactSignIn,
+                  // Re-offered rather than hidden: the reveal may have expired
+                  // server-side, and a user who has hit the daily cap needs
+                  // to see that it is still there rather than wonder where
+                  // it went.
+                  (false, _, true) => strings.contactSeller,
+                },
+                icon: Icons.phone_outlined,
+                isLoading: _busy,
+                onPressed: _reveal,
               ),
-              const SizedBox(height: 12),
             ],
-            PrimaryCTA(
-              label: switch ((_busy, contact, _isSignedIn)) {
-                (true, _, _) => strings.contactLoading,
-                (false, _, false) => strings.contactSignIn,
-                // Re-offered rather than hidden: the reveal may have expired
-                // server-side, and a user who has hit the daily cap needs
-                // to see that it is still there rather than wonder where
-                // it went.
-                (false, _, true) => strings.contactSeller,
-              },
-              icon: Icons.phone_outlined,
-              isLoading: _busy,
-              onPressed: _reveal,
-            ),
-          ],
+          ),
         ),
       ),
     );
@@ -176,10 +180,7 @@ class _ContactCard extends StatelessWidget {
                     ),
                     const SizedBox(width: 8),
                     Expanded(
-                      child: Text(
-                        agency,
-                        style: theme.textTheme.bodyMedium,
-                      ),
+                      child: Text(agency, style: theme.textTheme.bodyMedium),
                     ),
                   ],
                 ),
@@ -218,13 +219,11 @@ class _CopyRow extends StatelessWidget {
               children: <Widget>[
                 Text(
                   label,
-                  style: theme.textTheme.labelSmall
-                      ?.copyWith(color: theme.colorScheme.outline),
+                  style: theme.textTheme.labelSmall?.copyWith(
+                    color: theme.colorScheme.outline,
+                  ),
                 ),
-                SelectableText(
-                  value,
-                  style: theme.textTheme.bodyLarge,
-                ),
+                SelectableText(value, style: theme.textTheme.bodyLarge),
               ],
             ),
           ),
@@ -232,14 +231,11 @@ class _CopyRow extends StatelessWidget {
             icon: const Icon(Icons.copy, size: 18),
             tooltip: detail_strings.AppLocalizations.of(context).contactCopy,
             onPressed: () async {
-              final strings =
-                  detail_strings.AppLocalizations.of(context);
+              final strings = detail_strings.AppLocalizations.of(context);
               await Clipboard.setData(ClipboardData(text: value));
               if (!context.mounted) return;
               ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(
-                  content: Text(strings.contactCopied(label)),
-                ),
+                SnackBar(content: Text(strings.contactCopied(label))),
               );
             },
           ),

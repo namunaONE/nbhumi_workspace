@@ -6,7 +6,9 @@ import 'package:models/models.dart';
 import 'package:search/search.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
+import 'package:user_app/l10n/output/app_localizations.dart';
 import 'package:user_app/main.dart';
+import 'package:user_app/screens/onboarding_screen.dart';
 import 'package:user_app/shell/app_shell.dart';
 
 /// Guards the one way a responsive layout can crash outright.
@@ -395,6 +397,37 @@ void main() {
         } else {
           expect(find.byType(BottomAppBar), findsOneWidget);
         }
+      });
+    }
+  });
+
+  group('the onboarding screen', () {
+    Future<void> pumpOnboarding(WidgetTester tester, Size size) async {
+      await resize(tester, size);
+      await tester.pumpWidget(
+        const ProviderScope(
+          child: MaterialApp(
+            locale: Locale('en'),
+            localizationsDelegates: AppLocalizations.localizationsDelegates,
+            supportedLocales: AppLocalizations.supportedLocales,
+            home: OnboardingScreen(),
+          ),
+        ),
+      );
+      await tester.pumpAndSettle();
+    }
+
+    // The screen owns a LayoutBuilder branching at the expanded breakpoint,
+    // so both sides must render without an intrinsic host.
+    for (final width in <double>[400, 1280]) {
+      testWidgets('is clean of intrinsic hosts at ${width.toInt()} wide',
+          (tester) async {
+        await pumpOnboarding(tester, Size(width, 800));
+        expectNoIntrinsicHost(
+          tester,
+          context: 'OnboardingScreen at $width wide',
+        );
+        expect(find.text('Browse listings'), findsOneWidget);
       });
     }
   });

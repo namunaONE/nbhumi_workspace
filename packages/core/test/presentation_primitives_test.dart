@@ -97,6 +97,52 @@ void main() {
     });
   });
 
+  group('AppContentWidths', () {
+    test('orders form < reading < feed', () {
+      expect(AppContentWidths.form, lessThan(AppContentWidths.reading));
+      expect(AppContentWidths.reading, lessThan(AppContentWidths.feed));
+    });
+
+    test('feed aliases the grid cap so the two cannot drift', () {
+      expect(AppContentWidths.feed, AppSizes.contentMaxWidth);
+      expect(AppContentWidths.feed, 960);
+    });
+  });
+
+  group('CenteredContent', () {
+    Future<void> pumpCapped(
+      WidgetTester tester, {
+      required double surfaceWidth,
+      double maxWidth = AppContentWidths.form,
+    }) async {
+      tester.view.physicalSize = Size(surfaceWidth, 800);
+      tester.view.devicePixelRatio = 1;
+      addTearDown(tester.view.resetPhysicalSize);
+      addTearDown(tester.view.resetDevicePixelRatio);
+      await _pump(
+        tester,
+        CenteredContent(
+          maxWidth: maxWidth,
+          child: Container(
+            key: const Key('capped-child'),
+            height: 20,
+            color: Colors.red,
+          ),
+        ),
+      );
+    }
+
+    testWidgets('caps a wide window instead of stretching', (tester) async {
+      await pumpCapped(tester, surfaceWidth: 1280);
+      expect(tester.getSize(find.byKey(const Key('capped-child'))).width, 480);
+    });
+
+    testWidgets('leaves a phone-width window untouched', (tester) async {
+      await pumpCapped(tester, surfaceWidth: 400);
+      expect(tester.getSize(find.byKey(const Key('capped-child'))).width, 400);
+    });
+  });
+
   group('ListingCard', () {
     const summary = ListingSummary(
       id: 'l1',

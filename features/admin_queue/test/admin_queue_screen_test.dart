@@ -315,7 +315,7 @@ void main() {
       await pumpList(
         tester,
         container,
-        size: const Size(narrowBreakpoint, 900),
+        size: const Size(AppBreakpoints.twoPane, 900),
       );
 
       expect(find.text('Select a listing to review it.'), findsOneWidget);
@@ -329,7 +329,7 @@ void main() {
       await pumpList(
         tester,
         container,
-        size: const Size(narrowBreakpoint - 1, 900),
+        size: const Size(AppBreakpoints.twoPane - 1, 900),
       );
 
       expect(find.text('Select a listing to review it.'), findsNothing);

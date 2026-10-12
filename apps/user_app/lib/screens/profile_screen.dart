@@ -30,87 +30,92 @@ class ProfileScreen extends ConsumerWidget {
       child: Scaffold(
         appBar: AppBar(
           title: Text(strings.profileTitle),
-        actions: <Widget>[
-          if (session != null)
-            IconButton(
-              icon: const Icon(Icons.settings_outlined),
-              tooltip: strings.profileSettingsTitle,
-              onPressed: () => context.push('/profile/settings'),
-            ),
-        ],
-      ),
-      body: ListView(
-        padding: const EdgeInsets.symmetric(vertical: 8),
-        children: <Widget>[
-          if (session == null)
-            ListTile(
-              leading: const Icon(Icons.person_outline),
-              title: Text(strings.profileSignedOut),
-              subtitle: Text(strings.profileSignedOutHint),
-            )
-          else
-            _ProfileHeaderSection(
-              userId: session.user.id,
-              fallbackEmail: session.user.email,
-            ),
-          const Divider(),
-          if (session != null) ...<Widget>[
-            ListTile(
-              leading: const Icon(Icons.add_home_work_outlined),
-              title: Text(strings.profilePostTitle),
-              subtitle: Text(strings.profilePostSubtitle),
-              onTap: () => context.push('/post'),
-            ),
-            ListTile(
-              leading: const Icon(Icons.verified_user_outlined),
-              title: Text(strings.profileKycTitle),
-              subtitle: Text(strings.profileKycSubtitle),
-              onTap: () => context.push('/kyc'),
-            ),
-            ListTile(
-              leading: const Icon(Icons.notifications_outlined),
-              title: Text(strings.profileNotifTitle),
-              subtitle: Text(strings.profileNotifSubtitle),
-              onTap: () => context.push('/notifications'),
-            ),
-            ListTile(
-              leading: const Icon(Icons.timeline_outlined),
-              title: Text(strings.activityTitle),
-              subtitle: Text(strings.activityEntrySubtitle),
-              onTap: () => context.push('/profile/activity'),
-            ),
-            _AgencySection(userId: session.user.id),
-            ListTile(
-              leading: const Icon(Icons.settings_outlined),
-              title: Text(strings.profileSettingsTitle),
-              subtitle: Text(strings.profileSettingsSubtitle),
-              onTap: () => context.push('/profile/settings'),
-            ),
-            _AccountSection(userId: session.user.id),
-          ] else
-            ListTile(
-              leading: const Icon(Icons.login),
-              title: Text(strings.commonSignIn),
-              subtitle: const Text('We email you a link, no password needed'),
-              onTap: () => context.push('/login'),
-            ),
-          const _AppearanceSection(),
-          ListTile(
-            leading: const Icon(Icons.help_outline),
-            title: Text(strings.profileAboutTitle),
-            subtitle: Text(strings.profileAboutBody),
+          actions: <Widget>[
+            if (session != null)
+              IconButton(
+                icon: const Icon(Icons.settings_outlined),
+                tooltip: strings.profileSettingsTitle,
+                onPressed: () => context.push('/profile/settings'),
+              ),
+          ],
+        ),
+        // Capped at reading width on wide windows (DESIGN.md §4.4b).
+        body: CenteredContent(
+          child: ListView(
+            padding: const EdgeInsets.symmetric(vertical: 8),
+            children: <Widget>[
+              if (session == null)
+                ListTile(
+                  leading: const Icon(Icons.person_outline),
+                  title: Text(strings.profileSignedOut),
+                  subtitle: Text(strings.profileSignedOutHint),
+                )
+              else
+                _ProfileHeaderSection(
+                  userId: session.user.id,
+                  fallbackEmail: session.user.email,
+                ),
+              const Divider(),
+              if (session != null) ...<Widget>[
+                ListTile(
+                  leading: const Icon(Icons.add_home_work_outlined),
+                  title: Text(strings.profilePostTitle),
+                  subtitle: Text(strings.profilePostSubtitle),
+                  onTap: () => context.push('/post'),
+                ),
+                ListTile(
+                  leading: const Icon(Icons.verified_user_outlined),
+                  title: Text(strings.profileKycTitle),
+                  subtitle: Text(strings.profileKycSubtitle),
+                  onTap: () => context.push('/kyc'),
+                ),
+                ListTile(
+                  leading: const Icon(Icons.notifications_outlined),
+                  title: Text(strings.profileNotifTitle),
+                  subtitle: Text(strings.profileNotifSubtitle),
+                  onTap: () => context.push('/notifications'),
+                ),
+                ListTile(
+                  leading: const Icon(Icons.timeline_outlined),
+                  title: Text(strings.activityTitle),
+                  subtitle: Text(strings.activityEntrySubtitle),
+                  onTap: () => context.push('/profile/activity'),
+                ),
+                _AgencySection(userId: session.user.id),
+                ListTile(
+                  leading: const Icon(Icons.settings_outlined),
+                  title: Text(strings.profileSettingsTitle),
+                  subtitle: Text(strings.profileSettingsSubtitle),
+                  onTap: () => context.push('/profile/settings'),
+                ),
+                _AccountSection(userId: session.user.id),
+              ] else
+                ListTile(
+                  leading: const Icon(Icons.login),
+                  title: Text(strings.commonSignIn),
+                  subtitle: const Text(
+                    'We email you a link, no password needed',
+                  ),
+                  onTap: () => context.push('/login'),
+                ),
+              const _AppearanceSection(),
+              ListTile(
+                leading: const Icon(Icons.help_outline),
+                title: Text(strings.profileAboutTitle),
+                subtitle: Text(strings.profileAboutBody),
+              ),
+              const SizedBox(height: 24),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 16),
+                child: Text(
+                  strings.profilePrivacyNote,
+                  style: Theme.of(context).textTheme.bodySmall,
+                ),
+              ),
+            ],
           ),
-          const SizedBox(height: 24),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16),
-            child: Text(
-              strings.profilePrivacyNote,
-              style: Theme.of(context).textTheme.bodySmall,
-            ),
-          ),
-        ],
+        ),
       ),
-    ),
     );
   }
 }
@@ -198,18 +203,20 @@ class _ProfileHeaderSection extends ConsumerWidget {
 
     return switch (profile) {
       AsyncLoading() => ListTile(
-          leading: const SizedBox(
-            height: 20,
-            width: 20,
-            child: CircularProgressIndicator(strokeWidth: 2),
-          ),
-          title: Text(strings.profileLoading),
+        leading: const SizedBox(
+          height: 20,
+          width: 20,
+          child: CircularProgressIndicator(strokeWidth: 2),
         ),
+        title: Text(strings.profileLoading),
+      ),
       // A missing profile must not hide identity: fall back to the session
       // email so a fresh confirmed session still sees who it is.
       AsyncError() => _ProfileHeaderCard(profile: null, email: fallbackEmail),
-      AsyncData(:final value) =>
-        _ProfileHeaderCard(profile: value, email: fallbackEmail),
+      AsyncData(:final value) => _ProfileHeaderCard(
+        profile: value,
+        email: fallbackEmail,
+      ),
     };
   }
 }
@@ -239,11 +246,11 @@ class _ProfileHeaderCard extends StatelessWidget {
     final initials = name.isEmpty
         ? '?'
         : name
-            .split(RegExp(r'\s+'))
-            .where((part) => part.isNotEmpty)
-            .take(2)
-            .map((part) => part[0].toUpperCase())
-            .join();
+              .split(RegExp(r'\s+'))
+              .where((part) => part.isNotEmpty)
+              .take(2)
+              .map((part) => part[0].toUpperCase())
+              .join();
 
     return Padding(
       padding: const EdgeInsets.fromLTRB(16, 8, 16, 4),
@@ -282,8 +289,7 @@ class _ProfileHeaderCard extends StatelessWidget {
                                 Text(
                                   strings.profileSuspendedTitle,
                                   style: theme.textTheme.labelLarge?.copyWith(
-                                    color:
-                                        theme.colorScheme.onErrorContainer,
+                                    color: theme.colorScheme.onErrorContainer,
                                     fontWeight: FontWeight.w700,
                                   ),
                                 ),
@@ -291,8 +297,7 @@ class _ProfileHeaderCard extends StatelessWidget {
                                 Text(
                                   strings.profileSuspendedBody,
                                   style: theme.textTheme.bodyMedium?.copyWith(
-                                    color:
-                                        theme.colorScheme.onErrorContainer,
+                                    color: theme.colorScheme.onErrorContainer,
                                   ),
                                 ),
                               ],
@@ -309,15 +314,12 @@ class _ProfileHeaderCard extends StatelessWidget {
                 borderRadius: AppRadius.radiusMd,
                 onTap: () => _EditProfileDialog.show(context, profile),
                 child: Padding(
-                  padding: const EdgeInsets.symmetric(
-                    vertical: AppSpacing.xs,
-                  ),
+                  padding: const EdgeInsets.symmetric(vertical: AppSpacing.xs),
                   child: Row(
                     children: <Widget>[
                       CircleAvatar(
                         radius: 32,
-                        backgroundColor:
-                            theme.colorScheme.primaryContainer,
+                        backgroundColor: theme.colorScheme.primaryContainer,
                         child: Text(
                           initials,
                           style: theme.textTheme.headlineSmall?.copyWith(
@@ -345,18 +347,14 @@ class _ProfileHeaderCard extends StatelessWidget {
                                   ? strings.profileContactPhoneMissing
                                   : phone,
                               style: theme.textTheme.bodySmall?.copyWith(
-                                color:
-                                    theme.colorScheme.onSurfaceVariant,
+                                color: theme.colorScheme.onSurfaceVariant,
                               ),
                             ),
                           ],
                         ),
                       ),
                       if (profile != null && profile!.isVerified)
-                        const TrustBadge(
-                          compact: true,
-                          showInfoOnTap: false,
-                        ),
+                        const TrustBadge(compact: true, showInfoOnTap: false),
                       Icon(
                         Icons.chevron_right,
                         color: theme.colorScheme.onSurfaceVariant,
@@ -525,10 +523,7 @@ class _AgencyCard extends StatelessWidget {
                 const SizedBox(height: 4),
                 Padding(
                   padding: const EdgeInsets.only(left: 32),
-                  child: Text(
-                    agencyRegNo,
-                    style: theme.textTheme.bodySmall,
-                  ),
+                  child: Text(agencyRegNo, style: theme.textTheme.bodySmall),
                 ),
               ],
               const SizedBox(height: 8),
@@ -569,13 +564,13 @@ class _AccountSection extends ConsumerWidget {
 
     return switch (profile) {
       AsyncLoading() => ListTile(
-          leading: const SizedBox(
-            height: 20,
-            width: 20,
-            child: CircularProgressIndicator(strokeWidth: 2),
-          ),
-          title: Text(strings.profileLoading),
+        leading: const SizedBox(
+          height: 20,
+          width: 20,
+          child: CircularProgressIndicator(strokeWidth: 2),
         ),
+        title: Text(strings.profileLoading),
+      ),
       // A missing or unloadable profile must not hide the delete action: the
       // user who most needs self-service is the one whose data is broken.
       AsyncError() => const _SelfServiceTiles(profile: null),
@@ -602,9 +597,7 @@ class _SelfServiceTiles extends ConsumerWidget {
         ListTile(
           leading: const Icon(Icons.edit_outlined),
           title: Text(strings.profileEditTitle),
-          subtitle: Text(
-            phone.isEmpty ? 'Name, phone, agency' : phone,
-          ),
+          subtitle: Text(phone.isEmpty ? 'Name, phone, agency' : phone),
           onTap: () => _EditProfileDialog.show(context, profile),
         ),
         ListTile(
@@ -626,8 +619,7 @@ class _SelfServiceTiles extends ConsumerWidget {
           ),
           title: Text(
             strings.profileDeleteTitle,
-            style:
-                TextStyle(color: Theme.of(context).colorScheme.error),
+            style: TextStyle(color: Theme.of(context).colorScheme.error),
           ),
           subtitle: Text(strings.profileDeleteSubtitle),
           onTap: () => _confirmDelete(context, ref),
@@ -662,9 +654,7 @@ class _SelfServiceTiles extends ConsumerWidget {
       if (!context.mounted) return;
       messenger
         ..hideCurrentSnackBar()
-        ..showSnackBar(
-          SnackBar(content: Text(e.localizedForContext(context))),
-        );
+        ..showSnackBar(SnackBar(content: Text(e.localizedForContext(context))));
     }
   }
 
@@ -757,14 +747,18 @@ class _EditProfileDialog extends ConsumerStatefulWidget {
 }
 
 class _EditProfileDialogState extends ConsumerState<_EditProfileDialog> {
-  late final TextEditingController _name =
-      TextEditingController(text: widget.profile?.fullName ?? '');
-  late final TextEditingController _phone =
-      TextEditingController(text: widget.profile?.phone ?? '');
-  late final TextEditingController _agency =
-      TextEditingController(text: widget.profile?.agencyName ?? '');
-  late final TextEditingController _regNo =
-      TextEditingController(text: widget.profile?.agencyRegNo ?? '');
+  late final TextEditingController _name = TextEditingController(
+    text: widget.profile?.fullName ?? '',
+  );
+  late final TextEditingController _phone = TextEditingController(
+    text: widget.profile?.phone ?? '',
+  );
+  late final TextEditingController _agency = TextEditingController(
+    text: widget.profile?.agencyName ?? '',
+  );
+  late final TextEditingController _regNo = TextEditingController(
+    text: widget.profile?.agencyRegNo ?? '',
+  );
 
   String? _phoneError;
   bool _busy = false;
@@ -863,8 +857,7 @@ class _EditProfileDialogState extends ConsumerState<_EditProfileDialog> {
     final phone = Validators.canonicalNepaliPhone(_phone.text);
     if (phone.isNotEmpty && !Validators.isValidNepaliPhone(phone)) {
       setState(() {
-        _phoneError =
-            AppLocalizations.of(context).profileEditPhoneError;
+        _phoneError = AppLocalizations.of(context).profileEditPhoneError;
       });
       return;
     }
@@ -879,7 +872,9 @@ class _EditProfileDialogState extends ConsumerState<_EditProfileDialog> {
     setState(() => _busy = true);
 
     try {
-      final updated = await ref.read(userRepositoryProvider).updateProfile(
+      final updated = await ref
+          .read(userRepositoryProvider)
+          .updateProfile(
             base.copyWith(
               fullName: _name.text.trim(),
               phone: phone.isEmpty ? null : phone,
@@ -946,9 +941,8 @@ class _ExportDialog extends StatelessWidget {
             await Clipboard.setData(ClipboardData(text: json));
             if (!context.mounted) return;
             Navigator.of(context).pop();
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(content: Text(strings.profileCopied)),
-            );
+            ScaffoldMessenger.of(context)
+                .showSnackBar(SnackBar(content: Text(strings.profileCopied)));
           },
         ),
       ],
@@ -1018,12 +1012,10 @@ class _TypeToConfirmDialog extends StatefulWidget {
   static Future<void> show(
     BuildContext context,
     Future<void> Function() onConfirmed,
-  ) =>
-      showDialog<void>(
-        context: context,
-        builder: (context) =>
-            _TypeToConfirmDialog(onConfirmed: onConfirmed),
-      );
+  ) => showDialog<void>(
+    context: context,
+    builder: (context) => _TypeToConfirmDialog(onConfirmed: onConfirmed),
+  );
 
   @override
   State<_TypeToConfirmDialog> createState() => _TypeToConfirmDialogState();

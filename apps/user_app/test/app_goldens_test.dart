@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:alchemist/alchemist.dart';
+import 'package:auth/auth.dart';
 import 'package:auth/l10n/output/auth_localizations.dart' as auth_strings;
 import 'package:core/core.dart';
 import 'package:data/data.dart';
@@ -9,24 +10,26 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:kyc/l10n/output/kyc_localizations.dart' as kyc_strings;
+import 'package:listing_detail/listing_detail.dart';
 import 'package:listing_detail/l10n/output/detail_localizations.dart'
     as detail_strings;
-import 'package:listing_detail/listing_detail.dart';
 import 'package:models/models.dart';
 import 'package:notifications/l10n/output/notifications_localizations.dart'
     as notif_strings;
+import 'package:post_listing/post_listing.dart';
 import 'package:post_listing/l10n/output/post_localizations.dart'
     as post_strings;
-import 'package:post_listing/post_listing.dart';
-import 'package:search/l10n/output/search_localizations.dart'
-    as search_strings;
 import 'package:search/search.dart';
+import 'package:search/l10n/output/search_localizations.dart' as search_strings;
 import 'package:user_app/l10n/output/app_localizations.dart';
+import 'package:user_app/onboarding/onboarding_gate.dart';
 import 'package:user_app/screens/home_screen.dart';
+import 'package:user_app/screens/onboarding_screen.dart';
 import 'package:user_app/screens/profile_screen.dart';
 
-/// Design-system regression goldens (HYA-267): 5 key screens x light/dark x
-/// compact/expanded = 20 images.
+/// Design-system regression goldens (HYA-267):
+/// 5 original screens × light/dark × compact/expanded/large = 30 images.
+/// (Newly-capped screens added incrementally in follow-up)
 ///
 /// CI-mode goldens render text as Ahem blocks, so the committed PNGs compare
 /// identically on any host. Regenerate deliberately with
@@ -40,17 +43,20 @@ import 'package:user_app/screens/profile_screen.dart';
 Future<void> main() async {
   const compact = Size(400, 800);
   const expanded = Size(1280, 800);
+  const large = Size(1200, 900);
 
   for (final theme in <ThemeMode>[ThemeMode.light, ThemeMode.dark]) {
     final themeName = theme == ThemeMode.light ? 'light' : 'dark';
     for (final entry in <({String name, Size size})>[
       (name: 'compact', size: compact),
       (name: 'expanded', size: expanded),
+      (name: 'large', size: large),
     ]) {
-      await goldenTest(
+      // --- Original 5 screens ---
+      await _golden(
         'home $themeName ${entry.name}',
-        fileName: 'home_${themeName}_${entry.name}',
-        constraints: BoxConstraints.tight(entry.size),
+        'home_${themeName}_${entry.name}',
+        entry.size,
         builder: () => _Harness(
           theme: theme,
           child: ProviderScope(
@@ -64,10 +70,10 @@ Future<void> main() async {
         ),
       );
 
-      await goldenTest(
+      await _golden(
         'search $themeName ${entry.name}',
-        fileName: 'search_${themeName}_${entry.name}',
-        constraints: BoxConstraints.tight(entry.size),
+        'search_${themeName}_${entry.name}',
+        entry.size,
         builder: () => _Harness(
           theme: theme,
           child: ProviderScope(
@@ -81,10 +87,10 @@ Future<void> main() async {
         ),
       );
 
-      await goldenTest(
+      await _golden(
         'detail $themeName ${entry.name}',
-        fileName: 'detail_${themeName}_${entry.name}',
-        constraints: BoxConstraints.tight(entry.size),
+        'detail_${themeName}_${entry.name}',
+        entry.size,
         builder: () => _Harness(
           theme: theme,
           child: ProviderScope(
@@ -102,27 +108,25 @@ Future<void> main() async {
         ),
       );
 
-      await goldenTest(
+      await _golden(
         'post $themeName ${entry.name}',
-        fileName: 'post_${themeName}_${entry.name}',
-        constraints: BoxConstraints.tight(entry.size),
+        'post_${themeName}_${entry.name}',
+        entry.size,
         builder: () => _Harness(
           theme: theme,
           child: ProviderScope(
             overrides: [
-              districtsProvider.overrideWith(
-                (ref) async => const <District>[],
-              ),
+              districtsProvider.overrideWith((ref) async => const <District>[]),
             ],
             child: const PostListingScreen(),
           ),
         ),
       );
 
-      await goldenTest(
+      await _golden(
         'profile $themeName ${entry.name}',
-        fileName: 'profile_${themeName}_${entry.name}',
-        constraints: BoxConstraints.tight(entry.size),
+        'profile_${themeName}_${entry.name}',
+        entry.size,
         builder: () => _Harness(
           theme: theme,
           child: ProviderScope(
@@ -131,20 +135,62 @@ Future<void> main() async {
           ),
         ),
       );
+
+      // --- Newly-capped simple screens ---
+      await _golden(
+        'onboarding $themeName ${entry.name}',
+        'onboarding_${themeName}_${entry.name}',
+        entry.size,
+        builder: () => _Harness(
+          theme: theme,
+          child: ProviderScope(
+            overrides: [
+              onboardingGateProvider.overrideWithValue(
+                OnboardingGate(seen: false),
+              ),
+            ],
+            child: const OnboardingScreen(),
+          ),
+        ),
+      );
+
+      await _golden(
+        'login $themeName ${entry.name}',
+        'login_${themeName}_${entry.name}',
+        entry.size,
+        builder: () => _Harness(
+          theme: theme,
+          child: ProviderScope(
+            overrides: [sessionProvider.overrideWithValue(null)],
+            child: const LoginScreen(),
+          ),
+        ),
+      );
     }
   }
+}
+
+/// Helper to run a golden test with consistent setup.
+Future<void> _golden(
+  String name,
+  String fileName,
+  Size size, {
+  required Widget Function() builder,
+}) async {
+  await goldenTest(
+    name,
+    fileName: fileName,
+    constraints: BoxConstraints.tight(size),
+    builder: builder,
+  );
 }
 
 /// Pumps [child] the way the real app does: the app theme pair with [theme]
 /// forced, all localization delegates, and an English locale.
 class _Harness extends StatelessWidget {
-  const _Harness({
-    required this.theme,
-    required this.child,
-  });
+  const _Harness({required this.theme, required this.child});
 
   final ThemeMode theme;
-
   final Widget child;
 
   @override
@@ -179,32 +225,31 @@ class _FakeListingRepository implements ListingRepository {
   Future<ListingPage> getListings({
     ListingFilter filter = const ListingFilter(),
     ListingCursor? cursor,
-  }) async =>
-      const ListingPage(
-        listings: <ListingSummary>[
-          ListingSummary(
-            id: 'l1',
-            sellerId: 's1',
-            title: 'Shanti Villa',
-            priceNpr: 25000000,
-            district: 'Kathmandu',
-            city: 'Kirtipur',
-            propertyType: PropertyType.house,
-            listingPurpose: ListingPurpose.sale,
-          ),
-          ListingSummary(
-            id: 'l2',
-            sellerId: 's1',
-            title: 'Ropani Plot',
-            priceNpr: 5000000,
-            district: 'Kathmandu',
-            city: 'Kirtipur',
-            propertyType: PropertyType.land,
-            listingPurpose: ListingPurpose.sale,
-          ),
-        ],
-        totalCount: 2,
-      );
+  }) async => const ListingPage(
+    listings: <ListingSummary>[
+      ListingSummary(
+        id: 'l1',
+        sellerId: 's1',
+        title: 'Shanti Villa',
+        priceNpr: 25000000,
+        district: 'Kathmandu',
+        city: 'Kirtipur',
+        propertyType: PropertyType.house,
+        listingPurpose: ListingPurpose.sale,
+      ),
+      ListingSummary(
+        id: 'l2',
+        sellerId: 's1',
+        title: 'Ropani Plot',
+        priceNpr: 5000000,
+        district: 'Kathmandu',
+        city: 'Kirtipur',
+        propertyType: PropertyType.land,
+        listingPurpose: ListingPurpose.sale,
+      ),
+    ],
+    totalCount: 2,
+  );
 
   @override
   dynamic noSuchMethod(Invocation invocation) => super.noSuchMethod(invocation);
@@ -214,9 +259,7 @@ class _FakeListingRepository implements ListingRepository {
 class _FixedListingRepository implements ListingRepository {
   @override
   Future<ListingDetail?> getListingById(String id) async =>
-      ListingDetail.fromJson(
-        jsonDecode(_detailJson) as Map<String, dynamic>,
-      );
+      ListingDetail.fromJson(jsonDecode(_detailJson) as Map<String, dynamic>);
 
   @override
   dynamic noSuchMethod(Invocation invocation) => super.noSuchMethod(invocation);
@@ -238,8 +281,7 @@ class _FakeFavoritesRepository implements FavoritesRepository {
   Future<bool> toggleFavorite({
     required String userId,
     required String listingId,
-  }) async =>
-      true;
+  }) async => true;
 
   @override
   dynamic noSuchMethod(Invocation invocation) => super.noSuchMethod(invocation);

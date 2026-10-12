@@ -20,11 +20,15 @@ class NotFoundScreen extends StatelessWidget {
       title: strings.notFoundTitle,
       child: Scaffold(
         appBar: AppBar(),
-        body: EmptyState(
-          title: strings.notFoundTitle,
-          body: strings.notFoundBody,
-          actionLabel: strings.onboardingBrowse,
-          onAction: () => context.go('/'),
+        // Capped at form width — centered error card, never full-screen.
+        body: CenteredContent(
+          maxWidth: AppContentWidths.form,
+          child: EmptyState(
+            title: strings.notFoundTitle,
+            body: strings.notFoundBody,
+            actionLabel: strings.onboardingBrowse,
+            onAction: () => context.go('/'),
+          ),
         ),
       ),
     );

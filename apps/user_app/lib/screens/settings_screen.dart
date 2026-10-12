@@ -28,101 +28,108 @@ class SettingsScreen extends ConsumerWidget {
       title: strings.settingsTitle,
       child: Scaffold(
         appBar: AppBar(title: Text(strings.settingsTitle)),
-      body: ListView(
-        padding: const EdgeInsets.symmetric(vertical: 8),
-        children: <Widget>[
-          Padding(
-            padding: const EdgeInsets.fromLTRB(16, 8, 16, 4),
-            child: Text(
-              strings.settingsLanguageTitle,
-              style: theme.textTheme.titleSmall,
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16),
-            child: SegmentedButton<String>(
-              segments: <ButtonSegment<String>>[
-                ButtonSegment<String>(
-                  value: 'en',
-                  label: Text(strings.settingsLanguageEn),
+        // Capped at reading width so the segmented buttons and list items
+        // center on wide windows instead of stretching (DESIGN.md §4.4b).
+        body: CenteredContent(
+          maxWidth: AppContentWidths.reading,
+          child: ListView(
+            padding: const EdgeInsets.symmetric(vertical: 8),
+            children: <Widget>[
+              Padding(
+                padding: const EdgeInsets.fromLTRB(16, 8, 16, 4),
+                child: Text(
+                  strings.settingsLanguageTitle,
+                  style: theme.textTheme.titleSmall,
                 ),
-                ButtonSegment<String>(
-                  value: 'ne',
-                  label: Text(strings.settingsLanguageNe),
+              ),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 16),
+                child: SegmentedButton<String>(
+                  segments: <ButtonSegment<String>>[
+                    ButtonSegment<String>(
+                      value: 'en',
+                      label: Text(strings.settingsLanguageEn),
+                    ),
+                    ButtonSegment<String>(
+                      value: 'ne',
+                      label: Text(strings.settingsLanguageNe),
+                    ),
+                  ],
+                  selected: <String>{locale.languageCode},
+                  onSelectionChanged: (selection) {
+                    unawaited(
+                      ref
+                          .read(appLocaleProvider.notifier)
+                          .setLocale(Locale(selection.first)),
+                    );
+                  },
                 ),
-              ],
-              selected: <String>{locale.languageCode},
-              onSelectionChanged: (selection) {
-                unawaited(
-                  ref
-                      .read(appLocaleProvider.notifier)
-                      .setLocale(Locale(selection.first)),
-                );
-              },
-            ),
-          ),
-          const SizedBox(height: 12),
-          Padding(
-            padding: const EdgeInsets.fromLTRB(16, 8, 16, 4),
-            child: Text(
-              strings.settingsThemeTitle,
-              style: theme.textTheme.titleSmall,
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16),
-            child: SegmentedButton<ThemeMode>(
-              segments: <ButtonSegment<ThemeMode>>[
-                ButtonSegment<ThemeMode>(
-                  value: ThemeMode.system,
-                  label: Text(strings.settingsThemeSystem),
+              ),
+              const SizedBox(height: 12),
+              Padding(
+                padding: const EdgeInsets.fromLTRB(16, 8, 16, 4),
+                child: Text(
+                  strings.settingsThemeTitle,
+                  style: theme.textTheme.titleSmall,
                 ),
-                ButtonSegment<ThemeMode>(
-                  value: ThemeMode.light,
-                  label: Text(strings.settingsThemeLight),
+              ),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 16),
+                child: SegmentedButton<ThemeMode>(
+                  segments: <ButtonSegment<ThemeMode>>[
+                    ButtonSegment<ThemeMode>(
+                      value: ThemeMode.system,
+                      label: Text(strings.settingsThemeSystem),
+                    ),
+                    ButtonSegment<ThemeMode>(
+                      value: ThemeMode.light,
+                      label: Text(strings.settingsThemeLight),
+                    ),
+                    ButtonSegment<ThemeMode>(
+                      value: ThemeMode.dark,
+                      label: Text(strings.settingsThemeDark),
+                    ),
+                  ],
+                  selected: <ThemeMode>{themeMode},
+                  onSelectionChanged: (selection) {
+                    unawaited(
+                      ref
+                          .read(appThemeProvider.notifier)
+                          .setMode(selection.first),
+                    );
+                  },
                 ),
-                ButtonSegment<ThemeMode>(
-                  value: ThemeMode.dark,
-                  label: Text(strings.settingsThemeDark),
+              ),
+              const Divider(height: 24),
+              ListTile(
+                leading: const Icon(Icons.verified_user_outlined),
+                title: Text(strings.profileKycTitle),
+                subtitle: Text(strings.profileKycSubtitle),
+                onTap: () => context.push('/kyc'),
+              ),
+              ListTile(
+                leading: const Icon(Icons.notifications_outlined),
+                title: Text(strings.profileNotifTitle),
+                subtitle: Text(strings.profileNotifSubtitle),
+                onTap: () => context.push('/notifications'),
+              ),
+              const Divider(height: 16),
+              ListTile(
+                leading: const Icon(Icons.help_outline),
+                title: Text(strings.profileAboutTitle),
+                subtitle: Text(strings.profileAboutBody),
+              ),
+              Padding(
+                padding: const EdgeInsets.fromLTRB(16, 8, 16, 16),
+                child: Text(
+                  strings.profilePrivacyNote,
+                  style: theme.textTheme.bodySmall,
                 ),
-              ],
-              selected: <ThemeMode>{themeMode},
-              onSelectionChanged: (selection) {
-                unawaited(
-                  ref.read(appThemeProvider.notifier).setMode(selection.first),
-                );
-              },
-            ),
+              ),
+            ],
           ),
-          const Divider(height: 24),
-          ListTile(
-            leading: const Icon(Icons.verified_user_outlined),
-            title: Text(strings.profileKycTitle),
-            subtitle: Text(strings.profileKycSubtitle),
-            onTap: () => context.push('/kyc'),
-          ),
-          ListTile(
-            leading: const Icon(Icons.notifications_outlined),
-            title: Text(strings.profileNotifTitle),
-            subtitle: Text(strings.profileNotifSubtitle),
-            onTap: () => context.push('/notifications'),
-          ),
-          const Divider(height: 16),
-          ListTile(
-            leading: const Icon(Icons.help_outline),
-            title: Text(strings.profileAboutTitle),
-            subtitle: Text(strings.profileAboutBody),
-          ),
-          Padding(
-            padding: const EdgeInsets.fromLTRB(16, 8, 16, 16),
-            child: Text(
-              strings.profilePrivacyNote,
-              style: theme.textTheme.bodySmall,
-            ),
-          ),
-        ],
+        ),
       ),
-    ),
     );
   }
 }

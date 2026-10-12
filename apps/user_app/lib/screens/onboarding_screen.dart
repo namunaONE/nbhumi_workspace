@@ -1,9 +1,7 @@
 import 'package:core/core.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:go_router/go_router.dart';
 import 'package:user_app/l10n/output/app_localizations.dart';
-import 'package:user_app/onboarding/onboarding_gate.dart';
+import 'package:user_app/screens/onboarding_content.dart';
 
 /// First-run explanation of what nBhumi is and is not.
 ///
@@ -13,99 +11,82 @@ import 'package:user_app/onboarding/onboarding_gate.dart';
 /// one place a user is guaranteed to read it.
 ///
 /// Shown once per install. The "seen" flag lives in `shared_preferences`
-/// behind [OnboardingGate]; the router sends first-run users here and the
+/// behind `OnboardingGate`; the router sends first-run users here and the
 /// button below marks it complete.
-class OnboardingScreen extends ConsumerWidget {
+///
+/// Responsive (DESIGN.md §6): the content is measured with [LayoutBuilder] —
+/// never a cached size — and branches at [AppBreakpoints.expanded]. Compact
+/// keeps the single column capped at [AppContentWidths.form]; expanded splits
+/// into a hero + content pair inside [AppContentWidths.feed]. The CTA stays
+/// `fullWidth`, but it fills the capped column (~480px), never the window.
+class OnboardingScreen extends StatelessWidget {
   /// Creates the onboarding screen.
   const OnboardingScreen({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final theme = Theme.of(context);
-    final strings = AppLocalizations.of(context);
-
+  Widget build(BuildContext context) {
     return Scaffold(
       body: SafeArea(
+        // LayoutBuilder, not MediaQuery: the route owns its chrome, but the
+        // builder stays correct in split-screen and under golden constraints,
+        // where MediaQuery still reports the full test surface.
+        child: LayoutBuilder(
+          builder: (context, constraints) {
+            final wide = constraints.maxWidth >= AppBreakpoints.expanded;
+            if (wide) {
+              return _WideBody(
+                maxHeight: constraints.maxHeight,
+              );
+            }
+            return _NarrowBody(
+              maxHeight: constraints.maxHeight,
+            );
+          },
+        ),
+      ),
+    );
+  }
+}
+
+/// Single column for phones and narrow windows.
+///
+/// Capped at [AppContentWidths.form] so the disclaimer card and the CTA never
+/// stretch: the button fills the column, not the screen.
+class _NarrowBody extends StatelessWidget {
+  /// Creates the compact layout.
+  const _NarrowBody({required this.maxHeight});
+
+  /// Body height from the [LayoutBuilder]; makes the inner [Column] tight so
+  /// its [Expanded] scroll region keeps working under the [CenteredContent].
+  final double maxHeight;
+
+  @override
+  Widget build(BuildContext context) {
+    final strings = AppLocalizations.of(context);
+    return CenteredContent(
+      maxWidth: AppContentWidths.form,
+      child: SizedBox(
+        height: maxHeight,
         child: Column(
           children: <Widget>[
             Expanded(
               child: ListView(
                 padding: const EdgeInsets.symmetric(
-                  horizontal: 24,
-                  vertical: 32,
+                  horizontal: AppSpacing.xxl,
+                  vertical: AppSpacing.xxxl,
                 ),
                 children: <Widget>[
-                  Icon(
-                    Icons.home_work_outlined,
-                    size: 64,
-                    color: theme.colorScheme.primary,
-                  ),
-                  const SizedBox(height: 24),
-                  Text(
-                    strings.appTitle,
-                    style: theme.textTheme.headlineMedium,
-                    textAlign: TextAlign.center,
-                  ),
-                  const SizedBox(height: 8),
-                  Text(
-                    strings.onboardingTagline,
-                    style: theme.textTheme.titleMedium,
-                    textAlign: TextAlign.center,
-                  ),
-                  const SizedBox(height: 32),
-                  _Feature(
-                    icon: Icons.search,
-                    title: strings.onboardingSearchTitle,
-                    body: strings.onboardingSearchBody,
-                  ),
-                  _Feature(
-                    icon: Icons.verified_user_outlined,
-                    title: strings.onboardingVerifiedTitle,
-                    body: strings.onboardingVerifiedBody,
-                  ),
-                  _Feature(
-                    icon: Icons.photo_camera_outlined,
-                    title: strings.onboardingPostTitle,
-                    body: strings.onboardingPostBody,
-                  ),
-                  const SizedBox(height: 32),
-                  // DATA.md: this disclaimer must be visible, not buried in
-                  // terms nobody opens.
-                  Card(
-                    color: theme.colorScheme.surfaceContainerHighest,
-                    child: Padding(
-                      padding: const EdgeInsets.all(16),
-                      child: Row(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: <Widget>[
-                          Icon(
-                            Icons.info_outline,
-                            size: 20,
-                            color: theme.colorScheme.onSurfaceVariant,
-                          ),
-                          const SizedBox(width: 12),
-                          Expanded(
-                            child: Text(
-                              strings.onboardingDisclaimer,
-                              style: theme.textTheme.bodySmall,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
+                  OnboardingHeroHeader(strings: strings),
+                  const SizedBox(height: AppSpacing.xxxl),
+                  OnboardingFeatureList(strings: strings),
+                  const SizedBox(height: AppSpacing.xxxl),
+                  OnboardingDisclaimerCard(strings: strings),
                 ],
               ),
             ),
             Padding(
-              padding: const EdgeInsets.all(24),
-              child: PrimaryCTA(
-                label: strings.onboardingBrowse,
-                onPressed: () async {
-                  await ref.read(onboardingGateProvider).markSeen();
-                  if (context.mounted) context.go('/');
-                },
-              ),
+              padding: const EdgeInsets.all(AppSpacing.xxl),
+              child: OnboardingBrowseButton(strings: strings),
             ),
           ],
         ),
@@ -114,39 +95,62 @@ class OnboardingScreen extends ConsumerWidget {
   }
 }
 
-class _Feature extends StatelessWidget {
-  const _Feature({
-    required this.icon,
-    required this.title,
-    required this.body,
-  });
+/// Hero + content split for wide windows.
+///
+/// The pair is capped at [AppContentWidths.feed]: each pane lands near
+/// [AppContentWidths.form], so neither the feature rows nor the CTA stretch.
+/// Mirrors the shell's expanded `Row` pattern (drawer + content).
+class _WideBody extends StatelessWidget {
+  /// Creates the wide layout.
+  const _WideBody({required this.maxHeight});
 
-  final IconData icon;
-  final String title;
-  final String body;
+  /// Body height from the [LayoutBuilder]; keeps the [Row] tight so the right
+  /// pane's sticky CTA keeps working under the [CenteredContent].
+  final double maxHeight;
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-
-    return Padding(
-      padding: const EdgeInsets.only(bottom: 24),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-          Icon(icon, size: 24, color: theme.colorScheme.primary),
-          const SizedBox(width: 16),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                Text(title, style: theme.textTheme.titleSmall),
-                const SizedBox(height: 4),
-                Text(body, style: theme.textTheme.bodySmall),
-              ],
+    final strings = AppLocalizations.of(context);
+    return CenteredContent(
+      maxWidth: AppContentWidths.feed,
+      child: SizedBox(
+        height: maxHeight,
+        child: Row(
+          children: <Widget>[
+            Expanded(
+              child: Center(
+                child: SingleChildScrollView(
+                  padding: const EdgeInsets.all(AppSpacing.xxxl),
+                  child: OnboardingHeroHeader(strings: strings),
+                ),
+              ),
             ),
-          ),
-        ],
+            const VerticalDivider(width: 1),
+            Expanded(
+              child: Column(
+                children: <Widget>[
+                  Expanded(
+                    child: ListView(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: AppSpacing.xxl,
+                        vertical: AppSpacing.xxxl,
+                      ),
+                      children: <Widget>[
+                        OnboardingFeatureList(strings: strings),
+                        const SizedBox(height: AppSpacing.xxxl),
+                        OnboardingDisclaimerCard(strings: strings),
+                      ],
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(AppSpacing.xxl),
+                    child: OnboardingBrowseButton(strings: strings),
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

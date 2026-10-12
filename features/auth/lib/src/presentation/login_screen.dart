@@ -138,9 +138,8 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
 
   String? _passwordError(String? value) {
     if (Validators.isValidPassword(value ?? '')) return null;
-    return auth_strings.AppLocalizations.of(context).passwordError(
-      Validators.minPasswordLength,
-    );
+    return auth_strings.AppLocalizations.of(context)
+        .passwordError(Validators.minPasswordLength);
   }
 
   @override
@@ -148,186 +147,178 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
     final strings = auth_strings.AppLocalizations.of(context);
     return Scaffold(
       appBar: AppBar(title: Text(strings.title)),
+      // Capped at form width so fields and the CTA center on wide windows
+      // instead of stretching (DESIGN.md §4.4b).
       body: SafeArea(
-        child: SingleChildScrollView(
-          padding: const EdgeInsets.all(24),
-          child: Form(
-            key: _formKey,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                SegmentedButton<_Pane>(
-                  segments: [
-                    ButtonSegment(
-                      value: _Pane.link,
-                      label: Text(strings.paneLink),
-                      icon: const Icon(Icons.mail_outline),
-                    ),
-                    ButtonSegment(
-                      value: _Pane.password,
-                      label: Text(strings.panePassword),
-                      icon: const Icon(Icons.lock_outline),
-                    ),
-                  ],
-                  selected: {_pane},
-                  onSelectionChanged: (selected) => setState(() {
-                    _pane = selected.single;
-                    _sentTo = null;
-                  }),
-                ),
-                const SizedBox(height: 24),
-                if (_pane == _Pane.link) ...[
-                  Text(
-                    strings.linkTitle,
-                    style: Theme.of(context).textTheme.headlineSmall,
+        child: CenteredContent(
+          maxWidth: AppContentWidths.form,
+          child: SingleChildScrollView(
+            padding: const EdgeInsets.all(AppSpacing.xxl),
+            child: Form(
+              key: _formKey,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  SegmentedButton<_Pane>(
+                    segments: [
+                      ButtonSegment(
+                        value: _Pane.link,
+                        label: Text(strings.paneLink),
+                        icon: const Icon(Icons.mail_outline),
+                      ),
+                      ButtonSegment(
+                        value: _Pane.password,
+                        label: Text(strings.panePassword),
+                        icon: const Icon(Icons.lock_outline),
+                      ),
+                    ],
+                    selected: {_pane},
+                    onSelectionChanged: (selected) => setState(() {
+                      _pane = selected.single;
+                      _sentTo = null;
+                    }),
                   ),
-                  const SizedBox(height: 8),
-                  Text(strings.linkSubtitle),
-                ] else ...[
-                  Text(
-                    switch (_mode) {
+                  const SizedBox(height: 24),
+                  if (_pane == _Pane.link) ...[
+                    Text(
+                      strings.linkTitle,
+                      style: Theme.of(context).textTheme.headlineSmall,
+                    ),
+                    const SizedBox(height: 8),
+                    Text(strings.linkSubtitle),
+                  ] else ...[
+                    Text(switch (_mode) {
                       _PasswordMode.signIn => strings.passwordSignInTitle,
                       _PasswordMode.signUp => strings.signUpTitle,
                       _PasswordMode.reset => strings.resetTitle,
-                    },
-                    style: Theme.of(context).textTheme.headlineSmall,
-                  ),
-                  const SizedBox(height: 8),
-                  Text(
-                    switch (_mode) {
-                      _PasswordMode.signIn =>
-                        strings.passwordSignInSubtitle,
+                    }, style: Theme.of(context).textTheme.headlineSmall),
+                    const SizedBox(height: 8),
+                    Text(switch (_mode) {
+                      _PasswordMode.signIn => strings.passwordSignInSubtitle,
                       _PasswordMode.signUp => strings.signUpSubtitle,
                       _PasswordMode.reset => strings.resetSubtitle,
-                    },
-                  ),
-                ],
-                const SizedBox(height: 24),
-                TextFormField(
-                  controller: _email,
-                  keyboardType: TextInputType.emailAddress,
-                  textInputAction: TextInputAction.next,
-                  enabled: !_busy,
-                  decoration: InputDecoration(
-                    labelText: strings.emailLabel,
-                    border: const OutlineInputBorder(),
-                  ),
-                  validator: _emailError,
-                  onFieldSubmitted: (_) => _submit(),
-                ),
-                if (_pane == _Pane.password &&
-                    _mode != _PasswordMode.reset) ...[
-                  const SizedBox(height: 16),
+                    }),
+                  ],
+                  const SizedBox(height: 24),
                   TextFormField(
-                    controller: _password,
-                    obscureText: _obscure,
+                    controller: _email,
+                    keyboardType: TextInputType.emailAddress,
+                    textInputAction: TextInputAction.next,
                     enabled: !_busy,
                     decoration: InputDecoration(
-                      labelText: strings.passwordLabel,
+                      labelText: strings.emailLabel,
                       border: const OutlineInputBorder(),
-                      suffixIcon: IconButton(
-                        icon: Icon(
-                          _obscure
-                              ? Icons.visibility_outlined
-                              : Icons.visibility_off_outlined,
+                    ),
+                    validator: _emailError,
+                    onFieldSubmitted: (_) => _submit(),
+                  ),
+                  if (_pane == _Pane.password &&
+                      _mode != _PasswordMode.reset) ...[
+                    const SizedBox(height: 16),
+                    TextFormField(
+                      controller: _password,
+                      obscureText: _obscure,
+                      enabled: !_busy,
+                      decoration: InputDecoration(
+                        labelText: strings.passwordLabel,
+                        border: const OutlineInputBorder(),
+                        suffixIcon: IconButton(
+                          icon: Icon(
+                            _obscure
+                                ? Icons.visibility_outlined
+                                : Icons.visibility_off_outlined,
+                          ),
+                          onPressed: () => setState(() => _obscure = !_obscure),
                         ),
-                        onPressed: () =>
-                            setState(() => _obscure = !_obscure),
                       ),
+                      validator: _passwordError,
+                      onFieldSubmitted: (_) => _submit(),
                     ),
-                    validator: _passwordError,
-                    onFieldSubmitted: (_) => _submit(),
-                  ),
-                ],
-                if (_pane == _Pane.password &&
-                    _mode == _PasswordMode.signUp) ...[
+                  ],
+                  if (_pane == _Pane.password &&
+                      _mode == _PasswordMode.signUp) ...[
+                    const SizedBox(height: 16),
+                    TextFormField(
+                      controller: _confirm,
+                      obscureText: _obscure,
+                      enabled: !_busy,
+                      decoration: InputDecoration(
+                        labelText: strings.confirmLabel,
+                        border: const OutlineInputBorder(),
+                      ),
+                      validator: (value) => value == _password.text
+                          ? null
+                          : strings.mismatchError,
+                      onFieldSubmitted: (_) => _submit(),
+                    ),
+                  ],
                   const SizedBox(height: 16),
-                  TextFormField(
-                    controller: _confirm,
-                    obscureText: _obscure,
-                    enabled: !_busy,
-                    decoration: InputDecoration(
-                      labelText: strings.confirmLabel,
-                      border: const OutlineInputBorder(),
-                    ),
-                    validator: (value) => value == _password.text
-                        ? null
-                        : strings.mismatchError,
-                    onFieldSubmitted: (_) => _submit(),
-                  ),
-                ],
-                const SizedBox(height: 16),
-                PrimaryCTA(
-                  label: _busy
-                      ? strings.sending
-                      : _cooldownSeconds > 0
-                          ? strings.resendIn(_cooldownSeconds)
-                          : switch ((_pane, _mode)) {
-                              (_Pane.link, _) => _sentTo == null
+                  PrimaryCTA(
+                    label: _busy
+                        ? strings.sending
+                        : _cooldownSeconds > 0
+                        ? strings.resendIn(_cooldownSeconds)
+                        : switch ((_pane, _mode)) {
+                            (_Pane.link, _) =>
+                              _sentTo == null
                                   ? strings.sendLink
                                   : strings.resendLink,
-                              (_Pane.password, _PasswordMode.signIn) =>
-                                strings.signInAction,
-                              (_Pane.password, _PasswordMode.signUp) =>
-                                strings.signUpAction,
-                              (_Pane.password, _PasswordMode.reset) =>
-                                _sentTo == null
-                                    ? strings.sendReset
-                                    : strings.resendReset,
-                            },
-                  isLoading: _busy,
-                  onPressed:
-                      _busy || _cooldownSeconds > 0 ? null : _submit,
-                ),
-                if (_pane == _Pane.password &&
-                    _mode != _PasswordMode.reset)
-                  TextButton(
-                    onPressed: _busy
-                        ? null
-                        : () => setState(() {
+                            (_Pane.password, _PasswordMode.signIn) =>
+                              strings.signInAction,
+                            (_Pane.password, _PasswordMode.signUp) =>
+                              strings.signUpAction,
+                            (_Pane.password, _PasswordMode.reset) =>
+                              _sentTo == null
+                                  ? strings.sendReset
+                                  : strings.resendReset,
+                          },
+                    isLoading: _busy,
+                    onPressed: _busy || _cooldownSeconds > 0 ? null : _submit,
+                  ),
+                  if (_pane == _Pane.password && _mode != _PasswordMode.reset)
+                    TextButton(
+                      onPressed: _busy
+                          ? null
+                          : () => setState(() {
                               _mode = _mode == _PasswordMode.signIn
                                   ? _PasswordMode.signUp
                                   : _PasswordMode.signIn;
                               _sentTo = null;
                             }),
-                    child: Text(
-                      _mode == _PasswordMode.signIn
-                          ? strings.switchToSignUp
-                          : strings.switchToSignIn,
+                      child: Text(
+                        _mode == _PasswordMode.signIn
+                            ? strings.switchToSignUp
+                            : strings.switchToSignIn,
+                      ),
                     ),
-                  ),
-                if (_pane == _Pane.password &&
-                    _mode == _PasswordMode.signIn)
-                  TextButton(
-                    onPressed: _busy
-                        ? null
-                        : () => setState(() {
+                  if (_pane == _Pane.password && _mode == _PasswordMode.signIn)
+                    TextButton(
+                      onPressed: _busy
+                          ? null
+                          : () => setState(() {
                               _mode = _PasswordMode.reset;
                               _sentTo = null;
                             }),
-                    child: Text(strings.forgotPassword),
-                  ),
-                if (_pane == _Pane.password &&
-                    _mode == _PasswordMode.reset)
-                  TextButton(
-                    onPressed: _busy
-                        ? null
-                        : () => setState(
-                            () => _mode = _PasswordMode.signIn),
-                    child: Text(strings.backToSignIn),
-                  ),
-                if (_sentTo != null) ...[
-                  const SizedBox(height: 16),
-                  Text(
-                    switch ((_pane, _mode)) {
+                      child: Text(strings.forgotPassword),
+                    ),
+                  if (_pane == _Pane.password && _mode == _PasswordMode.reset)
+                    TextButton(
+                      onPressed: _busy
+                          ? null
+                          : () => setState(() => _mode = _PasswordMode.signIn),
+                      child: Text(strings.backToSignIn),
+                    ),
+                  if (_sentTo != null) ...[
+                    const SizedBox(height: 16),
+                    Text(switch ((_pane, _mode)) {
                       (_Pane.link, _) => strings.sentLink(_sentTo!),
                       (_Pane.password, _PasswordMode.signUp) =>
                         strings.accountCreated(_sentTo!),
                       (_, _) => strings.resetSent(_sentTo!),
-                    },
-                  ),
+                    }),
+                  ],
                 ],
-              ],
+              ),
             ),
           ),
         ),

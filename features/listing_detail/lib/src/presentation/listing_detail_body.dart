@@ -62,11 +62,10 @@ class ListingDetailBody extends StatelessWidget {
         actions: <Widget>[
           if (onFavoriteToggle != null)
             IconButton(
-              icon: Icon(
-                isFavorite ? Icons.favorite : Icons.favorite_outline,
-              ),
-              tooltip:
-                  isFavorite ? strings.favoriteRemove : strings.favoriteSave,
+              icon: Icon(isFavorite ? Icons.favorite : Icons.favorite_outline),
+              tooltip: isFavorite
+                  ? strings.favoriteRemove
+                  : strings.favoriteSave,
               onPressed: onFavoriteToggle,
             ),
           // A report is always meaningful when there is a listing to report,
@@ -74,213 +73,215 @@ class ListingDetailBody extends StatelessWidget {
           ReportListingButton(listing: listing),
         ],
       ),
+      // Capped at reading width on wide windows (DESIGN.md §4.4b). Inside the
+      // ≥1000 side pane the allotted width is under the cap, so the pane
+      // passes through untouched. CenteredContent wraps the ListView directly
+      // (inside SelectionArea) so its intrinsic height drives the gallery.
       body: SelectionArea(
-        child: ListView(
-          children: <Widget>[
-            AppImageGallery(
-              photos: listing.photos,
-              title: listing.title,
-            ),
-          Padding(
-            padding: const EdgeInsets.fromLTRB(16, 16, 16, 8),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                Text(
-                  listing.title,
-                  style: Theme.of(context).textTheme.headlineSmall,
-                ),
-                const SizedBox(height: 8),
-                // Rule 27: the full figure, not the compact card form. On a
-                // detail page the exact price is the point, and there is room.
-                Text(
-                  NepaliCurrency.full(listing.priceNpr),
-                  style: Theme.of(context).textTheme.headlineMedium?.copyWith(
-                        fontWeight: FontWeight.bold,
-                        color: Theme.of(context).colorScheme.primary,
-                      ),
-                ),
-                const SizedBox(height: 12),
-                Wrap(
-                  spacing: 8,
-                  runSpacing: 8,
+        child: CenteredContent(
+          child: ListView(
+            children: <Widget>[
+              AppImageGallery(photos: listing.photos, title: listing.title),
+              Padding(
+                padding: const EdgeInsets.fromLTRB(16, 16, 16, 8),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
-                    StatusChip(
-                      label: _purposeLabel(
-                        context,
-                        listing.listingPurpose,
-                      ),
-                      background: purposeColors?.background,
-                      foreground: purposeColors?.foreground,
+                    Text(
+                      listing.title,
+                      style: Theme.of(context).textTheme.headlineSmall,
                     ),
-                    StatusChip(
-                      label: _typeLabel(
-                        context,
-                        listing.propertyType,
-                      ),
+                    const SizedBox(height: 8),
+                    // Rule 27: the full figure, not the compact card form.
+                    // On a detail page the exact price is the point, and
+                    // there is room.
+                    Text(
+                      NepaliCurrency.full(listing.priceNpr),
+                      style: Theme.of(context).textTheme.headlineMedium
+                          ?.copyWith(
+                            fontWeight: FontWeight.bold,
+                            color: Theme.of(context).colorScheme.primary,
+                          ),
                     ),
-                    // Rule 25: the seller's own units, pre-formatted
-                    // server-side so cards, search and detail cannot disagree.
-                    if (listing.areaDisplay case final area?)
-                      StatusChip(label: area),
-                    // Tier-3 verification (HYA-265): pane-supplied badge or
-                    // owner entry; nothing by default.
-                    verificationSlot,
+                    const SizedBox(height: 12),
+                    Wrap(
+                      spacing: 8,
+                      runSpacing: 8,
+                      children: <Widget>[
+                        StatusChip(
+                          label: _purposeLabel(context, listing.listingPurpose),
+                          background: purposeColors?.background,
+                          foreground: purposeColors?.foreground,
+                        ),
+                        StatusChip(
+                          label: _typeLabel(context, listing.propertyType),
+                        ),
+                        // Rule 25: the seller's own units, pre-formatted
+                        // server-side so cards, search and detail cannot
+                        // disagree.
+                        if (listing.areaDisplay case final area?)
+                          StatusChip(label: area),
+                        // Tier-3 verification (HYA-265): pane-supplied badge or
+                        // owner entry; nothing by default.
+                        verificationSlot,
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+              const Divider(height: 32),
+              _Section(
+                title: strings.sectionLocation,
+                children: <Widget>[
+                  _Spec(
+                    icon: Icons.place_outlined,
+                    label: listing.ward == null
+                        ? '${listing.district}, ${listing.city}'
+                        : strings.specWard(listing.city, listing.ward!),
+                    detail: listing.district,
+                  ),
+                  if (listing.roadAccessFt case final feet?)
+                    _Spec(
+                      icon: Icons.alt_route,
+                      label: strings.specRoadAccess(feet),
+                    ),
+                ],
+              ),
+              // Bedrooms and bathrooms are only meaningful for things that
+              // have rooms. Land and commercial premises leave both null,
+              // and rendering "Bedrooms: 0" for a plot of land would be
+              // wrong rather than terse.
+              if (listing.bedrooms != null ||
+                  listing.bathrooms != null) ...<Widget>[
+                const Divider(height: 32),
+                _Section(
+                  title: strings.sectionDetails,
+                  children: <Widget>[
+                    if (listing.bedrooms case final beds?)
+                      _Spec(
+                        icon: Icons.bed_outlined,
+                        label: strings.specBedrooms(beds),
+                      ),
+                    if (listing.bathrooms case final baths?)
+                      _Spec(
+                        icon: Icons.bathtub_outlined,
+                        label: strings.specBathrooms(baths),
+                      ),
+                    if (listing.parkingSpaces case final parking?)
+                      _Spec(
+                        icon: Icons.local_parking_outlined,
+                        label: strings.specParking(parking),
+                      ),
                   ],
                 ),
               ],
-            ),
-          ),
-          const Divider(height: 32),
-          _Section(
-            title: strings.sectionLocation,
-            children: <Widget>[
-              _Spec(
-                icon: Icons.place_outlined,
-                label: listing.ward == null
-                    ? '${listing.district}, ${listing.city}'
-                    : strings.specWard(listing.city, listing.ward!),
-                detail: listing.district,
-              ),
-              if (listing.roadAccessFt case final feet?)
-                _Spec(
-                  icon: Icons.alt_route,
-                  label: strings.specRoadAccess(feet),
+
+              // Purpose-conditioned terms. The database nulls anything that
+              // does not apply, so each section appears only for its own
+              // purpose and the buyer is never shown a lease term on a
+              // rental.
+              if (listing.leaseTermMonths case final term?) ...<Widget>[
+                const Divider(height: 32),
+                _Section(
+                  title: strings.sectionLeaseTerms,
+                  children: <Widget>[
+                    _Spec(
+                      icon: Icons.event_repeat_outlined,
+                      label: strings.specLeaseTerm(term),
+                      detail: listing.leaseRenewable == null
+                          ? null
+                          : (listing.leaseRenewable!
+                                ? strings.termRenewable
+                                : strings.termNotRenewable),
+                    ),
+                  ],
                 ),
+              ],
+
+              if (_hasRentalTerms(listing)) ...<Widget>[
+                const Divider(height: 32),
+                _Section(
+                  title: strings.sectionRentalTerms,
+                  children: <Widget>[
+                    if (listing.depositAmount case final deposit?)
+                      _Spec(
+                        icon: Icons.savings_outlined,
+                        label: strings.specDeposit(
+                          NepaliCurrency.full(deposit),
+                        ),
+                      ),
+                    if (listing.availableFrom case final from?)
+                      _Spec(
+                        icon: Icons.event_available_outlined,
+                        label: strings.specAvailableFrom(_date(context, from)),
+                      ),
+                    if (listing.furnishingStatus case final furnishing?)
+                      _Spec(
+                        icon: Icons.chair_outlined,
+                        label: strings.specFurnishing(
+                          _furnishingLabel(strings, furnishing),
+                        ),
+                      ),
+                    if (listing.petPolicy case final pets?)
+                      _Spec(
+                        icon: Icons.pets_outlined,
+                        label: strings.specPetPolicy(_petLabel(strings, pets)),
+                      ),
+                    if ((listing.utilitiesIncluded ?? '').trim().isNotEmpty)
+                      _Spec(
+                        icon: Icons.power_outlined,
+                        label: listing.utilitiesIncluded!.trim(),
+                      ),
+                  ],
+                ),
+              ],
+
+              // Type-conditioned building details: floor position, age, status.
+              if (_hasBuildingDetails(listing)) ...<Widget>[
+                const Divider(height: 32),
+                _Section(
+                  title: strings.sectionBuilding,
+                  children: <Widget>[
+                    if (listing.floorNumber case final floor?)
+                      _Spec(
+                        icon: Icons.stairs_outlined,
+                        label: _floorLabel(strings, listing, floor),
+                      ),
+                    if (listing.propertyAgeYears case final age?)
+                      _Spec(
+                        icon: Icons.history_outlined,
+                        label: strings.specAge(age),
+                      ),
+                    if (listing.constructionStatus case final construction?)
+                      _Spec(
+                        icon: Icons.construction_outlined,
+                        label: strings.specConstruction(
+                          _constructionLabel(strings, construction),
+                        ),
+                      ),
+                  ],
+                ),
+              ],
+              if ((listing.description ?? '').trim().isNotEmpty) ...<Widget>[
+                const Divider(height: 32),
+                _Section(
+                  title: strings.sectionDescription,
+                  children: <Widget>[
+                    Text(
+                      listing.description!.trim(),
+                      style: Theme.of(context).textTheme.bodyMedium,
+                    ),
+                  ],
+                ),
+              ],
+              const Divider(height: 32),
+              _Section(
+                title: strings.sectionSeller,
+                children: <Widget>[_SellerCard(seller: listing.seller)],
+              ),
+              const SizedBox(height: 96),
             ],
           ),
-          // Bedrooms and bathrooms are only meaningful for things that have
-          // rooms. Land and commercial premises leave both null, and rendering
-          // "Bedrooms: 0" for a plot of land would be wrong rather than terse.
-          if (listing.bedrooms != null ||
-              listing.bathrooms != null) ...<Widget>[
-            const Divider(height: 32),
-            _Section(
-              title: strings.sectionDetails,
-              children: <Widget>[
-                if (listing.bedrooms case final beds?)
-                  _Spec(
-                    icon: Icons.bed_outlined,
-                    label: strings.specBedrooms(beds),
-                  ),
-                if (listing.bathrooms case final baths?)
-                  _Spec(
-                    icon: Icons.bathtub_outlined,
-                    label: strings.specBathrooms(baths),
-                  ),
-                if (listing.parkingSpaces case final parking?)
-                  _Spec(
-                    icon: Icons.local_parking_outlined,
-                    label: strings.specParking(parking),
-                  ),
-              ],
-            ),
-          ],
-
-          // Purpose-conditioned terms. The database nulls anything that does
-          // not apply, so each section appears only for its own purpose and
-          // the buyer is never shown a lease term on a rental.
-          if (listing.leaseTermMonths case final term?) ...<Widget>[
-            const Divider(height: 32),
-            _Section(
-              title: strings.sectionLeaseTerms,
-              children: <Widget>[
-                _Spec(
-                  icon: Icons.event_repeat_outlined,
-                  label: strings.specLeaseTerm(term),
-                  detail: listing.leaseRenewable == null
-                      ? null
-                      : (listing.leaseRenewable!
-                          ? strings.termRenewable
-                          : strings.termNotRenewable),
-                ),
-              ],
-            ),
-          ],
-
-          if (_hasRentalTerms(listing)) ...<Widget>[
-            const Divider(height: 32),
-            _Section(
-              title: strings.sectionRentalTerms,
-              children: <Widget>[
-                if (listing.depositAmount case final deposit?)
-                  _Spec(
-                    icon: Icons.savings_outlined,
-                    label: strings.specDeposit(
-                      NepaliCurrency.full(deposit),
-                    ),
-                  ),
-                if (listing.availableFrom case final from?)
-                  _Spec(
-                    icon: Icons.event_available_outlined,
-                    label: strings.specAvailableFrom(_date(context, from)),
-                  ),
-                if (listing.furnishingStatus case final furnishing?)
-                  _Spec(
-                    icon: Icons.chair_outlined,
-                    label: strings.specFurnishing(
-                      _furnishingLabel(strings, furnishing),
-                    ),
-                  ),
-                if (listing.petPolicy case final pets?)
-                  _Spec(
-                    icon: Icons.pets_outlined,
-                    label: strings.specPetPolicy(_petLabel(strings, pets)),
-                  ),
-                if ((listing.utilitiesIncluded ?? '').trim().isNotEmpty)
-                  _Spec(
-                    icon: Icons.power_outlined,
-                    label: listing.utilitiesIncluded!.trim(),
-                  ),
-              ],
-            ),
-          ],
-
-          // Type-conditioned building details: floor position, age, status.
-          if (_hasBuildingDetails(listing)) ...<Widget>[
-            const Divider(height: 32),
-            _Section(
-              title: strings.sectionBuilding,
-              children: <Widget>[
-                if (listing.floorNumber case final floor?)
-                  _Spec(
-                    icon: Icons.stairs_outlined,
-                    label: _floorLabel(strings, listing, floor),
-                  ),
-                if (listing.propertyAgeYears case final age?)
-                  _Spec(
-                    icon: Icons.history_outlined,
-                    label: strings.specAge(age),
-                  ),
-                if (listing.constructionStatus case final construction?)
-                  _Spec(
-                    icon: Icons.construction_outlined,
-                    label: strings.specConstruction(
-                      _constructionLabel(strings, construction),
-                    ),
-                  ),
-              ],
-            ),
-          ],
-          if ((listing.description ?? '').trim().isNotEmpty) ...<Widget>[
-            const Divider(height: 32),
-            _Section(
-              title: strings.sectionDescription,
-              children: <Widget>[
-                Text(
-                  listing.description!.trim(),
-                  style: Theme.of(context).textTheme.bodyMedium,
-                ),
-              ],
-            ),
-          ],
-          const Divider(height: 32),
-          _Section(
-            title: strings.sectionSeller,
-            children: <Widget>[_SellerCard(seller: listing.seller)],
-          ),
-          const SizedBox(height: 96),
-          ],
         ),
       ),
       bottomNavigationBar: ContactSellerButton(listing: listing),
@@ -343,37 +344,34 @@ class ListingDetailBody extends StatelessWidget {
   static String _furnishingLabel(
     detail_strings.AppLocalizations strings,
     FurnishingStatus level,
-  ) =>
-      switch (level) {
-        FurnishingStatus.unfurnished => strings.furnishingUnfurnished,
-        FurnishingStatus.semiFurnished => strings.furnishingSemiFurnished,
-        FurnishingStatus.furnished => strings.furnishingFurnished,
-      };
+  ) => switch (level) {
+    FurnishingStatus.unfurnished => strings.furnishingUnfurnished,
+    FurnishingStatus.semiFurnished => strings.furnishingSemiFurnished,
+    FurnishingStatus.furnished => strings.furnishingFurnished,
+  };
 
   /// Localized pet policy.
   static String _petLabel(
     detail_strings.AppLocalizations strings,
     PetPolicy policy,
-  ) =>
-      switch (policy) {
-        PetPolicy.notAllowed => strings.petNotAllowed,
-        PetPolicy.catsOk => strings.petCatsOk,
-        PetPolicy.dogsOk => strings.petDogsOk,
-        PetPolicy.allPets => strings.petAllPets,
-        PetPolicy.negotiable => strings.petNegotiable,
-      };
+  ) => switch (policy) {
+    PetPolicy.notAllowed => strings.petNotAllowed,
+    PetPolicy.catsOk => strings.petCatsOk,
+    PetPolicy.dogsOk => strings.petDogsOk,
+    PetPolicy.allPets => strings.petAllPets,
+    PetPolicy.negotiable => strings.petNegotiable,
+  };
 
   /// Localized construction status.
   static String _constructionLabel(
     detail_strings.AppLocalizations strings,
     ConstructionStatus status,
-  ) =>
-      switch (status) {
-        ConstructionStatus.newBuild => strings.constructionNew,
-        ConstructionStatus.underConstruction =>
-          strings.constructionUnderConstruction,
-        ConstructionStatus.resale => strings.constructionResale,
-      };
+  ) => switch (status) {
+    ConstructionStatus.newBuild => strings.constructionNew,
+    ConstructionStatus.underConstruction =>
+      strings.constructionUnderConstruction,
+    ConstructionStatus.resale => strings.constructionResale,
+  };
 
   /// Short local date for a value the server returns as a date, not a
   /// timestamp: an availability day must not shift with the viewer's offset.
@@ -394,17 +392,17 @@ class ListingDetailBody extends StatelessWidget {
 
   return switch (purpose) {
     ListingPurpose.sale => (
-        background: colors.saleOrange,
-        foreground: colors.onSaleOrange,
-      ),
+      background: colors.saleOrange,
+      foreground: colors.onSaleOrange,
+    ),
     ListingPurpose.rent => (
-        background: colors.rentBlue,
-        foreground: colors.onRentBlue,
-      ),
+      background: colors.rentBlue,
+      foreground: colors.onRentBlue,
+    ),
     ListingPurpose.lease => (
-        background: colors.leaseTeal,
-        foreground: colors.onLeaseTeal,
-      ),
+      background: colors.leaseTeal,
+      foreground: colors.onLeaseTeal,
+    ),
   };
 }
 
@@ -456,8 +454,9 @@ class _Spec extends StatelessWidget {
                 if (detail case final extra?)
                   Text(
                     extra,
-                    style: theme.textTheme.bodySmall
-                        ?.copyWith(color: theme.colorScheme.outline),
+                    style: theme.textTheme.bodySmall?.copyWith(
+                      color: theme.colorScheme.outline,
+                    ),
                   ),
               ],
             ),
@@ -491,8 +490,9 @@ class _SellerCard extends StatelessWidget {
       // must not render an empty heading.
       return Text(
         strings.sellerUnavailable,
-        style: theme.textTheme.bodyMedium
-            ?.copyWith(color: theme.colorScheme.outline),
+        style: theme.textTheme.bodyMedium?.copyWith(
+          color: theme.colorScheme.outline,
+        ),
       );
     }
 
@@ -533,8 +533,9 @@ class _SellerCard extends StatelessWidget {
               if (seller!.agencyName case final agency?)
                 Text(
                   agency,
-                  style: theme.textTheme.bodySmall
-                      ?.copyWith(color: theme.colorScheme.outline),
+                  style: theme.textTheme.bodySmall?.copyWith(
+                    color: theme.colorScheme.outline,
+                  ),
                 ),
             ],
           ),

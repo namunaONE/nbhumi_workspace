@@ -1,3 +1,4 @@
+import 'package:core/core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -6,28 +7,11 @@ import '../providers/admin_queue_providers.dart';
 import 'admin_listing_detail_screen.dart';
 import 'widgets/queue_list.dart';
 
-/// The width at which the queue shows both panes.
-///
-/// Material's "medium" breakpoint is 600, chosen for *cards*. The queue is a
-/// table-like view: a row needs room for a cover photo, a title, a price, an
-/// SLA chip and a seller badge at once, and the detail pane needs room for a
-/// photo strip beside the specification table. At 600 both panes are visibly
-/// cramped; 840 is where the detail stops being a stack of narrow columns.
-const double narrowBreakpoint = 840;
-
-/// How wide the list is when both panes are visible.
-///
-/// Fixed rather than proportional. The detail pane's content is
-/// width-sensitive,
-/// so handing it the leftover space would make its layout swing as the window
-/// resizes.
-const double listPaneWidth = 400;
-
 /// The admin verification queue.
 ///
-/// Two panes on a wide window, one on a narrow one. Both read the same
-/// providers, so the breakpoint is purely presentational: a resize neither
-/// refetches nor loses the selected listing.
+/// Two panes on a wide window (>= AppBreakpoints.twoPane), one on a narrow one.
+/// Both read the same providers, so the breakpoint is purely presentational:
+/// a resize neither refetches nor loses the selected listing.
 ///
 /// ### Why this is a page and not a stack
 ///
@@ -62,24 +46,29 @@ class AdminQueueScreen extends ConsumerWidget {
 
     return LayoutBuilder(
       builder: (context, constraints) {
-        if (constraints.maxWidth >= narrowBreakpoint) {
+        final twoPane = constraints.maxWidth >= AppBreakpoints.twoPane;
+        if (twoPane) {
           return Scaffold(
-            body: Row(
-              children: <Widget>[
-                SizedBox(
-                  width: listPaneWidth,
-                  child: QueueList(onOpenReports: onOpenReports),
-                ),
-                const VerticalDivider(width: 1),
-                // Keyed on the id so switching listings discards the previous
-                // pane rather than keeping its scroll offset — otherwise a long
-                // description scrolled halfway would carry that offset to the
-                // next listing.
-                Expanded(
-                  key: ValueKey<String?>(selectedId),
-                  child: AdminListingPane(listingId: selectedId),
-                ),
-              ],
+            // Outer cap at feed width so the two-pane combo centers on very wide
+            // windows (DESIGN.md §4.4b).
+            body: CenteredContent(
+              maxWidth: AppContentWidths.feed,
+              child: Row(
+                children: <Widget>[
+                  // List pane capped at reading width so it never exceeds the
+                  // comfortable column width.
+                  SizedBox(
+                    width: AppContentWidths.reading,
+                    child: QueueList(onOpenReports: onOpenReports),
+                  ),
+                  const VerticalDivider(width: 1),
+                  // Detail pane gets the remaining space (under the cap).
+                  Expanded(
+                    key: ValueKey<String?>(selectedId),
+                    child: AdminListingPane(listingId: selectedId),
+                  ),
+                ],
+              ),
             ),
           );
         }

@@ -16,6 +16,7 @@ export 'src/utils/validators.dart';
 export 'src/widgets/app_image.dart';
 export 'src/widgets/app_shimmer.dart';
 export 'src/widgets/app_states.dart';
+export 'src/widgets/centered_content.dart';
 export 'src/widgets/horizontal_listing_card.dart';
 export 'src/widgets/legal_disclaimer_card.dart';
 export 'src/widgets/listing_card.dart';

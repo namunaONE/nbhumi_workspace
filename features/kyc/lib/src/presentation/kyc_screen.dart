@@ -30,47 +30,51 @@ class KycScreen extends ConsumerWidget {
 
     return Scaffold(
       appBar: AppBar(title: Text(strings.title)),
-      body: ListView(
-        padding: const EdgeInsets.all(16),
-        children: <Widget>[
-          const _DisclaimerCard(),
-          const SizedBox(height: 16),
-          FilledButton.icon(
-            icon: const Icon(Icons.upload_file_outlined),
-            label: Text(strings.submitDocument),
-            onPressed: () => _SubmitSheet.show(context, listingId: listingId),
-          ),
-          const SizedBox(height: 16),
-          switch (documents) {
-            AsyncLoading() => const LoadingState(),
-            AsyncError(:final error) => Builder(
-                builder: (context) {
-                  final failure =
-                      error is AppException ? error : null;
-                  final retryable =
-                      failure == null || failure.isRetryable;
-                  return ErrorState(
-                    message: failure?.localizedForContext(context) ??
-                        strings.loadFailed,
-                    retryLabel: retryable ? strings.retry : null,
-                    onRetry: retryable
-                        ? () => ref.invalidate(myKycDocumentsProvider)
-                        : null,
-                  );
-                },
-              ),
-            AsyncData(:final value) when value.isEmpty => EmptyState(
-                title: strings.emptyTitle,
-                body: strings.emptyBody,
-                icon: Icons.folder_open_outlined,
-              ),
-            AsyncData(:final value) => Column(
-                children: <Widget>[
-                  for (final doc in value) _DocumentTile(document: doc),
-                ],
-              ),
-          },
-        ],
+      // Capped at form width — matches admin sign-in pattern (DESIGN.md §4.4b).
+      body: CenteredContent(
+        maxWidth: AppContentWidths.form,
+        child: ListView(
+          padding: const EdgeInsets.all(16),
+          children: <Widget>[
+            const _DisclaimerCard(),
+            const SizedBox(height: 16),
+            FilledButton.icon(
+              icon: const Icon(Icons.upload_file_outlined),
+              label: Text(strings.submitDocument),
+              onPressed: () => _SubmitSheet.show(context, listingId: listingId),
+            ),
+            const SizedBox(height: 16),
+            switch (documents) {
+              AsyncLoading() => const LoadingState(),
+              AsyncError(:final error) => Builder(
+                  builder: (context) {
+                    final failure =
+                        error is AppException ? error : null;
+                    final retryable =
+                        failure == null || failure.isRetryable;
+                    return ErrorState(
+                      message: failure?.localizedForContext(context) ??
+                          strings.loadFailed,
+                      retryLabel: retryable ? strings.retry : null,
+                      onRetry: retryable
+                          ? () => ref.invalidate(myKycDocumentsProvider)
+                          : null,
+                    );
+                  },
+                ),
+              AsyncData(:final value) when value.isEmpty => EmptyState(
+                  title: strings.emptyTitle,
+                  body: strings.emptyBody,
+                  icon: Icons.folder_open_outlined,
+                ),
+              AsyncData(:final value) => Column(
+                  children: <Widget>[
+                    for (final doc in value) _DocumentTile(document: doc),
+                  ],
+                ),
+            },
+          ],
+        ),
       ),
     );
   }

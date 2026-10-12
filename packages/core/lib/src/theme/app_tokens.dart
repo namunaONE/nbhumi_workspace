@@ -126,6 +126,32 @@ abstract final class AppShadows {
   ];
 }
 
+/// Content width caps for wide windows (Rule 43).
+///
+/// Phones never reach these; desktops always do. Every full-screen route wraps
+/// its body in CenteredContent (or the feed's own `Align` + `ConstrainedBox`)
+/// with one of these instead of stretching edge to edge. Lives in `core` so
+/// apps and features share one set (Rule 10) — an app-local copy is how two
+/// caps drift apart.
+abstract final class AppContentWidths {
+  AppContentWidths._();
+
+  /// Narrow forms: auth, onboarding single-column, dialogs.
+  ///
+  /// Matches the admin sign-in's historic 400px cap grown to the spacing grid:
+  /// a full-width CTA inside this stays tappable, never a 1200px strip.
+  static const double form = 480;
+
+  /// Reading column: detail, wizard steps, profile, saved/my-listings shelves.
+  static const double reading = 720;
+
+  /// Wide feed: the browse grid's three-column cap.
+  ///
+  /// Canonical value — [AppSizes.contentMaxWidth] aliases it so the grid and
+  /// every other screen cannot disagree.
+  static const double feed = 960;
+}
+
 /// Fixed dimensions for card layouts and feed adornments.
 ///
 /// Keeps magic numbers out of widgets (Rule 43): every hand-placed height,
@@ -151,7 +177,10 @@ abstract final class AppSizes {
   /// Maximum feed content width on wide windows. Beyond this the grid would
   /// stretch three cards across the whole screen, so the content centers
   /// instead. Phones never reach it.
-  static const double contentMaxWidth = 960;
+  ///
+  /// Alias of [AppContentWidths.feed]: the grid keeps its historic name while
+  /// the value lives in one place.
+  static const double contentMaxWidth = AppContentWidths.feed;
 }
 
 /// Layout widths at which the navigation affordance changes.
