@@ -16,8 +16,9 @@ abstract final class BrandColors {
   static const Color logoBlueBright = Color(0xFF0B3F94);
 
   /// Brand green — logo land arc and pin dot. Doubles as the verified-badge
-  /// fill; its foreground is always [logoBlue] (≈6.3:1, WCAG AA), mirroring
-  /// the logo's own dark pupil on the green dot.
+  /// fill; its foreground is always [logoBlue] (6.73:1, WCAG AA), mirroring
+  /// the logo's own dark pupil on the green dot. Asserted by
+  /// `test/color_contrast_test.dart`.
   static const Color logoGreen = Color(0xFF4FD166);
 
   /// Logo background gradient, top-left to bottom-right.

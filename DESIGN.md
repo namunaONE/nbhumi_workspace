@@ -42,7 +42,8 @@
 | `logoGradient` | blueBright → logoBlue | Logo background, top-left → bottom-right |
 
 The logo green / logo blue pair is deliberate: green fill with blue foreground
-is ≈6.3:1 (WCAG AA), mirroring the logo's own dark pupil on the green dot.
+is **6.73:1** (WCAG AA), mirroring the logo's own dark pupil on the green dot.
+Measured, not estimated — asserted in `test/color_contrast_test.dart`.
 
 ### 2.2 Schemes — `packages/core/lib/src/theme/app_theme.dart`
 
@@ -55,8 +56,8 @@ breaks pairs (white on raw logo green is 2:1). Each family is therefore
 transplanted from a scheme *seeded with that logo key*, preserving the pairing.
 
 `secondary` is keyed to `logoBlueBright`, `tertiary` to `logoGreen`. The one
-hand-set pair is `tertiary`/`onTertiary` = logoGreen/logoBlue (≈6.8:1) — the
-same brand pair as the verified badge.
+hand-set pair is `tertiary`/`onTertiary` = logoGreen/logoBlue (**6.73:1**) —
+the same brand pair as the verified badge.
 
 **Surfaces** are explicitly set, not seed-derived:
 
@@ -67,6 +68,16 @@ same brand pair as the verified badge.
 Warm neutral in light, deep charcoal in dark. Components sit **one step
 higher in dark mode** so they lift off the background.
 
+> **Known gap: the brand blue is not `primary`.**
+> The scheme uses the default `tonalSpot` variant, which caps primary chroma at
+> C36. `logoBlue` is higher-chroma than that, so `primary` ends up a
+> *desaturated pastel* blue and the seed colour appears nowhere in the UI.
+> Switching to `DynamicSchemeVariant.fidelity` (or pinning
+> `primary`/`onPrimary` to brand values) would make FABs, focus rings and
+> active states brand-exact. Deliberately **not** done yet: it visibly
+> recolours the whole app, so it needs visual sign-off rather than a silent
+> flag flip. Tracked as a follow-up.
+
 ### 2.3 Marketplace accents — `marketplace_colors.dart`
 
 Reached via `Theme.of(context).extension<MarketplaceColors>()`. Widgets must
@@ -74,15 +85,27 @@ Reached via `Theme.of(context).extension<MarketplaceColors>()`. Widgets must
 
 | Token | Light | Dark | Use |
 |---|---|---|---|
-| `verifiedGreen` | `logoGreen` | `logoGreen` | KYC-verified badge fill (logo-locked in **both** schemes) |
-| `onVerifiedGreen` | `logoBlue` | `logoBlue` | Verified badge foreground |
-| `saleOrange` | `#E65100` | `#FF8A65` | `ListingPurpose.sale` chips |
+| `verifiedGreen` | `logoGreen` | `logoGreen` | KYC-verified badge **fill** (logo-locked in both schemes) |
+| `onVerifiedGreen` | `logoBlue` | `logoBlue` | Text/icons **on the solid fill** (6.73:1) |
+| `onVerifiedTint` | `#006E27` | `logoGreen` | Text/icons **on a translucent wash** — see below |
+| `saleOrange` | `#C43E00` | `#FF8A65` | `ListingPurpose.sale` chips |
 | `rentBlue` | `#1565C0` | `#64B5F6` | `ListingPurpose.rent` chips |
 | `leaseTeal` | `#00695C` | `#4DB6AC` | `ListingPurpose.lease` chips |
 
 Every accent has a matching `on*` foreground. Material 3 asks for on-color
 pairs, and a chip filled with `saleOrange` under default black text fails
 contrast on the light scheme — hence pairs rather than single values.
+
+**A tint is a different surface.** `StatusChip.verified` and `TrustBadge` paint
+a 12%-alpha wash, not a solid fill, so they take `onVerifiedTint` — the raw
+logo green on that wash measures **1.74:1** in the light scheme. `onVerifiedTint`
+is tone 40 of the logo green's own HCT palette (hue 148, chroma 69) = **5.7:1**;
+dark mode keeps the bright green (7.6:1).
+
+**Why `saleOrange` is not Material's Orange 900.** White on `#E65100` is
+**3.79:1**, which fails AA on an 11px bold chip label. Darkened one step to
+`#C43E00` (5.28:1) — still unmistakably orange, still distinct from lease teal.
+Contrast for every pair is asserted in `test/color_contrast_test.dart`.
 
 ### 2.4 Contrast rule
 
