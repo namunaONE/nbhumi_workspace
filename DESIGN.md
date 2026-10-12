@@ -107,6 +107,14 @@ dark mode keeps the bright green (7.6:1).
 `#C43E00` (5.28:1) — still unmistakably orange, still distinct from lease teal.
 Contrast for every pair is asserted in `test/color_contrast_test.dart`.
 
+**Listing lifecycle has no new hues.** `StatusChip.status` maps the five
+`ListingStatus` states onto existing pairs — live is verified green, pending
+is sale orange, rejected is the error pair, draft is the neutral surface,
+unpublished is the tertiary pair — so a status means the same thing on the
+seller shelf, in the activity feed and in the admin queue. The label stays a
+plain string because each surface localises differently (wire names in admin,
+full labels in activity).
+
 ### 2.4 Contrast rule
 
 Any foreground/background pair that carries meaning must meet WCAG AA. The
