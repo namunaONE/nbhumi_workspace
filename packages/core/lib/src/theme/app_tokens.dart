@@ -228,6 +228,10 @@ abstract final class AppDurations {
   /// One shimmer sweep cycle for skeleton loading states.
   static const Duration shimmerCycle = Duration(milliseconds: 1400);
 
+  /// Short transition for focus rings, hover reveals and state-pill swaps. No
+  /// literal duration for a micro-motion change outside pump durations.
+  static const Duration interaction = Duration(milliseconds: 200);
+
   /// Short transient-message duration for success snack bars.
   static const Duration snackBarShort = Duration(seconds: 2);
 }

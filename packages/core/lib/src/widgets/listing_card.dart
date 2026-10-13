@@ -4,7 +4,9 @@ import 'package:models/models.dart';
 import '../theme/app_tokens.dart';
 import '../theme/marketplace_colors.dart';
 import '../utils/nepali_currency.dart';
+
 import 'app_image.dart';
+import 'focusable_card.dart';
 import 'status_chip.dart';
 import 'trust_badge.dart';
 
@@ -69,7 +71,9 @@ class ListingCard extends StatelessWidget {
         ? '${listing.district}, ${listing.city}'
         : '${listing.district}, ${listing.city} · $area';
 
-    return Card(
+    return FocusableCard(
+      onTap: onTap,
+      child: Card(
       clipBehavior: Clip.antiAlias,
       child: InkWell(
         onTap: onTap,
@@ -195,6 +199,7 @@ class ListingCard extends StatelessWidget {
           ],
         ),
       ),
+    ),
     );
   }
 }

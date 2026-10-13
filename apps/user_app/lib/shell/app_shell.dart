@@ -216,7 +216,7 @@ class _BarDestination extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             AnimatedContainer(
-              duration: const Duration(milliseconds: 200),
+              duration: AppDurations.interaction,
               padding: const EdgeInsets.symmetric(
                 horizontal: 16,
                 vertical: 4,

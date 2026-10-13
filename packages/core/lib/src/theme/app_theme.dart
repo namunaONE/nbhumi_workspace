@@ -296,6 +296,14 @@ abstract final class AppTheme {
         space: 1,
         thickness: 1,
       ),
+      popupMenuTheme: PopupMenuThemeData(
+        color: sheet,
+        surfaceTintColor: Colors.transparent,
+        elevation: 2,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(AppRadius.md),
+        ),
+      ),
       snackBarTheme: SnackBarThemeData(
         behavior: SnackBarBehavior.floating,
         shape: RoundedRectangleBorder(
