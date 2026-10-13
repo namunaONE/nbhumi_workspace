@@ -45,6 +45,14 @@ The logo green / logo blue pair is deliberate: green fill with blue foreground
 is **6.73:1** (WCAG AA), mirroring the logo's own dark pupil on the green dot.
 Measured, not estimated — asserted in `test/color_contrast_test.dart`.
 
+**Gradient fence (B).** `BrandColors.logoGradient` is reserved for brand-identity
+surfaces only — logo, splash/OpenGraph/social preview, and empty-state hero
+artwork. It must **not** be used as button fills, chip backgrounds, card
+backgrounds, content scrims, or focus rings. For photo legibility use
+`AppGradients.photoScrim` / `AppGradients.topScrim`; for skeleton loading use
+`AppGradients.shimmerLight` / `AppGradients.shimmerDark`. The brand gradient is
+identity, not decoration — restraint (§1.2) keeps it from becoming chrome.
+
 ### 2.2 Schemes — `packages/core/lib/src/theme/app_theme.dart`
 
 `ColorScheme.fromSeed(seedColor: BrandColors.logoBlue)`, with logo-keyed
