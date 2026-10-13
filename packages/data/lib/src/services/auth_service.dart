@@ -69,32 +69,6 @@ class AuthService {
     }
   }
 
-  /// Emails a magic sign-in link to [email].
-  ///
-  /// The link lands on `/auth/callback` with no `type` query, so the callback
-  /// screen treats it as a regular sign-in exchange. The redirect URI is
-  /// [EnvConfig]'s, which the Supabase project allowlists for both confirmation
-  /// and recovery.
-  Future<void> sendMagicLink(String email) async {
-    try {
-      await _client.signInWithOtp(
-        email: email,
-        emailRedirectTo: EnvConfig.authRedirectUri.toString(),
-      );
-    } on AuthException catch (e) {
-      final mapped = AuthExceptionMapper.map(e, action: 'sendMagicLink');
-      AppLogger.error(
-        'Failed in sendMagicLink',
-        context: logContext(
-          action: 'sendMagicLink',
-          detail: <String, Object?>{'code': mapped.code},
-        ),
-        error: e,
-      );
-      throw mapped;
-    }
-  }
-
   /// Emails a password-recovery link.
   ///
   /// The redirect carries `?type=recovery` so the callback screen knows to

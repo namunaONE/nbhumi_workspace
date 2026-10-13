@@ -331,48 +331,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Save new password'**
   String get savePassword;
-
-  /// Magic link pane label.
-  ///
-  /// In en, this message translates to:
-  /// **'Magic link'**
-  String get paneLink;
-
-  /// Password pane label.
-  ///
-  /// In en, this message translates to:
-  /// **'Password'**
-  String get panePassword;
-
-  /// Magic link pane heading.
-  ///
-  /// In en, this message translates to:
-  /// **'Sign in with a link'**
-  String get linkTitle;
-
-  /// Magic link pane explanation.
-  ///
-  /// In en, this message translates to:
-  /// **'We email you a link — no password to remember.'**
-  String get linkSubtitle;
-
-  /// Send magic link action.
-  ///
-  /// In en, this message translates to:
-  /// **'Send link'**
-  String get sendLink;
-
-  /// Resend magic link action.
-  ///
-  /// In en, this message translates to:
-  /// **'Resend link'**
-  String get resendLink;
-
-  /// Magic link sent confirmation.
-  ///
-  /// In en, this message translates to:
-  /// **'Check your inbox — we sent a sign-in link to {email}.'**
-  String sentLink(String email);
 }
 
 class _AppLocalizationsDelegate

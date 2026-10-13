@@ -216,39 +216,5 @@
   "@savePassword": {
     "description": "Save-new-password action."
   },
-  "savePassword": "Save new password",
-
-  "@paneLink": {
-    "description": "Magic link pane label."
-  },
-  "paneLink": "Magic link",
-  "@panePassword": {
-    "description": "Password pane label."
-  },
-  "panePassword": "Password",
-
-  "@linkTitle": {
-    "description": "Magic link pane heading."
-  },
-  "linkTitle": "Sign in with a link",
-  "@linkSubtitle": {
-    "description": "Magic link pane explanation."
-  },
-  "linkSubtitle": "We email you a link — no password to remember.",
-
-  "@sendLink": {
-    "description": "Send magic link action."
-  },
-  "sendLink": "Send link",
-  "@resendLink": {
-    "description": "Resend magic link action."
-  },
-  "resendLink": "Resend link",
-  "@sentLink": {
-    "description": "Magic link sent confirmation.",
-    "placeholders": {
-      "email": { "type": "String", "example": "sita@example.com" }
-    }
-  },
-  "sentLink": "Check your inbox — we sent a sign-in link to {email}."
+  "savePassword": "Save new password"
 }

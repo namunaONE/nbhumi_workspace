@@ -210,6 +210,74 @@ void main() {
       expect(find.byType(BottomAppBar), findsNothing);
     });
 
+    testWidgets('a fresh signup sees the profile step', (tester) async {
+      // Same routing as above: install seen, fresh session, fresh mark.
+      final gate = OnboardingGate(seen: true);
+      addTearDown(gate.dispose);
+
+      await pumpApp(
+        tester,
+        gateOverride: gate,
+        session: Session(
+          accessToken: 'token',
+          refreshToken: 'refresh',
+          tokenType: 'bearer',
+          user: const User(
+            id: 'seller-1',
+            appMetadata: <String, dynamic>{},
+            userMetadata: <String, dynamic>{},
+            aud: 'authenticated',
+            createdAt: '2026-01-01T00:00:00Z',
+          ),
+        ),
+        freshSignup: true,
+      );
+
+      expect(find.text('Complete your profile'), findsOneWidget);
+      expect(find.text('Save'), findsOneWidget);
+    });
+
+    testWidgets('a first-run guest sees no profile step', (tester) async {
+      final gate = OnboardingGate(seen: false);
+      addTearDown(gate.dispose);
+
+      await pumpApp(tester, gateOverride: gate);
+
+      expect(find.text('Complete your profile'), findsNothing);
+    });
+
+    testWidgets('an empty name blocks the profile save inline',
+        (tester) async {
+      final gate = OnboardingGate(seen: true);
+      addTearDown(gate.dispose);
+
+      await pumpApp(
+        tester,
+        gateOverride: gate,
+        session: Session(
+          accessToken: 'token',
+          refreshToken: 'refresh',
+          tokenType: 'bearer',
+          user: const User(
+            id: 'seller-1',
+            appMetadata: <String, dynamic>{},
+            userMetadata: <String, dynamic>{},
+            aud: 'authenticated',
+            createdAt: '2026-01-01T00:00:00Z',
+          ),
+        ),
+        freshSignup: true,
+      );
+      // Validation runs before any repository call, so no network stub
+      // is needed: the empty name never reaches the server.
+      await tester.ensureVisible(find.text('Save'));
+      await tester.pumpAndSettle();
+      await tester.tap(find.text('Save'));
+      await tester.pumpAndSettle();
+
+      expect(find.text('Enter your full name'), findsOneWidget);
+    });
+
     testWidgets('completing post-signup onboarding lands home, not back',
         (tester) async {
       final gate = OnboardingGate(seen: true);

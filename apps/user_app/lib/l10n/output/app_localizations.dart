@@ -524,6 +524,24 @@ abstract class AppLocalizations {
   /// **'Browse listings'**
   String get onboardingBrowse;
 
+  /// Fresh-signup profile step heading.
+  ///
+  /// In en, this message translates to:
+  /// **'Complete your profile'**
+  String get onboardingProfileTitle;
+
+  /// Fresh-signup profile step explanation.
+  ///
+  /// In en, this message translates to:
+  /// **'Add your name and phone so buyers and sellers know who you are. You can change these later in Profile.'**
+  String get onboardingProfileSubtitle;
+
+  /// Fresh-signup profile step empty-name error.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter your full name'**
+  String get onboardingProfileNameError;
+
   /// Profile identity section heading.
   ///
   /// In en, this message translates to:

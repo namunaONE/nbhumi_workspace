@@ -80,6 +80,7 @@ class _NarrowBody extends StatelessWidget {
                   const SizedBox(height: AppSpacing.xxxl),
                   OnboardingFeatureList(strings: strings),
                   const SizedBox(height: AppSpacing.xxxl),
+                  OnboardingProfileSection(strings: strings),
                   OnboardingDisclaimerCard(strings: strings),
                 ],
               ),
@@ -138,6 +139,7 @@ class _WideBody extends StatelessWidget {
                       children: <Widget>[
                         OnboardingFeatureList(strings: strings),
                         const SizedBox(height: AppSpacing.xxxl),
+                        OnboardingProfileSection(strings: strings),
                         OnboardingDisclaimerCard(strings: strings),
                       ],
                     ),

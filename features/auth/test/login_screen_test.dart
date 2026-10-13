@@ -67,20 +67,11 @@ Widget _app(
   );
 }
 
-/// Selects the Password pane in the segmented button.
-Future<void> _selectPasswordPane(WidgetTester tester) async {
-  // The SegmentedButton has two ButtonSegments: "Magic link" and "Password".
-  // We tap the "Password" label to select the Password pane.
-  await tester.tap(find.text('Password'));
-  await tester.pumpAndSettle();
-}
-
 void main() {
   testWidgets('invalid email blocks the send and shows an error',
       (tester) async {
     final spy = _SpyAuthService();
     await tester.pumpWidget(_app(spy));
-    await _selectPasswordPane(tester);
 
     await tester.enterText(find.byType(TextFormField).first, 'nope');
     await tester.enterText(find.byType(TextFormField).last, 'long enough');
@@ -94,7 +85,6 @@ void main() {
   testWidgets('signs in with email and password', (tester) async {
     final spy = _SpyAuthService();
     await tester.pumpWidget(_app(spy));
-    await _selectPasswordPane(tester);
 
     await tester.enterText(find.byType(TextFormField).first, 's@s.com');
     await tester.enterText(find.byType(TextFormField).last, 'long enough');
@@ -107,9 +97,8 @@ void main() {
   testWidgets('short signup password is rejected inline', (tester) async {
     final spy = _SpyAuthService();
     await tester.pumpWidget(_app(spy));
-    await _selectPasswordPane(tester);
 
-    // Switch to Sign Up mode within the Password pane
+    // Switch to Sign Up mode
     await tester.tap(find.text('New here? Create an account'));
     await tester.pumpAndSettle();
 
@@ -126,7 +115,6 @@ void main() {
   testWidgets('mismatched confirmation blocks signup', (tester) async {
     final spy = _SpyAuthService();
     await tester.pumpWidget(_app(spy));
-    await _selectPasswordPane(tester);
 
     await tester.tap(find.text('New here? Create an account'));
     await tester.pumpAndSettle();
@@ -144,7 +132,6 @@ void main() {
   testWidgets('forgot password sends a reset link', (tester) async {
     final spy = _SpyAuthService();
     await tester.pumpWidget(_app(spy));
-    await _selectPasswordPane(tester);
 
     await tester.tap(find.text('Forgot your password?'));
     await tester.pumpAndSettle();

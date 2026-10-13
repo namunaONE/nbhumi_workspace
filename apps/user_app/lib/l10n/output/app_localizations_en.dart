@@ -238,6 +238,16 @@ class AppLocalizationsEn extends AppLocalizations {
   String get onboardingBrowse => 'Browse listings';
 
   @override
+  String get onboardingProfileTitle => 'Complete your profile';
+
+  @override
+  String get onboardingProfileSubtitle =>
+      'Add your name and phone so buyers and sellers know who you are. You can change these later in Profile.';
+
+  @override
+  String get onboardingProfileNameError => 'Enter your full name';
+
+  @override
   String get profileContactTitle => 'Contact details';
 
   @override

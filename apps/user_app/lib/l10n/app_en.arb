@@ -363,6 +363,19 @@
   },
   "onboardingBrowse": "Browse listings",
 
+  "@onboardingProfileTitle": {
+    "description": "Fresh-signup profile step heading."
+  },
+  "onboardingProfileTitle": "Complete your profile",
+  "@onboardingProfileSubtitle": {
+    "description": "Fresh-signup profile step explanation."
+  },
+  "onboardingProfileSubtitle": "Add your name and phone so buyers and sellers know who you are. You can change these later in Profile.",
+  "@onboardingProfileNameError": {
+    "description": "Fresh-signup profile step empty-name error."
+  },
+  "onboardingProfileNameError": "Enter your full name",
+
   "@profileContactTitle": {
     "description": "Profile identity section heading."
   },

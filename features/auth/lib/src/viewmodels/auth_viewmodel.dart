@@ -18,16 +18,6 @@ class Auth extends _$Auth {
     return ref.watch(isSignedInProvider);
   }
 
-  /// Emails a sign-in link to [email].
-  ///
-  /// The message is trimmed and validated before the service is touched: a
-  /// malformed address is a user error ([ValidationException]), never a server
-  /// call. All [AppException] failures propagate to the screen, which renders
-  /// them bilingually with a retry where retryable.
-  Future<void> sendMagicLink(String email) async {
-    await ref.read(authServiceProvider).sendMagicLink(_validEmail(email));
-  }
-
   /// Creates an account with [email] and [password], then signs in.
   ///
   /// Whether a confirmation email intervenes depends on the project's

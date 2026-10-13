@@ -238,6 +238,16 @@ class AppLocalizationsNe extends AppLocalizations {
   String get onboardingBrowse => 'विज्ञापन हेर्नुहोस्';
 
   @override
+  String get onboardingProfileTitle => 'प्रोफाइल पूरा गर्नुहोस्';
+
+  @override
+  String get onboardingProfileSubtitle =>
+      'आफ्नो नाम र फोन थप्नुहोस् ताकि क्रेता र बिक्रेताले तपाईंलाई चिनून्। पछि प्रोफाइलबाट परिवर्तन गर्न सक्नुहुन्छ।';
+
+  @override
+  String get onboardingProfileNameError => 'कृपया पूरा नाम लेख्नुहोस्';
+
+  @override
   String get profileContactTitle => 'सम्पर्क विवरण';
 
   @override

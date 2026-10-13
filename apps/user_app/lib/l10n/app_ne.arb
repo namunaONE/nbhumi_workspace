@@ -363,6 +363,19 @@
   },
   "onboardingBrowse": "विज्ञापन हेर्नुहोस्",
 
+  "@onboardingProfileTitle": {
+    "description": "Fresh-signup profile step heading."
+  },
+  "onboardingProfileTitle": "प्रोफाइल पूरा गर्नुहोस्",
+  "@onboardingProfileSubtitle": {
+    "description": "Fresh-signup profile step explanation."
+  },
+  "onboardingProfileSubtitle": "आफ्नो नाम र फोन थप्नुहोस् ताकि क्रेता र बिक्रेताले तपाईंलाई चिनून्। पछि प्रोफाइलबाट परिवर्तन गर्न सक्नुहुन्छ।",
+  "@onboardingProfileNameError": {
+    "description": "Fresh-signup profile step empty-name error."
+  },
+  "onboardingProfileNameError": "कृपया पूरा नाम लेख्नुहोस्",
+
   "@profileContactTitle": {
     "description": "Profile identity section heading."
   },

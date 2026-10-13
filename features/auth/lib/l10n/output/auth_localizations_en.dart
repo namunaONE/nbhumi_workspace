@@ -138,27 +138,4 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get savePassword => 'Save new password';
-
-  @override
-  String get paneLink => 'Magic link';
-
-  @override
-  String get panePassword => 'Password';
-
-  @override
-  String get linkTitle => 'Sign in with a link';
-
-  @override
-  String get linkSubtitle => 'We email you a link — no password to remember.';
-
-  @override
-  String get sendLink => 'Send link';
-
-  @override
-  String get resendLink => 'Resend link';
-
-  @override
-  String sentLink(String email) {
-    return 'Check your inbox — we sent a sign-in link to $email.';
-  }
 }
