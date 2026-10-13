@@ -33,6 +33,15 @@ Future<void> main() async {
   // there is no white flash before the animated Flutter splash takes over.
   FlutterNativeSplash.preserve(widgetsBinding: binding);
 
+  // A build without credentials fails before any network call exists, which
+  // otherwise surfaces as mysterious auth errors with zero server traffic
+  // (nothing in Auth → Logs, because nothing ever left the device). Fail
+  // visibly here instead, naming the missing defines.
+  if (!hasSupabaseConfig) {
+    runApp(const _MisconfiguredApp());
+    return;
+  }
+
   await Supabase.initialize(
     url: EnvConfig.supabaseUrl,
     publishableKey: EnvConfig.supabasePublishableKey,
@@ -75,6 +84,17 @@ bool get _splashBypassed {
   if (kIsWeb) return false;
   return Platform.environment.containsKey('FLUTTER_TEST');
 }
+
+/// Whether the compiled-in Supabase credentials are present.
+///
+/// Extracted (rather than inlined in [main]) so the misconfiguration gate is
+/// unit-testable: `flutter test` runs without `--dart-define`, so it must
+/// read false there, and any refactor that drops the check breaks the test
+/// instead of shipping silent auth failures.
+@visibleForTesting
+bool get hasSupabaseConfig =>
+    EnvConfig.supabaseUrl.isNotEmpty &&
+    EnvConfig.supabasePublishableKey.isNotEmpty;
 
 /// Root widget for the nBhumi user app.
 ///
@@ -247,6 +267,41 @@ class _StaticWordmark extends StatelessWidget {
         fontSize: 48,
         fontWeight: FontWeight.w700,
         letterSpacing: 1.2,
+      ),
+    );
+  }
+}
+
+/// Shown instead of the app when the build carries no Supabase credentials.
+///
+/// `--dart-define` values compile into the bundle; a build that forgot them
+/// has empty strings for URL and key and can never reach the server. Surfacing
+/// that here — rather than letting every auth call fail with zero Auth → Logs
+/// traffic — turns "can't log in and nothing explains why" into a readable
+/// screen. Hardcoded English on purpose: this is a developer-facing build
+/// error, and localizations are not wired up this early in startup.
+class _MisconfiguredApp extends StatelessWidget {
+  /// Creates the misconfiguration notice.
+  const _MisconfiguredApp();
+
+  @override
+  Widget build(BuildContext context) {
+    return const MaterialApp(
+      home: Scaffold(
+        body: SafeArea(
+          child: Center(
+            child: Padding(
+              padding: EdgeInsets.all(24),
+              child: Text(
+                'Missing Supabase configuration.\n\n'
+                'Rebuild with --dart-define=SUPABASE_URL=... '
+                'and --dart-define=SUPABASE_PUBLISHABLE_KEY=... '
+                '(see tool/run_web.ps1 and Rule 7).',
+                textAlign: TextAlign.center,
+              ),
+            ),
+          ),
+        ),
       ),
     );
   }
