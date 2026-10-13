@@ -55,24 +55,22 @@ class AdminListingDetailScreen extends ConsumerWidget {
               ),
         title: const Text('Review listing'),
       ),
-      // Capped at reading width (DESIGN.md §4.4b). In two-pane mode the outer
-      // AdminQueueScreen already caps the Row at feed width, so this passes
-      // through untouched. In single-pane mode this caps the detail.
+      // Capped at reading width (DESIGN.md §4.4b). In two-pane mode the
+      // pane fills the window remainder, so this centers the content once
+      // it exceeds the cap. In single-pane mode this caps the detail.
       body: CenteredContent(
-        maxWidth: AppContentWidths.reading,
         child: switch (detail) {
           AsyncLoading() => const Center(child: CircularProgressIndicator()),
           AsyncError(:final error) => _DetailLoadError(
-              error: AppException.unmapped(error),
-              onRetry: () =>
-                  ref.invalidate(adminListingDetailProvider(listingId)),
-            ),
+            error: AppException.unmapped(error),
+            onRetry: () =>
+                ref.invalidate(adminListingDetailProvider(listingId)),
+          ),
           // A null value is a *successful* load with nothing in it. The RPC
           // answers P0002 for missing, unpublished and not-yours alike, so this
           // screen cannot tell those apart and must not pretend to.
           AsyncData(value: null) => const _DetailUnavailable(),
-          AsyncData(: final ListingDetail value) =>
-            _DetailBody(listing: value),
+          AsyncData(:final ListingDetail value) => _DetailBody(listing: value),
         },
       ),
     );
@@ -174,11 +172,10 @@ class _DetailBody extends StatelessWidget {
   /// "Ward 5, Kathmandu Metropolitan, Kathmandu", dropping absent parts rather
   /// than printing "null".
   static String _locationLine(ListingDetail listing) => <String?>[
-        if (listing.ward case final ward? when ward.trim().isNotEmpty)
-          'Ward $ward',
-        listing.city,
-        listing.district,
-      ].whereType<String>().join(', ');
+    if (listing.ward case final ward? when ward.trim().isNotEmpty) 'Ward $ward',
+    listing.city,
+    listing.district,
+  ].whereType<String>().join(', ');
 }
 
 /// The listing's current status, as a chip.
@@ -299,7 +296,7 @@ class _SellerCard extends StatelessWidget {
     // would couple two things that have nothing to do with each other.
     final verifiedColor =
         theme.extension<MarketplaceColors>()?.verifiedGreen ??
-            theme.colorScheme.primary;
+        theme.colorScheme.primary;
 
     return Card(
       child: Padding(
@@ -323,11 +320,7 @@ class _SellerCard extends StatelessWidget {
                       ),
                       if (s.isVerified) ...<Widget>[
                         const SizedBox(width: 4),
-                        Icon(
-                          Icons.verified,
-                          size: 16,
-                          color: verifiedColor,
-                        ),
+                        Icon(Icons.verified, size: 16, color: verifiedColor),
                       ],
                     ],
                   ),
@@ -357,11 +350,11 @@ class _SellerCard extends StatelessWidget {
   /// doc-check is not a legal verification and DATA.md is explicit about not
   /// claiming one.
   static String _kycLabel(String? tier) => switch (tier) {
-        'identity' => 'Citizenship checked',
-        'property' => 'Property documents checked',
-        'account' => 'Email confirmed',
-        _ => 'Not verified',
-      };
+    'identity' => 'Citizenship checked',
+    'property' => 'Property documents checked',
+    'account' => 'Email confirmed',
+    _ => 'Not verified',
+  };
 
   /// First letter of [name], or a question mark when there is none.
   ///
@@ -397,30 +390,30 @@ class _ActionBar extends StatelessWidget {
         child: isPending
             ? ReviewActions(listingId: listing.id)
             : listing.status == ListingStatus.live ||
-                    listing.status == ListingStatus.unpublished
-                ? UnpublishActions(listing: listing)
-                : Row(
-                    children: <Widget>[
-                      Icon(
-                        listing.status == ListingStatus.live
-                            ? Icons.check_circle_outline
-                            : Icons.block_outlined,
-                        size: 18,
+                  listing.status == ListingStatus.unpublished
+            ? UnpublishActions(listing: listing)
+            : Row(
+                children: <Widget>[
+                  Icon(
+                    listing.status == ListingStatus.live
+                        ? Icons.check_circle_outline
+                        : Icons.block_outlined,
+                    size: 18,
+                    color: theme.colorScheme.onSurfaceVariant,
+                  ),
+                  const SizedBox(width: 8),
+                  Expanded(
+                    child: Text(
+                      listing.status == ListingStatus.live
+                          ? 'This listing is live.'
+                          : 'This listing is ${listing.status.wireName}.',
+                      style: theme.textTheme.bodyMedium?.copyWith(
                         color: theme.colorScheme.onSurfaceVariant,
                       ),
-                      const SizedBox(width: 8),
-                      Expanded(
-                        child: Text(
-                          listing.status == ListingStatus.live
-                              ? 'This listing is live.'
-                              : 'This listing is ${listing.status.wireName}.',
-                          style: theme.textTheme.bodyMedium?.copyWith(
-                            color: theme.colorScheme.onSurfaceVariant,
-                          ),
-                        ),
-                      ),
-                    ],
+                    ),
                   ),
+                ],
+              ),
       ),
     );
   }

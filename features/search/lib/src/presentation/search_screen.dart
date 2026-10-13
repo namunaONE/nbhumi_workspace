@@ -6,8 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:models/models.dart';
-import 'package:search/l10n/output/search_localizations.dart'
-    as search_strings;
+import 'package:search/l10n/output/search_localizations.dart' as search_strings;
 
 import '../providers/browse_providers.dart';
 import '../utils/search_labels.dart';
@@ -46,7 +45,7 @@ class SearchScreen extends ConsumerStatefulWidget {
   /// tests pump the screen bare (a tap pushes the full route, as on phones).
   /// Null disables the side pane on all widths.
   final Widget Function(String listingId, VoidCallback onClose)?
-      detailPaneBuilder;
+  detailPaneBuilder;
 
   @override
   ConsumerState<SearchScreen> createState() => _SearchScreenState();
@@ -91,14 +90,19 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
       // the root navigator, which a plain Navigator lookup from this branch
       // cannot reach.
       onListingTap: _openListing,
-      header: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: <Widget>[
-          _QueryField(filter: filter),
-          // Featured row only for the unfiltered browse-all surface: above
-          // narrowed results it would push the matches down the screen.
-          if (filter.isEmpty) FeaturedCarousel(onListingTap: _openListing),
-        ],
+      // Capped at feed width so the query field and carousel align with the
+      // grid below, which caps itself at the same token (DESIGN.md §4.4b).
+      header: CenteredContent(
+        maxWidth: AppContentWidths.feed,
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: <Widget>[
+            _QueryField(filter: filter),
+            // Featured row only for the unfiltered browse-all surface: above
+            // narrowed results it would push the matches down the screen.
+            if (filter.isEmpty) FeaturedCarousel(onListingTap: _openListing),
+          ],
+        ),
       ),
       layout: _layout,
       emptyTitle: strings.noMatchTitle,
@@ -110,38 +114,37 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
       child: Scaffold(
         appBar: AppBar(
           title: Text(widget.title ?? strings.title),
-        actions: <Widget>[
-          _SortButton(filter: filter),
-          _FilterButton(activeCount: filter.activeCount),
-          IconButton(
-            icon: Icon(showingList ? Icons.grid_view : Icons.view_list),
-            tooltip: showingList
-                ? strings.viewGridTooltip
-                : strings.viewListTooltip,
-            onPressed: () => setState(() {
-              _layout =
-                  showingList ? ListingLayout.grid : ListingLayout.list;
-            }),
-          ),
-          _SaveSearchButton(filter: filter),
-          ...?widget.actions,
-          const SizedBox(width: 4),
-        ],
-      ),
-      body: selectedId != null && _selectsInPlace(context)
-          ? Row(
-              children: <Widget>[
-                Expanded(child: feed),
-                const VerticalDivider(width: 1),
-                Expanded(
-                  child: widget.detailPaneBuilder!(
-                    selectedId,
-                    () => setState(() => _selectedId = null),
+          actions: <Widget>[
+            _SortButton(filter: filter),
+            _FilterButton(activeCount: filter.activeCount),
+            IconButton(
+              icon: Icon(showingList ? Icons.grid_view : Icons.view_list),
+              tooltip: showingList
+                  ? strings.viewGridTooltip
+                  : strings.viewListTooltip,
+              onPressed: () => setState(() {
+                _layout = showingList ? ListingLayout.grid : ListingLayout.list;
+              }),
+            ),
+            _SaveSearchButton(filter: filter),
+            ...?widget.actions,
+            const SizedBox(width: 4),
+          ],
+        ),
+        body: selectedId != null && _selectsInPlace(context)
+            ? Row(
+                children: <Widget>[
+                  Expanded(child: feed),
+                  const VerticalDivider(width: 1),
+                  Expanded(
+                    child: widget.detailPaneBuilder!(
+                      selectedId,
+                      () => setState(() => _selectedId = null),
+                    ),
                   ),
-                ),
-              ],
-            )
-          : feed,
+                ],
+              )
+            : feed,
       ),
     );
   }
@@ -162,8 +165,9 @@ class _QueryField extends ConsumerStatefulWidget {
 }
 
 class _QueryFieldState extends ConsumerState<_QueryField> {
-  late final TextEditingController _controller =
-      TextEditingController(text: widget.filter.query ?? '');
+  late final TextEditingController _controller = TextEditingController(
+    text: widget.filter.query ?? '',
+  );
 
   @override
   void dispose() {
@@ -251,9 +255,8 @@ class _SortButton extends ConsumerWidget {
       icon: const Icon(Icons.swap_vert),
       tooltip: strings.sortTooltip,
       initialValue: filter.sort,
-      onSelected: (sort) => ref
-              .read(browseFilterProvider.notifier)
-              .filter = filter.copyWith(sort: sort),
+      onSelected: (sort) => ref.read(browseFilterProvider.notifier).filter =
+          filter.copyWith(sort: sort),
       itemBuilder: (context) => <PopupMenuEntry<ListingSort>>[
         for (final sort in ListingSort.values)
           PopupMenuItem<ListingSort>(
@@ -280,8 +283,7 @@ class _SaveSearchButton extends ConsumerWidget {
     if (filter.isEmpty) return const SizedBox.shrink();
     return IconButton(
       icon: const Icon(Icons.bookmark_add_outlined),
-      tooltip:
-          search_strings.AppLocalizations.of(context).saveSearchTooltip,
+      tooltip: search_strings.AppLocalizations.of(context).saveSearchTooltip,
       onPressed: () => _save(context, ref),
     );
   }
@@ -291,16 +293,14 @@ class _SaveSearchButton extends ConsumerWidget {
     final strings = search_strings.AppLocalizations.of(context);
     final session = ref.read(sessionProvider);
     if (session == null) {
-      messenger.showSnackBar(
-        SnackBar(
-          content: Text(strings.signInToSave),
-        ),
-      );
+      messenger.showSnackBar(SnackBar(content: Text(strings.signInToSave)));
       return;
     }
 
     try {
-      await ref.read(savedSearchRepositoryProvider).saveSearch(
+      await ref
+          .read(savedSearchRepositoryProvider)
+          .saveSearch(
             userId: session.user.id,
             name: _describeFilter(context, filter),
             filter: filter,
@@ -336,12 +336,10 @@ class _SaveSearchButton extends ConsumerWidget {
 /// name always describes what the alert actually watches.
 String _describeFilter(BuildContext context, ListingFilter filter) {
   final strings = search_strings.AppLocalizations.of(context);
+  final purposeLabel = searchPurposeLabel(context, filter.listingPurpose);
   final parts = <String>[
     if (filter.propertyType case final type?)
-      '${searchTypeLabel(context, type)} ${searchPurposeLabel(
-        context,
-        filter.listingPurpose,
-      )}',
+      '${searchTypeLabel(context, type)} $purposeLabel',
     if (filter.propertyType == null)
       if (filter.listingPurpose case final purpose?)
         'Properties ${searchPurposeLabel(context, purpose)}',

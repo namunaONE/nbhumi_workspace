@@ -37,9 +37,7 @@ class AdminQueueScreen extends ConsumerWidget {
     // this branch is only ever seen loading or granted.
     final access = ref.watch(adminAccessProvider);
     if (access.isLoading) {
-      return const Scaffold(
-        body: Center(child: CircularProgressIndicator()),
-      );
+      return const Scaffold(body: Center(child: CircularProgressIndicator()));
     }
 
     final selectedId = ref.watch(adminSelectedListingProvider);
@@ -49,26 +47,29 @@ class AdminQueueScreen extends ConsumerWidget {
         final twoPane = constraints.maxWidth >= AppBreakpoints.twoPane;
         if (twoPane) {
           return Scaffold(
-            // Outer cap at feed width so the two-pane combo centers on very wide
-            // windows (DESIGN.md §4.4b).
-            body: CenteredContent(
-              maxWidth: AppContentWidths.feed,
-              child: Row(
-                children: <Widget>[
-                  // List pane capped at reading width so it never exceeds the
-                  // comfortable column width.
-                  SizedBox(
-                    width: AppContentWidths.reading,
-                    child: QueueList(onOpenReports: onOpenReports),
-                  ),
-                  const VerticalDivider(width: 1),
-                  // Detail pane gets the remaining space (under the cap).
-                  Expanded(
-                    key: ValueKey<String?>(selectedId),
-                    child: AdminListingPane(listingId: selectedId),
-                  ),
-                ],
-              ),
+            // No outer cap: the detail pane needs every pixel the window
+            // offers, and it caps its own content at reading width.
+            // The list pane is fixed at form width (480): queue rows need
+            // room for cover, title, price, SLA chip and seller badge at
+            // once, and at the 1000 threshold this still leaves the detail
+            // ~519px — above the ~440px where it stops being a stack of
+            // narrow columns.
+            body: Row(
+              children: <Widget>[
+                SizedBox(
+                  width: AppContentWidths.form,
+                  child: QueueList(onOpenReports: onOpenReports),
+                ),
+                const VerticalDivider(width: 1),
+                // Keyed on the id so switching listings discards the previous
+                // pane rather than keeping its scroll offset — otherwise a long
+                // description scrolled halfway would carry that offset to the
+                // next listing.
+                Expanded(
+                  key: ValueKey<String?>(selectedId),
+                  child: AdminListingPane(listingId: selectedId),
+                ),
+              ],
             ),
           );
         }
@@ -85,9 +86,7 @@ class AdminQueueScreen extends ConsumerWidget {
           );
         }
 
-        return Scaffold(
-          body: QueueList(onOpenReports: onOpenReports),
-        );
+        return Scaffold(body: QueueList(onOpenReports: onOpenReports));
       },
     );
   }
