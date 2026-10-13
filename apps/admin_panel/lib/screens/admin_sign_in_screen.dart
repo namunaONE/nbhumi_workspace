@@ -96,7 +96,10 @@ class _AdminSignInScreenState extends ConsumerState<AdminSignInScreen> {
         child: ConstrainedBox(
           // Admin panels are used on a laptop at a desk and occasionally on a
           // tablet, so cap the width rather than letting the form stretch.
-          constraints: const BoxConstraints(maxWidth: 400),
+          // Capped at form width so the sheet centers on wide windows
+          // instead of stretching edge to edge (DESIGN.md §4.4b).
+          // Phones pass through untouched (narrower than the cap).
+          constraints: const BoxConstraints(maxWidth: AppContentWidths.form),
           child: SingleChildScrollView(
             padding: const EdgeInsets.all(24),
             child: Form(

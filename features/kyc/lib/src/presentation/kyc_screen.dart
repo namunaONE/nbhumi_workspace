@@ -177,6 +177,10 @@ class _SubmitSheet extends ConsumerStatefulWidget {
       showModalBottomSheet<void>(
         context: context,
         isScrollControlled: true,
+        // Capped at form width so the sheet centers on wide windows instead
+        // of stretching edge to edge (DESIGN.md §4.4b). Phones pass through
+        // untouched (narrower than the cap).
+        constraints: const BoxConstraints(maxWidth: AppContentWidths.form),
         builder: (context) => _SubmitSheet(listingId: listingId),
       );
 

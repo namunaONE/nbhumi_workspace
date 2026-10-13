@@ -10,6 +10,7 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:kyc/kyc.dart';
 import 'package:kyc/l10n/output/kyc_localizations.dart' as kyc_strings;
 import 'package:listing_detail/l10n/output/detail_localizations.dart'
     as detail_strings;
@@ -17,6 +18,7 @@ import 'package:listing_detail/listing_detail.dart';
 import 'package:models/models.dart';
 import 'package:notifications/l10n/output/notifications_localizations.dart'
     as notif_strings;
+import 'package:notifications/notifications.dart';
 import 'package:post_listing/l10n/output/post_localizations.dart'
     as post_strings;
 import 'package:post_listing/post_listing.dart';
@@ -24,13 +26,17 @@ import 'package:search/l10n/output/search_localizations.dart' as search_strings;
 import 'package:search/search.dart';
 import 'package:user_app/l10n/output/app_localizations.dart';
 import 'package:user_app/onboarding/onboarding_gate.dart';
+import 'package:user_app/screens/activity_screen.dart';
 import 'package:user_app/screens/home_screen.dart';
 import 'package:user_app/screens/onboarding_screen.dart';
 import 'package:user_app/screens/profile_screen.dart';
+import 'package:user_app/screens/settings_screen.dart';
 
 /// Design-system regression goldens (HYA-267):
-/// 5 original screens × light/dark × compact/expanded/large = 30 images.
-/// (Newly-capped screens added incrementally in follow-up)
+/// 12 screens × light/dark × compact/expanded/large = 72 images.
+/// 5 original screens (home, search, detail, post, profile) plus 7 capped in
+/// the web-width migration (onboarding, login, settings, activity,
+/// notifications, kyc, auth_callback).
 ///
 /// CI-mode goldens render text as Ahem blocks, so the committed PNGs compare
 /// identically on any host. Regenerate deliberately with
@@ -181,6 +187,87 @@ Future<void> main() async {
           ),
         ),
       );
+
+      await _golden(
+        'settings $themeName ${entry.name}',
+        'settings_${themeName}_${entry.name}',
+        entry.size,
+        builder: () => _Harness(
+          theme: theme,
+          // No overrides: the controllers read defaults until the user taps,
+          // and render-only never writes (settings_screen_test covers taps
+          // with mocked prefs).
+          child: const ProviderScope(child: SettingsScreen()),
+        ),
+      );
+
+      await _golden(
+        'activity $themeName ${entry.name}',
+        'activity_${themeName}_${entry.name}',
+        entry.size,
+        builder: () => _Harness(
+          theme: theme,
+          child: ProviderScope(
+            // Guest state: deterministic sign-in prompt, no repositories.
+            overrides: [sessionProvider.overrideWithValue(null)],
+            child: const ActivityScreen(),
+          ),
+        ),
+      );
+
+      await _golden(
+        'notifications $themeName ${entry.name}',
+        'notifications_${themeName}_${entry.name}',
+        entry.size,
+        builder: () => _Harness(
+          theme: theme,
+          child: ProviderScope(
+            // Same seam as notifications_screen_test: empty inbox plus a
+            // no-op Realtime subscription, never the network (Rule 33).
+            overrides: [
+              notificationsProvider().overrideWith(
+                (ref) async => const <AppNotification>[],
+              ),
+              notificationsRealtimeProvider.overrideWith((ref) {}),
+            ],
+            child: const NotificationsScreen(),
+          ),
+        ),
+      );
+
+      await _golden(
+        'kyc $themeName ${entry.name}',
+        'kyc_${themeName}_${entry.name}',
+        entry.size,
+        builder: () => _Harness(
+          theme: theme,
+          child: ProviderScope(
+            // Same seam as kyc_screen_test: empty document list (Rule 33).
+            overrides: [
+              myKycDocumentsProvider.overrideWith(
+                (ref) async => const <KycDocument>[],
+              ),
+              sessionProvider.overrideWithValue(null),
+            ],
+            child: const KycScreen(),
+          ),
+        ),
+      );
+
+      await _golden(
+        'auth_callback $themeName ${entry.name}',
+        'auth_callback_${themeName}_${entry.name}',
+        entry.size,
+        pump: pumpOnce,
+        builder: () => _Harness(
+          theme: theme,
+          child: ProviderScope(
+            // Signed-out signing-in branch: deterministic progress copy.
+            overrides: [isSignedInProvider.overrideWithValue(false)],
+            child: const AuthCallbackScreen(),
+          ),
+        ),
+      );
     }
   }
 }
@@ -191,12 +278,17 @@ Future<void> _golden(
   String fileName,
   Size size, {
   required Widget Function() builder,
+  // Most screens settle. The auth_callback signing-in state shows an
+  // indeterminate LinearProgressIndicator, so settling would time out —
+  // one pump captures its deterministic first frame instead.
+  PumpAction pump = onlyPumpAndSettle,
 }) async {
   await goldenTest(
     name,
     fileName: fileName,
     constraints: BoxConstraints.tight(size),
     builder: builder,
+    pumpBeforeTest: pump,
   );
 }
 

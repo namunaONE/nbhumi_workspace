@@ -36,9 +36,8 @@ class NotificationsScreen extends ConsumerWidget {
           }),
         ],
       ),
-      // Capped at reading width so the inbox centers on wide windows (DESIGN.md §4.4b).
+      // Capped at reading width (DESIGN.md §4.4b). Centers the inbox.
       body: CenteredContent(
-        maxWidth: AppContentWidths.reading,
         child: switch (inbox) {
           AsyncLoading() => const LoadingState(),
           AsyncError(:final error) => Builder(
