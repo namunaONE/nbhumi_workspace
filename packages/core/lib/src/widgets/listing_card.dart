@@ -73,6 +73,13 @@ class ListingCard extends StatelessWidget {
       clipBehavior: Clip.antiAlias,
       child: InkWell(
         onTap: onTap,
+        // Desktop affordance (DESIGN.md §6.5): a clickable card shows the
+        // click cursor on hover; an inert preview keeps the basic arrow.
+        // Explicit rather than the adaptive default so widget tests pin
+        // the behavior on every host platform.
+        mouseCursor: onTap != null
+            ? SystemMouseCursors.click
+            : SystemMouseCursors.basic,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[

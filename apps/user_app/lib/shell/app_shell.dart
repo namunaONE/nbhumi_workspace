@@ -209,6 +209,9 @@ class _BarDestination extends StatelessWidget {
     return Expanded(
       child: InkWell(
         onTap: onTap,
+        // Desktop affordance (DESIGN.md §6.5): destinations are always
+        // tappable, so they always show the click cursor on hover.
+        mouseCursor: SystemMouseCursors.click,
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[

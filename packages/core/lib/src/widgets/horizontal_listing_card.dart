@@ -44,6 +44,11 @@ class HorizontalListingCard extends StatelessWidget {
       clipBehavior: Clip.antiAlias,
       child: InkWell(
         onTap: onTap,
+        // Desktop affordance (DESIGN.md §6.5): clickable rows show the
+        // click cursor on hover; inert rows keep the basic arrow.
+        mouseCursor: onTap != null
+            ? SystemMouseCursors.click
+            : SystemMouseCursors.basic,
         child: SizedBox(
           height: AppSizes.horizontalCardHeight,
           child: Row(

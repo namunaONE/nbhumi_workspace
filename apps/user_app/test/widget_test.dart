@@ -265,6 +265,22 @@ void main() {
       expect(find.byType(AppDrawer), findsNothing);
     });
 
+    testWidgets('compact destinations show the click cursor', (tester) async {
+      // DESIGN.md §6.5: custom navigation targets name their cursor
+      // explicitly so desktop hover reads as clickable.
+      await pumpApp(tester);
+
+      final bar = find.byType(BottomAppBar);
+      expect(bar, findsOneWidget);
+      final cursors = tester
+          .widgetList<InkWell>(
+            find.descendant(of: bar, matching: find.byType(InkWell)),
+          )
+          .map((destination) => destination.mouseCursor);
+      expect(cursors, isNotEmpty);
+      expect(cursors, everyElement(SystemMouseCursors.click));
+    });
+
     testWidgets('medium shows a NavigationRail', (tester) async {
       await pumpApp(tester, size: const Size(700, 900));
 

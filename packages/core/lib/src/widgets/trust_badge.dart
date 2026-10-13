@@ -97,6 +97,8 @@ class TrustBadge extends StatelessWidget {
     return InkWell(
       onTap: () => _showInfo(context),
       borderRadius: BorderRadius.circular(6),
+      // Desktop affordance (DESIGN.md §6.5): the badge opens a dialog.
+      mouseCursor: SystemMouseCursors.click,
       child: badge,
     );
   }

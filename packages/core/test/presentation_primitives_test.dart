@@ -237,4 +237,77 @@ void main() {
       expect(tester.takeException(), isNull);
     });
   });
+
+  group('desktop pointers (DESIGN.md §6.5)', () {
+    const cardSummary = ListingSummary(
+      id: 'l1',
+      sellerId: 's1',
+      title: 'Sunny House',
+      priceNpr: 25000000,
+      district: 'Kathmandu',
+      city: 'Kirtipur',
+      propertyType: PropertyType.house,
+      listingPurpose: ListingPurpose.sale,
+    );
+
+    MouseCursor? cardCursor(WidgetTester tester) =>
+        tester.widget<InkWell>(find.byType(InkWell)).mouseCursor;
+
+    testWidgets('tappable card shows the click cursor', (tester) async {
+      await _pump(
+        tester,
+        SizedBox(
+          width: 360,
+          child: ListingCard(listing: cardSummary, onTap: () {}),
+        ),
+      );
+      expect(cardCursor(tester), SystemMouseCursors.click);
+    });
+
+    testWidgets('inert card keeps the basic cursor', (tester) async {
+      await _pump(
+        tester,
+        const SizedBox(
+          width: 360,
+          child: ListingCard(listing: cardSummary),
+        ),
+      );
+      expect(cardCursor(tester), SystemMouseCursors.basic);
+    });
+
+    testWidgets('tappable row shows the click cursor', (tester) async {
+      await _pump(
+        tester,
+        SizedBox(
+          width: 360,
+          child: HorizontalListingCard(listing: cardSummary, onTap: () {}),
+        ),
+      );
+      expect(cardCursor(tester), SystemMouseCursors.click);
+    });
+
+    testWidgets('inert row keeps the basic cursor', (tester) async {
+      await _pump(
+        tester,
+        const SizedBox(
+          width: 360,
+          child: HorizontalListingCard(listing: cardSummary),
+        ),
+      );
+      expect(cardCursor(tester), SystemMouseCursors.basic);
+    });
+
+    testWidgets('tappable badge shows the click cursor', (tester) async {
+      await _pump(tester, const TrustBadge());
+      expect(cardCursor(tester), SystemMouseCursors.click);
+    });
+
+    testWidgets('silent badge has no tap target', (tester) async {
+      await _pump(
+        tester,
+        const TrustBadge(showInfoOnTap: false),
+      );
+      expect(find.byType(InkWell), findsNothing);
+    });
+  });
 }
