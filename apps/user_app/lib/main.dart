@@ -38,6 +38,13 @@ Future<void> main() async {
   // (nothing in Auth → Logs, because nothing ever left the device). Fail
   // visibly here instead, naming the missing defines.
   if (!hasSupabaseConfig) {
+    // The native splash was preserved above: without an explicit remove it
+    // stays on top forever and the notice below would never be seen (a stuck
+    // splash reads as "the app doesn't load"). Skipped under test, where the
+    // plugin is unregistered.
+    if (!_splashBypassed) {
+      FlutterNativeSplash.remove();
+    }
     runApp(const _MisconfiguredApp());
     return;
   }
