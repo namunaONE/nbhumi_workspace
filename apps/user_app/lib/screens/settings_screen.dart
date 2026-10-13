@@ -31,7 +31,6 @@ class SettingsScreen extends ConsumerWidget {
         // Capped at reading width so the segmented buttons and list items
         // center on wide windows instead of stretching (DESIGN.md §4.4b).
         body: CenteredContent(
-          maxWidth: AppContentWidths.reading,
           child: ListView(
             padding: const EdgeInsets.symmetric(vertical: 8),
             children: <Widget>[

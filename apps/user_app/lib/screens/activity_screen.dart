@@ -31,7 +31,6 @@ class ActivityScreen extends ConsumerWidget {
           appBar: AppBar(title: Text(strings.activityTitle)),
           // Capped at reading width (DESIGN.md §4.4b).
           body: CenteredContent(
-            maxWidth: AppContentWidths.reading,
             child: ListView(
               padding: const EdgeInsets.symmetric(vertical: AppSpacing.sm),
               children: <Widget>[
@@ -62,7 +61,6 @@ class ActivityScreen extends ConsumerWidget {
         ),
         // Capped at reading width (DESIGN.md §4.4b).
         body: CenteredContent(
-          maxWidth: AppContentWidths.reading,
           child: _ActivityBody(userId: session.user.id),
         ),
       ),
