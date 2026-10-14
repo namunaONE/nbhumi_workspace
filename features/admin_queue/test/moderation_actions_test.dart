@@ -436,6 +436,18 @@ class FakeModerationRepository implements AdminRepository {
       throw UnimplementedError('rejectKyc is not covered by these tests');
 
   @override
+  Future<AdminKycPage> pendingKycDocumentsPaged({
+    KycDocStatus status = KycDocStatus.pending,
+    String? cursor,
+    int limit = 50,
+  }) async =>
+      const AdminKycPage(entries: <AdminKycEntry>[], counts: AdminKycCounts());
+
+  @override
+  Future<AdminKycEntry> getKycDocument(String docId) async =>
+      throw UnimplementedError('getKycDocument is not covered by these tests');
+
+  @override
   Future<ReportPage> getReports({
     ReportStatus status = ReportStatus.open,
     ReportCursor? cursor,

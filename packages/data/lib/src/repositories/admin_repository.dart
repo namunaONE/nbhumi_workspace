@@ -69,6 +69,26 @@ abstract class AdminRepository {
   /// Throws [AuthFailureException] when the caller is not an admin.
   Future<List<KycDocument>> pendingKycDocuments({int limit = 50});
 
+  /// Paginated KYC documents for the admin queue with status filter.
+  ///
+  /// [status] selects the tab (pending/verified/rejected). [cursor] advances
+  /// pagination; pass null for the first page. Returns an empty page when
+  /// there is nothing to review. [limit] is clamped to 1..100.
+  ///
+  /// Throws [AuthFailureException] when the caller is not an admin.
+  Future<AdminKycPage> pendingKycDocumentsPaged({
+    KycDocStatus status = KycDocStatus.pending,
+    String? cursor,
+    int limit = 50,
+  });
+
+  /// Reads one KYC document for admin detail view.
+  ///
+  /// Returns the row with all fields (including storage_path for signed URL).
+  /// Throws [AuthFailureException] for non-admins,
+  /// [ValidationException]-mapped not-found when the id is unknown.
+  Future<AdminKycEntry> getKycDocument(String docId);
+
   /// Verifies a pending KYC document (doc-check only, never legal review).
   ///
   /// Calls `v1_admin_verify_kyc`, which flips `pending` to `verified`, bumps
@@ -316,6 +336,139 @@ class SupabaseAdminRepository implements AdminRepository {
     );
 
     return response.map(KycDocument.fromJson).toList(growable: false);
+  }
+
+  @override
+  Future<AdminKycPage> pendingKycDocumentsPaged({
+    KycDocStatus status = KycDocStatus.pending,
+    String? cursor,
+    int limit = 50,
+  }) async {
+    final int bounded;
+    if (limit < 1) {
+      bounded = 1;
+    } else if (limit > 100) {
+      bounded = 100;
+    } else {
+      bounded = limit;
+    }
+
+    var query = _client
+        .from('kyc_documents')
+        .select('*, profiles!inner(full_name)')
+        .eq('status', status.name)
+        .order('created_at', ascending: true)
+        .limit(bounded + 1);
+
+    var offset = 0;
+    if (cursor != null) {
+      offset = int.tryParse(cursor) ?? 0;
+    }
+
+    query = query.range(offset, offset + bounded - 1);
+
+    final response = await _guard(
+      () => query,
+      action: 'pendingKycDocumentsPaged',
+    );
+
+    final items = response as List;
+    final hasMore = items.length > bounded;
+    final pageItems = hasMore ? items.sublist(0, bounded) : items;
+
+    // Fetch counts for all statuses
+    final pendingCount = await _countKycByStatus('pending');
+    final verifiedCount = await _countKycByStatus('verified');
+    final rejectedCount = await _countKycByStatus('rejected');
+
+    final entries = pageItems.map((row) {
+      final profile = row['profiles'] as Map<String, dynamic>?;
+      return AdminKycEntry(
+        id: row['id'] as String,
+        profileId: row['profile_id'] as String,
+        profileName: profile?['full_name'] as String? ?? 'Unknown',
+        docType: KycDocType.fromWire(row['doc_type'] as String),
+        storagePath: row['storage_path'] as String,
+        status: KycDocStatus.values.firstWhere(
+          (s) => s.name == (row['status'] as String),
+          orElse: () => KycDocStatus.pending,
+        ),
+        createdAt: DateTime.parse(row['created_at'] as String),
+        reviewedAt: row['reviewed_at'] == null
+            ? null
+            : DateTime.parse(row['reviewed_at'] as String),
+        reviewedByName: row['reviewed_by_name'] as String?,
+        listingId: row['listing_id'] as String?,
+        listingTitle: row['listing_title'] as String?,
+      );
+    }).toList(growable: false);
+
+    final nextCursor = hasMore
+        ? (offset + bounded).toString()
+        : null;
+
+    return AdminKycPage(
+      entries: entries,
+      counts: AdminKycCounts(
+        pending: pendingCount,
+        verified: verifiedCount,
+        rejected: rejectedCount,
+      ),
+      nextCursor: nextCursor,
+    );
+  }
+
+  Future<int> _countKycByStatus(String status) async {
+    final response = await _guard(
+      () => _client
+          .from('kyc_documents')
+          .select('id')
+          .eq('status', status)
+          .count(),
+      action: '_countKycByStatus_$status',
+    );
+    return response.count;
+  }
+
+  @override
+  Future<AdminKycEntry> getKycDocument(String docId) async {
+    final trimmed = docId.trim();
+    if (trimmed.isEmpty) {
+      throw const ValidationException(
+        code: 'validation.kycDocIdRequired',
+        messageEn: 'That document could not be found. Refresh and try again.',
+        messageNe: 'यो कागजात फेला परेन। ताजा पारेर पुनः प्रयास गर्नुहोस्।',
+      );
+    }
+
+    final row = await _guard(
+      () => _client
+          .from('kyc_documents')
+          .select('*, profiles!inner(full_name)')
+          .eq('id', trimmed)
+          .single(),
+      action: 'getKycDocument',
+    );
+
+    final profile = row['profiles'] as Map<String, dynamic>?;
+    return AdminKycEntry(
+      id: row['id'] as String,
+      profileId: row['profile_id'] as String,
+      profileName: profile?['full_name'] as String? ?? 'Unknown',
+      docType: KycDocType.fromWire(row['doc_type'] as String),
+      storagePath: row['storage_path'] as String,
+      status: KycDocStatus.values.firstWhere(
+        (s) => s.name == (row['status'] as String),
+        orElse: () => KycDocStatus.pending,
+      ),
+      createdAt: DateTime.parse(row['created_at'] as String),
+      reviewedAt: row['reviewed_at'] == null
+          ? null
+          : DateTime.parse(row['reviewed_at'] as String),
+      reviewedByName: row['reviewed_by_name'] as String?,
+      listingId: row['listing_id'] as String?,
+      listingTitle: row['listing_title'] as String?,
+    );
   }
 
   @override

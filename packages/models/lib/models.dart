@@ -39,6 +39,7 @@
 library;
 
 export 'src/activity_page.dart';
+export 'src/admin_kyc_entry.dart';
 export 'src/admin_queue_entry.dart';
 export 'src/admin_user.dart';
 export 'src/district.dart';
