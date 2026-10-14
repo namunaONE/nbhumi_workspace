@@ -687,5 +687,30 @@
   "@notFoundBody": {
     "description": "Unknown-route explanation with a way back."
   },
-  "notFoundBody": "This link is broken or the page was moved. The listings are one tap away."
+  "notFoundBody": "This link is broken or the page was moved. The listings are one tap away.",
+
+  "@homeEmptyTitle": {
+    "description": "Home feed empty state heading."
+  },
+  "homeEmptyTitle": "No properties listed yet",
+
+  "@homeEmptyBody": {
+    "description": "Home feed empty state explanation."
+  },
+  "homeEmptyBody": "Be the first to post one. Listings appear here as soon as they go live.",
+
+  "@searchListingsTooltip": {
+    "description": "Search button tooltip on home screen."
+  },
+  "searchListingsTooltip": "Search listings",
+
+  "@postPropertyTooltip": {
+    "description": "Post property button tooltip on home screen."
+  },
+  "postPropertyTooltip": "Post a property",
+
+  "@profileDeleteConfirmHint": {
+    "description": "Type-to-confirm hint for account deletion (kept in English for security clarity)."
+  },
+  "profileDeleteConfirmHint": "DELETE"
 }

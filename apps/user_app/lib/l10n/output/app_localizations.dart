@@ -895,6 +895,36 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'This link is broken or the page was moved. The listings are one tap away.'**
   String get notFoundBody;
+
+  /// Home feed empty state heading.
+  ///
+  /// In en, this message translates to:
+  /// **'No properties listed yet'**
+  String get homeEmptyTitle;
+
+  /// Home feed empty state explanation.
+  ///
+  /// In en, this message translates to:
+  /// **'Be the first to post one. Listings appear here as soon as they go live.'**
+  String get homeEmptyBody;
+
+  /// Search button tooltip on home screen.
+  ///
+  /// In en, this message translates to:
+  /// **'Search listings'**
+  String get searchListingsTooltip;
+
+  /// Post property button tooltip on home screen.
+  ///
+  /// In en, this message translates to:
+  /// **'Post a property'**
+  String get postPropertyTooltip;
+
+  /// Type-to-confirm hint for account deletion (kept in English for security clarity).
+  ///
+  /// In en, this message translates to:
+  /// **'DELETE'**
+  String get profileDeleteConfirmHint;
 }
 
 class _AppLocalizationsDelegate

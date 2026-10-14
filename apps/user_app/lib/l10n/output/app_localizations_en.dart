@@ -435,4 +435,20 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get notFoundBody =>
       'This link is broken or the page was moved. The listings are one tap away.';
+
+  @override
+  String get homeEmptyTitle => 'No properties listed yet';
+
+  @override
+  String get homeEmptyBody =>
+      'Be the first to post one. Listings appear here as soon as they go live.';
+
+  @override
+  String get searchListingsTooltip => 'Search listings';
+
+  @override
+  String get postPropertyTooltip => 'Post a property';
+
+  @override
+  String get profileDeleteConfirmHint => 'DELETE';
 }

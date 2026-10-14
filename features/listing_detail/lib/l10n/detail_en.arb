@@ -291,7 +291,9 @@
   "@verifyThisListing": {
     "description": "Owner CTA opening the Tier-3 submit flow."
   },
-  "verifyThisListing": "Verify this listing"`n  ,`n  "@specParking":"@specParking": {
+  "verifyThisListing": "Verify this listing",
+
+  "@specParking": {
     "description": "Parking spaces spec row.",
     "placeholders": {
       "count": { "type": "int", "example": "2" }
@@ -450,5 +452,100 @@
   "@constructionResale": {
     "description": "Resale option."
   },
-  "constructionResale": "Resale"
+  "constructionResale": "Resale",
+
+  "@title": {
+    "description": "KYC verification screen title."
+  },
+  "title": "Verify identity",
+
+  "@howItWorks": {
+    "description": "How KYC works section title."
+  },
+  "howItWorks": "How it works",
+
+  "@howItWorksBody": {
+    "description": "KYC process explanation."
+  },
+  "howItWorksBody": "Our admin team reviews your citizenship and land documents. Once approved, you get the Verified badge on your listings.",
+
+  "@chooseDocument": {
+    "description": "Document type picker label."
+  },
+  "chooseDocument": "Choose document type",
+
+  "@docCitizenship": {
+    "description": "Citizenship document option."
+  },
+  "docCitizenship": "Citizenship (Nagarikta)",
+
+  "@docLalpurja": {
+    "description": "Lalpurja document option."
+  },
+  "docLalpurja": "Lalpurja (land ownership)",
+
+  "@docAgencyReg": {
+    "description": "Agency registration document option."
+  },
+  "docAgencyReg": "Agency registration",
+
+  "@pickAndSubmit": {
+    "description": "Pick file and submit action."
+  },
+  "pickAndSubmit": "Pick file and submit",
+
+  "@uploading": {
+    "description": "Upload in progress."
+  },
+  "uploading": "Uploading…",
+
+  "@submitted": {
+    "description": "Submission confirmed."
+  },
+  "submitted": "Submitted for review",
+
+  "@emptyTitle": {
+    "description": "No documents uploaded yet."
+  },
+  "emptyTitle": "No documents yet",
+
+  "@emptyBody": {
+    "description": "Empty state explanation."
+  },
+  "emptyBody": "Upload your citizenship and land documents to start verification.",
+
+  "@loadFailed": {
+    "description": "Document load failure."
+  },
+  "loadFailed": "Failed to load documents",
+
+  "@retry": {
+    "description": "Retry action."
+  },
+  "retry": "Retry",
+
+  "@statusPending": {
+    "description": "KYC status: pending review."
+  },
+  "statusPending": "Pending review",
+
+  "@statusVerified": {
+    "description": "KYC status: verified."
+  },
+  "statusVerified": "Verified",
+
+  "@statusRejected": {
+    "description": "KYC status: rejected."
+  },
+  "statusRejected": "Rejected",
+
+  "@tier3Hint": {
+    "description": "Tier-3 hint for listing verification."
+  },
+  "tier3Hint": "Attach lalpurja + Tiro Rasid to verify this listing",
+
+  "@submitDocument": {
+    "description": "Submit document button."
+  },
+  "submitDocument": "Submit document"
 }

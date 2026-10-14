@@ -1042,9 +1042,9 @@ class _TypeToConfirmDialogState extends State<_TypeToConfirmDialog> {
         controller: _controller,
         autofocus: true,
         textCapitalization: TextCapitalization.characters,
-        decoration: const InputDecoration(
-          hintText: 'DELETE',
-          border: OutlineInputBorder(),
+        decoration: InputDecoration(
+          hintText: strings.profileDeleteConfirmHint,
+          border: const OutlineInputBorder(),
         ),
         onChanged: (value) => setState(() => _match = value.trim() == 'DELETE'),
       ),

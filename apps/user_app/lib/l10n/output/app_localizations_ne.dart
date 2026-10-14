@@ -436,4 +436,20 @@ class AppLocalizationsNe extends AppLocalizations {
   @override
   String get notFoundBody =>
       'यो लिङ्क बिग्रिएको छ वा पृष्ठ सारिएको छ। सूची एक ट्याप टाढा छ।';
+
+  @override
+  String get homeEmptyTitle => 'अहिलेसम्म कुनै घरजग्गा लिस्ट भएको छैन';
+
+  @override
+  String get homeEmptyBody =>
+      'पहिलो लिस्टिङ तपाईंले गर्नुहोस्। लिस्टिङ लाइभ हुने बेलामा यहाँ देखिनेछ।';
+
+  @override
+  String get searchListingsTooltip => 'घरजग्गा खोज्नुहोस्';
+
+  @override
+  String get postPropertyTooltip => 'घरजग्गा लिस्ट गर्नुहोस्';
+
+  @override
+  String get profileDeleteConfirmHint => 'DELETE';
 }

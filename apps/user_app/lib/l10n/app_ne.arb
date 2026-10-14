@@ -687,5 +687,30 @@
   "@notFoundBody": {
     "description": "Unknown-route explanation with a way back."
   },
-  "notFoundBody": "यो लिङ्क बिग्रिएको छ वा पृष्ठ सारिएको छ। सूची एक ट्याप टाढा छ।"
+  "notFoundBody": "यो लिङ्क बिग्रिएको छ वा पृष्ठ सारिएको छ। सूची एक ट्याप टाढा छ।",
+
+  "@homeEmptyTitle": {
+    "description": "Home feed empty state heading."
+  },
+  "homeEmptyTitle": "अहिलेसम्म कुनै घरजग्गा लिस्ट भएको छैन",
+
+  "@homeEmptyBody": {
+    "description": "Home feed empty state explanation."
+  },
+  "homeEmptyBody": "पहिलो लिस्टिङ तपाईंले गर्नुहोस्। लिस्टिङ लाइभ हुने बेलामा यहाँ देखिनेछ।",
+
+  "@searchListingsTooltip": {
+    "description": "Search button tooltip on home screen."
+  },
+  "searchListingsTooltip": "घरजग्गा खोज्नुहोस्",
+
+  "@postPropertyTooltip": {
+    "description": "Post property button tooltip on home screen."
+  },
+  "postPropertyTooltip": "घरजग्गा लिस्ट गर्नुहोस्",
+
+  "@profileDeleteConfirmHint": {
+    "description": "Type-to-confirm hint for account deletion (kept in English for security clarity)."
+  },
+  "profileDeleteConfirmHint": "DELETE"
 }

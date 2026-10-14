@@ -293,12 +293,7 @@
   },
   "verifyThisListing": "यो विज्ञापन प्रमाणित गर्नुहोस्",
 
-  "@detailPageTitle": {
-    "description": "Browser tab fallback while the listing is still loading."
-  },
-  "detailPageTitle": "सम्पत्ति विवरण"
-,
-"@specParking": {
+  "@specParking": {
     "description": "Parking spaces spec row.",
     "placeholders": {
       "count": { "type": "int", "example": "2" }
@@ -457,5 +452,100 @@
   "@constructionResale": {
     "description": "Resale option."
   },
-  "constructionResale": "पुनर्विक्रय"
+  "constructionResale": "पुनर्विक्रय",
+
+  "@title": {
+    "description": "KYC verification screen title."
+  },
+  "title": "पहिचान प्रमाणित गर्नुहोस्",
+
+  "@howItWorks": {
+    "description": "How KYC works section title."
+  },
+  "howItWorks": "यसरी काम गर्छ",
+
+  "@howItWorksBody": {
+    "description": "KYC process explanation."
+  },
+  "howItWorksBody": "हाम्रो प्रशासक टोली तपाईंको नागरिकता र जमिन कागजात जाँच गर्छ। अनुमोदन भएपछि तपाईंको लिस्टिङमा प्रमाणित ब्याज देखिनेछ।",
+
+  "@chooseDocument": {
+    "description": "Document type picker label."
+  },
+  "chooseDocument": "कागजात प्रकार छान्नुहोस्",
+
+  "@docCitizenship": {
+    "description": "Citizenship document option."
+  },
+  "docCitizenship": "नागरिकता",
+
+  "@docLalpurja": {
+    "description": "Lalpurja document option."
+  },
+  "docLalpurja": "लालपुर्जा (जमिन स्वामित्व)",
+
+  "@docAgencyReg": {
+    "description": "Agency registration document option."
+  },
+  "docAgencyReg": "एजेन्सी दर्ता",
+
+  "@pickAndSubmit": {
+    "description": "Pick file and submit action."
+  },
+  "pickAndSubmit": "फाइल छान्न र पेश गर्नुहोस्",
+
+  "@uploading": {
+    "description": "Upload in progress."
+  },
+  "uploading": "अपलोड हुँदैछ…",
+
+  "@submitted": {
+    "description": "Submission confirmed."
+  },
+  "submitted": "समीक्षाका लागि पेश गरियो",
+
+  "@emptyTitle": {
+    "description": "No documents uploaded yet."
+  },
+  "emptyTitle": "कागजात छैनन्",
+
+  "@emptyBody": {
+    "description": "Empty state explanation."
+  },
+  "emptyBody": "प्रमाणीकरण सुरु गर्न आफ्नो नागरिकता र जमिन कागजात अपलोड गर्नुहोस्।",
+
+  "@loadFailed": {
+    "description": "Document load failure."
+  },
+  "loadFailed": "कागजात लोड गर्न सकिएन",
+
+  "@retry": {
+    "description": "Retry action."
+  },
+  "retry": "पुनः प्रयास गर्नुहोस्",
+
+  "@statusPending": {
+    "description": "KYC status: pending review."
+  },
+  "statusPending": "समीक्षा बाँकी",
+
+  "@statusVerified": {
+    "description": "KYC status: verified."
+  },
+  "statusVerified": "प्रमाणित",
+
+  "@statusRejected": {
+    "description": "KYC status: rejected."
+  },
+  "statusRejected": "अस्वीकृत",
+
+  "@tier3Hint": {
+    "description": "Tier-3 hint for listing verification."
+  },
+  "tier3Hint": "यस विज्ञापन प्रमाणित गर्न लालपुर्जा + तिरो रसिद जोड्नुहोस्",
+
+  "@submitDocument": {
+    "description": "Submit document button."
+  },
+  "submitDocument": "कागजात पेश गर्नुहोस्"
 }

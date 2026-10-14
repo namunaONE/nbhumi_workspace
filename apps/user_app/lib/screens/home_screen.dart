@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:search/search.dart';
+import 'package:user_app/l10n/output/app_localizations.dart';
 
 /// Landing screen: the browse feed.
 ///
@@ -18,27 +19,27 @@ class HomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final strings = AppLocalizations.of(context);
     return Scaffold(
       appBar: AppBar(
-        title: const Text('nBhumi'),
+        title: Text(strings.appTitle),
         actions: <Widget>[
           IconButton(
             icon: const Icon(Icons.search),
-            tooltip: 'Search listings',
+            tooltip: strings.searchListingsTooltip,
             onPressed: () => context.go('/search'),
           ),
           IconButton(
             icon: const Icon(Icons.add),
-            tooltip: 'Post a property',
+            tooltip: strings.postPropertyTooltip,
             onPressed: () => context.push('/post'),
           ),
         ],
       ),
       body: BrowseFeed(
         onListingTap: (id) => context.push('/listing/$id'),
-        emptyTitle: 'No properties listed yet',
-        emptyBody: 'Be the first to post one. Listings appear here as soon as '
-            'they go live.',
+        emptyTitle: strings.homeEmptyTitle,
+        emptyBody: strings.homeEmptyBody,
       ),
     );
   }
