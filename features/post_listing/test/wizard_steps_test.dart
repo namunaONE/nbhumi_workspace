@@ -165,6 +165,9 @@ void main() {
             onTotalFloorsChanged: (_) {},
             onPropertyAgeChanged: (_) {},
             onConstructionStatusChanged: ({required constructionStatus}) {},
+            onFacingChanged: ({required facing}) {},
+            onAmenityAdded: (_) {},
+            onAmenityRemoved: (_) {},
           ),
         ),
       );
@@ -203,6 +206,9 @@ void main() {
             onTotalFloorsChanged: (_) {},
             onPropertyAgeChanged: (_) {},
             onConstructionStatusChanged: ({required constructionStatus}) {},
+            onFacingChanged: ({required facing}) {},
+            onAmenityAdded: (_) {},
+            onAmenityRemoved: (_) {},
           ),
         ),
       );
@@ -233,6 +239,9 @@ void main() {
             onTotalFloorsChanged: (_) {},
             onPropertyAgeChanged: (_) {},
             onConstructionStatusChanged: ({required constructionStatus}) {},
+            onFacingChanged: ({required facing}) {},
+            onAmenityAdded: (_) {},
+            onAmenityRemoved: (_) {},
           ),
         ),
       );
@@ -261,6 +270,9 @@ void main() {
             onTotalFloorsChanged: (_) {},
             onPropertyAgeChanged: (_) {},
             onConstructionStatusChanged: ({required constructionStatus}) {},
+            onFacingChanged: ({required facing}) {},
+            onAmenityAdded: (_) {},
+            onAmenityRemoved: (_) {},
           ),
         ),
       );
@@ -289,6 +301,9 @@ void main() {
             onTotalFloorsChanged: (_) {},
             onPropertyAgeChanged: (_) {},
             onConstructionStatusChanged: ({required constructionStatus}) {},
+            onFacingChanged: ({required facing}) {},
+            onAmenityAdded: (_) {},
+            onAmenityRemoved: (_) {},
           ),
         ),
       );
@@ -324,6 +339,9 @@ void main() {
             onTotalFloorsChanged: (_) {},
             onPropertyAgeChanged: (_) {},
             onConstructionStatusChanged: ({required constructionStatus}) {},
+            onFacingChanged: ({required facing}) {},
+            onAmenityAdded: (_) {},
+            onAmenityRemoved: (_) {},
           ),
         ),
       );
@@ -352,6 +370,9 @@ void main() {
             onTotalFloorsChanged: (_) {},
             onPropertyAgeChanged: (_) {},
             onConstructionStatusChanged: ({required constructionStatus}) {},
+            onFacingChanged: ({required facing}) {},
+            onAmenityAdded: (_) {},
+            onAmenityRemoved: (_) {},
           ),
         ),
       );
@@ -379,6 +400,9 @@ void main() {
             onTotalFloorsChanged: (_) {},
             onPropertyAgeChanged: (_) {},
             onConstructionStatusChanged: ({required constructionStatus}) {},
+            onFacingChanged: ({required facing}) {},
+            onAmenityAdded: (_) {},
+            onAmenityRemoved: (_) {},
           ),
         );
 

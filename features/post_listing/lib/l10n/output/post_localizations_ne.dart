@@ -510,4 +510,56 @@ class AppLocalizationsNe extends AppLocalizations {
   String reviewAge(String years) {
     return '$years à¤µà¤°à¥à¤· à¤ªà¥à¤°à¤¾à¤¨à¥‹';
   }
+
+  @override
+  String get fieldFacing => 'मोहोडा';
+
+  @override
+  String get facingNorth => 'उत्तर';
+
+  @override
+  String get facingNorthEast => 'उत्तर-पूर्व';
+
+  @override
+  String get facingEast => 'पूर्व';
+
+  @override
+  String get facingSouthEast => 'दक्षिण-पूर्व';
+
+  @override
+  String get facingSouth => 'दक्षिण';
+
+  @override
+  String get facingSouthWest => 'दक्षिण-पश्चिम';
+
+  @override
+  String get facingWest => 'पश्चिम';
+
+  @override
+  String get facingNorthWest => 'उत्तर-पश्चिम';
+
+  @override
+  String get sectionAmenities => 'सुविधाहरू';
+
+  @override
+  String get fieldAmenityHint => 'जस्तै खानेपानी, पार्किङ, बाल्कोनी';
+
+  @override
+  String get amenitiesAdd => 'थप्नुहोस्';
+
+  @override
+  String amenitiesTooMany(int max) {
+    return 'बढीमा $max सुविधा';
+  }
+
+  @override
+  String amenityInvalid(int max) {
+    return 'प्रत्येक सुविधा १ देखि $max अक्षर हुनुपर्छ';
+  }
+
+  @override
+  String get reviewFacing => 'मोहोडा';
+
+  @override
+  String get reviewAmenities => 'सुविधाहरू';
 }

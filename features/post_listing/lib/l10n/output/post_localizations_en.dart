@@ -496,4 +496,56 @@ class AppLocalizationsEn extends AppLocalizations {
   String reviewAge(String years) {
     return '$years years old';
   }
+
+  @override
+  String get fieldFacing => 'Facing';
+
+  @override
+  String get facingNorth => 'North';
+
+  @override
+  String get facingNorthEast => 'North-east';
+
+  @override
+  String get facingEast => 'East';
+
+  @override
+  String get facingSouthEast => 'South-east';
+
+  @override
+  String get facingSouth => 'South';
+
+  @override
+  String get facingSouthWest => 'South-west';
+
+  @override
+  String get facingWest => 'West';
+
+  @override
+  String get facingNorthWest => 'North-west';
+
+  @override
+  String get sectionAmenities => 'Amenities';
+
+  @override
+  String get fieldAmenityHint => 'e.g. Drinking water, Parking, Balcony';
+
+  @override
+  String get amenitiesAdd => 'Add';
+
+  @override
+  String amenitiesTooMany(int max) {
+    return 'At most $max amenities';
+  }
+
+  @override
+  String amenityInvalid(int max) {
+    return 'Each amenity must be 1 to $max characters';
+  }
+
+  @override
+  String get reviewFacing => 'Facing';
+
+  @override
+  String get reviewAmenities => 'Amenities';
 }

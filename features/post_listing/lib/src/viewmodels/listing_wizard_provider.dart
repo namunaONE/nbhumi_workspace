@@ -253,6 +253,32 @@ class ListingWizard extends _$ListingWizard {
         clearConstructionStatus: constructionStatus == null,
       );
 
+  /// Records which way the plot or entrance faces, or null to clear it.
+  void setFacingDirection({required FacingDirection? facing}) =>
+      state = state.copyWith(
+        facingDirection: facing,
+        clearFacingDirection: facing == null,
+      );
+
+  /// Adds one amenity tag, trimmed. Ignores blanks, over-long tags, and
+  /// duplicates; caps at [Validators.maxAmenities].
+  void addAmenity(String raw) {
+    final tag = raw.trim();
+    if (!Validators.isValidAmenity(tag)) return;
+    if (state.amenities.any((a) => a.toLowerCase() == tag.toLowerCase())) {
+      return;
+    }
+    if (state.amenities.length >= Validators.maxAmenities) return;
+    state = state.copyWith(amenities: <String>[...state.amenities, tag]);
+  }
+
+  /// Removes the amenity at [index].
+  void removeAmenity(int index) {
+    if (index < 0 || index >= state.amenities.length) return;
+    final next = <String>[...state.amenities]..removeAt(index);
+    state = state.copyWith(amenities: next);
+  }
+
   /// Records the title.
   void setTitle(String value) => state = state.copyWith(title: value);
 
@@ -512,6 +538,8 @@ class ListingWizard extends _$ListingWizard {
       propertyAgeYears:
           state.isBuilt ? _intOrNull(state.propertyAgeYears) : null,
       constructionStatus: state.isBuilt ? state.constructionStatus : null,
+      facingDirection: state.facingDirection,
+      amenities: Validators.canonicalAmenities(state.amenities),
     );
   }
 

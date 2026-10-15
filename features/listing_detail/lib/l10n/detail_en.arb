@@ -547,5 +547,58 @@
   "@submitDocument": {
     "description": "Submit document button."
   },
-  "submitDocument": "Submit document"
+  "submitDocument": "Submit document",
+
+  "@facingNorth": {
+    "description": "North facing option."
+  },
+  "facingNorth": "North",
+
+  "@facingNorthEast": {
+    "description": "North-east facing option."
+  },
+  "facingNorthEast": "North-east",
+
+  "@facingEast": {
+    "description": "East facing option."
+  },
+  "facingEast": "East",
+
+  "@facingSouthEast": {
+    "description": "South-east facing option."
+  },
+  "facingSouthEast": "South-east",
+
+  "@facingSouth": {
+    "description": "South facing option."
+  },
+  "facingSouth": "South",
+
+  "@facingSouthWest": {
+    "description": "South-west facing option."
+  },
+  "facingSouthWest": "South-west",
+
+  "@facingWest": {
+    "description": "West facing option."
+  },
+  "facingWest": "West",
+
+  "@facingNorthWest": {
+    "description": "North-west facing option."
+  },
+  "facingNorthWest": "North-west",
+
+  "@specFacing": {
+    "description": "Facing direction spec row.",
+    "placeholders": {
+      "direction": { "type": "String", "example": "East" }
+    }
+  },
+  "specFacing": "Faces {direction}",
+
+  "@sectionAmenities": {
+    "description": "Amenities section heading."
+  },
+  "sectionAmenities": "Amenities"
 }

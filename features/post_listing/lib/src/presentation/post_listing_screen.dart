@@ -122,6 +122,9 @@ class _StepBody extends StatelessWidget {
         onTotalFloorsChanged: notifier.setTotalFloors,
         onPropertyAgeChanged: notifier.setPropertyAgeYears,
         onConstructionStatusChanged: notifier.setConstructionStatus,
+        onFacingChanged: notifier.setFacingDirection,
+        onAmenityAdded: notifier.addAmenity,
+        onAmenityRemoved: notifier.removeAmenity,
       ),
       WizardStep.price => PricePhotosStep(
         state: state,

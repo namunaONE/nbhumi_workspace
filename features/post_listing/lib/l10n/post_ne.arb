@@ -786,5 +786,90 @@
       "years": { "type": "String", "example": "10" }
     }
   },
-  "reviewAge": "{years} à¤µà¤°à¥à¤· à¤ªà¥à¤°à¤¾à¤¨à¥‹"
+  "reviewAge": "{years} à¤µà¤°à¥à¤· à¤ªà¥à¤°à¤¾à¤¨à¥‹",
+  "@fieldFacing": {
+    "description": "Facing direction field label."
+  },
+  "fieldFacing": "मोहोडा",
+
+  "@facingNorth": {
+    "description": "North facing option."
+  },
+  "facingNorth": "उत्तर",
+
+  "@facingNorthEast": {
+    "description": "North-east facing option."
+  },
+  "facingNorthEast": "उत्तर-पूर्व",
+
+  "@facingEast": {
+    "description": "East facing option."
+  },
+  "facingEast": "पूर्व",
+
+  "@facingSouthEast": {
+    "description": "South-east facing option."
+  },
+  "facingSouthEast": "दक्षिण-पूर्व",
+
+  "@facingSouth": {
+    "description": "South facing option."
+  },
+  "facingSouth": "दक्षिण",
+
+  "@facingSouthWest": {
+    "description": "South-west facing option."
+  },
+  "facingSouthWest": "दक्षिण-पश्चिम",
+
+  "@facingWest": {
+    "description": "West facing option."
+  },
+  "facingWest": "पश्चिम",
+
+  "@facingNorthWest": {
+    "description": "North-west facing option."
+  },
+  "facingNorthWest": "उत्तर-पश्चिम",
+
+  "@sectionAmenities": {
+    "description": "Amenities section heading on the specs step."
+  },
+  "sectionAmenities": "सुविधाहरू",
+
+  "@fieldAmenityHint": {
+    "description": "Amenity entry field hint."
+  },
+  "fieldAmenityHint": "जस्तै खानेपानी, पार्किङ, बाल्कोनी",
+
+  "@amenitiesAdd": {
+    "description": "Add-amenity action."
+  },
+  "amenitiesAdd": "थप्नुहोस्",
+
+  "@amenitiesTooMany": {
+    "description": "Too many amenities message.",
+    "placeholders": {
+      "max": { "type": "int", "example": "20" }
+    }
+  },
+  "amenitiesTooMany": "बढीमा {max} सुविधा",
+
+  "@amenityInvalid": {
+    "description": "Invalid amenity message.",
+    "placeholders": {
+      "max": { "type": "int", "example": "40" }
+    }
+  },
+  "amenityInvalid": "प्रत्येक सुविधा १ देखि {max} अक्षर हुनुपर्छ",
+
+  "@reviewFacing": {
+    "description": "Review summary row label for facing."
+  },
+  "reviewFacing": "मोहोडा",
+
+  "@reviewAmenities": {
+    "description": "Review summary row label for amenities."
+  },
+  "reviewAmenities": "सुविधाहरू"
 }

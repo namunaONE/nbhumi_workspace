@@ -145,6 +145,13 @@ class ListingDetailBody extends StatelessWidget {
                       icon: Icons.alt_route,
                       label: strings.specRoadAccess(feet),
                     ),
+                  if (listing.facingDirection case final facing?)
+                    _Spec(
+                      icon: Icons.compass_calibration_outlined,
+                      label: strings.specFacing(
+                        _facingLabel(strings, facing),
+                      ),
+                    ),
                 ],
               ),
               // Bedrooms and bathrooms are only meaningful for things that
@@ -274,6 +281,22 @@ class ListingDetailBody extends StatelessWidget {
                   ],
                 ),
               ],
+              if (listing.amenities.isNotEmpty) ...<Widget>[
+                const Divider(height: 32),
+                _Section(
+                  title: strings.sectionAmenities,
+                  children: <Widget>[
+                    Wrap(
+                      spacing: 8,
+                      runSpacing: 8,
+                      children: <Widget>[
+                        for (final amenity in listing.amenities)
+                          Chip(label: Text(amenity)),
+                      ],
+                    ),
+                  ],
+                ),
+              ],
               const Divider(height: 32),
               _Section(
                 title: strings.sectionSeller,
@@ -371,6 +394,21 @@ class ListingDetailBody extends StatelessWidget {
     ConstructionStatus.underConstruction =>
       strings.constructionUnderConstruction,
     ConstructionStatus.resale => strings.constructionResale,
+  };
+
+  /// Localized facing direction.
+  static String _facingLabel(
+    detail_strings.AppLocalizations strings,
+    FacingDirection facing,
+  ) => switch (facing) {
+    FacingDirection.north => strings.facingNorth,
+    FacingDirection.northEast => strings.facingNorthEast,
+    FacingDirection.east => strings.facingEast,
+    FacingDirection.southEast => strings.facingSouthEast,
+    FacingDirection.south => strings.facingSouth,
+    FacingDirection.southWest => strings.facingSouthWest,
+    FacingDirection.west => strings.facingWest,
+    FacingDirection.northWest => strings.facingNorthWest,
   };
 
   /// Short local date for a value the server returns as a date, not a

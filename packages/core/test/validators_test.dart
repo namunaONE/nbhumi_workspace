@@ -70,5 +70,23 @@ void main() {
       expect(Validators.isValidPrice(0), isFalse);
       expect(Validators.isValidPrice(-100), isFalse);
     });
+
+    test('amenity tags enforce count and length caps', () {
+      expect(Validators.maxAmenities, 20);
+      expect(Validators.maxAmenityLength, 40);
+      expect(Validators.isValidAmenity('Drinking water'), isTrue);
+      expect(Validators.isValidAmenity('  Balcony  '), isTrue);
+      expect(Validators.isValidAmenity(''), isFalse);
+      expect(Validators.isValidAmenity('   '), isFalse);
+      expect(Validators.isValidAmenity('x' * 41), isFalse);
+      expect(Validators.isValidAmenity('x' * 40), isTrue);
+    });
+
+    test('canonicalAmenities trims and drops empties, keeping order', () {
+      expect(
+        Validators.canonicalAmenities(['  Water ', '', 'Balcony', '  ']),
+        <String>['Water', 'Balcony'],
+      );
+    });
   });
 }

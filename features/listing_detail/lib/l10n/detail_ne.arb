@@ -1,4 +1,4 @@
-﻿{
+{
   "@@locale": "ne",
   "@@last_modified": "2026-10-06T00:00:00.000",
 
@@ -547,5 +547,48 @@
   "@submitDocument": {
     "description": "Submit document button."
   },
-  "submitDocument": "कागजात पेश गर्नुहोस्"
+  "submitDocument": "कागजात पेश गर्नुहोस्",
+  "@facingNorth": {
+    "description": "North facing option."
+  },
+  "facingNorth": "उत्तर",
+  "@facingNorthEast": {
+    "description": "North-east facing option."
+  },
+  "facingNorthEast": "उत्तर-पूर्व",
+  "@facingEast": {
+    "description": "East facing option."
+  },
+  "facingEast": "पूर्व",
+  "@facingSouthEast": {
+    "description": "South-east facing option."
+  },
+  "facingSouthEast": "दक्षिण-पूर्व",
+  "@facingSouth": {
+    "description": "South facing option."
+  },
+  "facingSouth": "दक्षिण",
+  "@facingSouthWest": {
+    "description": "South-west facing option."
+  },
+  "facingSouthWest": "दक्षिण-पश्चिम",
+  "@facingWest": {
+    "description": "West facing option."
+  },
+  "facingWest": "पश्चिम",
+  "@facingNorthWest": {
+    "description": "North-west facing option."
+  },
+  "facingNorthWest": "उत्तर-पश्चिम",
+  "@specFacing": {
+    "description": "Facing direction spec row.",
+    "placeholders": {
+      "direction": { "type": "String", "example": "पूर्व" }
+    }
+  },
+  "specFacing": "{direction} मोहोडा",
+  "@sectionAmenities": {
+    "description": "Amenities section heading."
+  },
+  "sectionAmenities": "सुविधाहरू"
 }

@@ -210,6 +210,20 @@ extension ListingWizardValidation on ListingWizardState {
       );
     }
 
+    // Facing is optional and enum-typed, so any set value is valid by
+    // construction. Amenities are free-text chips: cap count + length here
+    // so the server CHECK never sees what the form could have refused.
+    if (amenities.length > Validators.maxAmenities) {
+      errors['amenities'] = s.amenitiesTooMany(Validators.maxAmenities);
+    } else {
+      for (var i = 0; i < amenities.length; i++) {
+        if (!Validators.isValidAmenity(amenities[i])) {
+          errors['amenities'] = s.amenityInvalid(Validators.maxAmenityLength);
+          break;
+        }
+      }
+    }
+
     errors
       ..addAll(_validateLeaseTerms(s).errors)
       ..addAll(_validateRentalTerms(s).errors);

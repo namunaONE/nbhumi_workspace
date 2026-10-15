@@ -49,6 +49,13 @@ _Listing _$ListingFromJson(Map<String, dynamic> json) => _Listing(
     _$ConstructionStatusEnumMap,
     json['construction_status'],
   ),
+  facingDirection: $enumDecodeNullable(
+    _$FacingDirectionEnumMap,
+    json['facing_direction'],
+  ),
+  amenities:
+      (json['amenities'] as List<dynamic>?)?.map((e) => e as String).toList() ??
+      const <String>[],
   status:
       $enumDecodeNullable(_$ListingStatusEnumMap, json['status']) ??
       ListingStatus.draft,
@@ -101,6 +108,8 @@ Map<String, dynamic> _$ListingToJson(_Listing instance) => <String, dynamic>{
   'property_age_years': instance.propertyAgeYears,
   'construction_status':
       _$ConstructionStatusEnumMap[instance.constructionStatus],
+  'facing_direction': _$FacingDirectionEnumMap[instance.facingDirection],
+  'amenities': instance.amenities,
   'status': _$ListingStatusEnumMap[instance.status]!,
   'rejection_reason': instance.rejectionReason,
   'created_at': instance.createdAt?.toIso8601String(),
@@ -142,6 +151,17 @@ const _$ConstructionStatusEnumMap = {
   ConstructionStatus.newBuild: 'new',
   ConstructionStatus.underConstruction: 'under_construction',
   ConstructionStatus.resale: 'resale',
+};
+
+const _$FacingDirectionEnumMap = {
+  FacingDirection.north: 'north',
+  FacingDirection.northEast: 'north_east',
+  FacingDirection.east: 'east',
+  FacingDirection.southEast: 'south_east',
+  FacingDirection.south: 'south',
+  FacingDirection.southWest: 'south_west',
+  FacingDirection.west: 'west',
+  FacingDirection.northWest: 'north_west',
 };
 
 const _$ListingStatusEnumMap = {

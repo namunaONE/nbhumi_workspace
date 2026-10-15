@@ -21,6 +21,8 @@ Listing _listing({
   int? totalFloors,
   int? propertyAgeYears,
   ConstructionStatus? constructionStatus,
+  FacingDirection? facingDirection,
+  List<String>? amenities,
 }) =>
     Listing(
       id: 'l1',
@@ -49,6 +51,8 @@ Listing _listing({
       totalFloors: totalFloors,
       propertyAgeYears: propertyAgeYears,
       constructionStatus: constructionStatus,
+      facingDirection: facingDirection,
+      amenities: amenities ?? const <String>[],
     );
 
 void main() {
@@ -145,6 +149,27 @@ void main() {
       );
     });
 
+    test('sends facing direction and amenities when present', () {
+      // HYA-278: facing applies to every type; amenities travel as text[].
+      // Absent facing is null, absent amenities are the empty list.
+      final params = ListingRepository.buildCreateParams(
+        _listing(
+          facingDirection: FacingDirection.east,
+          amenities: const <String>['Drinking water', 'Balcony'],
+        ),
+        ListingStatus.draft,
+      );
+      expect(params['p_facing_direction'], 'east');
+      expect(params['p_amenities'], <String>['Drinking water', 'Balcony']);
+
+      final absent = ListingRepository.buildCreateParams(
+        _listing(),
+        ListingStatus.draft,
+      );
+      expect(absent['p_facing_direction'], isNull);
+      expect(absent['p_amenities'], isEmpty);
+    });
+
     test('covers every writable column on the table', () {
       // The regression guard. G-12 and G-13 both survived for months because a
       // column existed with no matching parameter, and nothing failed loudly:
@@ -193,6 +218,9 @@ void main() {
           'p_total_floors',
           'p_property_age_years',
           'p_construction_status',
+          // HYA-278: facing applies to every type; amenities travel as text[].
+          'p_facing_direction',
+          'p_amenities',
         },
       );
     });
@@ -330,6 +358,9 @@ void main() {
           'p_total_floors',
           'p_property_age_years',
           'p_construction_status',
+          // HYA-278: facing + amenities, same coalesce convention as the rest.
+          'p_facing_direction',
+          'p_amenities',
         },
       );
     });

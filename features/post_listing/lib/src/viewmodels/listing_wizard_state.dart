@@ -150,6 +150,8 @@ class ListingWizardState {
     this.totalFloors = '',
     this.propertyAgeYears = '',
     this.constructionStatus,
+    this.facingDirection,
+    this.amenities = const <String>[],
     this.priceNpr = '',
     this.photos = const <WizardPhoto>[],
     this.submitting = false,
@@ -271,6 +273,12 @@ class ListingWizardState {
   /// New, under construction or resale. Optional.
   final ConstructionStatus? constructionStatus;
 
+  /// Which way the plot or entrance faces. Optional, every type.
+  final FacingDirection? facingDirection;
+
+  /// Structured amenity tags. Empty means none stated.
+  final List<String> amenities;
+
   /// Asking price in NPR as typed.
   final String priceNpr;
 
@@ -316,14 +324,12 @@ class ListingWizardState {
       propertyType == PropertyType.apartment ||
       propertyType == PropertyType.villa;
 
-  /// Whether the building has floors to report: apartment, commercial or
-  /// business premises.
+  /// Whether the building has floors to report: every built type.
   ///
-  /// A house, a villa and a plot of land have no floor number worth naming.
+  /// Land is the only type without floors. House and villa are multi-storey
+  /// across Nepal, so they keep their counts (HYA-278 follow-up).
   bool get hasFloors =>
-      propertyType == PropertyType.apartment ||
-      propertyType == PropertyType.commercial ||
-      propertyType == PropertyType.business;
+      propertyType != null && propertyType != PropertyType.land;
 
   /// Whether there is a building at all, so age and construction status mean
   /// something.
@@ -456,6 +462,8 @@ class ListingWizardState {
     String? totalFloors,
     String? propertyAgeYears,
     ConstructionStatus? constructionStatus,
+    FacingDirection? facingDirection,
+    List<String>? amenities,
     String? priceNpr,
     List<WizardPhoto>? photos,
     bool? submitting,
@@ -470,6 +478,7 @@ class ListingWizardState {
     bool clearFurnishingStatus = false,
     bool clearPetPolicy = false,
     bool clearConstructionStatus = false,
+    bool clearFacingDirection = false,
   }) =>
       ListingWizardState(
         step: step ?? this.step,
@@ -514,6 +523,10 @@ class ListingWizardState {
         constructionStatus: clearConstructionStatus
             ? null
             : (constructionStatus ?? this.constructionStatus),
+        facingDirection: clearFacingDirection
+            ? null
+            : (facingDirection ?? this.facingDirection),
+        amenities: amenities ?? this.amenities,
         priceNpr: priceNpr ?? this.priceNpr,
         photos: photos ?? this.photos,
         submitting: submitting ?? this.submitting,

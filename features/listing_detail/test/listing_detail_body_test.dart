@@ -27,6 +27,8 @@ ListingDetail _detail({
   int? roadAccessFt = 15,
   int? bedrooms = 3,
   int? bathrooms = 2,
+  FacingDirection? facingDirection,
+  List<String> amenities = const <String>[],
 }) =>
     ListingDetail(
       id: 'listing-1',
@@ -46,6 +48,8 @@ ListingDetail _detail({
       roadAccessFt: roadAccessFt,
       bedrooms: bedrooms,
       bathrooms: bathrooms,
+      facingDirection: facingDirection,
+      amenities: amenities,
     );
 
 /// Pumps the body inside a tall viewport.
@@ -241,6 +245,34 @@ void main() {
     testWidgets('omits road access when null', (tester) async {
       await tester.pumpWidget(_harness(_detail(roadAccessFt: null)));
       expect(find.textContaining('road access'), findsNothing);
+    });
+
+    testWidgets('shows facing when recorded', (tester) async {
+      await tester.pumpWidget(
+        _harness(_detail(facingDirection: FacingDirection.east)),
+      );
+      expect(find.text('Faces East'), findsOneWidget);
+    });
+
+    testWidgets('omits facing when null', (tester) async {
+      await tester.pumpWidget(_harness(_detail()));
+      expect(find.textContaining('Faces'), findsNothing);
+    });
+
+    testWidgets('shows amenity chips when recorded', (tester) async {
+      await tester.pumpWidget(
+        _harness(
+          _detail(amenities: const <String>['Drinking water', 'Balcony']),
+        ),
+      );
+      expect(find.text('Amenities'), findsOneWidget);
+      expect(find.text('Drinking water'), findsOneWidget);
+      expect(find.text('Balcony'), findsOneWidget);
+    });
+
+    testWidgets('omits the amenities section when empty', (tester) async {
+      await tester.pumpWidget(_harness(_detail()));
+      expect(find.text('Amenities'), findsNothing);
     });
 
     testWidgets('humanises enum values for display', (tester) async {

@@ -294,5 +294,65 @@ void main() {
       expect(await notifier.submit(strings), isTrue);
       expect(repository.createdListing?.kittaNumber, isNull);
     });
+
+    test('facing and amenities flow into the created draft', () async {
+      final repository = _FakeListingRepository();
+      final container = makeContainer(repository);
+      addTearDown(container.dispose);
+
+      final notifier = container.read(listingWizardProvider.notifier);
+      seedCompleteState(notifier);
+      notifier
+        ..setFacingDirection(facing: FacingDirection.east)
+        ..addAmenity('  Drinking water  ')
+        ..addAmenity('Balcony');
+
+      expect(await notifier.submit(strings), isTrue);
+      expect(
+        repository.createdListing?.facingDirection,
+        FacingDirection.east,
+      );
+      expect(
+        repository.createdListing?.amenities,
+        <String>['Drinking water', 'Balcony'],
+      );
+    });
+
+    test('amenity add drops blanks, duplicates and over-long tags', () async {
+      final repository = _FakeListingRepository();
+      final container = makeContainer(repository);
+      addTearDown(container.dispose);
+
+      final notifier = container.read(listingWizardProvider.notifier);
+      seedCompleteState(notifier);
+      notifier
+        ..addAmenity('   ')
+        ..addAmenity('Water')
+        ..addAmenity('water')
+        ..addAmenity('x' * 41);
+
+      expect(
+        container.read(listingWizardProvider).amenities,
+        <String>['Water'],
+      );
+    });
+
+    test('amenity remove drops the chip at its index', () async {
+      final repository = _FakeListingRepository();
+      final container = makeContainer(repository);
+      addTearDown(container.dispose);
+
+      final notifier = container.read(listingWizardProvider.notifier);
+      seedCompleteState(notifier);
+      notifier
+        ..addAmenity('Water')
+        ..addAmenity('Balcony')
+        ..removeAmenity(0);
+
+      expect(
+        container.read(listingWizardProvider).amenities,
+        <String>['Balcony'],
+      );
+    });
   });
 }

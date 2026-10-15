@@ -284,4 +284,96 @@ class AppLocalizationsNe extends AppLocalizations {
 
   @override
   String get constructionResale => 'पुनर्विक्रय';
+
+  @override
+  String get title => 'पहिचान प्रमाणित गर्नुहोस्';
+
+  @override
+  String get howItWorks => 'यसरी काम गर्छ';
+
+  @override
+  String get howItWorksBody =>
+      'हाम्रो प्रशासक टोली तपाईंको नागरिकता र जमिन कागजात जाँच गर्छ। अनुमोदन भएपछि तपाईंको लिस्टिङमा प्रमाणित ब्याज देखिनेछ।';
+
+  @override
+  String get chooseDocument => 'कागजात प्रकार छान्नुहोस्';
+
+  @override
+  String get docCitizenship => 'नागरिकता';
+
+  @override
+  String get docLalpurja => 'लालपुर्जा (जमिन स्वामित्व)';
+
+  @override
+  String get docAgencyReg => 'एजेन्सी दर्ता';
+
+  @override
+  String get pickAndSubmit => 'फाइल छान्न र पेश गर्नुहोस्';
+
+  @override
+  String get uploading => 'अपलोड हुँदैछ…';
+
+  @override
+  String get submitted => 'समीक्षाका लागि पेश गरियो';
+
+  @override
+  String get emptyTitle => 'कागजात छैनन्';
+
+  @override
+  String get emptyBody =>
+      'प्रमाणीकरण सुरु गर्न आफ्नो नागरिकता र जमिन कागजात अपलोड गर्नुहोस्।';
+
+  @override
+  String get loadFailed => 'कागजात लोड गर्न सकिएन';
+
+  @override
+  String get retry => 'पुनः प्रयास गर्नुहोस्';
+
+  @override
+  String get statusPending => 'समीक्षा बाँकी';
+
+  @override
+  String get statusVerified => 'प्रमाणित';
+
+  @override
+  String get statusRejected => 'अस्वीकृत';
+
+  @override
+  String get tier3Hint =>
+      'यस विज्ञापन प्रमाणित गर्न लालपुर्जा + तिरो रसिद जोड्नुहोस्';
+
+  @override
+  String get submitDocument => 'कागजात पेश गर्नुहोस्';
+
+  @override
+  String get facingNorth => 'उत्तर';
+
+  @override
+  String get facingNorthEast => 'उत्तर-पूर्व';
+
+  @override
+  String get facingEast => 'पूर्व';
+
+  @override
+  String get facingSouthEast => 'दक्षिण-पूर्व';
+
+  @override
+  String get facingSouth => 'दक्षिण';
+
+  @override
+  String get facingSouthWest => 'दक्षिण-पश्चिम';
+
+  @override
+  String get facingWest => 'पश्चिम';
+
+  @override
+  String get facingNorthWest => 'उत्तर-पश्चिम';
+
+  @override
+  String specFacing(String direction) {
+    return '$direction मोहोडा';
+  }
+
+  @override
+  String get sectionAmenities => 'सुविधाहरू';
 }

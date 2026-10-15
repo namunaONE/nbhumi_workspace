@@ -147,6 +147,60 @@ enum ConstructionStatus {
         ),
       );
 }
+
+/// Which way the plot or main entrance faces (Mohoda/Vastu).
+///
+/// Null means "not stated". Applies to every property type — a facing is
+/// meaningful for land as well as for built units. Mirrors the
+/// `listings.facing_direction` CHECK.
+enum FacingDirection {
+  /// North-facing.
+  @JsonValue('north')
+  north('north'),
+
+  /// North-east-facing.
+  @JsonValue('north_east')
+  northEast('north_east'),
+
+  /// East-facing.
+  @JsonValue('east')
+  east('east'),
+
+  /// South-east-facing.
+  @JsonValue('south_east')
+  southEast('south_east'),
+
+  /// South-facing.
+  @JsonValue('south')
+  south('south'),
+
+  /// South-west-facing.
+  @JsonValue('south_west')
+  southWest('south_west'),
+
+  /// West-facing.
+  @JsonValue('west')
+  west('west'),
+
+  /// North-west-facing.
+  @JsonValue('north_west')
+  northWest('north_west');
+
+  FacingDirection(this.wireName);
+
+  /// The value the `facing_direction` CHECK uses.
+  final String wireName;
+
+  /// The direction whose [wireName] is [value].
+  static FacingDirection fromWire(String value) => values.firstWhere(
+        (direction) => direction.wireName == value,
+        orElse: () => throw ArgumentError.value(
+          value,
+          'value',
+          'not a facing_direction value',
+        ),
+      );
+}
 /// Listing status state machine.
 ///
 /// Carries an explicit [wireName] because the Dart name and the Postgres enum
@@ -300,6 +354,17 @@ sealed class Listing with _$Listing {
 
     /// New, under construction, or resale. Null for land.
     ConstructionStatus? constructionStatus,
+
+    /// Which way the plot or main entrance faces. Null when unstated.
+    ///
+    /// Applies to every property type, including land.
+    FacingDirection? facingDirection,
+
+    /// Structured amenity tags. Empty when none stated.
+    ///
+    /// M1 capture + display only; filtered search would need a junction
+    /// table follow-up. Max 20 entries enforced server-side.
+    @Default(<String>[]) List<String> amenities,
 
     @Default(ListingStatus.draft) ListingStatus status,
     String? rejectionReason,

@@ -517,8 +517,14 @@ void main() {
       );
     });
 
-    test('a house is asked for parking but not for floors', () {
-      final state = _complete().copyWith(parkingSpaces: '2');
+    test('a house is asked for parking and for floors', () {
+      // HYA-278: houses are multi-storey across Nepal, so floors apply to
+      // every built type now; land is the only type without them.
+      final state = _complete().copyWith(
+        parkingSpaces: '2',
+        floorNumber: '1',
+        totalFloors: '3',
+      );
       final errors = state.validate(WizardStep.specs, en).errors;
 
       expect(errors, isNot(contains('parkingSpaces')));
@@ -552,6 +558,47 @@ void main() {
         state.validate(WizardStep.specs, en)['propertyAgeYears'],
         isNotNull,
       );
+    });
+
+    test('facing is optional and any direction passes', () {
+      // HYA-278: facing applies to every type, including land.
+      for (final facing in FacingDirection.values) {
+        final state = _complete().copyWith(facingDirection: facing);
+        expect(
+          state.validate(WizardStep.specs, en).errors,
+          isNot(contains('facingDirection')),
+          reason: facing.name,
+        );
+      }
+      final land = _complete().copyWith(
+        propertyType: PropertyType.land,
+        facingDirection: FacingDirection.east,
+      );
+      expect(land.validate(WizardStep.specs, en).isValid, isTrue);
+    });
+
+    test('amenities cap count and length', () {
+      // HYA-278: mirrors the server CHECK (max 20, each 1..40 chars).
+      final tooMany = _complete().copyWith(
+        amenities: List<String>.filled(21, 'Water'),
+      );
+      expect(
+        tooMany.validate(WizardStep.specs, en)['amenities'],
+        isNotNull,
+      );
+
+      final tooLong = _complete().copyWith(
+        amenities: <String>['x' * 41],
+      );
+      expect(
+        tooLong.validate(WizardStep.specs, en)['amenities'],
+        isNotNull,
+      );
+
+      final fine = _complete().copyWith(
+        amenities: const <String>['Drinking water', 'Balcony'],
+      );
+      expect(fine.validate(WizardStep.specs, en).isValid, isTrue);
     });
   });
 

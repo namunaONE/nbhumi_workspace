@@ -200,6 +200,9 @@ class ListingRepository {
       'p_total_floors': json['total_floors'],
       'p_property_age_years': json['property_age_years'],
       'p_construction_status': json['construction_status'],
+      // HYA-278: facing applies to every type; amenities travel as text[].
+      'p_facing_direction': json['facing_direction'],
+      'p_amenities': json['amenities'],
     };
   }
 
@@ -257,6 +260,9 @@ class ListingRepository {
       'p_total_floors': json?['total_floors'],
       'p_property_age_years': json?['property_age_years'],
       'p_construction_status': json?['construction_status'],
+      // HYA-278: same coalesce convention — null means "leave alone".
+      'p_facing_direction': json?['facing_direction'],
+      'p_amenities': json?['amenities'],
     };
   }
 

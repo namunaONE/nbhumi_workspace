@@ -296,4 +296,95 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get constructionResale => 'Resale';
+
+  @override
+  String get title => 'Verify identity';
+
+  @override
+  String get howItWorks => 'How it works';
+
+  @override
+  String get howItWorksBody =>
+      'Our admin team reviews your citizenship and land documents. Once approved, you get the Verified badge on your listings.';
+
+  @override
+  String get chooseDocument => 'Choose document type';
+
+  @override
+  String get docCitizenship => 'Citizenship (Nagarikta)';
+
+  @override
+  String get docLalpurja => 'Lalpurja (land ownership)';
+
+  @override
+  String get docAgencyReg => 'Agency registration';
+
+  @override
+  String get pickAndSubmit => 'Pick file and submit';
+
+  @override
+  String get uploading => 'Uploading…';
+
+  @override
+  String get submitted => 'Submitted for review';
+
+  @override
+  String get emptyTitle => 'No documents yet';
+
+  @override
+  String get emptyBody =>
+      'Upload your citizenship and land documents to start verification.';
+
+  @override
+  String get loadFailed => 'Failed to load documents';
+
+  @override
+  String get retry => 'Retry';
+
+  @override
+  String get statusPending => 'Pending review';
+
+  @override
+  String get statusVerified => 'Verified';
+
+  @override
+  String get statusRejected => 'Rejected';
+
+  @override
+  String get tier3Hint => 'Attach lalpurja + Tiro Rasid to verify this listing';
+
+  @override
+  String get submitDocument => 'Submit document';
+
+  @override
+  String get facingNorth => 'North';
+
+  @override
+  String get facingNorthEast => 'North-east';
+
+  @override
+  String get facingEast => 'East';
+
+  @override
+  String get facingSouthEast => 'South-east';
+
+  @override
+  String get facingSouth => 'South';
+
+  @override
+  String get facingSouthWest => 'South-west';
+
+  @override
+  String get facingWest => 'West';
+
+  @override
+  String get facingNorthWest => 'North-west';
+
+  @override
+  String specFacing(String direction) {
+    return 'Faces $direction';
+  }
+
+  @override
+  String get sectionAmenities => 'Amenities';
 }

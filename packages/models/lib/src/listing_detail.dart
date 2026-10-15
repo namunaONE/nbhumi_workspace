@@ -103,6 +103,12 @@ sealed class ListingDetail with _$ListingDetail {
     /// New, under construction or resale. Null for land.
     ConstructionStatus? constructionStatus,
 
+    /// Which way the plot or main entrance faces. Null when unstated.
+    FacingDirection? facingDirection,
+
+    /// Structured amenity tags. Empty when none stated.
+    @Default(<String>[]) List<String> amenities,
+
     String? rejectionReason,
 
     /// When the seller submitted this for review. Null for a draft.

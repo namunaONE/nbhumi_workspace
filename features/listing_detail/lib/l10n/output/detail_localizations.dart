@@ -583,6 +583,180 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Resale'**
   String get constructionResale;
+
+  /// KYC verification screen title.
+  ///
+  /// In en, this message translates to:
+  /// **'Verify identity'**
+  String get title;
+
+  /// How KYC works section title.
+  ///
+  /// In en, this message translates to:
+  /// **'How it works'**
+  String get howItWorks;
+
+  /// KYC process explanation.
+  ///
+  /// In en, this message translates to:
+  /// **'Our admin team reviews your citizenship and land documents. Once approved, you get the Verified badge on your listings.'**
+  String get howItWorksBody;
+
+  /// Document type picker label.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose document type'**
+  String get chooseDocument;
+
+  /// Citizenship document option.
+  ///
+  /// In en, this message translates to:
+  /// **'Citizenship (Nagarikta)'**
+  String get docCitizenship;
+
+  /// Lalpurja document option.
+  ///
+  /// In en, this message translates to:
+  /// **'Lalpurja (land ownership)'**
+  String get docLalpurja;
+
+  /// Agency registration document option.
+  ///
+  /// In en, this message translates to:
+  /// **'Agency registration'**
+  String get docAgencyReg;
+
+  /// Pick file and submit action.
+  ///
+  /// In en, this message translates to:
+  /// **'Pick file and submit'**
+  String get pickAndSubmit;
+
+  /// Upload in progress.
+  ///
+  /// In en, this message translates to:
+  /// **'Uploading…'**
+  String get uploading;
+
+  /// Submission confirmed.
+  ///
+  /// In en, this message translates to:
+  /// **'Submitted for review'**
+  String get submitted;
+
+  /// No documents uploaded yet.
+  ///
+  /// In en, this message translates to:
+  /// **'No documents yet'**
+  String get emptyTitle;
+
+  /// Empty state explanation.
+  ///
+  /// In en, this message translates to:
+  /// **'Upload your citizenship and land documents to start verification.'**
+  String get emptyBody;
+
+  /// Document load failure.
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to load documents'**
+  String get loadFailed;
+
+  /// Retry action.
+  ///
+  /// In en, this message translates to:
+  /// **'Retry'**
+  String get retry;
+
+  /// KYC status: pending review.
+  ///
+  /// In en, this message translates to:
+  /// **'Pending review'**
+  String get statusPending;
+
+  /// KYC status: verified.
+  ///
+  /// In en, this message translates to:
+  /// **'Verified'**
+  String get statusVerified;
+
+  /// KYC status: rejected.
+  ///
+  /// In en, this message translates to:
+  /// **'Rejected'**
+  String get statusRejected;
+
+  /// Tier-3 hint for listing verification.
+  ///
+  /// In en, this message translates to:
+  /// **'Attach lalpurja + Tiro Rasid to verify this listing'**
+  String get tier3Hint;
+
+  /// Submit document button.
+  ///
+  /// In en, this message translates to:
+  /// **'Submit document'**
+  String get submitDocument;
+
+  /// North facing option.
+  ///
+  /// In en, this message translates to:
+  /// **'North'**
+  String get facingNorth;
+
+  /// North-east facing option.
+  ///
+  /// In en, this message translates to:
+  /// **'North-east'**
+  String get facingNorthEast;
+
+  /// East facing option.
+  ///
+  /// In en, this message translates to:
+  /// **'East'**
+  String get facingEast;
+
+  /// South-east facing option.
+  ///
+  /// In en, this message translates to:
+  /// **'South-east'**
+  String get facingSouthEast;
+
+  /// South facing option.
+  ///
+  /// In en, this message translates to:
+  /// **'South'**
+  String get facingSouth;
+
+  /// South-west facing option.
+  ///
+  /// In en, this message translates to:
+  /// **'South-west'**
+  String get facingSouthWest;
+
+  /// West facing option.
+  ///
+  /// In en, this message translates to:
+  /// **'West'**
+  String get facingWest;
+
+  /// North-west facing option.
+  ///
+  /// In en, this message translates to:
+  /// **'North-west'**
+  String get facingNorthWest;
+
+  /// Facing direction spec row.
+  ///
+  /// In en, this message translates to:
+  /// **'Faces {direction}'**
+  String specFacing(String direction);
+
+  /// Amenities section heading.
+  ///
+  /// In en, this message translates to:
+  /// **'Amenities'**
+  String get sectionAmenities;
 }
 
 class _AppLocalizationsDelegate

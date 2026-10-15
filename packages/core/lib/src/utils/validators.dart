@@ -103,4 +103,33 @@ class Validators {
   /// An absent ward is legitimate, so callers check for emptiness first rather
   /// than passing an empty string here.
   static bool isValidWard(String ward) => _wardPattern.hasMatch(ward);
+
+  /// Maximum structured amenity tags per listing (HYA-278).
+  ///
+  /// Mirrors the `listings_amenities_valid` CHECK (`<= 20`). The wizard caps
+  /// entry at this count so a seller is never told at submit time about a
+  /// limit the form let them exceed.
+  static const int maxAmenities = 20;
+
+  /// Maximum characters per amenity tag after trimming (HYA-278).
+  ///
+  /// Mirrors the same CHECK (`1..40` after `btrim`). Longer belongs in the
+  /// description.
+  static const int maxAmenityLength = 40;
+
+  /// Whether [tag] is a storable amenity: non-blank and within length.
+  static bool isValidAmenity(String tag) {
+    final trimmed = tag.trim();
+    return trimmed.isNotEmpty && trimmed.length <= maxAmenityLength;
+  }
+
+  /// Canonical amenity list: trimmed, empties dropped, order kept.
+  ///
+  /// Stored values are trimmed tags; blank chips and surrounding whitespace
+  /// never reach the server. Duplicates are kept — two identical tags are a
+  /// seller mistake the review step shows back, not silent data loss.
+  static List<String> canonicalAmenities(Iterable<String> tags) => tags
+      .map((tag) => tag.trim())
+      .where((trimmed) => trimmed.isNotEmpty)
+      .toList(growable: false);
 }

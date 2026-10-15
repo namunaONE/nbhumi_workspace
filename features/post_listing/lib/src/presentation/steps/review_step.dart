@@ -111,6 +111,16 @@ class ReviewStep extends StatelessWidget {
             onTap: () => onEditStep(WizardStep.specs),
           ),
         _Row(
+          label: strings.reviewFacing,
+          value: _facing(context, state),
+          onTap: () => onEditStep(WizardStep.specs),
+        ),
+        _Row(
+          label: strings.reviewAmenities,
+          value: _amenities(context, state),
+          onTap: () => onEditStep(WizardStep.specs),
+        ),
+        _Row(
           label: strings.reviewPrice,
           value: _price(context, state),
           onTap: () => onEditStep(WizardStep.price),
@@ -302,6 +312,28 @@ class ReviewStep extends StatelessWidget {
     return parts.isEmpty ? strings.reviewNotSet : parts.join(' · ');
   }
 
+
+  static String _facing(BuildContext context, ListingWizardState state) {
+    final strings = post_strings.AppLocalizations.of(context);
+    final facing = state.facingDirection;
+    if (facing == null) return strings.reviewNotSet;
+    return switch (facing) {
+      FacingDirection.north => strings.facingNorth,
+      FacingDirection.northEast => strings.facingNorthEast,
+      FacingDirection.east => strings.facingEast,
+      FacingDirection.southEast => strings.facingSouthEast,
+      FacingDirection.south => strings.facingSouth,
+      FacingDirection.southWest => strings.facingSouthWest,
+      FacingDirection.west => strings.facingWest,
+      FacingDirection.northWest => strings.facingNorthWest,
+    };
+  }
+
+  static String _amenities(BuildContext context, ListingWizardState state) {
+    final strings = post_strings.AppLocalizations.of(context);
+    if (state.amenities.isEmpty) return strings.reviewNotSet;
+    return state.amenities.join(' · ');
+  }
 
   static String _furnishing(
     post_strings.AppLocalizations strings,

@@ -113,6 +113,12 @@ void main() {
         ConstructionStatus.fromWire('under_construction'),
         ConstructionStatus.underConstruction,
       );
+      expect(FacingDirection.east.wireName, 'east');
+      expect(FacingDirection.northWest.wireName, 'north_west');
+      expect(
+        FacingDirection.fromWire('south_east'),
+        FacingDirection.southEast,
+      );
     });
 
     test('conditioned enums refuse unknown values rather than defaulting',
@@ -121,6 +127,10 @@ void main() {
       expect(() => PetPolicy.fromWire('hamsters_ok'), throwsArgumentError);
       expect(
         () => ConstructionStatus.fromWire('palace'),
+        throwsArgumentError,
+      );
+      expect(
+        () => FacingDirection.fromWire('up'),
         throwsArgumentError,
       );
     });
@@ -145,6 +155,8 @@ void main() {
         totalFloors: 7,
         propertyAgeYears: 10,
         constructionStatus: ConstructionStatus.resale,
+        facingDirection: FacingDirection.southWest,
+        amenities: const <String>['Drinking water', 'Balcony'],
       );
 
       final restored = Listing.fromJson(listing.toJson());
@@ -153,6 +165,11 @@ void main() {
       expect(restored.toJson()['furnishing_status'], 'semi_furnished');
       expect(restored.toJson()['pet_policy'], 'cats_ok');
       expect(restored.toJson()['construction_status'], 'resale');
+      expect(restored.toJson()['facing_direction'], 'south_west');
+      expect(
+        restored.toJson()['amenities'],
+        <String>['Drinking water', 'Balcony'],
+      );
     });
   });
 

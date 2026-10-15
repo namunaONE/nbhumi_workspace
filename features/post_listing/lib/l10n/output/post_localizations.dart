@@ -973,6 +973,102 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'{years} years old'**
   String reviewAge(String years);
+
+  /// Facing direction field label.
+  ///
+  /// In en, this message translates to:
+  /// **'Facing'**
+  String get fieldFacing;
+
+  /// North facing option.
+  ///
+  /// In en, this message translates to:
+  /// **'North'**
+  String get facingNorth;
+
+  /// North-east facing option.
+  ///
+  /// In en, this message translates to:
+  /// **'North-east'**
+  String get facingNorthEast;
+
+  /// East facing option.
+  ///
+  /// In en, this message translates to:
+  /// **'East'**
+  String get facingEast;
+
+  /// South-east facing option.
+  ///
+  /// In en, this message translates to:
+  /// **'South-east'**
+  String get facingSouthEast;
+
+  /// South facing option.
+  ///
+  /// In en, this message translates to:
+  /// **'South'**
+  String get facingSouth;
+
+  /// South-west facing option.
+  ///
+  /// In en, this message translates to:
+  /// **'South-west'**
+  String get facingSouthWest;
+
+  /// West facing option.
+  ///
+  /// In en, this message translates to:
+  /// **'West'**
+  String get facingWest;
+
+  /// North-west facing option.
+  ///
+  /// In en, this message translates to:
+  /// **'North-west'**
+  String get facingNorthWest;
+
+  /// Amenities section heading on the specs step.
+  ///
+  /// In en, this message translates to:
+  /// **'Amenities'**
+  String get sectionAmenities;
+
+  /// Amenity entry field hint.
+  ///
+  /// In en, this message translates to:
+  /// **'e.g. Drinking water, Parking, Balcony'**
+  String get fieldAmenityHint;
+
+  /// Add-amenity action.
+  ///
+  /// In en, this message translates to:
+  /// **'Add'**
+  String get amenitiesAdd;
+
+  /// Too many amenities message.
+  ///
+  /// In en, this message translates to:
+  /// **'At most {max} amenities'**
+  String amenitiesTooMany(int max);
+
+  /// Invalid amenity message.
+  ///
+  /// In en, this message translates to:
+  /// **'Each amenity must be 1 to {max} characters'**
+  String amenityInvalid(int max);
+
+  /// Review summary row label for facing.
+  ///
+  /// In en, this message translates to:
+  /// **'Facing'**
+  String get reviewFacing;
+
+  /// Review summary row label for amenities.
+  ///
+  /// In en, this message translates to:
+  /// **'Amenities'**
+  String get reviewAmenities;
 }
 
 class _AppLocalizationsDelegate

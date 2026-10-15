@@ -54,6 +54,9 @@ class SpecsStep extends StatelessWidget {
     required this.onTotalFloorsChanged,
     required this.onPropertyAgeChanged,
     required this.onConstructionStatusChanged,
+    required this.onFacingChanged,
+    required this.onAmenityAdded,
+    required this.onAmenityRemoved,
     super.key,
   });
 
@@ -111,6 +114,15 @@ class SpecsStep extends StatelessWidget {
   /// Called with the construction status, or null to clear it.
   final void Function({required ConstructionStatus? constructionStatus})
       onConstructionStatusChanged;
+
+  /// Called with the facing direction, or null to clear it.
+  final void Function({required FacingDirection? facing}) onFacingChanged;
+
+  /// Called with a raw amenity tag when the seller taps Add.
+  final void Function(String value) onAmenityAdded;
+
+  /// Called with the index of the amenity chip to remove.
+  final void Function(int index) onAmenityRemoved;
 
   @override
   Widget build(BuildContext context) {
@@ -226,6 +238,18 @@ class SpecsStep extends StatelessWidget {
                 onConstructionStatusChanged(constructionStatus: status),
           ),
         ],
+        // Facing applies to every type, including land: a plot's Mohoda is
+        // as meaningful as a flat's entrance direction.
+        _FacingPicker(
+          value: state.facingDirection,
+          onChanged: (facing) => onFacingChanged(facing: facing),
+        ),
+        _AmenitiesEditor(
+          amenities: state.amenities,
+          error: errors['amenities'],
+          onAdded: onAmenityAdded,
+          onRemoved: onAmenityRemoved,
+        ),
         // Lease terms: a lease needs one. Anything else would leave the
         // review screen showing "Not set" for the field that defines the
         // arrangement.
@@ -442,6 +466,155 @@ class _ConstructionStatusPicker extends StatelessWidget {
           strings.constructionUnderConstruction,
         ConstructionStatus.resale => strings.constructionResale,
       };
+}
+
+/// Facing direction picker. Unset is legitimate: a seller who does not know
+/// or care leaves it blank, and review shows "Not set".
+class _FacingPicker extends StatelessWidget {
+  const _FacingPicker({required this.value, required this.onChanged});
+
+  final FacingDirection? value;
+  final void Function(FacingDirection? value) onChanged;
+
+  @override
+  Widget build(BuildContext context) {
+    final strings = post_strings.AppLocalizations.of(context);
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 16),
+      child: DropdownButtonFormField<FacingDirection?>(
+        initialValue: value,
+        isExpanded: true,
+        decoration: InputDecoration(
+          labelText: strings.fieldFacing,
+          border: const OutlineInputBorder(),
+        ),
+        items: <DropdownMenuItem<FacingDirection?>>[
+          DropdownMenuItem<FacingDirection?>(
+            child: Text(strings.fieldOptional),
+          ),
+          for (final facing in FacingDirection.values)
+            DropdownMenuItem<FacingDirection?>(
+              value: facing,
+              child: Text(_label(strings, facing)),
+            ),
+        ],
+        onChanged: onChanged,
+      ),
+    );
+  }
+
+  static String _label(
+    post_strings.AppLocalizations strings,
+    FacingDirection facing,
+  ) =>
+      switch (facing) {
+        FacingDirection.north => strings.facingNorth,
+        FacingDirection.northEast => strings.facingNorthEast,
+        FacingDirection.east => strings.facingEast,
+        FacingDirection.southEast => strings.facingSouthEast,
+        FacingDirection.south => strings.facingSouth,
+        FacingDirection.southWest => strings.facingSouthWest,
+        FacingDirection.west => strings.facingWest,
+        FacingDirection.northWest => strings.facingNorthWest,
+      };
+}
+
+/// Amenity chip editor: a text field plus Add, chips below with delete.
+///
+/// Validation caps count and length (Rule 6 mirrors the server CHECK); the
+/// provider drops blanks and duplicates on add, so the error here only fires
+/// for state assembled any other way.
+class _AmenitiesEditor extends StatefulWidget {
+  const _AmenitiesEditor({
+    required this.amenities,
+    required this.onAdded,
+    required this.onRemoved,
+    this.error,
+  });
+
+  final List<String> amenities;
+  final String? error;
+  final void Function(String value) onAdded;
+  final void Function(int index) onRemoved;
+
+  @override
+  State<_AmenitiesEditor> createState() => _AmenitiesEditorState();
+}
+
+class _AmenitiesEditorState extends State<_AmenitiesEditor> {
+  final TextEditingController _controller = TextEditingController();
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  void _add() {
+    widget.onAdded(_controller.text);
+    _controller.clear();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final strings = post_strings.AppLocalizations.of(context);
+    final theme = Theme.of(context);
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 16),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          Text(
+            strings.sectionAmenities,
+            style: theme.textTheme.bodyMedium,
+          ),
+          const SizedBox(height: 8),
+          Row(
+            children: <Widget>[
+              Expanded(
+                child: TextField(
+                  controller: _controller,
+                  textInputAction: TextInputAction.done,
+                  decoration: InputDecoration(
+                    hintText: strings.fieldAmenityHint,
+                    border: const OutlineInputBorder(),
+                  ),
+                  onSubmitted: (_) => _add(),
+                ),
+              ),
+              const SizedBox(width: 8),
+              FilledButton.tonal(
+                onPressed: _add,
+                child: Text(strings.amenitiesAdd),
+              ),
+            ],
+          ),
+          if (widget.amenities.isNotEmpty) ...<Widget>[
+            const SizedBox(height: 8),
+            Wrap(
+              spacing: 8,
+              runSpacing: 4,
+              children: <Widget>[
+                for (var i = 0; i < widget.amenities.length; i++)
+                  Chip(
+                    label: Text(widget.amenities[i]),
+                    onDeleted: () => widget.onRemoved(i),
+                  ),
+              ],
+            ),
+          ],
+          if (widget.error case final message?) ...<Widget>[
+            const SizedBox(height: 4),
+            Text(
+              message,
+              style: theme.textTheme.bodySmall
+                  ?.copyWith(color: theme.colorScheme.error),
+            ),
+          ],
+        ],
+      ),
+    );
+  }
 }
 
 /// Availability date. A date picker rather than a text field because the
